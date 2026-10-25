@@ -1,0 +1,1079 @@
+{
+  "file": "streamlit_execution_state_and_caching_os_v2.json",
+  "records": [
+    {
+      "id": "streamlit-exec-top-to-bottom-script",
+      "name": "Top-to-bottom script execution",
+      "problem_addressed": "Confusion about why changing one widget appears to rerun unrelated code.",
+      "source_basis": "Chapter 1 frames Streamlit apps as Python scripts that render from top to bottom.",
+      "safe_pattern": "Keep rendering deterministic; move non-idempotent work behind explicit events and service calls.",
+      "dangerous_pattern": "Perform database writes, emails, or remote API mutations while rendering page headers or widgets.",
+      "inspection_questions": [
+        "What reruns can reach this code path?",
+        "Is any side effect idempotent and behind an explicit submit/confirm/service boundary?",
+        "What user-visible state proves the action has or has not completed?"
+      ],
+      "tests_or_checks": [
+        "Run through widget edits and refreshes without live writes.",
+        "Exercise missing-input and invalid-input paths.",
+        "Verify status/result state is deterministic after rerun."
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-rerun-side-effect",
+        "streamlit-risk-ui-business-logic-coupling"
+      ],
+      "current_verification_required": false,
+      "source_traceability": {
+        "domain": "source_direct",
+        "confidence": "high",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          1
+        ],
+        "evidence": [
+          "Chapter 1 frames Streamlit apps as Python scripts that render from top to bottom."
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "source_direct",
+        "confidence": "high",
+        "method": "Focused V2 record from source behavior plus repair prompt safety goals.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-exec-rerun-model",
+      "name": "Rerun-centered app model",
+      "problem_addressed": "Agents may patch a page as if it were a persistent event loop.",
+      "source_basis": "Chapter 1 examples rely on rerunning the script to update displayed output; Chapter 2 uses st.stop to halt missing-input paths.",
+      "safe_pattern": "Assume user interaction can cause script re-execution; make all top-level code safe to repeat.",
+      "dangerous_pattern": "Use module globals or top-level calls as if they run only once per user journey.",
+      "inspection_questions": [
+        "What reruns can reach this code path?",
+        "Is any side effect idempotent and behind an explicit submit/confirm/service boundary?",
+        "What user-visible state proves the action has or has not completed?"
+      ],
+      "tests_or_checks": [
+        "Run through widget edits and refreshes without live writes.",
+        "Exercise missing-input and invalid-input paths.",
+        "Verify status/result state is deterministic after rerun."
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-rerun-side-effect",
+        "streamlit-risk-long-operation-on-rerun"
+      ],
+      "current_verification_required": false,
+      "source_traceability": {
+        "domain": "source_implied",
+        "confidence": "high",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          1,
+          2
+        ],
+        "evidence": [
+          "Chapter 1 examples rely on rerunning the script to update displayed output; Chapter 2 uses st.stop to halt missing-input paths."
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "source_implied",
+        "confidence": "high",
+        "method": "Focused V2 record from source behavior plus repair prompt safety goals.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-exec-widget-triggered-reruns",
+      "name": "Widget-triggered reruns",
+      "problem_addressed": "Widget changes can accidentally retrigger parsing, model inference, or writes.",
+      "source_basis": "Chapters 1,2,4,6 demonstrate widgets changing app output; current docs should verify exact callback order.",
+      "safe_pattern": "Separate lightweight UI recomputation from expensive/service operations; cache or guard slow reads.",
+      "dangerous_pattern": "Bind expensive operations directly to each widget value without a submit boundary.",
+      "inspection_questions": [
+        "What reruns can reach this code path?",
+        "Is any side effect idempotent and behind an explicit submit/confirm/service boundary?",
+        "What user-visible state proves the action has or has not completed?"
+      ],
+      "tests_or_checks": [
+        "Run through widget edits and refreshes without live writes.",
+        "Exercise missing-input and invalid-input paths.",
+        "Verify status/result state is deterministic after rerun."
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-long-operation-on-rerun",
+        "streamlit-risk-rerun-side-effect"
+      ],
+      "current_verification_required": true,
+      "source_traceability": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          1,
+          2,
+          4,
+          6
+        ],
+        "evidence": [
+          "Chapters 1,2,4,6 demonstrate widgets changing app output; current docs should verify exact callback order."
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "method": "Focused V2 record from source behavior plus repair prompt safety goals.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-exec-button-momentary-trigger",
+      "name": "Buttons as momentary triggers",
+      "problem_addressed": "A button result is mistaken for persistent workflow state.",
+      "source_basis": "Chapter 1 includes a Re-run button example; buttons should be treated as triggers, not durable state.",
+      "safe_pattern": "On click, create or update explicit state such as a pending plan id or result object.",
+      "dangerous_pattern": "Use a button alone to mean a job remains approved across later reruns.",
+      "inspection_questions": [
+        "What reruns can reach this code path?",
+        "Is any side effect idempotent and behind an explicit submit/confirm/service boundary?",
+        "What user-visible state proves the action has or has not completed?"
+      ],
+      "tests_or_checks": [
+        "Run through widget edits and refreshes without live writes.",
+        "Exercise missing-input and invalid-input paths.",
+        "Verify status/result state is deterministic after rerun."
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-double-submit",
+        "streamlit-risk-rerun-side-effect"
+      ],
+      "current_verification_required": false,
+      "source_traceability": {
+        "domain": "source_demonstrated_by_code",
+        "confidence": "high",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          1
+        ],
+        "evidence": [
+          "Chapter 1 includes a Re-run button example; buttons should be treated as triggers, not durable state."
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "source_demonstrated_by_code",
+        "confidence": "high",
+        "method": "Focused V2 record from source behavior plus repair prompt safety goals.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-exec-forms-submit-boundary",
+      "name": "Forms as grouped submission boundaries",
+      "problem_addressed": "Partial input edits trigger work before the user intended to submit.",
+      "source_basis": "Chapter 4 uses st.form and st.form_submit_button to group model inputs.",
+      "safe_pattern": "Use a form for multi-field inputs and perform validation only after the submit button returns true.",
+      "dangerous_pattern": "Start live actions while the user is still editing fields inside or outside the form.",
+      "inspection_questions": [
+        "What reruns can reach this code path?",
+        "Is any side effect idempotent and behind an explicit submit/confirm/service boundary?",
+        "What user-visible state proves the action has or has not completed?"
+      ],
+      "tests_or_checks": [
+        "Run through widget edits and refreshes without live writes.",
+        "Exercise missing-input and invalid-input paths.",
+        "Verify status/result state is deterministic after rerun."
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-double-submit",
+        "streamlit-risk-live-write-without-dry-run"
+      ],
+      "current_verification_required": true,
+      "source_traceability": {
+        "domain": "source_demonstrated_by_code",
+        "confidence": "high",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          4
+        ],
+        "evidence": [
+          "Chapter 4 uses st.form and st.form_submit_button to group model inputs."
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "source_demonstrated_by_code",
+        "confidence": "high",
+        "method": "Focused V2 record from source behavior plus repair prompt safety goals.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-exec-session-state-ui-workflow",
+      "name": "Session state as per-user UI workflow state",
+      "problem_addressed": "Agents may need to preserve selected file, validation state, dry-run plan, or display state across reruns.",
+      "source_basis": "Book examples use widgets and rerun behavior; current docs are required for exact session state semantics.",
+      "safe_pattern": "Use session state for per-user, non-durable UI workflow markers; write durable results outside Streamlit.",
+      "dangerous_pattern": "Use session state as database, run ledger, permission system, or audit trail.",
+      "inspection_questions": [
+        "What reruns can reach this code path?",
+        "Is any side effect idempotent and behind an explicit submit/confirm/service boundary?",
+        "What user-visible state proves the action has or has not completed?"
+      ],
+      "tests_or_checks": [
+        "Run through widget edits and refreshes without live writes.",
+        "Exercise missing-input and invalid-input paths.",
+        "Verify status/result state is deterministic after rerun."
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-session-state-as-storage",
+        "streamlit-risk-session-state-as-authz"
+      ],
+      "current_verification_required": true,
+      "source_traceability": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          1,
+          2,
+          4,
+          6
+        ],
+        "evidence": [
+          "Book examples use widgets and rerun behavior; current docs are required for exact session state semantics."
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "method": "Focused V2 record from source behavior plus repair prompt safety goals.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-exec-session-state-initialization",
+      "name": "Session state initialization",
+      "problem_addressed": "Uninitialized keys cause exceptions or inconsistent branch behavior.",
+      "source_basis": "Initialization patterns are current API details beyond the accessible book chapters.",
+      "safe_pattern": "Initialize all expected UI workflow keys at page entry with safe defaults and schema comments.",
+      "dangerous_pattern": "Create keys lazily in scattered callbacks, or let missing keys imply permissions.",
+      "inspection_questions": [
+        "What reruns can reach this code path?",
+        "Is any side effect idempotent and behind an explicit submit/confirm/service boundary?",
+        "What user-visible state proves the action has or has not completed?"
+      ],
+      "tests_or_checks": [
+        "Run through widget edits and refreshes without live writes.",
+        "Exercise missing-input and invalid-input paths.",
+        "Verify status/result state is deterministic after rerun."
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-session-state-as-storage",
+        "streamlit-risk-session-state-as-authz",
+        "streamlit-risk-unverified-current-api"
+      ],
+      "current_verification_required": true,
+      "source_traceability": {
+        "domain": "modern_streamlit_extension",
+        "confidence": "low",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [],
+        "evidence": [
+          "Initialization patterns are current API details beyond the accessible book chapters."
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "modern_streamlit_extension",
+        "confidence": "low",
+        "method": "Focused V2 record from source behavior plus repair prompt safety goals.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-exec-cache-data-resource-boundary",
+      "name": "Cache data versus cache resource",
+      "problem_addressed": "Agents may cache the wrong thing or treat cache as harmless.",
+      "source_basis": "Chapter 2 demonstrates st.cache_data; Chapter 4 demonstrates st.cache_resource for a model resource.",
+      "safe_pattern": "Use data cache for repeatable data transforms and resource cache for expensive shared resources only after sensitivity review.",
+      "dangerous_pattern": "Cache secrets, user-specific protected data, mutable results, or write clients without lifecycle checks.",
+      "inspection_questions": [
+        "What reruns can reach this code path?",
+        "Is any side effect idempotent and behind an explicit submit/confirm/service boundary?",
+        "What user-visible state proves the action has or has not completed?"
+      ],
+      "tests_or_checks": [
+        "Run through widget edits and refreshes without live writes.",
+        "Exercise missing-input and invalid-input paths.",
+        "Verify status/result state is deterministic after rerun."
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-cache-stale-data",
+        "streamlit-risk-cache-sensitive-data",
+        "streamlit-risk-mutated-cached-object"
+      ],
+      "current_verification_required": true,
+      "source_traceability": {
+        "domain": "source_demonstrated_by_code",
+        "confidence": "high",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          2,
+          4
+        ],
+        "evidence": [
+          "Chapter 2 demonstrates st.cache_data; Chapter 4 demonstrates st.cache_resource for a model resource."
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "source_demonstrated_by_code",
+        "confidence": "high",
+        "method": "Focused V2 record from source behavior plus repair prompt safety goals.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-exec-cache-invalidation",
+      "name": "Cache invalidation and refresh controls",
+      "problem_addressed": "Users see stale data without knowing it.",
+      "source_basis": "The source demonstrates caching but not production invalidation policy.",
+      "safe_pattern": "Tie cache keys to file hash, user scope, dataset version, and explicit refresh controls where relevant.",
+      "dangerous_pattern": "Use cache defaults for operational dashboards, permissioned data, or changing external systems.",
+      "inspection_questions": [
+        "What reruns can reach this code path?",
+        "Is any side effect idempotent and behind an explicit submit/confirm/service boundary?",
+        "What user-visible state proves the action has or has not completed?"
+      ],
+      "tests_or_checks": [
+        "Run through widget edits and refreshes without live writes.",
+        "Exercise missing-input and invalid-input paths.",
+        "Verify status/result state is deterministic after rerun."
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-cache-stale-data",
+        "streamlit-risk-owner-dashboard-false-green"
+      ],
+      "current_verification_required": true,
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          2,
+          4
+        ],
+        "evidence": [
+          "The source demonstrates caching but not production invalidation policy."
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Focused V2 record from source behavior plus repair prompt safety goals.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-exec-long-running-operations",
+      "name": "Long-running operations",
+      "problem_addressed": "A normal rerun repeats expensive or user-visible work.",
+      "source_basis": "Chapter 1 uses progress/status examples; Chapters 2 and 4 include parsing/model work that can be slow.",
+      "safe_pattern": "Use submit boundaries, cached pure work, asynchronous backend jobs where needed, visible progress, and timeout states.",
+      "dangerous_pattern": "Run long calls during every render or every widget edit.",
+      "inspection_questions": [
+        "What reruns can reach this code path?",
+        "Is any side effect idempotent and behind an explicit submit/confirm/service boundary?",
+        "What user-visible state proves the action has or has not completed?"
+      ],
+      "tests_or_checks": [
+        "Run through widget edits and refreshes without live writes.",
+        "Exercise missing-input and invalid-input paths.",
+        "Verify status/result state is deterministic after rerun."
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-long-operation-on-rerun",
+        "streamlit-risk-streamlit-as-backend"
+      ],
+      "current_verification_required": true,
+      "source_traceability": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          1,
+          2,
+          4
+        ],
+        "evidence": [
+          "Chapter 1 uses progress/status examples; Chapters 2 and 4 include parsing/model work that can be slow."
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "method": "Focused V2 record from source behavior plus repair prompt safety goals.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-exec-status-display",
+      "name": "Status display",
+      "problem_addressed": "Users cannot tell whether work is pending, running, succeeded, failed, partial, or stale.",
+      "source_basis": "Chapter 1 demonstrates status text while plotting and progressing.",
+      "safe_pattern": "Show plain-language status tied to actual state and backend result contracts.",
+      "dangerous_pattern": "Show a generic success message before validation, persistence, or backend completion.",
+      "inspection_questions": [
+        "What reruns can reach this code path?",
+        "Is any side effect idempotent and behind an explicit submit/confirm/service boundary?",
+        "What user-visible state proves the action has or has not completed?"
+      ],
+      "tests_or_checks": [
+        "Run through widget edits and refreshes without live writes.",
+        "Exercise missing-input and invalid-input paths.",
+        "Verify status/result state is deterministic after rerun."
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-owner-dashboard-false-green"
+      ],
+      "current_verification_required": true,
+      "source_traceability": {
+        "domain": "source_demonstrated_by_code",
+        "confidence": "high",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          1
+        ],
+        "evidence": [
+          "Chapter 1 demonstrates status text while plotting and progressing."
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "source_demonstrated_by_code",
+        "confidence": "high",
+        "method": "Focused V2 record from source behavior plus repair prompt safety goals.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-exec-progress-display",
+      "name": "Progress display",
+      "problem_addressed": "Long operations look frozen and users retry or double-submit.",
+      "source_basis": "Chapter 1 demonstrates progress feedback during a loop.",
+      "safe_pattern": "Use progress only when the operation has meaningful phases or estimated completion; otherwise show bounded status and next steps.",
+      "dangerous_pattern": "Use fake progress to imply success or hide failures.",
+      "inspection_questions": [
+        "What reruns can reach this code path?",
+        "Is any side effect idempotent and behind an explicit submit/confirm/service boundary?",
+        "What user-visible state proves the action has or has not completed?"
+      ],
+      "tests_or_checks": [
+        "Run through widget edits and refreshes without live writes.",
+        "Exercise missing-input and invalid-input paths.",
+        "Verify status/result state is deterministic after rerun."
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-double-submit",
+        "streamlit-risk-owner-dashboard-false-green"
+      ],
+      "current_verification_required": true,
+      "source_traceability": {
+        "domain": "source_demonstrated_by_code",
+        "confidence": "high",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          1
+        ],
+        "evidence": [
+          "Chapter 1 demonstrates progress feedback during a loop."
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "source_demonstrated_by_code",
+        "confidence": "high",
+        "method": "Focused V2 record from source behavior plus repair prompt safety goals.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-exec-exception-display",
+      "name": "Exception display and user-safe errors",
+      "problem_addressed": "Raw exceptions can leak secrets, paths, queries, or internal implementation.",
+      "source_basis": "The source shows development/debug workflows, but production error redaction is an operational extension.",
+      "safe_pattern": "Show user-safe errors with correlation/run id; log redacted technical detail outside the UI.",
+      "dangerous_pattern": "Call st.exception or print raw traceback for non-admin users.",
+      "inspection_questions": [
+        "What reruns can reach this code path?",
+        "Is any side effect idempotent and behind an explicit submit/confirm/service boundary?",
+        "What user-visible state proves the action has or has not completed?"
+      ],
+      "tests_or_checks": [
+        "Run through widget edits and refreshes without live writes.",
+        "Exercise missing-input and invalid-input paths.",
+        "Verify status/result state is deterministic after rerun."
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-raw-exception-exposure",
+        "streamlit-risk-secret-leakage"
+      ],
+      "current_verification_required": true,
+      "source_traceability": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          2,
+          5
+        ],
+        "evidence": [
+          "The source shows development/debug workflows, but production error redaction is an operational extension."
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "method": "Focused V2 record from source behavior plus repair prompt safety goals.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-exec-stop-rerun-flow-control",
+      "name": "Stop/rerun flow control",
+      "problem_addressed": "Later code executes despite missing prerequisite input or validation failure.",
+      "source_basis": "Chapter 2 demonstrates st.stop when no upload is present; current rerun APIs require verification.",
+      "safe_pattern": "Use stop-like guard clauses after blockers; use rerun APIs only with current-version checks and loop prevention.",
+      "dangerous_pattern": "Continue into parse/process/live action after missing file or invalid form state.",
+      "inspection_questions": [
+        "What reruns can reach this code path?",
+        "Is any side effect idempotent and behind an explicit submit/confirm/service boundary?",
+        "What user-visible state proves the action has or has not completed?"
+      ],
+      "tests_or_checks": [
+        "Run through widget edits and refreshes without live writes.",
+        "Exercise missing-input and invalid-input paths.",
+        "Verify status/result state is deterministic after rerun."
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-file-upload-without-validation",
+        "streamlit-risk-unverified-current-api"
+      ],
+      "current_verification_required": true,
+      "source_traceability": {
+        "domain": "source_demonstrated_by_code",
+        "confidence": "high",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          2
+        ],
+        "evidence": [
+          "Chapter 2 demonstrates st.stop when no upload is present; current rerun APIs require verification."
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "source_demonstrated_by_code",
+        "confidence": "high",
+        "method": "Focused V2 record from source behavior plus repair prompt safety goals.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-exec-safe-side-effect-boundary",
+      "name": "Safe side-effect boundaries",
+      "problem_addressed": "Live API/database actions are accidentally tied to rendering or ordinary reruns.",
+      "source_basis": "The book demonstrates UI interactions; production side-effect boundaries are beyond the accessible source.",
+      "safe_pattern": "Route live actions through service functions after submit, dry-run, confirmation, backend authorization, idempotency key, and result contract.",
+      "dangerous_pattern": "Perform live writes directly in top-level app code or callbacks without a persisted plan id.",
+      "inspection_questions": [
+        "What reruns can reach this code path?",
+        "Is any side effect idempotent and behind an explicit submit/confirm/service boundary?",
+        "What user-visible state proves the action has or has not completed?"
+      ],
+      "tests_or_checks": [
+        "Run through widget edits and refreshes without live writes.",
+        "Exercise missing-input and invalid-input paths.",
+        "Verify status/result state is deterministic after rerun."
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-rerun-side-effect",
+        "streamlit-risk-live-write-without-dry-run",
+        "streamlit-risk-streamlit-as-backend"
+      ],
+      "current_verification_required": true,
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          1,
+          2,
+          4
+        ],
+        "evidence": [
+          "The book demonstrates UI interactions; production side-effect boundaries are beyond the accessible source."
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Focused V2 record from source behavior plus repair prompt safety goals.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    }
+  ],
+  "risk_records": [
+    {
+      "id": "streamlit-risk-rerun-side-effect",
+      "risk_name": "Rerun side effect",
+      "risk_description": "A write, API call, email, or job launch happens during normal top-to-bottom rendering rather than behind an explicit submit/confirmation/service boundary.",
+      "risk_domain": "application_architecture_extension",
+      "confidence": "medium",
+      "reuse_guidance": "Reference this risk ID from specific records instead of repeating the full warning text.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?",
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [],
+        "evidence": [
+          "risk distilled during V2 repair from repeated warnings in the draft package and source-supported Streamlit execution behavior"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Reusable risk normalization from repeated draft cautions.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-risk-double-submit",
+      "risk_name": "Double submit",
+      "risk_description": "A user rerun, browser refresh, impatient click, or retry can perform the same live action more than once.",
+      "risk_domain": "application_architecture_extension",
+      "confidence": "medium",
+      "reuse_guidance": "Reference this risk ID from specific records instead of repeating the full warning text.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?",
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [],
+        "evidence": [
+          "risk distilled during V2 repair from repeated warnings in the draft package and source-supported Streamlit execution behavior"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Reusable risk normalization from repeated draft cautions.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-risk-session-state-as-storage",
+      "risk_name": "Session state as storage",
+      "risk_description": "Per-user UI state is treated as durable storage, audit history, queue, or database.",
+      "risk_domain": "application_architecture_extension",
+      "confidence": "medium",
+      "reuse_guidance": "Reference this risk ID from specific records instead of repeating the full warning text.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?",
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [],
+        "evidence": [
+          "risk distilled during V2 repair from repeated warnings in the draft package and source-supported Streamlit execution behavior"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Reusable risk normalization from repeated draft cautions.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-risk-session-state-as-authz",
+      "risk_name": "Session state as authorization",
+      "risk_description": "A value in session state is treated as proof that a user may perform an action.",
+      "risk_domain": "application_architecture_extension",
+      "confidence": "medium",
+      "reuse_guidance": "Reference this risk ID from specific records instead of repeating the full warning text.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?",
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [],
+        "evidence": [
+          "risk distilled during V2 repair from repeated warnings in the draft package and source-supported Streamlit execution behavior"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Reusable risk normalization from repeated draft cautions.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-risk-cache-stale-data",
+      "risk_name": "Stale cached data",
+      "risk_description": "Cached values are reused after inputs, files, permissions, or external data changed.",
+      "risk_domain": "application_architecture_extension",
+      "confidence": "medium",
+      "reuse_guidance": "Reference this risk ID from specific records instead of repeating the full warning text.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?",
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [],
+        "evidence": [
+          "risk distilled during V2 repair from repeated warnings in the draft package and source-supported Streamlit execution behavior"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Reusable risk normalization from repeated draft cautions.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-risk-cache-sensitive-data",
+      "risk_name": "Sensitive cached data",
+      "risk_description": "Secrets, tokens, user-specific private data, or restricted results are cached without isolation and redaction controls.",
+      "risk_domain": "application_architecture_extension",
+      "confidence": "medium",
+      "reuse_guidance": "Reference this risk ID from specific records instead of repeating the full warning text.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?",
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [],
+        "evidence": [
+          "risk distilled during V2 repair from repeated warnings in the draft package and source-supported Streamlit execution behavior"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Reusable risk normalization from repeated draft cautions.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-risk-mutated-cached-object",
+      "risk_name": "Mutated cached object",
+      "risk_description": "A cached object is mutated and then leaks stale or cross-request state into later runs.",
+      "risk_domain": "application_architecture_extension",
+      "confidence": "medium",
+      "reuse_guidance": "Reference this risk ID from specific records instead of repeating the full warning text.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?",
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [],
+        "evidence": [
+          "risk distilled during V2 repair from repeated warnings in the draft package and source-supported Streamlit execution behavior"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Reusable risk normalization from repeated draft cautions.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-risk-long-operation-on-rerun",
+      "risk_name": "Long operation on rerun",
+      "risk_description": "A slow model, file parse, API call, or report generation repeats on normal widget changes.",
+      "risk_domain": "application_architecture_extension",
+      "confidence": "medium",
+      "reuse_guidance": "Reference this risk ID from specific records instead of repeating the full warning text.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?",
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [],
+        "evidence": [
+          "risk distilled during V2 repair from repeated warnings in the draft package and source-supported Streamlit execution behavior"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Reusable risk normalization from repeated draft cautions.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    }
+  ],
+  "verification_flags": [
+    {
+      "verification_id": "streamlit-verify-api-names",
+      "affected_record_ids": [
+        "streamlit-exec-top-to-bottom-script",
+        "streamlit-exec-rerun-model",
+        "streamlit-exec-widget-triggered-reruns",
+        "streamlit-exec-button-momentary-trigger",
+        "streamlit-exec-forms-submit-boundary",
+        "streamlit-exec-session-state-ui-workflow",
+        "streamlit-exec-session-state-initialization",
+        "streamlit-exec-cache-data-resource-boundary",
+        "streamlit-exec-cache-invalidation",
+        "streamlit-exec-long-running-operations",
+        "streamlit-exec-status-display",
+        "streamlit-exec-progress-display",
+        "streamlit-exec-exception-display",
+        "streamlit-exec-stop-rerun-flow-control",
+        "streamlit-exec-safe-side-effect-boundary",
+        "streamlit-arch-deployment-runtime-layer",
+        "streamlit-template-data-upload-validation",
+        "streamlit-template-executive-dashboard",
+        "streamlit-ux-stale-data-display",
+        "streamlit-ux-owner-executive-summary",
+        "streamlit-test-stale-data-display",
+        "streamlit-test-cache-invalidation",
+        "streamlit-widget-file-uploader-boundary",
+        "streamlit-widget-download-button-report"
+      ],
+      "source_era_claim": "Book-era examples use Streamlit APIs available in accessible chapters, but names and parameters may change.",
+      "why_time_sensitive": "API signatures and deprecations change across Streamlit releases.",
+      "verification_category": "Streamlit API names",
+      "recommended_authoritative_sources": [
+        "Official Streamlit documentation",
+        "Installed Streamlit version",
+        "Deployment platform documentation",
+        "Current project runtime tests"
+      ],
+      "do_not_assume_current_accuracy": true
+    },
+    {
+      "verification_id": "streamlit-verify-cache-data-resource",
+      "affected_record_ids": [
+        "streamlit-exec-cache-data-resource-boundary",
+        "streamlit-exec-cache-invalidation",
+        "streamlit-test-cache-invalidation",
+        "streamlit-risk-cache-stale-data",
+        "streamlit-risk-cache-sensitive-data",
+        "streamlit-risk-mutated-cached-object",
+        "streamlit-anti-cache-stale-data",
+        "streamlit-anti-cache-sensitive-data",
+        "streamlit-anti-mutated-cached-object",
+        "streamlit-cross-cache-to-dashboard"
+      ],
+      "source_era_claim": "Source demonstrates cache decorators in chapters 2 and 4.",
+      "why_time_sensitive": "Cache semantics, hashing, TTL, mutation behavior, and security recommendations are version-sensitive.",
+      "verification_category": "st.cache_data / st.cache_resource behavior",
+      "recommended_authoritative_sources": [
+        "Official Streamlit documentation",
+        "Installed Streamlit version",
+        "Deployment platform documentation",
+        "Current project runtime tests"
+      ],
+      "do_not_assume_current_accuracy": true
+    },
+    {
+      "verification_id": "streamlit-verify-session-state",
+      "affected_record_ids": [
+        "streamlit-exec-session-state-ui-workflow",
+        "streamlit-exec-session-state-initialization",
+        "streamlit-risk-session-state-as-storage",
+        "streamlit-risk-session-state-as-authz",
+        "streamlit-anti-session-state-as-storage",
+        "streamlit-anti-session-state-as-authz"
+      ],
+      "source_era_claim": "V2 uses session state only as UI workflow state; exact API behavior is current-doc/runtime dependent.",
+      "why_time_sensitive": "Session state semantics, serialization settings, and multipage behavior can vary by version/configuration.",
+      "verification_category": "session state behavior",
+      "recommended_authoritative_sources": [
+        "Official Streamlit documentation",
+        "Installed Streamlit version",
+        "Deployment platform documentation",
+        "Current project runtime tests"
+      ],
+      "do_not_assume_current_accuracy": true
+    },
+    {
+      "verification_id": "streamlit-verify-forms",
+      "affected_record_ids": [
+        "streamlit-exec-forms-submit-boundary",
+        "streamlit-workflow-form-dryrun-confirm-live",
+        "streamlit-widget-form-grouping"
+      ],
+      "source_era_claim": "Source demonstrates forms; current docs define batching/callback constraints.",
+      "why_time_sensitive": "Form constraints and callback behavior are current API details.",
+      "verification_category": "forms behavior",
+      "recommended_authoritative_sources": [
+        "Official Streamlit documentation",
+        "Installed Streamlit version",
+        "Deployment platform documentation",
+        "Current project runtime tests"
+      ],
+      "do_not_assume_current_accuracy": true
+    }
+  ]
+}

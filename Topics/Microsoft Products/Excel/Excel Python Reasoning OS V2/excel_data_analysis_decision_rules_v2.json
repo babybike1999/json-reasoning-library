@@ -1,0 +1,493 @@
+{
+  "system_metadata": {
+    "package": "excel_data_analysis_decision_rules_v2",
+    "version": "v2",
+    "repair_type": "focused_v2_repair_not_full_rebuild",
+    "created_utc": "2026-06-19T22:19:55Z",
+    "source_files": [
+      "Excel Data Analysis For Dummies 5th Edition PDF",
+      "Python in Excel EPUB"
+    ],
+    "authority_order": [
+      "original_uploaded_books",
+      "v1_json_files",
+      "repair_prompt",
+      "general_operational_reasoning"
+    ],
+    "description": "Excel-focused tool and workbook decisions."
+  },
+  "decision_rules": [
+    {
+      "id": "decision-simple-formula-vs-python",
+      "decision_name": "Simple formula versus Python-in-Excel",
+      "decision_context": "A user needs a calculation or transformation in an Excel workbook.",
+      "default_low_complexity_choice": "Use an Excel formula/Table/PivotTable unless Python materially improves clarity, repeatability, or diagnostics.",
+      "choose_excel_when": [
+        "calculation is row/column local",
+        "nontechnical users must edit/audit it",
+        "formula can be tested with adjacent examples"
+      ],
+      "choose_python_in_excel_when": [
+        "multi-column profiling, DataFrame cleaning, or statistical visualization is clearer in Python",
+        "logic is exploratory and workbook-bound",
+        "Python-in-Excel availability is confirmed"
+      ],
+      "choose_external_python_when": [
+        "calculation must run unattended or be version-controlled as code",
+        "custom packages/files/API calls are required"
+      ],
+      "choose_power_query_or_other_tool_when": [
+        "source ingestion or repeatable external-data shaping is the real need"
+      ],
+      "avoid_python_when": [
+        "formula is transparent and safe",
+        "tenant availability or data privacy is unclear"
+      ],
+      "avoid_excel_when": [
+        "formula would be copied hundreds of times with drift risk",
+        "complex joins/cleaning obscure auditability"
+      ],
+      "risk_of_wrong_choice": [
+        "overengineering with Python makes template unavailable to many users",
+        "overusing formulas creates drift and hidden errors"
+      ],
+      "examples": [
+        "SUMIFS scorecard metric: Excel",
+        "multi-column null/duplicate profile: Python-in-Excel",
+        "nightly report pipeline: external Python"
+      ],
+      "source_basis": [
+        "excel-tech-conditional-aggregate-functions",
+        "python-excel-tech-pandas-profile"
+      ],
+      "related_risk_ids": [
+        "excel-risk-formula-drift",
+        "python-excel-risk-cloud-execution"
+      ],
+      "source_domain": "cross_book_synthesis",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package",
+        "book_title": "Cross-book synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Multiple source sections",
+        "section_heading": "Simple formula versus Python-in-Excel",
+        "page_or_anchor": "v2 synthesis",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "combined source basis",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers workbook-native techniques; Python source covers Python-in-Excel cells, xl(), pandas, visualization, and Power Query boundary."
+        ],
+        "inferred_claims": [
+          "Decision rule is synthesized to prevent tool overuse and boundary errors."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "Excel and Python-in-Excel capabilities were compared to produce a practical tool-choice rule for Simple formula versus Python-in-Excel.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "feature_availability_changes",
+      "current_verification_required": true
+    },
+    {
+      "id": "decision-pivottable-vs-pandas",
+      "decision_name": "PivotTable versus pandas groupby",
+      "decision_context": "A table must be summarized by dimensions and measures.",
+      "default_low_complexity_choice": "Use PivotTable for interactive business slicing; use pandas when deterministic code, cleaning, or exception output is needed.",
+      "choose_excel_when": [
+        "business users need drag/drop/filter interaction",
+        "summary can be validated by pivot totals",
+        "source is already a clean table"
+      ],
+      "choose_python_in_excel_when": [
+        "groupby logic should be explicit and reproducible",
+        "summary follows Python cleaning/merge step",
+        "exceptions and row counts must be output"
+      ],
+      "choose_external_python_when": [
+        "dataset is large, scheduled, or part of automated pipeline"
+      ],
+      "choose_power_query_or_other_tool_when": [
+        "data must be imported/transformed from external systems first"
+      ],
+      "avoid_python_when": [
+        "nontechnical users own the report and Python adds no value"
+      ],
+      "avoid_excel_when": [
+        "Pivot cache/filter state would hide repeatability needs"
+      ],
+      "risk_of_wrong_choice": [
+        "pandas can make workbook inaccessible; pivot can hide stale cache or filter state"
+      ],
+      "examples": [
+        "weekly scorecard slicer: PivotTable",
+        "merge exception summary: pandas",
+        "monthly automated KPI feed: external Python/BI"
+      ],
+      "source_basis": [
+        "excel-tech-pivottable-source-refresh",
+        "python-excel-tech-pandas-groupby-summary"
+      ],
+      "related_risk_ids": [
+        "excel-risk-stale-pivot-cache",
+        "python-excel-risk-performance"
+      ],
+      "source_domain": "cross_book_synthesis",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package",
+        "book_title": "Cross-book synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Multiple source sections",
+        "section_heading": "PivotTable versus pandas groupby",
+        "page_or_anchor": "v2 synthesis",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "combined source basis",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers workbook-native techniques; Python source covers Python-in-Excel cells, xl(), pandas, visualization, and Power Query boundary."
+        ],
+        "inferred_claims": [
+          "Decision rule is synthesized to prevent tool overuse and boundary errors."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "Excel and Python-in-Excel capabilities were compared to produce a practical tool-choice rule for PivotTable versus pandas groupby.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "feature_availability_changes",
+      "current_verification_required": true
+    },
+    {
+      "id": "decision-human-edited-vs-locked-template",
+      "decision_name": "Human-edited report versus locked template",
+      "decision_context": "A workbook will be used by nontechnical staff or multiple reviewers.",
+      "default_low_complexity_choice": "Use protected formulas and explicit input zones; leave edits open only where review judgment is intended.",
+      "choose_excel_when": [
+        "users need to enter assumptions or comments in designated cells",
+        "formulas are simple and protected"
+      ],
+      "choose_python_in_excel_when": [
+        "analyst-owned Python checks support template validation, not casual editing"
+      ],
+      "choose_external_python_when": [
+        "template generation/versioning is automated outside Excel"
+      ],
+      "choose_power_query_or_other_tool_when": [
+        "input data load should be separated from report tabs"
+      ],
+      "avoid_python_when": [
+        "nontechnical users cannot safely maintain Python cells"
+      ],
+      "avoid_excel_when": [
+        "open editing would permit formula drift or hidden overrides"
+      ],
+      "risk_of_wrong_choice": [
+        "locked templates can block needed corrections; unlocked templates invite accidental changes"
+      ],
+      "examples": [
+        "manager input tab with protected formulas",
+        "Python validation tab only for analyst"
+      ],
+      "source_basis": [
+        "arch-protected-formula-zone",
+        "arch-manual-input-zone"
+      ],
+      "related_risk_ids": [
+        "excel-risk-formula-drift",
+        "excel-risk-manual-overrides"
+      ],
+      "source_domain": "cross_book_synthesis",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package",
+        "book_title": "Cross-book synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Multiple source sections",
+        "section_heading": "Human-edited report versus locked template",
+        "page_or_anchor": "v2 synthesis",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "combined source basis",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers workbook-native techniques; Python source covers Python-in-Excel cells, xl(), pandas, visualization, and Power Query boundary."
+        ],
+        "inferred_claims": [
+          "Decision rule is synthesized to prevent tool overuse and boundary errors."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "Excel and Python-in-Excel capabilities were compared to produce a practical tool-choice rule for Human-edited report versus locked template.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "feature_availability_changes",
+      "current_verification_required": true
+    },
+    {
+      "id": "decision-accounting-review-vs-exploratory",
+      "decision_name": "Accounting review versus exploratory analysis",
+      "decision_context": "Workbook output may support close, upload, or financial reporting.",
+      "default_low_complexity_choice": "Use conservative Excel controls with documented assumptions; allow Python only as a review aid unless approved.",
+      "choose_excel_when": [
+        "numbers must be auditable by accounting users",
+        "formula lineage and manual overrides must be visible"
+      ],
+      "choose_python_in_excel_when": [
+        "Python produces reconciliation exceptions or profiling summaries, not the sole official value"
+      ],
+      "choose_external_python_when": [
+        "official calculations require governed code/tests/logs outside workbook"
+      ],
+      "choose_power_query_or_other_tool_when": [
+        "source import and transformations need refresh logs and repeatability"
+      ],
+      "avoid_python_when": [
+        "Python feature availability/privacy has not been approved for financial data"
+      ],
+      "avoid_excel_when": [
+        "Excel workbook has uncontrolled formulas/hidden links"
+      ],
+      "risk_of_wrong_choice": [
+        "exploratory tools can look official; accounting outputs need traceability and signoff"
+      ],
+      "examples": [
+        "budget vs actual package: Excel controls",
+        "duplicate invoice scan: Python-in-Excel review summary"
+      ],
+      "source_basis": [
+        "excel-tech-pivottable-source-refresh",
+        "python-excel-tech-pandas-merge-reconcile"
+      ],
+      "related_risk_ids": [
+        "excel-risk-currency-format-vs-value",
+        "python-excel-risk-privacy-boundary"
+      ],
+      "source_domain": "cross_book_synthesis",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package",
+        "book_title": "Cross-book synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Multiple source sections",
+        "section_heading": "Accounting review versus exploratory analysis",
+        "page_or_anchor": "v2 synthesis",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "combined source basis",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers workbook-native techniques; Python source covers Python-in-Excel cells, xl(), pandas, visualization, and Power Query boundary."
+        ],
+        "inferred_claims": [
+          "Decision rule is synthesized to prevent tool overuse and boundary errors."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "Excel and Python-in-Excel capabilities were compared to produce a practical tool-choice rule for Accounting review versus exploratory analysis.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "feature_availability_changes",
+      "current_verification_required": true
+    },
+    {
+      "id": "decision-small-vs-large-dataset",
+      "decision_name": "Small dataset versus large dataset",
+      "decision_context": "Data volume may exceed comfortable workbook/Python-in-Excel limits.",
+      "default_low_complexity_choice": "Use Excel/PivotTable for small clean tables; use Power Query/external Python/database for larger or repeatable data.",
+      "choose_excel_when": [
+        "data fits comfortably in workbook and recalculation is fast",
+        "business users need interactive pivots"
+      ],
+      "choose_python_in_excel_when": [
+        "moderate table benefits from pandas profiling or visualization in workbook"
+      ],
+      "choose_external_python_when": [
+        "large files, many joins, long calculations, or memory-heavy modeling are required"
+      ],
+      "choose_power_query_or_other_tool_when": [
+        "import/append/filter/shape of large external sources is central"
+      ],
+      "avoid_python_when": [
+        "recalculation becomes slow or compute limits uncertain"
+      ],
+      "avoid_excel_when": [
+        "row limits, workbook size, or cache bloat make Excel unreliable"
+      ],
+      "risk_of_wrong_choice": [
+        "wrong size choice leads to timeouts, crashes, or stale sampled analysis"
+      ],
+      "examples": [
+        "single-location weekly sales: Excel",
+        "multi-year transaction modeling: external Python/database"
+      ],
+      "source_basis": [
+        "excel-tech-data-model-relationships",
+        "python-excel-tech-pandas-profile"
+      ],
+      "related_risk_ids": [
+        "python-excel-risk-performance",
+        "excel-risk-stale-pivot-cache"
+      ],
+      "source_domain": "cross_book_synthesis",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package",
+        "book_title": "Cross-book synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Multiple source sections",
+        "section_heading": "Small dataset versus large dataset",
+        "page_or_anchor": "v2 synthesis",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "combined source basis",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers workbook-native techniques; Python source covers Python-in-Excel cells, xl(), pandas, visualization, and Power Query boundary."
+        ],
+        "inferred_claims": [
+          "Decision rule is synthesized to prevent tool overuse and boundary errors."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "Excel and Python-in-Excel capabilities were compared to produce a practical tool-choice rule for Small dataset versus large dataset.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "feature_availability_changes",
+      "current_verification_required": false
+    },
+    {
+      "id": "decision-executive-dashboard",
+      "decision_name": "Executive dashboard",
+      "decision_context": "Output goes to owners/executives and must be concise, stable, and trustworthy.",
+      "default_low_complexity_choice": "Use validated source tables, pivots/charts, and explicit refresh/status indicators; keep Python behind review tabs when used.",
+      "choose_excel_when": [
+        "standard KPI cards/charts and slicers meet the need",
+        "refresh status and filters are visible"
+      ],
+      "choose_python_in_excel_when": [
+        "Python supplies validated advanced visual or statistical insight with caveats"
+      ],
+      "choose_external_python_when": [
+        "dashboard is regenerated/distributed automatically or pulls from enterprise systems"
+      ],
+      "choose_power_query_or_other_tool_when": [
+        "source shaping and refresh should be centralized before dashboard"
+      ],
+      "avoid_python_when": [
+        "Python availability or privacy creates presentation risk"
+      ],
+      "avoid_excel_when": [
+        "manual workbook lacks refresh log, definitions, or data validation"
+      ],
+      "risk_of_wrong_choice": [
+        "executives may act on stale, filtered, or unexplained metrics"
+      ],
+      "examples": [
+        "weekly owner dashboard: Excel pivots + refresh log; customer review sentiment chart: Python aid"
+      ],
+      "source_basis": [
+        "rpt-executive-kpi-layout",
+        "biz-owner-executive-dashboard"
+      ],
+      "related_risk_ids": [
+        "excel-risk-chart-without-data-validation",
+        "excel-risk-stale-refresh-timestamp"
+      ],
+      "source_domain": "cross_book_synthesis",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package",
+        "book_title": "Cross-book synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Multiple source sections",
+        "section_heading": "Executive dashboard",
+        "page_or_anchor": "v2 synthesis",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "combined source basis",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers workbook-native techniques; Python source covers Python-in-Excel cells, xl(), pandas, visualization, and Power Query boundary."
+        ],
+        "inferred_claims": [
+          "Decision rule is synthesized to prevent tool overuse and boundary errors."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "Excel and Python-in-Excel capabilities were compared to produce a practical tool-choice rule for Executive dashboard.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "feature_availability_changes",
+      "current_verification_required": true
+    },
+    {
+      "id": "decision-nontechnical-user-template",
+      "decision_name": "Nontechnical-user template",
+      "decision_context": "Workbook will be maintained by users who do not write code.",
+      "default_low_complexity_choice": "Prefer Excel Tables, protected formulas, validation gates, and clear instructions; avoid Python cells unless hidden from routine operation and supported.",
+      "choose_excel_when": [
+        "user enters/export data and refreshes standard pivots",
+        "formulas are protected and explainable"
+      ],
+      "choose_python_in_excel_when": [
+        "analyst-only validation tab is available and documented"
+      ],
+      "choose_external_python_when": [
+        "template generation, complex validation, or upload creation must be governed"
+      ],
+      "choose_power_query_or_other_tool_when": [
+        "Power Query refresh is configured and trained"
+      ],
+      "avoid_python_when": [
+        "users cannot view/debug Python errors or lack licenses"
+      ],
+      "avoid_excel_when": [
+        "formula/template is too complex to protect"
+      ],
+      "risk_of_wrong_choice": [
+        "code cells can make the workbook unusable to the intended audience"
+      ],
+      "examples": [
+        "store weekly input workbook: Excel; analyst QA pack: Python-in-Excel"
+      ],
+      "source_basis": [
+        "arch-control-sheet",
+        "aiwf-create-nontechnical-user-workflow"
+      ],
+      "related_risk_ids": [
+        "python-excel-risk-cloud-execution",
+        "excel-risk-manual-overrides"
+      ],
+      "source_domain": "cross_book_synthesis",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package",
+        "book_title": "Cross-book synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Multiple source sections",
+        "section_heading": "Nontechnical-user template",
+        "page_or_anchor": "v2 synthesis",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "combined source basis",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers workbook-native techniques; Python source covers Python-in-Excel cells, xl(), pandas, visualization, and Power Query boundary."
+        ],
+        "inferred_claims": [
+          "Decision rule is synthesized to prevent tool overuse and boundary errors."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "Excel and Python-in-Excel capabilities were compared to produce a practical tool-choice rule for Nontechnical-user template.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "feature_availability_changes",
+      "current_verification_required": true
+    }
+  ]
+}

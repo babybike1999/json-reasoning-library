@@ -1,0 +1,514 @@
+{
+  "records": [
+    {
+      "id": "ddia_concept_relational_model_for_many_to_many_data",
+      "record_type": "concept",
+      "name": "Relational model for many-to-many data",
+      "summary": "Use this concept to reason about modeling connections that do not fit cleanly in a hierarchy. It helps explain duplicated embedded data drifts out of sync and improves decisions about when references and joins are cleaner than nesting.",
+      "engineering_question_answered": "When facing modeling connections that do not fit cleanly in a hierarchy, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "modeling connections that do not fit cleanly in a hierarchy",
+      "failure_mode_addressed": "duplicated embedded data drifts out of sync",
+      "decision_improved": "when references and joins are cleaner than nesting",
+      "operating_condition": "Relevant when a system design, incident, or code path involves relational, data model, joins.",
+      "assumptions": [
+        "The workload or architecture actually involves relational.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about when references and joins are cleaner than nesting, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble duplicated embedded data drifts out of sync.",
+        "The team must decide about when references and joins are cleaner than nesting.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test modeling connections that do not fit cleanly in a hierarchy.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "duplicated embedded data drifts out of sync",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for modeling connections that do not fit cleanly in a hierarchy?",
+        "What evidence shows that duplicated embedded data drifts out of sync is or is not occurring?",
+        "Which current component guarantee is being relied on for when references and joins are cleaner than nesting?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "2",
+        "chapter_title": "Data Models and Query Languages",
+        "section_heading": "Relational Model Versus Document Model",
+        "page_or_anchor": "MOBI_TEXT_CHAR_75336",
+        "figure_table_diagram_or_example": "",
+        "support_role": "tradeoff_explanation",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about modeling connections that do not fit cleanly in a hierarchy.",
+          "It connects the topic to tradeoffs or failure behavior involving duplicated embedded data drifts out of sync."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_document_model_for_locality_and_tree_shaped_data",
+        "ddia_concept_schema_on_read_versus_schema_on_write",
+        "ddia_concept_declarative_queries_hide_execution_strategy",
+        "ddia_concept_mapreduce_style_query_flexibility_and_cost"
+      ],
+      "tags": [
+        "relational",
+        "data model",
+        "joins",
+        "chapter-2"
+      ]
+    },
+    {
+      "id": "ddia_concept_document_model_for_locality_and_tree_shaped_data",
+      "record_type": "concept",
+      "name": "Document model for locality and tree-shaped data",
+      "summary": "Use this concept to reason about storing self-contained aggregates with strong locality needs. It helps explain cross-document relationships become awkward or inconsistent and improves decisions about when embedding is simpler than normalized references.",
+      "engineering_question_answered": "When facing storing self-contained aggregates with strong locality needs, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "storing self-contained aggregates with strong locality needs",
+      "failure_mode_addressed": "cross-document relationships become awkward or inconsistent",
+      "decision_improved": "when embedding is simpler than normalized references",
+      "operating_condition": "Relevant when a system design, incident, or code path involves document, data model, locality.",
+      "assumptions": [
+        "The workload or architecture actually involves document.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about when embedding is simpler than normalized references, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble cross-document relationships become awkward or inconsistent.",
+        "The team must decide about when embedding is simpler than normalized references.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test storing self-contained aggregates with strong locality needs.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "cross-document relationships become awkward or inconsistent",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for storing self-contained aggregates with strong locality needs?",
+        "What evidence shows that cross-document relationships become awkward or inconsistent is or is not occurring?",
+        "Which current component guarantee is being relied on for when embedding is simpler than normalized references?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "2",
+        "chapter_title": "Data Models and Query Languages",
+        "section_heading": "Relational Model Versus Document Model",
+        "page_or_anchor": "MOBI_TEXT_CHAR_75336",
+        "figure_table_diagram_or_example": "",
+        "support_role": "tradeoff_explanation",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about storing self-contained aggregates with strong locality needs.",
+          "It connects the topic to tradeoffs or failure behavior involving cross-document relationships become awkward or inconsistent."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_relational_model_for_many_to_many_data",
+        "ddia_concept_schema_on_read_versus_schema_on_write",
+        "ddia_concept_declarative_queries_hide_execution_strategy",
+        "ddia_concept_mapreduce_style_query_flexibility_and_cost"
+      ],
+      "tags": [
+        "document",
+        "data model",
+        "locality",
+        "chapter-2"
+      ]
+    },
+    {
+      "id": "ddia_concept_schema_on_read_versus_schema_on_write",
+      "record_type": "concept",
+      "name": "Schema-on-read versus schema-on-write",
+      "summary": "Use this concept to reason about deciding where and when structure is enforced. It helps explain bad records are discovered late or migrations become disruptive and improves decisions about how schema enforcement should evolve with product change.",
+      "engineering_question_answered": "When facing deciding where and when structure is enforced, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "deciding where and when structure is enforced",
+      "failure_mode_addressed": "bad records are discovered late or migrations become disruptive",
+      "decision_improved": "how schema enforcement should evolve with product change",
+      "operating_condition": "Relevant when a system design, incident, or code path involves schema, data model, evolution.",
+      "assumptions": [
+        "The workload or architecture actually involves schema.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about how schema enforcement should evolve with product change, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble bad records are discovered late or migrations become disruptive.",
+        "The team must decide about how schema enforcement should evolve with product change.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test deciding where and when structure is enforced.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "bad records are discovered late or migrations become disruptive",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for deciding where and when structure is enforced?",
+        "What evidence shows that bad records are discovered late or migrations become disruptive is or is not occurring?",
+        "Which current component guarantee is being relied on for how schema enforcement should evolve with product change?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "2",
+        "chapter_title": "Data Models and Query Languages",
+        "section_heading": "Relational Model Versus Document Model",
+        "page_or_anchor": "MOBI_TEXT_CHAR_75336",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about deciding where and when structure is enforced.",
+          "It connects the topic to tradeoffs or failure behavior involving bad records are discovered late or migrations become disruptive."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_relational_model_for_many_to_many_data",
+        "ddia_concept_document_model_for_locality_and_tree_shaped_data",
+        "ddia_concept_declarative_queries_hide_execution_strategy",
+        "ddia_concept_mapreduce_style_query_flexibility_and_cost"
+      ],
+      "tags": [
+        "schema",
+        "data model",
+        "evolution",
+        "chapter-2"
+      ]
+    },
+    {
+      "id": "ddia_concept_declarative_queries_hide_execution_strategy",
+      "record_type": "concept",
+      "name": "Declarative queries hide execution strategy",
+      "summary": "Use this concept to reason about expressing desired results without hard-coding access paths. It helps explain application logic becomes tied to low-level traversal order and improves decisions about when a query optimizer or declarative interface helps.",
+      "engineering_question_answered": "When facing expressing desired results without hard-coding access paths, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "expressing desired results without hard-coding access paths",
+      "failure_mode_addressed": "application logic becomes tied to low-level traversal order",
+      "decision_improved": "when a query optimizer or declarative interface helps",
+      "operating_condition": "Relevant when a system design, incident, or code path involves query language, declarative, optimizer.",
+      "assumptions": [
+        "The workload or architecture actually involves query language.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about when a query optimizer or declarative interface helps, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble application logic becomes tied to low-level traversal order.",
+        "The team must decide about when a query optimizer or declarative interface helps.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test expressing desired results without hard-coding access paths.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "application logic becomes tied to low-level traversal order",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for expressing desired results without hard-coding access paths?",
+        "What evidence shows that application logic becomes tied to low-level traversal order is or is not occurring?",
+        "Which current component guarantee is being relied on for when a query optimizer or declarative interface helps?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "2",
+        "chapter_title": "Data Models and Query Languages",
+        "section_heading": "Query Languages for Data",
+        "page_or_anchor": "MOBI_TEXT_CHAR_94132",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about expressing desired results without hard-coding access paths.",
+          "It connects the topic to tradeoffs or failure behavior involving application logic becomes tied to low-level traversal order."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_relational_model_for_many_to_many_data",
+        "ddia_concept_document_model_for_locality_and_tree_shaped_data",
+        "ddia_concept_schema_on_read_versus_schema_on_write",
+        "ddia_concept_mapreduce_style_query_flexibility_and_cost"
+      ],
+      "tags": [
+        "query language",
+        "declarative",
+        "optimizer",
+        "chapter-2"
+      ]
+    },
+    {
+      "id": "ddia_concept_mapreduce_style_query_flexibility_and_cost",
+      "record_type": "concept",
+      "name": "MapReduce-style query flexibility and cost",
+      "summary": "Use this concept to reason about using general computation over data when fixed query operators are insufficient. It helps explain custom query code is harder to optimize and reason about and improves decisions about when application-defined computation is worth operational complexity.",
+      "engineering_question_answered": "When facing using general computation over data when fixed query operators are insufficient, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "using general computation over data when fixed query operators are insufficient",
+      "failure_mode_addressed": "custom query code is harder to optimize and reason about",
+      "decision_improved": "when application-defined computation is worth operational complexity",
+      "operating_condition": "Relevant when a system design, incident, or code path involves query language, mapreduce, analytics.",
+      "assumptions": [
+        "The workload or architecture actually involves query language.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about when application-defined computation is worth operational complexity, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble custom query code is harder to optimize and reason about.",
+        "The team must decide about when application-defined computation is worth operational complexity.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test using general computation over data when fixed query operators are insufficient.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "custom query code is harder to optimize and reason about",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for using general computation over data when fixed query operators are insufficient?",
+        "What evidence shows that custom query code is harder to optimize and reason about is or is not occurring?",
+        "Which current component guarantee is being relied on for when application-defined computation is worth operational complexity?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "2",
+        "chapter_title": "Data Models and Query Languages",
+        "section_heading": "Query Languages for Data",
+        "page_or_anchor": "MOBI_TEXT_CHAR_94132",
+        "figure_table_diagram_or_example": "",
+        "support_role": "technical_example",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about using general computation over data when fixed query operators are insufficient.",
+          "It connects the topic to tradeoffs or failure behavior involving custom query code is harder to optimize and reason about."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "demonstrated_by_source_example",
+        "explanation": "The record abstracts a practical pattern illustrated by an example in the cited chapter section.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_relational_model_for_many_to_many_data",
+        "ddia_concept_document_model_for_locality_and_tree_shaped_data",
+        "ddia_concept_schema_on_read_versus_schema_on_write",
+        "ddia_concept_declarative_queries_hide_execution_strategy"
+      ],
+      "tags": [
+        "query language",
+        "mapreduce",
+        "analytics",
+        "chapter-2"
+      ]
+    },
+    {
+      "id": "ddia_concept_graph_model_for_rich_relationships",
+      "record_type": "concept",
+      "name": "Graph model for rich relationships",
+      "summary": "Use this concept to reason about representing many heterogeneous relationships and traversals. It helps explain relational or document structures obscure relationship-heavy queries and improves decisions about when graph traversal is the natural query shape.",
+      "engineering_question_answered": "When facing representing many heterogeneous relationships and traversals, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "representing many heterogeneous relationships and traversals",
+      "failure_mode_addressed": "relational or document structures obscure relationship-heavy queries",
+      "decision_improved": "when graph traversal is the natural query shape",
+      "operating_condition": "Relevant when a system design, incident, or code path involves graph, data model, relationships.",
+      "assumptions": [
+        "The workload or architecture actually involves graph.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about when graph traversal is the natural query shape, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble relational or document structures obscure relationship-heavy queries.",
+        "The team must decide about when graph traversal is the natural query shape.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test representing many heterogeneous relationships and traversals.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "relational or document structures obscure relationship-heavy queries",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for representing many heterogeneous relationships and traversals?",
+        "What evidence shows that relational or document structures obscure relationship-heavy queries is or is not occurring?",
+        "Which current component guarantee is being relied on for when graph traversal is the natural query shape?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "2",
+        "chapter_title": "Data Models and Query Languages",
+        "section_heading": "Graph-Like Data Models",
+        "page_or_anchor": "MOBI_TEXT_CHAR_98228",
+        "figure_table_diagram_or_example": "",
+        "support_role": "tradeoff_explanation",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about representing many heterogeneous relationships and traversals.",
+          "It connects the topic to tradeoffs or failure behavior involving relational or document structures obscure relationship-heavy queries."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_relational_model_for_many_to_many_data",
+        "ddia_concept_document_model_for_locality_and_tree_shaped_data",
+        "ddia_concept_schema_on_read_versus_schema_on_write",
+        "ddia_concept_declarative_queries_hide_execution_strategy"
+      ],
+      "tags": [
+        "graph",
+        "data model",
+        "relationships",
+        "chapter-2"
+      ]
+    }
+  ]
+}

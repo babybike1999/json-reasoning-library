@@ -1,0 +1,2122 @@
+{
+  "package_id": "sql-cookbook-reasoning-os-v1",
+  "section_key": "retrieval_records",
+  "record_count": 13,
+  "unique_record_count": 13,
+  "source_boundary": "Uploaded second edition only. Derivation and source anchors are carried on every substantive record.",
+  "usage_note": "These are canonical records reused across topical modules. Count distinct IDs across the package, not module totals.",
+  "records": [
+    {
+      "id": "sql-recipe-01-01",
+      "record_type": "recipe_pattern",
+      "name": "1.1 Retrieving All Rows and Columns from a Table",
+      "summary": "Select the whole rowset for exploration; replace the wildcard with an explicit projection when creating a stable interface.",
+      "source_recipe_or_concept": "1.1 Retrieving All Rows and Columns from a Table; supporting source units: 1.1",
+      "sql_problem_addressed": "Inspect the contents of an unfamiliar table.",
+      "query_intent": "Inspect the contents of an unfamiliar table.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One row per stored record.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One row per stored record.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Inspect the contents of an unfamiliar table."
+      ],
+      "aggregation_or_windowing": "Select the whole rowset for exploration; replace the wildcard with an explicit projection when creating a stable interface.",
+      "result_shape": "All source rows and columns.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "The source performance comparison is not a present-day execution guarantee.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "NULL fields remain NULL.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Inspect the contents of an unfamiliar table."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one row per stored record."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Compare returned column names and types with the consuming report contract."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.1 Retrieving All Rows and Columns from a Table",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-1",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-1.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-1.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-1.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Inspect the contents of an unfamiliar table.",
+          "Select the whole rowset for exploration; replace the wildcard with an explicit projection when creating a stable interface.",
+          "A wildcard follows the table definition, so later column changes can alter what a consumer receives."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.1 Retrieving All Rows and Columns from a Table",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-1",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch01"
+      ],
+      "recipe_name": "1.1 Retrieving All Rows and Columns from a Table",
+      "problem_paraphrase": "Inspect the contents of an unfamiliar table.",
+      "solution_pattern": "Select the whole rowset for exploration; replace the wildcard with an explicit projection when creating a stable interface.",
+      "discussion_reasoning": "A wildcard follows the table definition, so later column changes can alter what a consumer receives.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One row per stored record.",
+      "output_shape": "All source rows and columns.",
+      "assumptions": [
+        "One row per stored record.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The source performance comparison is not a present-day execution guarantee."
+      ],
+      "test_query_or_validation_shape": "Compare returned column names and types with the consuming report contract.",
+      "when_to_use": [
+        "Inspect the contents of an unfamiliar table."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one row per stored record."
+      ],
+      "related_records": [
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-1",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-01-02",
+      "record_type": "recipe_pattern",
+      "name": "1.2 Retrieving a Subset of Rows from a Table",
+      "summary": "Apply the population condition in WHERE before returning the selected columns.",
+      "source_recipe_or_concept": "1.2 Retrieving a Subset of Rows from a Table; supporting source units: 1.2",
+      "sql_problem_addressed": "Keep records satisfying a single condition.",
+      "query_intent": "Keep records satisfying a single condition.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One row per qualifying source record.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One row per qualifying source record.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Keep records satisfying a single condition."
+      ],
+      "aggregation_or_windowing": "Apply the population condition in WHERE before returning the selected columns.",
+      "result_shape": "A subset of source rows.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "A condition that is not true does not admit the row.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Keep records satisfying a single condition."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one row per qualifying source record."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Test one included row, one excluded row, and a NULL predicate input."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-01",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.2 Retrieving a Subset of Rows from a Table",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-2",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-2.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-2.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-2.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Keep records satisfying a single condition.",
+          "Apply the population condition in WHERE before returning the selected columns.",
+          "The predicate determines which source rows contribute to the answer."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.2 Retrieving a Subset of Rows from a Table",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-2",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch01"
+      ],
+      "recipe_name": "1.2 Retrieving a Subset of Rows from a Table",
+      "problem_paraphrase": "Keep records satisfying a single condition.",
+      "solution_pattern": "Apply the population condition in WHERE before returning the selected columns.",
+      "discussion_reasoning": "The predicate determines which source rows contribute to the answer.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One row per qualifying source record.",
+      "output_shape": "A subset of source rows.",
+      "assumptions": [
+        "One row per qualifying source record.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Test one included row, one excluded row, and a NULL predicate input.",
+      "when_to_use": [
+        "Keep records satisfying a single condition."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one row per qualifying source record."
+      ],
+      "related_records": [
+        "sql-recipe-01-01",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-2",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-01-03",
+      "record_type": "recipe_pattern",
+      "name": "1.3 Finding Rows That Satisfy Multiple Conditions",
+      "summary": "Group AND and OR clauses with parentheses matching the intended alternatives.",
+      "source_recipe_or_concept": "1.3 Finding Rows That Satisfy Multiple Conditions; supporting source units: 1.3",
+      "sql_problem_addressed": "Combine several inclusion and exclusion conditions.",
+      "query_intent": "Combine several inclusion and exclusion conditions.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One row per source record that passes the combined predicate.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One row per source record that passes the combined predicate.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Combine several inclusion and exclusion conditions."
+      ],
+      "aggregation_or_windowing": "Group AND and OR clauses with parentheses matching the intended alternatives.",
+      "result_shape": "Filtered detail rows.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Check NULL-bearing predicates separately rather than treating unknown as false in all contexts.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Combine several inclusion and exclusion conditions."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one row per source record that passes the combined predicate."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Construct a small truth table containing one case for each alternative and overlap."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.3 Finding Rows That Satisfy Multiple Conditions",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-3",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-3.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-3.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-3.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Combine several inclusion and exclusion conditions.",
+          "Group AND and OR clauses with parentheses matching the intended alternatives.",
+          "Changing the grouping of predicates changes which combinations qualify."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.3 Finding Rows That Satisfy Multiple Conditions",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-3",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch01"
+      ],
+      "recipe_name": "1.3 Finding Rows That Satisfy Multiple Conditions",
+      "problem_paraphrase": "Combine several inclusion and exclusion conditions.",
+      "solution_pattern": "Group AND and OR clauses with parentheses matching the intended alternatives.",
+      "discussion_reasoning": "Changing the grouping of predicates changes which combinations qualify.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One row per source record that passes the combined predicate.",
+      "output_shape": "Filtered detail rows.",
+      "assumptions": [
+        "One row per source record that passes the combined predicate.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Construct a small truth table containing one case for each alternative and overlap.",
+      "when_to_use": [
+        "Combine several inclusion and exclusion conditions."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one row per source record that passes the combined predicate."
+      ],
+      "related_records": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-3",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-01-04",
+      "record_type": "recipe_pattern",
+      "name": "1.4 Retrieving a Subset of Columns from a Table",
+      "summary": "List required columns in SELECT instead of relying on a wildcard.",
+      "source_recipe_or_concept": "1.4 Retrieving a Subset of Columns from a Table; supporting source units: 1.4",
+      "sql_problem_addressed": "Return only fields needed by the next consumer.",
+      "query_intent": "Return only fields needed by the next consumer.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One output row per input row retained by any filters.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One output row per input row retained by any filters.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Return only fields needed by the next consumer."
+      ],
+      "aggregation_or_windowing": "List required columns in SELECT instead of relying on a wildcard.",
+      "result_shape": "A narrower detail rowset.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Projection alone does not replace missing values.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Return only fields needed by the next consumer."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one output row per input row retained by any filters."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Verify required identifier columns were not removed and column order is documented."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.4 Retrieving a Subset of Columns from a Table",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-4",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-4.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-4.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-4.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Return only fields needed by the next consumer.",
+          "List required columns in SELECT instead of relying on a wildcard.",
+          "Projection defines the output schema independently of the source table width."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.4 Retrieving a Subset of Columns from a Table",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-4",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch01"
+      ],
+      "recipe_name": "1.4 Retrieving a Subset of Columns from a Table",
+      "problem_paraphrase": "Return only fields needed by the next consumer.",
+      "solution_pattern": "List required columns in SELECT instead of relying on a wildcard.",
+      "discussion_reasoning": "Projection defines the output schema independently of the source table width.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One output row per input row retained by any filters.",
+      "output_shape": "A narrower detail rowset.",
+      "assumptions": [
+        "One output row per input row retained by any filters.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Verify required identifier columns were not removed and column order is documented.",
+      "when_to_use": [
+        "Return only fields needed by the next consumer."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one output row per input row retained by any filters."
+      ],
+      "related_records": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-4",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-01-05",
+      "record_type": "recipe_pattern",
+      "name": "1.5 Providing Meaningful Names for Columns",
+      "summary": "Alias selected expressions with meaningful result-column names.",
+      "source_recipe_or_concept": "1.5 Providing Meaningful Names for Columns; supporting source units: 1.5",
+      "sql_problem_addressed": "Make query output labels understandable.",
+      "query_intent": "Make query output labels understandable.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "Detail grain unchanged by renaming.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "Detail grain unchanged by renaming.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Make query output labels understandable."
+      ],
+      "aggregation_or_windowing": "Alias selected expressions with meaningful result-column names.",
+      "result_shape": "Same values under clearer column labels.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "This recipe does not establish a special NULL policy; test relevant NULL inputs when adapting its expressions.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Make query output labels understandable."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from detail grain unchanged by renaming."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Check aliases for uniqueness and agreement with downstream field references."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.5 Providing Meaningful Names for Columns",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-5",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-5.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-5.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-5.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Make query output labels understandable.",
+          "Alias selected expressions with meaningful result-column names.",
+          "Aliases describe the result; they do not rename columns in the stored table."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.5 Providing Meaningful Names for Columns",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-5",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch01"
+      ],
+      "recipe_name": "1.5 Providing Meaningful Names for Columns",
+      "problem_paraphrase": "Make query output labels understandable.",
+      "solution_pattern": "Alias selected expressions with meaningful result-column names.",
+      "discussion_reasoning": "Aliases describe the result; they do not rename columns in the stored table.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "Detail grain unchanged by renaming.",
+      "output_shape": "Same values under clearer column labels.",
+      "assumptions": [
+        "Detail grain unchanged by renaming.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Check aliases for uniqueness and agreement with downstream field references.",
+      "when_to_use": [
+        "Make query output labels understandable."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from detail grain unchanged by renaming."
+      ],
+      "related_records": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-5",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-01-06",
+      "record_type": "recipe_pattern",
+      "name": "1.6 Referencing an Aliased Column in the WHERE Clause",
+      "summary": "Put the expression in an inline view and filter its output alias in an outer query.",
+      "source_recipe_or_concept": "1.6 Referencing an Aliased Column in the WHERE Clause; supporting source units: 1.6",
+      "sql_problem_addressed": "Filter a computed or renamed column that is not visible to the same SELECT-level WHERE.",
+      "query_intent": "Filter a computed or renamed column that is not visible to the same SELECT-level WHERE.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "Inner detail or computed row grain; outer query retains qualifying inner rows.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "Inner detail or computed row grain; outer query retains qualifying inner rows.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Filter a computed or renamed column that is not visible to the same SELECT-level WHERE."
+      ],
+      "aggregation_or_windowing": "Put the expression in an inline view and filter its output alias in an outer query.",
+      "result_shape": "Computed rows filtered by their exposed alias.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Derived-table alias requirements vary in the source; verify current syntax.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "The outer predicate still follows normal NULL semantics.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Filter a computed or renamed column that is not visible to the same SELECT-level WHERE."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from inner detail or computed row grain; outer query retains qualifying inner rows."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Compare outer-alias filtering with the intended expression and test NULL results."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.6 Referencing an Aliased Column in the WHERE Clause",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-6",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-6.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-6.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-6.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Filter a computed or renamed column that is not visible to the same SELECT-level WHERE.",
+          "Put the expression in an inline view and filter its output alias in an outer query.",
+          "The inner result becomes an input relation for the outer filter, resolving the alias visibility problem."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.6 Referencing an Aliased Column in the WHERE Clause",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-6",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch01"
+      ],
+      "recipe_name": "1.6 Referencing an Aliased Column in the WHERE Clause",
+      "problem_paraphrase": "Filter a computed or renamed column that is not visible to the same SELECT-level WHERE.",
+      "solution_pattern": "Put the expression in an inline view and filter its output alias in an outer query.",
+      "discussion_reasoning": "The inner result becomes an input relation for the outer filter, resolving the alias visibility problem.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "Inner detail or computed row grain; outer query retains qualifying inner rows.",
+      "output_shape": "Computed rows filtered by their exposed alias.",
+      "assumptions": [
+        "Inner detail or computed row grain; outer query retains qualifying inner rows.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Derived-table alias requirements vary in the source; verify current syntax."
+      ],
+      "test_query_or_validation_shape": "Compare outer-alias filtering with the intended expression and test NULL results.",
+      "when_to_use": [
+        "Filter a computed or renamed column that is not visible to the same SELECT-level WHERE."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from inner detail or computed row grain; outer query retains qualifying inner rows."
+      ],
+      "related_records": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-6",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-01-07",
+      "record_type": "recipe_pattern",
+      "name": "1.7 Concatenating Column Values",
+      "summary": "Concatenate column expressions and separator literals using the selected database dialect.",
+      "source_recipe_or_concept": "1.7 Concatenating Column Values; supporting source units: 1.7",
+      "sql_problem_addressed": "Combine fields into a single display string.",
+      "query_intent": "Combine fields into a single display string.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One constructed string per source row.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One constructed string per source row.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Combine fields into a single display string."
+      ],
+      "aggregation_or_windowing": "Concatenate column expressions and separator literals using the selected database dialect.",
+      "result_shape": "A text column derived from several fields.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "Source uses double-bar concatenation for DB2/Oracle/PostgreSQL, CONCAT for MySQL, and + for SQL Server.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "The recipe does not establish a single portable NULL-concatenation policy.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Combine fields into a single display string."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one constructed string per source row."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Test NULL components, numeric casts, empty strings, and the separator placement."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.7 Concatenating Column Values",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-7",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-7.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-7.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-7.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Combine fields into a single display string.",
+          "Concatenate column expressions and separator literals using the selected database dialect.",
+          "The idea is shared, while the operator or function used to express it differs."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.7 Concatenating Column Values",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-7",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch01"
+      ],
+      "recipe_name": "1.7 Concatenating Column Values",
+      "problem_paraphrase": "Combine fields into a single display string.",
+      "solution_pattern": "Concatenate column expressions and separator literals using the selected database dialect.",
+      "discussion_reasoning": "The idea is shared, while the operator or function used to express it differs.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2, Oracle, PostgreSQL",
+          "dialects": [
+            "DB2",
+            "Oracle",
+            "PostgreSQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-7.2.1",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL",
+          "dialects": [
+            "MySQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-7.2.2",
+          "function_tokens_detected": [
+            "CONCAT"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "SQL Server",
+          "dialects": [
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-7.2.3",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "One constructed string per source row.",
+      "output_shape": "A text column derived from several fields.",
+      "assumptions": [
+        "One constructed string per source row.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Source uses double-bar concatenation for DB2/Oracle/PostgreSQL, CONCAT for MySQL, and + for SQL Server."
+      ],
+      "test_query_or_validation_shape": "Test NULL components, numeric casts, empty strings, and the separator placement.",
+      "when_to_use": [
+        "Combine fields into a single display string."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one constructed string per source row."
+      ],
+      "related_records": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-7",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-01-08",
+      "record_type": "recipe_pattern",
+      "name": "1.8 Using Conditional Logic in a SELECT Statement",
+      "summary": "Use ordered CASE branches and an explicit ELSE when unmatched rows need a defined outcome.",
+      "source_recipe_or_concept": "1.8 Using Conditional Logic in a SELECT Statement; supporting source units: 1.8",
+      "sql_problem_addressed": "Assign an output value according to row-level conditions.",
+      "query_intent": "Assign an output value according to row-level conditions.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One classification per source row.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One classification per source row.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Assign an output value according to row-level conditions."
+      ],
+      "aggregation_or_windowing": "Use ordered CASE branches and an explicit ELSE when unmatched rows need a defined outcome.",
+      "result_shape": "Detail rows plus a derived status or value.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "No matching CASE branch without ELSE yields NULL.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Assign an output value according to row-level conditions."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one classification per source row."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Test both sides of every threshold and a value that reaches ELSE."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.8 Using Conditional Logic in a SELECT Statement",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Assign an output value according to row-level conditions.",
+          "Use ordered CASE branches and an explicit ELSE when unmatched rows need a defined outcome.",
+          "A missing ELSE leaves unmatched cases without a non-NULL result."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.8 Using Conditional Logic in a SELECT Statement",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch01"
+      ],
+      "recipe_name": "1.8 Using Conditional Logic in a SELECT Statement",
+      "problem_paraphrase": "Assign an output value according to row-level conditions.",
+      "solution_pattern": "Use ordered CASE branches and an explicit ELSE when unmatched rows need a defined outcome.",
+      "discussion_reasoning": "A missing ELSE leaves unmatched cases without a non-NULL result.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One classification per source row.",
+      "output_shape": "Detail rows plus a derived status or value.",
+      "assumptions": [
+        "One classification per source row.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Test both sides of every threshold and a value that reaches ELSE.",
+      "when_to_use": [
+        "Assign an output value according to row-level conditions."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one classification per source row."
+      ],
+      "related_records": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-01-09",
+      "record_type": "recipe_pattern",
+      "name": "1.9 Limiting the Number of Rows Returned",
+      "summary": "Apply the source-era row-limiting mechanism for the selected dialect.",
+      "source_recipe_or_concept": "1.9 Limiting the Number of Rows Returned; supporting source units: 1.9",
+      "sql_problem_addressed": "Return a bounded sample where any rows are acceptable.",
+      "query_intent": "Return a bounded sample where any rows are acceptable.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "At most n source rows.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "At most n source rows.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Return a bounded sample where any rows are acceptable."
+      ],
+      "aggregation_or_windowing": "Apply the source-era row-limiting mechanism for the selected dialect.",
+      "result_shape": "An arbitrary bounded detail rowset.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "Source: DB2 FETCH FIRST; MySQL/PostgreSQL LIMIT; Oracle ROWNUM; SQL Server TOP. Treat these as historical examples.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "The cap does not change individual NULL values.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Return a bounded sample where any rows are acceptable."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from at most n source rows."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Check n=0, fewer than n available rows, and whether the real task needs ordered rather than arbitrary selection."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.9 Limiting the Number of Rows Returned",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-9",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-9.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-9.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-9.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Return a bounded sample where any rows are acceptable.",
+          "Apply the source-era row-limiting mechanism for the selected dialect.",
+          "A row cap is not an ordering rule; this recipe explicitly does not choose which rows should come first."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.9 Limiting the Number of Rows Returned",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-9",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch01"
+      ],
+      "recipe_name": "1.9 Limiting the Number of Rows Returned",
+      "problem_paraphrase": "Return a bounded sample where any rows are acceptable.",
+      "solution_pattern": "Apply the source-era row-limiting mechanism for the selected dialect.",
+      "discussion_reasoning": "A row cap is not an ordering rule; this recipe explicitly does not choose which rows should come first.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2",
+          "dialects": [
+            "DB2"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-9.2.1",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL and PostgreSQL",
+          "dialects": [
+            "PostgreSQL",
+            "MySQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-9.2.2",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-9.2.3",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "SQL Server",
+          "dialects": [
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-9.2.4",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "At most n source rows.",
+      "output_shape": "An arbitrary bounded detail rowset.",
+      "assumptions": [
+        "At most n source rows.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Source: DB2 FETCH FIRST; MySQL/PostgreSQL LIMIT; Oracle ROWNUM; SQL Server TOP. Treat these as historical examples."
+      ],
+      "test_query_or_validation_shape": "Check n=0, fewer than n available rows, and whether the real task needs ordered rather than arbitrary selection.",
+      "when_to_use": [
+        "Return a bounded sample where any rows are acceptable."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from at most n source rows."
+      ],
+      "related_records": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-9",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-01-10",
+      "record_type": "recipe_pattern",
+      "name": "1.10 Returning n Random Records from a Table",
+      "summary": "Order by a database random-value expression, then apply the row cap.",
+      "source_recipe_or_concept": "1.10 Returning n Random Records from a Table; supporting source units: 1.10",
+      "sql_problem_addressed": "Take a randomly selected set of rows.",
+      "query_intent": "Take a randomly selected set of rows.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "At most n randomly ordered source rows.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "At most n randomly ordered source rows.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Take a randomly selected set of rows."
+      ],
+      "aggregation_or_windowing": "Order by a database random-value expression, then apply the row cap.",
+      "result_shape": "A bounded random sample.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "Random generators, Oracle DBMS_RANDOM, and limiting syntax require dialect-specific verification; the book does not establish a statistical sampling contract.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "NULL source fields remain possible in sampled rows.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Take a randomly selected set of rows."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from at most n randomly ordered source rows."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Repeat the query and check the sample size, population filters, and whether reproducibility is required."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.10 Returning n Random Records from a Table",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-10",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-10.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-10.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-10.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Take a randomly selected set of rows.",
+          "Order by a database random-value expression, then apply the row cap.",
+          "Randomized ordering changes which rows reach the limiting stage."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.10 Returning n Random Records from a Table",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-10",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch01"
+      ],
+      "recipe_name": "1.10 Returning n Random Records from a Table",
+      "problem_paraphrase": "Take a randomly selected set of rows.",
+      "solution_pattern": "Order by a database random-value expression, then apply the row cap.",
+      "discussion_reasoning": "Randomized ordering changes which rows reach the limiting stage.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2",
+          "dialects": [
+            "DB2"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-10.2.1",
+          "function_tokens_detected": [
+            "RAND"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL",
+          "dialects": [
+            "MySQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-10.2.2",
+          "function_tokens_detected": [
+            "RAND"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "PostgreSQL",
+          "dialects": [
+            "PostgreSQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-10.2.3",
+          "function_tokens_detected": [
+            "RANDOM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-10.2.4",
+          "function_tokens_detected": [
+            "DBMS_RANDOM.VALUE"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "SQL Server",
+          "dialects": [
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-10.2.5",
+          "function_tokens_detected": [
+            "NEWID"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "At most n randomly ordered source rows.",
+      "output_shape": "A bounded random sample.",
+      "assumptions": [
+        "At most n randomly ordered source rows.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Random generators, Oracle DBMS_RANDOM, and limiting syntax require dialect-specific verification; the book does not establish a statistical sampling contract."
+      ],
+      "test_query_or_validation_shape": "Repeat the query and check the sample size, population filters, and whether reproducibility is required.",
+      "when_to_use": [
+        "Take a randomly selected set of rows."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from at most n randomly ordered source rows."
+      ],
+      "related_records": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-10",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-01-11",
+      "record_type": "recipe_pattern",
+      "name": "1.11 Finding Null Values",
+      "summary": "Use IS NULL rather than equality to NULL.",
+      "source_recipe_or_concept": "1.11 Finding Null Values; supporting source units: 1.11",
+      "sql_problem_addressed": "Find missing values explicitly.",
+      "query_intent": "Find missing values explicitly.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One row per source record with a NULL in the tested column.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One row per source record with a NULL in the tested column.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Find missing values explicitly."
+      ],
+      "aggregation_or_windowing": "Use IS NULL rather than equality to NULL.",
+      "result_shape": "Rows with missing values in the chosen field.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Use IS NULL or IS NOT NULL for the intended missingness test.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Find missing values explicitly."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one row per source record with a null in the tested column."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Test NULL, zero, and an empty string as distinct inputs subject to the target dialect."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.11 Finding Null Values",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-11",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-11.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-11.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-11.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Find missing values explicitly.",
+          "Use IS NULL rather than equality to NULL.",
+          "A NULL marker is not an ordinary comparable value."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.11 Finding Null Values",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-11",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch01"
+      ],
+      "recipe_name": "1.11 Finding Null Values",
+      "problem_paraphrase": "Find missing values explicitly.",
+      "solution_pattern": "Use IS NULL rather than equality to NULL.",
+      "discussion_reasoning": "A NULL marker is not an ordinary comparable value.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One row per source record with a NULL in the tested column.",
+      "output_shape": "Rows with missing values in the chosen field.",
+      "assumptions": [
+        "One row per source record with a NULL in the tested column.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Test NULL, zero, and an empty string as distinct inputs subject to the target dialect.",
+      "when_to_use": [
+        "Find missing values explicitly."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one row per source record with a null in the tested column."
+      ],
+      "related_records": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-11",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-01-12",
+      "record_type": "recipe_pattern",
+      "name": "1.12 Transforming Nulls into Real Values",
+      "summary": "Use COALESCE to select the first non-NULL expression.",
+      "source_recipe_or_concept": "1.12 Transforming Nulls into Real Values; supporting source units: 1.12",
+      "sql_problem_addressed": "Show a replacement when a selected value is missing.",
+      "query_intent": "Show a replacement when a selected value is missing.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "Detail grain retained.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "Detail grain retained.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Show a replacement when a selected value is missing."
+      ],
+      "aggregation_or_windowing": "Use COALESCE to select the first non-NULL expression.",
+      "result_shape": "Rows with a fallback in a selected expression.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "A fallback of zero is an explicit semantic choice, not a universal meaning of missing data.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Show a replacement when a selected value is missing."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from detail grain retained."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Verify that replacing missing with zero or text is justified and that types are compatible."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.12 Transforming Nulls into Real Values",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-12",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-12.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-12.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-12.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Show a replacement when a selected value is missing.",
+          "Use COALESCE to select the first non-NULL expression.",
+          "Replacement changes the interpreted output value, not the stored source value."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.12 Transforming Nulls into Real Values",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-12",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch01"
+      ],
+      "recipe_name": "1.12 Transforming Nulls into Real Values",
+      "problem_paraphrase": "Show a replacement when a selected value is missing.",
+      "solution_pattern": "Use COALESCE to select the first non-NULL expression.",
+      "discussion_reasoning": "Replacement changes the interpreted output value, not the stored source value.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "Detail grain retained.",
+      "output_shape": "Rows with a fallback in a selected expression.",
+      "assumptions": [
+        "Detail grain retained.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Verify that replacing missing with zero or text is justified and that types are compatible.",
+      "when_to_use": [
+        "Show a replacement when a selected value is missing."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from detail grain retained."
+      ],
+      "related_records": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-12",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-01-13",
+      "record_type": "recipe_pattern",
+      "name": "1.13 Searching for Patterns",
+      "summary": "Apply LIKE with percent for variable-length text and underscore for a single character.",
+      "source_recipe_or_concept": "1.13 Searching for Patterns; supporting source units: 1.13",
+      "sql_problem_addressed": "Search strings using a wildcard pattern.",
+      "query_intent": "Search strings using a wildcard pattern.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One row per matching source record.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One row per matching source record.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Search strings using a wildcard pattern."
+      ],
+      "aggregation_or_windowing": "Apply LIKE with percent for variable-length text and underscore for a single character.",
+      "result_shape": "Matching detail rows.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Collation, case behavior, and escaping must be checked on the target system.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Confirm how NULL strings are handled by the predicate.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Search strings using a wildcard pattern."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one row per matching source record."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Include positive, negative, literal-wildcard, and case-variant examples."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.13 Searching for Patterns",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-13",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-13.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-13.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-13.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Search strings using a wildcard pattern.",
+          "Apply LIKE with percent for variable-length text and underscore for a single character.",
+          "Wildcard placement distinguishes contains, prefix, suffix, and positional matches."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.13 Searching for Patterns",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-13",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch01"
+      ],
+      "recipe_name": "1.13 Searching for Patterns",
+      "problem_paraphrase": "Search strings using a wildcard pattern.",
+      "solution_pattern": "Apply LIKE with percent for variable-length text and underscore for a single character.",
+      "discussion_reasoning": "Wildcard placement distinguishes contains, prefix, suffix, and positional matches.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One row per matching source record.",
+      "output_shape": "Matching detail rows.",
+      "assumptions": [
+        "One row per matching source record.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Collation, case behavior, and escaping must be checked on the target system."
+      ],
+      "test_query_or_validation_shape": "Include positive, negative, literal-wildcard, and case-variant examples.",
+      "when_to_use": [
+        "Search strings using a wildcard pattern."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one row per matching source record."
+      ],
+      "related_records": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-13",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    }
+  ]
+}

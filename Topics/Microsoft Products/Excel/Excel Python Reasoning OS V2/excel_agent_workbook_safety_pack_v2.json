@@ -1,0 +1,1717 @@
+{
+  "system_metadata": {
+    "package": "excel_agent_workbook_safety_pack_v2",
+    "version": "v2",
+    "repair_type": "focused_v2_repair_not_full_rebuild",
+    "created_utc": "2026-06-19T22:19:55Z",
+    "source_files": [
+      "Excel Data Analysis For Dummies 5th Edition PDF",
+      "Python in Excel EPUB",
+      "existing v1 Excel/Python-in-Excel JSON package"
+    ],
+    "authority_order": [
+      "original_uploaded_books",
+      "v1_json_files",
+      "repair_prompt",
+      "general_operational_reasoning"
+    ],
+    "description": "Compact active-use workbook safety pack; canonical full records remain in the dedicated v2 files."
+  },
+  "reusable_risk_records": [
+    {
+      "id": "excel-risk-blank-vs-zero",
+      "risk_name": "Blank values are not the same as zero values",
+      "agent_rule": "Check whether blanks mean unknown, not applicable, not yet entered, or a valid zero before aggregation.",
+      "inspect": [
+        "count blanks and zeros separately",
+        "inspect formulas that coerce blanks to zero",
+        "document the organization rule for missing values"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "excel-tech-descriptive-statistics",
+        "dqg-blank-required-keys",
+        "dqg-date-column-parses"
+      ]
+    },
+    {
+      "id": "excel-risk-percent-convention",
+      "risk_name": "Percent convention ambiguity",
+      "agent_rule": "Validate whether percent fields are decimals, whole percents, or text with % symbols before formulas or uploads.",
+      "inspect": [
+        "profile min/max values",
+        "check number formats against raw values",
+        "require a documented convention for every percent field"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "dqg-percent-convention-known",
+        "decision-accounting-review-vs-exploratory"
+      ]
+    },
+    {
+      "id": "excel-risk-hidden-sheets",
+      "risk_name": "Hidden sheet dependency",
+      "agent_rule": "Unhide or inspect hidden/very hidden sheets before changing formulas, deleting sheets, or trusting workbook outputs.",
+      "inspect": [
+        "list hidden sheets",
+        "map formulas that reference hidden sheets",
+        "flag unexpected hidden sheet changes"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "aiwf-detect-hidden-sheet-dependency",
+        "dqg-hidden-sheets-unchanged"
+      ]
+    },
+    {
+      "id": "excel-risk-formula-drift",
+      "risk_name": "Formula drift across repeated rows or periods",
+      "agent_rule": "Compare formulas by R1C1 pattern across expected formula bands and period columns.",
+      "inspect": [
+        "extract formula patterns",
+        "compare against template rows",
+        "highlight manual constants in formula zones"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "aiwf-detect-formula-drift",
+        "dqg-no-formula-errors-output"
+      ]
+    },
+    {
+      "id": "excel-risk-stale-pivot-cache",
+      "risk_name": "Stale PivotTable cache",
+      "agent_rule": "Verify source range/table and refresh state before relying on pivot output.",
+      "inspect": [
+        "check source range or table name",
+        "refresh after source changes",
+        "compare pivot totals to source totals"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "excel-tech-pivottable-source-refresh",
+        "dqg-pivot-cache-refreshed"
+      ]
+    },
+    {
+      "id": "excel-risk-merged-cells",
+      "risk_name": "Merged cells in import ranges",
+      "agent_rule": "Remove or isolate merged cells from machine-readable source and upload ranges.",
+      "inspect": [
+        "scan import rectangles for merged cells",
+        "convert report layouts into normalized tables",
+        "keep merged cells only in presentation zones"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "dqg-no-merged-cells-import-range",
+        "arch-raw-clean-analysis-output"
+      ]
+    },
+    {
+      "id": "excel-risk-external-links",
+      "risk_name": "External links may be stale, broken, or unauthorized",
+      "agent_rule": "Inventory external links and confirm each expected source before refresh or distribution.",
+      "inspect": [
+        "list workbook links",
+        "validate link path and owner",
+        "replace ad hoc links with controlled imports when needed"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "dqg-external-links-expected",
+        "arch-refresh-log"
+      ]
+    },
+    {
+      "id": "excel-risk-manual-overrides",
+      "risk_name": "Manual overrides can hide broken formulas or policy exceptions",
+      "agent_rule": "Separate manual input zones from formulas and require override documentation.",
+      "inspect": [
+        "scan formulas vs constants in protected zones",
+        "compare overrides to audit trail",
+        "require reason/date/approver for overrides"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "dqg-manual-overrides-documented",
+        "arch-manual-input-zone",
+        "arch-audit-trail"
+      ]
+    },
+    {
+      "id": "excel-risk-date-serials",
+      "risk_name": "Date serial and text-date ambiguity",
+      "agent_rule": "Parse and validate dates before grouping, week-ending checks, or uploads.",
+      "inspect": [
+        "check data type and display format",
+        "test min/max and unexpected serials",
+        "verify week-ending rules"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "dqg-date-column-parses",
+        "dqg-week-ending-matches-period"
+      ]
+    },
+    {
+      "id": "excel-risk-currency-format-vs-value",
+      "risk_name": "Currency format is not numeric value",
+      "agent_rule": "Confirm currency fields are numeric and formats are presentation-only.",
+      "inspect": [
+        "check ISNUMBER-equivalent",
+        "strip text currency only in clean layer",
+        "compare totals before and after coercion"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "dqg-currency-values-numeric",
+        "biz-food-cost-analysis"
+      ]
+    },
+    {
+      "id": "excel-risk-chart-without-data-validation",
+      "risk_name": "Chart built from unvalidated data",
+      "agent_rule": "Validate source range, grain, missing values, axis scales, and filters before publishing charts.",
+      "inspect": [
+        "trace chart source data",
+        "inspect hidden/filtered rows",
+        "check axis and aggregation"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "rpt-chart-source-validation",
+        "excel-tech-pivotchart-filtered-analysis"
+      ]
+    },
+    {
+      "id": "excel-risk-named-range-broken",
+      "risk_name": "Broken or ambiguous named ranges",
+      "agent_rule": "Resolve and document names used by formulas, charts, pivots, and upload templates.",
+      "inspect": [
+        "list names and refers-to ranges",
+        "test formulas using names",
+        "flag names referring to errors or deleted sheets"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "dqg-named-range-resolves",
+        "arch-data-dictionary"
+      ]
+    },
+    {
+      "id": "excel-risk-filtered-rows",
+      "risk_name": "Filtered rows can conceal data in review",
+      "agent_rule": "Record active filters and compare visible-only and full-range totals when reviewing outputs.",
+      "inspect": [
+        "list active filters",
+        "clear or document filters before signoff",
+        "compare SUBTOTAL/AGGREGATE vs SUM behavior"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "excel-tech-sort-filter-table-review",
+        "dqg-no-formula-errors-output"
+      ]
+    },
+    {
+      "id": "excel-risk-duplicate-keys",
+      "risk_name": "Duplicate keys in supposed unique grain",
+      "agent_rule": "Validate uniqueness at the intended grain before lookup, merge, pivot, or upload.",
+      "inspect": [
+        "count key duplicates",
+        "identify exact duplicate rows separately from duplicate business keys",
+        "require dedupe rule before aggregation"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "dqg-no-duplicate-metric-ids",
+        "python-excel-tech-pandas-merge-reconcile"
+      ]
+    },
+    {
+      "id": "excel-risk-stale-refresh-timestamp",
+      "risk_name": "Missing or stale refresh timestamp",
+      "agent_rule": "Require a refresh log with source, timestamp, operator, and row counts for repeatable reports.",
+      "inspect": [
+        "check refresh timestamp",
+        "compare expected period to extract period",
+        "block upload when timestamp is stale"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "dqg-stale-refresh-timestamp",
+        "arch-refresh-log"
+      ]
+    },
+    {
+      "id": "python-excel-risk-cloud-execution",
+      "risk_name": "Python in Excel cloud execution boundary",
+      "agent_rule": "Verify tenant/subscription/channel support and privacy requirements before using Python in Excel.",
+      "inspect": [
+        "confirm feature availability",
+        "confirm workbook data may be processed in the supported cloud boundary",
+        "avoid relying on local files or local network access"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "cvf-python-in-excel-cloud-runtime",
+        "decision-python-in-excel-vs-external-script"
+      ]
+    },
+    {
+      "id": "python-excel-risk-package-availability",
+      "risk_name": "Python package availability is curated",
+      "agent_rule": "Check whether required libraries are available; use external Python when a custom package or system dependency is required.",
+      "inspect": [
+        "review imports",
+        "replace unavailable libraries with supported ones",
+        "document package assumptions"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "cvf-python-in-excel-package-set",
+        "python-excel-tech-error-triage"
+      ]
+    },
+    {
+      "id": "python-excel-risk-privacy-boundary",
+      "risk_name": "Python in Excel privacy and network boundary",
+      "agent_rule": "Do not place secrets, API tokens, or network-dependent workflows in Python-in-Excel cells.",
+      "inspect": [
+        "scan Python code for credentials",
+        "avoid network IO expectations",
+        "route credentialed workflows to approved external systems"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "decision-credentialed-workflow",
+        "decision-api-upload-workflow",
+        "cvf-python-in-excel-network-access"
+      ]
+    },
+    {
+      "id": "python-excel-risk-performance",
+      "risk_name": "Python in Excel performance and compute limits",
+      "agent_rule": "Profile row counts and calculation dependencies before embedding Python in active workbooks.",
+      "inspect": [
+        "estimate data volume",
+        "avoid repeated expensive cells",
+        "prefer Power Query/external Python for large scheduled transforms"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "decision-small-vs-large-dataset",
+        "cvf-python-in-excel-compute-licensing"
+      ]
+    },
+    {
+      "id": "python-excel-risk-not-production-scheduler",
+      "risk_name": "Python in Excel is not a production scheduler",
+      "agent_rule": "Use external Python, BI platform refresh, or approved orchestration for unattended production work.",
+      "inspect": [
+        "identify unattended requirements",
+        "identify failure notification needs",
+        "move scheduled/API jobs outside workbook"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "decision-scheduled-workflow",
+        "decision-python-in-excel-vs-external-script"
+      ]
+    },
+    {
+      "id": "python-excel-risk-xl-reference-shape",
+      "risk_name": "xl() reference shape mismatch",
+      "agent_rule": "Check the returned object shape before cleaning, merging, or plotting.",
+      "inspect": [
+        "inspect type and shape",
+        "use explicit table references when possible",
+        "validate headers and indexes"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "python-excel-tech-xl-table-read",
+        "python-excel-tech-pandas-profile"
+      ]
+    },
+    {
+      "id": "python-excel-risk-spill-output",
+      "risk_name": "Python output spill or object/value mismatch",
+      "agent_rule": "Choose Python object vs Excel value deliberately and reserve spill ranges.",
+      "inspect": [
+        "inspect return type",
+        "clear spill range",
+        "test downstream Excel formulas"
+      ],
+      "human_review_triggers": [
+        "business meaning is ambiguous",
+        "protected or upload-bound workbook output would change",
+        "source owner or accounting owner has not approved the rule"
+      ],
+      "related_record_ids": [
+        "python-excel-tech-py-cell-output-mode",
+        "dqg-python-output-spill-safe"
+      ]
+    }
+  ],
+  "critical_data_quality_gates": [
+    {
+      "id": "dqg-required-sheet-exists",
+      "gate_name": "Required sheet exists",
+      "blocking_condition": "Required sheet missing.",
+      "warning_condition": "Sheet exists but order/visibility differs from template.",
+      "excel_native_check": "Check workbook sheet list against contract.",
+      "python_in_excel_check": "Use workbook metadata from inspection; Python-in-Excel is not needed unless sheet list is exposed.",
+      "external_python_check": "openpyxl/xlwings validates sheet names before processing.",
+      "ai_agent_check": "List sheets and compare to contract before editing.",
+      "related_risk_ids": [
+        "excel-risk-hidden-sheets"
+      ]
+    },
+    {
+      "id": "dqg-required-table-exists",
+      "gate_name": "Required table exists",
+      "blocking_condition": "Required table missing or empty.",
+      "warning_condition": "Table exists but row count is zero when not expected.",
+      "excel_native_check": "Name Manager/Table Design name review.",
+      "python_in_excel_check": "xl() explicit table read fails or shape mismatch flags issue.",
+      "external_python_check": "openpyxl table inventory or pandas Excel read validation.",
+      "ai_agent_check": "Inventory table names and row/column counts.",
+      "related_risk_ids": [
+        "excel-risk-named-range-broken"
+      ]
+    },
+    {
+      "id": "dqg-required-column-exists",
+      "gate_name": "Required column exists",
+      "blocking_condition": "Required column absent or duplicated.",
+      "warning_condition": "Column present with suspicious spelling/case difference.",
+      "excel_native_check": "Header row comparison in Excel table.",
+      "python_in_excel_check": "df.columns check and set difference.",
+      "external_python_check": "pandas schema validation.",
+      "ai_agent_check": "Compare headers to contract and do not invent fields.",
+      "related_risk_ids": [
+        "excel-risk-duplicate-keys"
+      ]
+    },
+    {
+      "id": "dqg-date-column-parses",
+      "gate_name": "Date column parses",
+      "blocking_condition": "Unparsed required date value exists.",
+      "warning_condition": "Dates parse but min/max outside report period.",
+      "excel_native_check": "ISNUMBER/date serial checks; filter blanks/text.",
+      "python_in_excel_check": "pd.to_datetime(..., errors=\"coerce\") and count failures.",
+      "external_python_check": "pandas/pyarrow schema checks.",
+      "ai_agent_check": "Profile raw types, parse failures, and min/max dates.",
+      "related_risk_ids": [
+        "excel-risk-date-serials"
+      ]
+    },
+    {
+      "id": "dqg-week-ending-matches-period",
+      "gate_name": "Week-ending date matches expected period",
+      "blocking_condition": "Any required row outside expected week-ending date.",
+      "warning_condition": "Rows include adjacent period dates needing explanation.",
+      "excel_native_check": "Filter Date column and compare to control-sheet period.",
+      "python_in_excel_check": "Compare parsed Date/Week_Ending to expected date variable.",
+      "external_python_check": "pipeline parameter validation.",
+      "ai_agent_check": "Read control period and compare every row.",
+      "related_risk_ids": [
+        "excel-risk-date-serials",
+        "excel-risk-stale-refresh-timestamp"
+      ]
+    },
+    {
+      "id": "dqg-percent-convention-known",
+      "gate_name": "Percent convention is known",
+      "blocking_condition": "Mixed convention detected in same field.",
+      "warning_condition": "Values exceed expected range but may be basis points or whole percents.",
+      "excel_native_check": "Check raw values plus number format.",
+      "python_in_excel_check": "Profile min/max and string % suffixes.",
+      "external_python_check": "schema/unit validation.",
+      "ai_agent_check": "Do not calculate with percent fields until convention is documented.",
+      "related_risk_ids": [
+        "excel-risk-percent-convention"
+      ]
+    },
+    {
+      "id": "dqg-currency-values-numeric",
+      "gate_name": "Currency values are numeric",
+      "blocking_condition": "Required amount has nonnumeric text.",
+      "warning_condition": "Negative/zero amounts outside expected rule.",
+      "excel_native_check": "ISNUMBER/SUM test and number format review.",
+      "python_in_excel_check": "pd.to_numeric with failures captured.",
+      "external_python_check": "schema type validation.",
+      "ai_agent_check": "Test numeric coercion and preserve raw extract.",
+      "related_risk_ids": [
+        "excel-risk-currency-format-vs-value"
+      ]
+    },
+    {
+      "id": "dqg-no-formula-errors-output",
+      "gate_name": "No formula errors in output range",
+      "blocking_condition": "Any blocking error in required output range.",
+      "warning_condition": "Allowed diagnostic error exists outside output zone.",
+      "excel_native_check": "Go To Special > Formulas > Errors or formula scan.",
+      "python_in_excel_check": "Check Excel-returned range / Python diagnostics for errors.",
+      "external_python_check": "openpyxl formula/value scan after calculation where available.",
+      "ai_agent_check": "Scan outputs after refresh/recalc and before saving final.",
+      "related_risk_ids": [
+        "excel-risk-formula-drift",
+        "python-excel-risk-spill-output"
+      ]
+    },
+    {
+      "id": "dqg-hidden-sheets-unchanged",
+      "gate_name": "Hidden sheets unexpectedly changed",
+      "blocking_condition": "Hidden sheet created/deleted/changed in protected workbook.",
+      "warning_condition": "Hidden sheet exists without documentation.",
+      "excel_native_check": "Unhide/list sheets and inspect references.",
+      "python_in_excel_check": "Not a Python-in-Excel task; use workbook inspection.",
+      "external_python_check": "openpyxl workbook metadata and hash comparison.",
+      "ai_agent_check": "Inventory hidden sheets before/after modifications.",
+      "related_risk_ids": [
+        "excel-risk-hidden-sheets"
+      ]
+    },
+    {
+      "id": "dqg-no-merged-cells-import-range",
+      "gate_name": "No merged cells in import range",
+      "blocking_condition": "Merged cell intersects required table/import range.",
+      "warning_condition": "Merged cells exist in presentation tabs only.",
+      "excel_native_check": "Find merged cells / inspect range.",
+      "python_in_excel_check": "xl() shape check may reveal missing repeated labels but should not be primary.",
+      "external_python_check": "openpyxl merged_cells inventory.",
+      "ai_agent_check": "Scan import rectangles for merged cells before table conversion.",
+      "related_risk_ids": [
+        "excel-risk-merged-cells"
+      ]
+    },
+    {
+      "id": "dqg-no-duplicate-metric-ids",
+      "gate_name": "No duplicate metric IDs",
+      "blocking_condition": "Duplicate required unique key exists.",
+      "warning_condition": "Duplicate may be legitimate but lacks rule.",
+      "excel_native_check": "COUNTIF/helper key or conditional format duplicates.",
+      "python_in_excel_check": "df.duplicated(keys).sum().",
+      "external_python_check": "pandas/data-contract uniqueness check.",
+      "ai_agent_check": "Validate grain before pivot, merge, or upload.",
+      "related_risk_ids": [
+        "excel-risk-duplicate-keys"
+      ]
+    },
+    {
+      "id": "dqg-blank-required-keys",
+      "gate_name": "No blank required keys",
+      "blocking_condition": "Blank required key exists.",
+      "warning_condition": "Whitespace-only or placeholder key exists.",
+      "excel_native_check": "COUNTBLANK/TRIM checks.",
+      "python_in_excel_check": "df[key].isna() or str.strip().eq(\"\").",
+      "external_python_check": "schema non-null validation.",
+      "ai_agent_check": "Reject blanks before formulas/joins.",
+      "related_risk_ids": [
+        "excel-risk-blank-vs-zero",
+        "excel-risk-duplicate-keys"
+      ]
+    },
+    {
+      "id": "dqg-stale-refresh-timestamp",
+      "gate_name": "No stale refresh timestamp",
+      "blocking_condition": "Missing timestamp or older than configured maximum.",
+      "warning_condition": "Timestamp present but source row count changed from expected.",
+      "excel_native_check": "Control sheet refresh log check.",
+      "python_in_excel_check": "Read refresh log table and compare dates.",
+      "external_python_check": "pipeline metadata validation.",
+      "ai_agent_check": "Require source/time/row count in refresh log.",
+      "related_risk_ids": [
+        "excel-risk-stale-refresh-timestamp"
+      ]
+    },
+    {
+      "id": "dqg-pivot-cache-refreshed",
+      "gate_name": "Pivot cache refreshed",
+      "blocking_condition": "Pivot totals do not equal source totals after refresh.",
+      "warning_condition": "Refresh state unknown but totals match.",
+      "excel_native_check": "Refresh All and compare grand totals.",
+      "python_in_excel_check": "Python not needed; can compare source/pivot exported values if available.",
+      "external_python_check": "Excel automation refresh then reconcile.",
+      "ai_agent_check": "Inspect pivot source and refresh before trusting output.",
+      "related_risk_ids": [
+        "excel-risk-stale-pivot-cache"
+      ]
+    },
+    {
+      "id": "dqg-named-range-resolves",
+      "gate_name": "Named range resolves",
+      "blocking_condition": "Name points to #REF! or missing sheet.",
+      "warning_condition": "Name resolves but dimensions changed from contract.",
+      "excel_native_check": "Name Manager review.",
+      "python_in_excel_check": "Not primary; use workbook inspection metadata.",
+      "external_python_check": "openpyxl defined_names resolution.",
+      "ai_agent_check": "Resolve every contract name before modifying workbook.",
+      "related_risk_ids": [
+        "excel-risk-named-range-broken"
+      ]
+    },
+    {
+      "id": "dqg-external-links-expected",
+      "gate_name": "External links are expected",
+      "blocking_condition": "Unknown external link exists in final workbook.",
+      "warning_condition": "Expected link unreachable or stale.",
+      "excel_native_check": "Data > Edit Links / workbook links inventory.",
+      "python_in_excel_check": "Python not needed; scan formulas for bracketed external references if exported.",
+      "external_python_check": "openpyxl formula scan / link metadata.",
+      "ai_agent_check": "Inventory links and confirm each is expected.",
+      "related_risk_ids": [
+        "excel-risk-external-links"
+      ]
+    },
+    {
+      "id": "dqg-manual-overrides-documented",
+      "gate_name": "Manual override cells documented",
+      "blocking_condition": "Constant found where formula required and no override log.",
+      "warning_condition": "Override log exists but no approval.",
+      "excel_native_check": "Compare formula map to template; inspect comments/override log.",
+      "python_in_excel_check": "Python not needed unless formula map exported for analysis.",
+      "external_python_check": "openpyxl formula/constant diff against template.",
+      "ai_agent_check": "Detect constants in formula zones and cross-check audit trail.",
+      "related_risk_ids": [
+        "excel-risk-manual-overrides",
+        "excel-risk-formula-drift"
+      ]
+    },
+    {
+      "id": "dqg-python-output-spill-safe",
+      "gate_name": "Python output spill range safe",
+      "blocking_condition": "Spill blocked in output zone.",
+      "warning_condition": "Spill range larger than expected but not blocked.",
+      "excel_native_check": "Check #SPILL! and neighboring occupied cells.",
+      "python_in_excel_check": "Inspect output shape before return; use head/summary where possible.",
+      "external_python_check": "n/a for external Python except generated workbook validation.",
+      "ai_agent_check": "Reserve ranges and test return shape.",
+      "related_risk_ids": [
+        "python-excel-risk-spill-output"
+      ]
+    },
+    {
+      "id": "dqg-python-cell-review-required",
+      "gate_name": "Python cell reviewed",
+      "blocking_condition": "PY cell affects output and lacks review note.",
+      "warning_condition": "PY cell only exploratory but remains in final workbook.",
+      "excel_native_check": "Locate PY formulas in workbook.",
+      "python_in_excel_check": "Open Python Editor and inspect code.",
+      "external_python_check": "n/a unless generated workbook scan.",
+      "ai_agent_check": "List PY cells before final save.",
+      "related_risk_ids": [
+        "python-excel-risk-cloud-execution",
+        "python-excel-risk-package-availability"
+      ]
+    },
+    {
+      "id": "dqg-row-count-reconciles",
+      "gate_name": "Row count reconciles across stages",
+      "blocking_condition": "Unexplained row count change between stages.",
+      "warning_condition": "Exclusions documented but not approved.",
+      "excel_native_check": "COUNTA/table row counts on each stage.",
+      "python_in_excel_check": "len(df) before/after transformations.",
+      "external_python_check": "pipeline row-count assertions.",
+      "ai_agent_check": "Capture row counts for every transformation step.",
+      "related_risk_ids": [
+        "excel-risk-blank-vs-zero",
+        "excel-risk-duplicate-keys"
+      ]
+    },
+    {
+      "id": "dqg-upload-schema-contract",
+      "gate_name": "Upload schema matches contract",
+      "blocking_condition": "Missing/extra required field or invalid type.",
+      "warning_condition": "Extra optional field not in contract.",
+      "excel_native_check": "Compare headers/order and data validation rules.",
+      "python_in_excel_check": "df schema check before exporting staged table.",
+      "external_python_check": "contract/schema validation before API/file upload.",
+      "ai_agent_check": "Validate schema before creating upload file.",
+      "related_risk_ids": [
+        "excel-risk-currency-format-vs-value",
+        "excel-risk-date-serials"
+      ]
+    },
+    {
+      "id": "dqg-control-sheet-complete",
+      "gate_name": "Control sheet complete",
+      "blocking_condition": "Required control field blank.",
+      "warning_condition": "Control value inconsistent with data.",
+      "excel_native_check": "Check named control cells or control table.",
+      "python_in_excel_check": "Read control table and compare to data.",
+      "external_python_check": "pipeline manifest validation.",
+      "ai_agent_check": "Read control sheet before analysis.",
+      "related_risk_ids": [
+        "excel-risk-stale-refresh-timestamp"
+      ]
+    },
+    {
+      "id": "dqg-chart-source-validated",
+      "gate_name": "Chart source validated",
+      "blocking_condition": "Chart source cannot be traced or fails source gate.",
+      "warning_condition": "Axis/filter choices may be misleading.",
+      "excel_native_check": "Select chart data and inspect axes/filters.",
+      "python_in_excel_check": "If Python chart, trace DataFrame construction and plot code.",
+      "external_python_check": "report-generation tests for chart data source.",
+      "ai_agent_check": "Trace every chart before publishing.",
+      "related_risk_ids": [
+        "excel-risk-chart-without-data-validation"
+      ]
+    },
+    {
+      "id": "dqg-protected-zones-intact",
+      "gate_name": "Protected formula zones intact",
+      "blocking_condition": "Formula in protected zone changed without approval.",
+      "warning_condition": "Protection absent on final template.",
+      "excel_native_check": "Compare formula map/protection to template.",
+      "python_in_excel_check": "Not primary; use workbook inspection.",
+      "external_python_check": "openpyxl style/protection/formula diff.",
+      "ai_agent_check": "Compare against template before delivery.",
+      "related_risk_ids": [
+        "excel-risk-formula-drift",
+        "excel-risk-manual-overrides"
+      ]
+    }
+  ],
+  "ai_agent_workflows": [
+    {
+      "id": "aiwf-inspect-unknown-workbook",
+      "workflow_name": "Inspect unknown workbook",
+      "preconditions": [
+        "Workbook file is available; no edits have been made."
+      ],
+      "inspection_steps": [
+        "record file name/date/size",
+        "list sheets, hidden sheets, tables, named ranges, external links, pivots, charts, formulas, Python cells",
+        "identify raw/clean/output zones",
+        "read control/README sheets first"
+      ],
+      "safe_actions": [
+        "create read-only inventory",
+        "summarize risks",
+        "ask for business definitions only after inspecting available documentation"
+      ],
+      "dangerous_actions": [
+        "saving over original",
+        "deleting hidden sheets",
+        "refreshing external links before understanding credentials"
+      ],
+      "tests_or_validations": [
+        "sheet/table/name inventory complete",
+        "formula/PY/external-link counts captured"
+      ],
+      "rollback_or_backup": [
+        "copy original before any edit"
+      ],
+      "completion_criteria": [
+        "inventory and no-edit status documented"
+      ],
+      "human_review_triggers": [
+        "hidden sheets, external links, Python cells, macros, upload/output tabs"
+      ]
+    },
+    {
+      "id": "aiwf-create-workbook-backup",
+      "workflow_name": "Create workbook backup",
+      "preconditions": [
+        "Original workbook exists and edit is requested."
+      ],
+      "inspection_steps": [
+        "identify file path and current modified time",
+        "check if workbook has external links/macros/Python cells"
+      ],
+      "safe_actions": [
+        "copy original to timestamped backup",
+        "store hash/size",
+        "work on duplicate"
+      ],
+      "dangerous_actions": [
+        "renaming original as working file without backup",
+        "compressing/altering workbook before copy"
+      ],
+      "tests_or_validations": [
+        "backup opens or file hash/size recorded",
+        "working copy distinct from original"
+      ],
+      "rollback_or_backup": [
+        "restore original from backup if validation fails"
+      ],
+      "completion_criteria": [
+        "backup exists and original untouched"
+      ],
+      "human_review_triggers": [
+        "business-critical workbook or formulas will be changed"
+      ]
+    },
+    {
+      "id": "aiwf-extract-workbook-contract",
+      "workflow_name": "Extract workbook contract",
+      "preconditions": [
+        "Workbook has been inspected."
+      ],
+      "inspection_steps": [
+        "list required sheets/tables/columns/named ranges",
+        "identify output ranges/upload ranges",
+        "read control/data dictionary/metric definitions",
+        "map formulas to source zones"
+      ],
+      "safe_actions": [
+        "create machine-readable contract JSON/MD",
+        "mark unknown fields for human review"
+      ],
+      "dangerous_actions": [
+        "inventing business rules not present",
+        "assuming hidden sheets irrelevant"
+      ],
+      "tests_or_validations": [
+        "contract covers required sheets/tables/columns/gates",
+        "unknowns listed"
+      ],
+      "rollback_or_backup": [
+        "contract is separate file/sheet; workbook unchanged"
+      ],
+      "completion_criteria": [
+        "contract can drive validation gates"
+      ],
+      "human_review_triggers": [
+        "missing metric definitions, thresholds, upload schema"
+      ]
+    },
+    {
+      "id": "aiwf-validate-upload-workbook",
+      "workflow_name": "Validate upload workbook",
+      "preconditions": [
+        "Workbook contract and upload target schema are known."
+      ],
+      "inspection_steps": [
+        "inspect staging sheet/table",
+        "check required fields/types/order",
+        "check blank/duplicate keys, dates, percents, currency, formulas errors",
+        "review manual overrides"
+      ],
+      "safe_actions": [
+        "run gates and produce pass/warn/fail report",
+        "block export when blocking conditions exist"
+      ],
+      "dangerous_actions": [
+        "uploading from raw/report sheet",
+        "fixing by changing values without source owner approval"
+      ],
+      "tests_or_validations": [
+        "all blocking gates pass",
+        "row counts reconcile",
+        "ready flag set"
+      ],
+      "rollback_or_backup": [
+        "backup before any repair; retain rejected records"
+      ],
+      "completion_criteria": [
+        "ready-to-upload table is validated and documented"
+      ],
+      "human_review_triggers": [
+        "schema mismatch, unexpected row loss, manual override"
+      ]
+    },
+    {
+      "id": "aiwf-repair-formulas-safely",
+      "workflow_name": "Repair formulas safely",
+      "preconditions": [
+        "Backup exists; formula issue identified."
+      ],
+      "inspection_steps": [
+        "locate formula zone",
+        "compare neighboring R1C1 patterns",
+        "trace precedents/dependents",
+        "check hidden/named/external references"
+      ],
+      "safe_actions": [
+        "repair minimal formula range",
+        "preserve original formula in change log",
+        "recalc and test known examples"
+      ],
+      "dangerous_actions": [
+        "global find/replace without scope",
+        "overwriting constants that are legitimate inputs",
+        "editing protected formulas without log"
+      ],
+      "tests_or_validations": [
+        "formula pattern consistent",
+        "output errors cleared",
+        "totals reconcile"
+      ],
+      "rollback_or_backup": [
+        "restore backup or original formulas if tests fail"
+      ],
+      "completion_criteria": [
+        "all affected formulas explained and validated"
+      ],
+      "human_review_triggers": [
+        "formula impacts KPI/upload/accounting output"
+      ]
+    },
+    {
+      "id": "aiwf-compare-two-workbook-versions",
+      "workflow_name": "Compare two workbook versions",
+      "preconditions": [
+        "Two workbook files are available."
+      ],
+      "inspection_steps": [
+        "compare sheets/tables/names/formulas/Python cells/hidden sheets/external links/styles if relevant",
+        "compare output values and row counts"
+      ],
+      "safe_actions": [
+        "summarize structural and output differences",
+        "classify expected vs unexpected"
+      ],
+      "dangerous_actions": [
+        "treating formatting-only changes as harmless when formulas moved",
+        "ignoring hidden sheets"
+      ],
+      "tests_or_validations": [
+        "diff includes visible and hidden structures",
+        "critical outputs compared"
+      ],
+      "rollback_or_backup": [
+        "retain both originals; create diff artifact separately"
+      ],
+      "completion_criteria": [
+        "differences explained or escalated"
+      ],
+      "human_review_triggers": [
+        "unexpected output change or hidden dependency change"
+      ]
+    },
+    {
+      "id": "aiwf-detect-formula-drift",
+      "workflow_name": "Detect formula drift",
+      "preconditions": [
+        "Workbook has repeated formula zones or template rows."
+      ],
+      "inspection_steps": [
+        "extract formulas by range",
+        "convert to relative/R1C1 pattern",
+        "group by expected bands",
+        "flag constants in formula zones"
+      ],
+      "safe_actions": [
+        "report drift cells with neighboring expected formula",
+        "do not auto-fill until reviewed"
+      ],
+      "dangerous_actions": [
+        "filling formulas over intentional overrides",
+        "ignoring table calculated columns"
+      ],
+      "tests_or_validations": [
+        "drift list reviewed",
+        "template formulas match expected pattern"
+      ],
+      "rollback_or_backup": [
+        "backup before any fill-down or repair"
+      ],
+      "completion_criteria": [
+        "drift either repaired or approved as override"
+      ],
+      "human_review_triggers": [
+        "manual overrides or period close workbook"
+      ]
+    },
+    {
+      "id": "aiwf-detect-hidden-sheet-dependency",
+      "workflow_name": "Detect hidden-sheet dependency",
+      "preconditions": [
+        "Workbook may contain hidden sheets."
+      ],
+      "inspection_steps": [
+        "list hidden/very hidden sheets",
+        "search formulas/names/charts/pivots/Python cells referencing them",
+        "inspect whether hidden sheets changed"
+      ],
+      "safe_actions": [
+        "document dependency graph",
+        "flag undocumented hidden sources"
+      ],
+      "dangerous_actions": [
+        "deleting/unhiding permanently without owner approval",
+        "assuming hidden means irrelevant"
+      ],
+      "tests_or_validations": [
+        "dependency list complete",
+        "unexpected hidden changes flagged"
+      ],
+      "rollback_or_backup": [
+        "backup before unhide/modify"
+      ],
+      "completion_criteria": [
+        "dependency understood and no unreviewed changes remain"
+      ],
+      "human_review_triggers": [
+        "hidden sheet feeds official output"
+      ]
+    },
+    {
+      "id": "aiwf-validate-percent-conventions",
+      "workflow_name": "Validate percent conventions",
+      "preconditions": [
+        "Workbook has percent/rate fields."
+      ],
+      "inspection_steps": [
+        "identify percent fields from headers/formats/metric definitions",
+        "profile raw min/max and % text",
+        "check formulas multiplying/dividing by 100"
+      ],
+      "safe_actions": [
+        "document convention per field",
+        "flag mixed conventions",
+        "do not change values until owner confirms"
+      ],
+      "dangerous_actions": [
+        "blindly dividing/multiplying all percent fields",
+        "trusting formatting only"
+      ],
+      "tests_or_validations": [
+        "all percent fields have convention and pass range checks"
+      ],
+      "rollback_or_backup": [
+        "backup before any conversion"
+      ],
+      "completion_criteria": [
+        "conventions documented and formulas consistent"
+      ],
+      "human_review_triggers": [
+        "mixed convention or financial/labor metrics affected"
+      ]
+    },
+    {
+      "id": "aiwf-validate-date-week-periods",
+      "workflow_name": "Validate date/week periods",
+      "preconditions": [
+        "Workbook has date/period/week fields."
+      ],
+      "inspection_steps": [
+        "profile date types/min/max",
+        "parse text dates",
+        "compare control period/week-ending rule",
+        "check pivot grouping"
+      ],
+      "safe_actions": [
+        "create date exception list",
+        "block period output if mismatched"
+      ],
+      "dangerous_actions": [
+        "assuming file name period is correct",
+        "treating text dates as valid"
+      ],
+      "tests_or_validations": [
+        "dates parse and match expected period",
+        "exceptions resolved"
+      ],
+      "rollback_or_backup": [
+        "backup before coercing date values"
+      ],
+      "completion_criteria": [
+        "date period is validated against control sheet"
+      ],
+      "human_review_triggers": [
+        "accounting/weekly reporting output affected"
+      ]
+    },
+    {
+      "id": "aiwf-convert-manual-report-to-template",
+      "workflow_name": "Convert manual report into template",
+      "preconditions": [
+        "Manual report pattern repeats and business owner can define required fields."
+      ],
+      "inspection_steps": [
+        "identify raw inputs, manual transformations, formulas, outputs, assumptions",
+        "find hard-coded values and hidden sheets"
+      ],
+      "safe_actions": [
+        "separate raw/clean/analysis/output",
+        "add control, dictionary, gates, protected zones",
+        "document placeholders"
+      ],
+      "dangerous_actions": [
+        "automating before definitions are approved",
+        "preserving broken manual logic as official"
+      ],
+      "tests_or_validations": [
+        "template validates sample period and reconciles to original report"
+      ],
+      "rollback_or_backup": [
+        "keep original manual workbook and pilot copy"
+      ],
+      "completion_criteria": [
+        "repeatable template passes test period"
+      ],
+      "human_review_triggers": [
+        "threshold/formula policy unknown"
+      ]
+    },
+    {
+      "id": "aiwf-build-accounting-upload-file",
+      "workflow_name": "Build Accounting-friendly upload file",
+      "preconditions": [
+        "Upload schema and accounting rules are provided."
+      ],
+      "inspection_steps": [
+        "inspect source fields and mappings",
+        "validate dates/currency/percents/blank keys",
+        "check manual overrides and approval"
+      ],
+      "safe_actions": [
+        "create staging table only from validated clean data",
+        "lock formulas",
+        "produce rejection report"
+      ],
+      "dangerous_actions": [
+        "inventing account mappings or formulas",
+        "uploading from presentation tab"
+      ],
+      "tests_or_validations": [
+        "schema, row counts, and totals reconcile",
+        "accounting signoff captured"
+      ],
+      "rollback_or_backup": [
+        "backup source and staging file; version output"
+      ],
+      "completion_criteria": [
+        "Accounting can review and upload without hidden transformations"
+      ],
+      "human_review_triggers": [
+        "missing mapping/accounting policy"
+      ]
+    },
+    {
+      "id": "aiwf-prepare-workbook-data-for-api-upload",
+      "workflow_name": "Prepare workbook data for API upload",
+      "preconditions": [
+        "API contract/schema is known; credentials are not stored in workbook."
+      ],
+      "inspection_steps": [
+        "validate staging sheet/schema",
+        "check row IDs/dates/types",
+        "create ready/rejected tables",
+        "confirm no secrets in workbook"
+      ],
+      "safe_actions": [
+        "produce validated CSV/table for approved external uploader",
+        "include row counts/hashes"
+      ],
+      "dangerous_actions": [
+        "placing API tokens in workbook",
+        "using Python-in-Excel for network calls"
+      ],
+      "tests_or_validations": [
+        "all blocking gates pass",
+        "ready flag true",
+        "handoff log created"
+      ],
+      "rollback_or_backup": [
+        "retain pre-upload file and rejected rows"
+      ],
+      "completion_criteria": [
+        "data is ready for external upload process"
+      ],
+      "human_review_triggers": [
+        "credential/API behavior involved"
+      ]
+    },
+    {
+      "id": "aiwf-review-python-in-excel-cell",
+      "workflow_name": "Review Python-in-Excel cell",
+      "preconditions": [
+        "Workbook contains PY cells."
+      ],
+      "inspection_steps": [
+        "open Python Editor",
+        "inspect source ranges via xl()",
+        "check imports, return type, output use, and calculation order",
+        "scan for file/network/credential assumptions"
+      ],
+      "safe_actions": [
+        "document purpose and dependencies",
+        "test recalc",
+        "convert output to Excel value only when appropriate"
+      ],
+      "dangerous_actions": [
+        "editing source data to silence Python errors",
+        "leaving unreviewed PY cells in nontechnical template"
+      ],
+      "tests_or_validations": [
+        "PY cells have review notes and no blocking errors"
+      ],
+      "rollback_or_backup": [
+        "backup before edits; retain original code"
+      ],
+      "completion_criteria": [
+        "all PY cells reviewed or removed from final workbook"
+      ],
+      "human_review_triggers": [
+        "Python output affects official report or sensitive data"
+      ]
+    },
+    {
+      "id": "aiwf-decide-tooling",
+      "workflow_name": "Decide Excel versus Python-in-Excel versus external Python",
+      "preconditions": [
+        "Task objective and workbook/user context are known."
+      ],
+      "inspection_steps": [
+        "identify data size, refresh needs, user skill, availability, privacy, scheduling, credentials, and auditability requirements"
+      ],
+      "safe_actions": [
+        "apply decision rules",
+        "choose lowest-complexity safe tool",
+        "document why rejected tools were not used"
+      ],
+      "dangerous_actions": [
+        "choosing Python because it is available",
+        "choosing Excel despite repeated drift/automation failures"
+      ],
+      "tests_or_validations": [
+        "decision references relevant constraints and risks"
+      ],
+      "rollback_or_backup": [
+        "no workbook edits until tool choice approved for high-risk tasks"
+      ],
+      "completion_criteria": [
+        "tool choice prevents overengineering and safety gaps"
+      ],
+      "human_review_triggers": [
+        "credentialed/scheduled/multi-user/accounting workflow"
+      ]
+    },
+    {
+      "id": "aiwf-create-executive-report",
+      "workflow_name": "Create executive report",
+      "preconditions": [
+        "Source data and KPI definitions are available."
+      ],
+      "inspection_steps": [
+        "validate sources/gates",
+        "identify 5-10 core KPIs",
+        "trace chart data",
+        "confirm refresh period and filters"
+      ],
+      "safe_actions": [
+        "build executive summary with status, exceptions, caveats, and drill links",
+        "protect formulas"
+      ],
+      "dangerous_actions": [
+        "inventing KPIs/thresholds",
+        "using unvalidated charts",
+        "hiding stale data"
+      ],
+      "tests_or_validations": [
+        "KPIs reconcile to source",
+        "charts validated",
+        "refresh status visible"
+      ],
+      "rollback_or_backup": [
+        "backup report before layout edits"
+      ],
+      "completion_criteria": [
+        "report is concise, current, and auditable"
+      ],
+      "human_review_triggers": [
+        "definition or threshold missing",
+        "owner-facing variance explanation needed"
+      ]
+    },
+    {
+      "id": "aiwf-create-nontechnical-user-workflow",
+      "workflow_name": "Create nontechnical-user workflow",
+      "preconditions": [
+        "Workbook will be used by nontechnical users."
+      ],
+      "inspection_steps": [
+        "identify allowed user actions",
+        "separate input and protected zones",
+        "add instructions/control sheet",
+        "hide or remove analyst-only complexity"
+      ],
+      "safe_actions": [
+        "protect formulas",
+        "add validation messages",
+        "create step-by-step use notes"
+      ],
+      "dangerous_actions": [
+        "leaving Python cells users must debug",
+        "requiring edits in hidden/formula zones"
+      ],
+      "tests_or_validations": [
+        "user can complete workflow on sample data",
+        "formulas protected",
+        "errors visible"
+      ],
+      "rollback_or_backup": [
+        "keep analyst/master copy separate"
+      ],
+      "completion_criteria": [
+        "nontechnical user can run process safely"
+      ],
+      "human_review_triggers": [
+        "users lack Excel/Python features or training"
+      ]
+    },
+    {
+      "id": "aiwf-generate-rollback-plan",
+      "workflow_name": "Generate rollback plan",
+      "preconditions": [
+        "Structural workbook edits, formula repairs, or automation changes are planned."
+      ],
+      "inspection_steps": [
+        "identify changed files/sheets/ranges/formulas/Python cells",
+        "record backup path and restore criteria",
+        "list tests required after rollback"
+      ],
+      "safe_actions": [
+        "write rollback steps before editing",
+        "save old formulas/code",
+        "define stop conditions"
+      ],
+      "dangerous_actions": [
+        "editing first and planning rollback later",
+        "overwriting backup"
+      ],
+      "tests_or_validations": [
+        "rollback plan references exact backup and affected areas"
+      ],
+      "rollback_or_backup": [
+        "restore backup or selected formulas/ranges when tests fail"
+      ],
+      "completion_criteria": [
+        "rollback can be executed by human reviewer"
+      ],
+      "human_review_triggers": [
+        "high-impact workbook or uncertain repair"
+      ]
+    }
+  ],
+  "workbook_architecture_patterns": [
+    {
+      "id": "arch-raw-clean-analysis-output",
+      "pattern_name": "Raw data / clean data / analysis / output separation",
+      "when_needed": "Any workbook with imports, transformations, pivots, or upload outputs.",
+      "minimum_viable_version": "Four tabs or clearly marked zones: Raw, Clean, Analysis, Output.",
+      "manual_edit_zones": "Raw paste/import zone only; no formulas overwritten.",
+      "protected_zones": "Clean formulas, analysis pivots, output template.",
+      "validation_rules": [
+        "raw row count captured",
+        "clean rules documented",
+        "outputs reconcile to clean data"
+      ],
+      "ai_agent_modification_rules": [
+        "never edit raw source except to replace whole extract",
+        "place transformations in clean layer",
+        "do not feed uploads from presentation-only output"
+      ],
+      "failure_modes": [
+        "raw overwritten without backup",
+        "clean/output mix causes circular dependencies",
+        "output hides excluded rows"
+      ]
+    },
+    {
+      "id": "arch-control-sheet",
+      "pattern_name": "Control sheet",
+      "when_needed": "Recurring reports, templates, or upload workbooks.",
+      "minimum_viable_version": "One sheet listing period, owner, source files, refresh timestamp, status.",
+      "manual_edit_zones": "Period selector, source path notes, comments/signoff.",
+      "protected_zones": "Formula-driven status checks and locked parameters once approved.",
+      "validation_rules": [
+        "required controls nonblank",
+        "period matches data",
+        "refresh timestamp current"
+      ],
+      "ai_agent_modification_rules": [
+        "read control sheet before analysis",
+        "do not infer period from file name alone",
+        "update status only after gates pass"
+      ],
+      "failure_modes": [
+        "wrong period published",
+        "missing owner/signoff",
+        "hidden assumptions in formulas"
+      ]
+    },
+    {
+      "id": "arch-assumption-sheet",
+      "pattern_name": "Assumption sheet",
+      "when_needed": "What-if, budget, forecast, Solver, Goal Seek, or scenario models.",
+      "minimum_viable_version": "Named table of assumptions with units, owner, and default value.",
+      "manual_edit_zones": "Assumption values only in designated unlocked cells.",
+      "protected_zones": "Dependent formulas and scenario outputs.",
+      "validation_rules": [
+        "units documented",
+        "percent/currency conventions explicit",
+        "scenario values approved"
+      ],
+      "ai_agent_modification_rules": [
+        "do not change hard-coded assumptions inside formulas",
+        "trace every model driver to assumption table"
+      ],
+      "failure_modes": [
+        "hidden assumptions",
+        "old scenario values reused",
+        "percent convention errors"
+      ]
+    },
+    {
+      "id": "arch-mapping-table",
+      "pattern_name": "Mapping table",
+      "when_needed": "Exports contain system codes that must map to reporting categories.",
+      "minimum_viable_version": "Two-column map with source code and reporting category.",
+      "manual_edit_zones": "New mapping rows with reason/owner.",
+      "protected_zones": "Lookup formulas, downstream pivots.",
+      "validation_rules": [
+        "source codes unique",
+        "no unmapped records",
+        "mapping effective dates valid"
+      ],
+      "ai_agent_modification_rules": [
+        "do not hard-code category labels in formulas",
+        "flag unmapped values instead of silently dropping"
+      ],
+      "failure_modes": [
+        "duplicate maps",
+        "unmapped codes grouped as blank",
+        "old categories persist"
+      ]
+    },
+    {
+      "id": "arch-report-output-sheet",
+      "pattern_name": "Report output sheet",
+      "when_needed": "Workbook distributes human-readable summary or upload preview.",
+      "minimum_viable_version": "Clean, protected output tab with refresh date and filters displayed.",
+      "manual_edit_zones": "Comments only in designated notes area.",
+      "protected_zones": "KPI formulas, chart sources, layout cells.",
+      "validation_rules": [
+        "output formulas have no errors",
+        "source gates pass",
+        "filters visible"
+      ],
+      "ai_agent_modification_rules": [
+        "edit source/analysis layers, not output numbers",
+        "trace any changed output formula before save"
+      ],
+      "failure_modes": [
+        "pretty report hides stale source",
+        "manual KPI overrides",
+        "filters not visible"
+      ]
+    },
+    {
+      "id": "arch-protected-formula-zone",
+      "pattern_name": "Protected formula zone",
+      "when_needed": "Templates used by nontechnical users or repeated periods.",
+      "minimum_viable_version": "Locked formula cells with visible input cells.",
+      "manual_edit_zones": "None inside formula zone except approved override cells.",
+      "protected_zones": "All formulas, hidden helper calculations, output cells.",
+      "validation_rules": [
+        "formula pattern matches template",
+        "protection enabled",
+        "override log empty or approved"
+      ],
+      "ai_agent_modification_rules": [
+        "backup before unprotecting",
+        "never replace formulas with constants without override record"
+      ],
+      "failure_modes": [
+        "formula drift",
+        "accidental overwrite",
+        "manual override becomes permanent"
+      ]
+    },
+    {
+      "id": "arch-manual-input-zone",
+      "pattern_name": "Manual input zone",
+      "when_needed": "Users need to enter assumptions, comments, or small adjustments.",
+      "minimum_viable_version": "Clearly colored/labeled input cells with instructions.",
+      "manual_edit_zones": "Designated input cells/tables only.",
+      "protected_zones": "Formulas and source data outside input zone.",
+      "validation_rules": [
+        "required inputs complete",
+        "data type/allowed values checked",
+        "changes logged"
+      ],
+      "ai_agent_modification_rules": [
+        "do not create new ad hoc input cells",
+        "do not enter values in formula zone"
+      ],
+      "failure_modes": [
+        "inputs placed in wrong sheet",
+        "blank input treated as zero",
+        "undocumented adjustments"
+      ]
+    },
+    {
+      "id": "arch-error-check-sheet",
+      "pattern_name": "Error-check sheet",
+      "when_needed": "Workbook has many formulas, uploads, or reviewer handoff.",
+      "minimum_viable_version": "One tab listing pass/warn/fail gates and linked issue cells.",
+      "manual_edit_zones": "Issue comments/status only.",
+      "protected_zones": "Gate formulas and links.",
+      "validation_rules": [
+        "all blocking checks pass before final",
+        "warnings reviewed"
+      ],
+      "ai_agent_modification_rules": [
+        "run after refresh and before final save",
+        "do not hide failing gates"
+      ],
+      "failure_modes": [
+        "errors remain on hidden sheets",
+        "reviewers miss gate failures"
+      ]
+    },
+    {
+      "id": "arch-refresh-log",
+      "pattern_name": "Refresh log",
+      "when_needed": "Any workbook pulling system exports, Power Query, pivots, or external links.",
+      "minimum_viable_version": "Table with source name, timestamp, row count, operator.",
+      "manual_edit_zones": "Refresh notes and operator initials.",
+      "protected_zones": "Timestamp formulas/gate formulas.",
+      "validation_rules": [
+        "timestamp current",
+        "row counts reconcile",
+        "pivot refresh recorded"
+      ],
+      "ai_agent_modification_rules": [
+        "do not publish without refresh log",
+        "compare source rows to prior expected period"
+      ],
+      "failure_modes": [
+        "old extract reused",
+        "pivot not refreshed",
+        "unknown source version"
+      ]
+    },
+    {
+      "id": "arch-data-dictionary",
+      "pattern_name": "Data dictionary",
+      "when_needed": "Templates, uploads, and multi-user workbooks with non-obvious fields.",
+      "minimum_viable_version": "Field name, meaning, type, required flag, source.",
+      "manual_edit_zones": "Dictionary edits by owner only.",
+      "protected_zones": "Schema validations and named ranges.",
+      "validation_rules": [
+        "required fields documented",
+        "types match gates",
+        "definitions align to formulas"
+      ],
+      "ai_agent_modification_rules": [
+        "do not invent meanings for undocumented fields",
+        "ask owner when field purpose is unclear"
+      ],
+      "failure_modes": [
+        "wrong field selected",
+        "upload schema mismatch",
+        "ambiguous metric definitions"
+      ]
+    },
+    {
+      "id": "arch-metric-definition-table",
+      "pattern_name": "Metric-definition table",
+      "when_needed": "Scorecards, executive dashboards, or KPI reports.",
+      "minimum_viable_version": "Metric ID, display name, formula/source, grain, owner.",
+      "manual_edit_zones": "Threshold/definition changes by owner only.",
+      "protected_zones": "KPI formulas and dashboard outputs.",
+      "validation_rules": [
+        "metric IDs unique",
+        "formula/source documented",
+        "thresholds not invented"
+      ],
+      "ai_agent_modification_rules": [
+        "do not change formula text without metric definition update",
+        "do not infer thresholds"
+      ],
+      "failure_modes": [
+        "duplicate KPI IDs",
+        "old definition used",
+        "AI invents formula"
+      ]
+    },
+    {
+      "id": "arch-executive-summary-tab",
+      "pattern_name": "Executive summary tab",
+      "when_needed": "Owners/executives need a concise readout.",
+      "minimum_viable_version": "One tab with period, refresh status, top KPIs, exceptions, and notes.",
+      "manual_edit_zones": "Narrative comments and approved explanations.",
+      "protected_zones": "KPI formulas, charts, gate status.",
+      "validation_rules": [
+        "refresh status visible",
+        "chart sources validated",
+        "period clear"
+      ],
+      "ai_agent_modification_rules": [
+        "do not overload with raw tables",
+        "surface caveats and active filters"
+      ],
+      "failure_modes": [
+        "beautiful stale dashboard",
+        "too many metrics",
+        "filter state hidden"
+      ]
+    },
+    {
+      "id": "arch-api-staging-sheet",
+      "pattern_name": "API staging sheet",
+      "when_needed": "Workbook prepares records for API/file upload.",
+      "minimum_viable_version": "Flat table matching schema with no merged cells and validated fields.",
+      "manual_edit_zones": "Only allowed staging input columns when necessary.",
+      "protected_zones": "Schema formulas, validation status, export range.",
+      "validation_rules": [
+        "schema matches contract",
+        "no formula errors",
+        "no duplicate/blank keys",
+        "ready flag true only after gates pass"
+      ],
+      "ai_agent_modification_rules": [
+        "do not upload from raw or report sheets",
+        "do not include secrets or tokens"
+      ],
+      "failure_modes": [
+        "wrong columns uploaded",
+        "manual edits bypass validation",
+        "credentials exposed"
+      ]
+    },
+    {
+      "id": "arch-audit-trail",
+      "pattern_name": "Audit trail sheet",
+      "when_needed": "Workbooks with manual overrides, financial outputs, or multi-user review.",
+      "minimum_viable_version": "Table of change date, user, area, reason.",
+      "manual_edit_zones": "Append-only changes by responsible user.",
+      "protected_zones": "History formulas and locked log structure.",
+      "validation_rules": [
+        "override entries complete",
+        "no deleted history",
+        "changes align to version log"
+      ],
+      "ai_agent_modification_rules": [
+        "never delete audit records",
+        "link overrides to affected cells"
+      ],
+      "failure_modes": [
+        "manual change cannot be explained",
+        "version rollback impossible"
+      ]
+    },
+    {
+      "id": "arch-version-change-log",
+      "pattern_name": "Version/change log sheet",
+      "when_needed": "Repeated templates, dashboards, or workbook repairs.",
+      "minimum_viable_version": "Version, date, editor, summary, affected sheets.",
+      "manual_edit_zones": "Change summary and signoff cells.",
+      "protected_zones": "Validation formulas and protected log headers.",
+      "validation_rules": [
+        "version increments",
+        "tests passed noted",
+        "backup path recorded"
+      ],
+      "ai_agent_modification_rules": [
+        "create backup before structural edits",
+        "do not overwrite v1/v2 package files"
+      ],
+      "failure_modes": [
+        "users cannot identify current version",
+        "repair cannot be rolled back"
+      ]
+    }
+  ],
+  "canonical_source_files": {
+    "risk_records": "excel_python_integration_os_v2.json",
+    "data_quality_gates": "excel_data_quality_gates_v2.json",
+    "ai_agent_workflows": "excel_ai_agent_workflows_v2.json",
+    "workbook_architecture_patterns": "workbook_architecture_patterns_v2.json"
+  }
+}

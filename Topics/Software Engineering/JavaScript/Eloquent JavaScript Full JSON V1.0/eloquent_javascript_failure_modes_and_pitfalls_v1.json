@@ -1,0 +1,3497 @@
+{
+  "file_metadata": {
+    "file_name": "eloquent_javascript_failure_modes_and_pitfalls_v1.json",
+    "title": "Failure Modes and Pitfalls",
+    "package_name": "Eloquent JavaScript Reasoning OS",
+    "package_version": "v1",
+    "generated_at_utc": "2026-08-25T15:48:13+00:00",
+    "purpose": "Reusable language, runtime, data, async, Apps Script, UI, permission, quota, and live-operation risks with concrete tests.",
+    "record_count": 40,
+    "source_file": "Eloquent JavaScript.pdf",
+    "source_pdf_sha256": "2cd84d428c07c531b1295ca2393bc0d4218c24567aac5b6049a9b5850e7dea1d"
+  },
+  "source_boundary": "Records in this file apply source-supported JavaScript reasoning beyond the book. They are explicitly marked as extensions and require current project evidence.",
+  "failure_modes_and_pitfalls": [
+    {
+      "id": "js-risk-implicit-coercion",
+      "record_type": "failure_mode_record",
+      "name": "Implicit coercion changes meaning",
+      "summary": "An operator converts an operand to another type, producing a valid-looking result that does not match the business meaning.",
+      "source_concept": "Failure mode derived from Automatic type conversion",
+      "programming_problem_addressed": "Prevents or diagnoses: Implicit coercion changes meaning.",
+      "runtime_context": "JavaScript language and program design",
+      "transfers_to_google_apps_script": "direct_language_transfer",
+      "apps_script_translation_note": "The language reasoning is generally applicable to Apps Script JavaScript. Verify current V8 support when syntax or built-ins are version-sensitive.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "An operator converts an operand to another type, producing a valid-looking result that does not match the business meaning."
+      ],
+      "tests_or_checks": [
+        "Test numeric text, empty string, zero, false, null, undefined, and malformed text"
+      ],
+      "diagnostic_questions": [
+        "What are the exact type and value of every operand immediately before this operator?"
+      ],
+      "related_record_ids": [
+        "js-value-automatic-coercion",
+        "js-value-strict-equality"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "1",
+        "chapter_title": "Values, Types, and Operators",
+        "section_heading": "Automatic type conversion",
+        "page_or_anchor": "PDF pp. 30-31; book p. 18-19",
+        "project_or_example_reference": "",
+        "support_role": "source_synthesis_support",
+        "support_strength": "synthesized",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "An operator converts an operand to another type, producing a valid-looking result that does not match the business meaning."
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false,
+        "source_boundary_note": "This is a cross-source synthesis of source-supported JavaScript failure behavior."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "implicit-coercion-changes-meaning"
+      ],
+      "failure_mode": "Implicit coercion changes meaning",
+      "description": "An operator converts an operand to another type, producing a valid-looking result that does not match the business meaning.",
+      "where_it_appears": [
+        "String/number comparisons",
+        "Blank-cell handling",
+        "Concatenation",
+        "Boolean conditions"
+      ],
+      "root_cause": "The code relies on automatic conversion instead of defining the accepted type and normalization rule.",
+      "symptoms": [
+        "\"10\" + 2 becomes text-like output",
+        "Blank and zero follow the same branch",
+        "NaN enters later calculations"
+      ],
+      "why_it_misleads": "The program may keep running, so the defect looks like bad source data rather than a language conversion.",
+      "better_question": "What are the exact type and value of every operand immediately before this operator?",
+      "prevention_or_mitigation": [
+        "Normalize external values once",
+        "Use explicit conversion with failure checks",
+        "Prefer strict equality when identity of type matters"
+      ]
+    },
+    {
+      "id": "js-risk-null-undefined-access",
+      "record_type": "failure_mode_record",
+      "name": "Null or undefined property access",
+      "summary": "Code reads a property or calls a method on a missing value before establishing whether the value exists.",
+      "source_concept": "Failure mode derived from Empty values",
+      "programming_problem_addressed": "Prevents or diagnoses: Null or undefined property access.",
+      "runtime_context": "JavaScript language and program design",
+      "transfers_to_google_apps_script": "direct_language_transfer",
+      "apps_script_translation_note": "The language reasoning is generally applicable to Apps Script JavaScript. Verify current V8 support when syntax or built-ins are version-sensitive.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "Code reads a property or calls a method on a missing value before establishing whether the value exists."
+      ],
+      "tests_or_checks": [
+        "Missing top-level field",
+        "Missing nested field",
+        "Explicit null",
+        "Empty string",
+        "Valid false/zero"
+      ],
+      "diagnostic_questions": [
+        "Where should this value become required, and what evidence proves it is present there?"
+      ],
+      "related_record_ids": [
+        "js-value-empty-values",
+        "js-data-optional-access"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "1",
+        "chapter_title": "Values, Types, and Operators",
+        "section_heading": "Empty values",
+        "page_or_anchor": "PDF p. 29; book p. 17",
+        "project_or_example_reference": "",
+        "support_role": "source_synthesis_support",
+        "support_strength": "synthesized",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "Code reads a property or calls a method on a missing value before establishing whether the value exists."
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false,
+        "source_boundary_note": "This is a cross-source synthesis of source-supported JavaScript failure behavior."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "null-or-undefined-property-access"
+      ],
+      "failure_mode": "Null or undefined property access",
+      "description": "Code reads a property or calls a method on a missing value before establishing whether the value exists.",
+      "where_it_appears": [
+        "Optional configuration",
+        "Missing headers",
+        "API responses",
+        "Nested row objects"
+      ],
+      "root_cause": "The data contract permits absence, but the code assumes presence or confuses null, undefined, and empty string.",
+      "symptoms": [
+        "TypeError at property access",
+        "Optional chaining hides a required missing field",
+        "Downstream default replaces a real defect"
+      ],
+      "why_it_misleads": "The crash can occur far from the point where the value first became missing.",
+      "better_question": "Where should this value become required, and what evidence proves it is present there?",
+      "prevention_or_mitigation": [
+        "Validate required fields at the boundary",
+        "Use optional access only for genuinely optional paths",
+        "Preserve a contextual field/path in the error"
+      ]
+    },
+    {
+      "id": "js-risk-shared-object-mutation",
+      "record_type": "failure_mode_record",
+      "name": "Shared object mutation",
+      "summary": "One function changes an object or array that another part of the program still treats as unchanged.",
+      "source_concept": "Failure mode derived from Mutability",
+      "programming_problem_addressed": "Prevents or diagnoses: Shared object mutation.",
+      "runtime_context": "JavaScript language and program design",
+      "transfers_to_google_apps_script": "direct_language_transfer",
+      "apps_script_translation_note": "The language reasoning is generally applicable to Apps Script JavaScript. Verify current V8 support when syntax or built-ins are version-sensitive.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "One function changes an object or array that another part of the program still treats as unchanged."
+      ],
+      "tests_or_checks": [
+        "Freeze-by-convention fixture",
+        "Call order reversal",
+        "Compare input before/after helper",
+        "Nested-object mutation test"
+      ],
+      "diagnostic_questions": [
+        "Which references point to this object before and after the function call?"
+      ],
+      "related_record_ids": [
+        "js-data-mutability",
+        "js-data-object-identity"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "4",
+        "chapter_title": "Data Structures: Objects and Arrays",
+        "section_heading": "Mutability",
+        "page_or_anchor": "PDF p. 73; book p. 61",
+        "project_or_example_reference": "",
+        "support_role": "source_synthesis_support",
+        "support_strength": "synthesized",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "One function changes an object or array that another part of the program still treats as unchanged."
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false,
+        "source_boundary_note": "This is a cross-source synthesis of source-supported JavaScript failure behavior."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "shared-object-mutation"
+      ],
+      "failure_mode": "Shared object mutation",
+      "description": "One function changes an object or array that another part of the program still treats as unchanged.",
+      "where_it_appears": [
+        "Configuration objects",
+        "Row records",
+        "Cached intermediate arrays",
+        "UI state"
+      ],
+      "root_cause": "Objects are shared by reference and the mutation boundary is undocumented.",
+      "symptoms": [
+        "Earlier records appear to change",
+        "Dry run affects later live plan",
+        "Order-dependent tests",
+        "Configuration drifts during a run"
+      ],
+      "why_it_misleads": "The mutating line may be correct locally while corrupting a distant caller that shares the same object.",
+      "better_question": "Which references point to this object before and after the function call?",
+      "prevention_or_mitigation": [
+        "Prefer returning a new record for transformations",
+        "Clone only with a clear depth/schema policy",
+        "Name mutation explicitly when intentional"
+      ]
+    },
+    {
+      "id": "js-risk-array-shape-assumption",
+      "record_type": "failure_mode_record",
+      "name": "Array shape assumption",
+      "summary": "Code interprets positions or row widths without validating that every array has the expected structure.",
+      "source_concept": "Failure mode derived from Arrays",
+      "programming_problem_addressed": "Prevents or diagnoses: Array shape assumption.",
+      "runtime_context": "JavaScript language and program design",
+      "transfers_to_google_apps_script": "direct_language_transfer",
+      "apps_script_translation_note": "The language reasoning is generally applicable to Apps Script JavaScript. Verify current V8 support when syntax or built-ins are version-sensitive.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "Code interprets positions or row widths without validating that every array has the expected structure."
+      ],
+      "tests_or_checks": [
+        "Ragged rows",
+        "Extra column",
+        "Missing column",
+        "Reordered headers",
+        "Empty trailing cells"
+      ],
+      "diagnostic_questions": [
+        "What exact invariant defines the array length and meaning of each index?"
+      ],
+      "related_record_ids": [
+        "js-data-arrays",
+        "js-data-tabular-encoding"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "4",
+        "chapter_title": "Data Structures: Objects and Arrays",
+        "section_heading": "Arrays",
+        "page_or_anchor": "PDF pp. 67-90; book p. 55-78",
+        "project_or_example_reference": "",
+        "support_role": "source_synthesis_support",
+        "support_strength": "synthesized",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "Code interprets positions or row widths without validating that every array has the expected structure."
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false,
+        "source_boundary_note": "This is a cross-source synthesis of source-supported JavaScript failure behavior."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "array-shape-assumption"
+      ],
+      "failure_mode": "Array shape assumption",
+      "description": "Code interprets positions or row widths without validating that every array has the expected structure.",
+      "where_it_appears": [
+        "Spreadsheet ranges",
+        "CSV rows",
+        "API result arrays",
+        "Header/value zipping"
+      ],
+      "root_cause": "The implementation treats an informal positional convention as a guaranteed schema.",
+      "symptoms": [
+        "Undefined fields",
+        "Shifted columns",
+        "setValues dimension errors",
+        "Wrong totals under the right header"
+      ],
+      "why_it_misleads": "Many rows may still process successfully, masking a few malformed or version-shifted rows.",
+      "better_question": "What exact invariant defines the array length and meaning of each index?",
+      "prevention_or_mitigation": [
+        "Validate header identity and row width",
+        "Convert positional rows to named records early",
+        "Reject or quarantine malformed rows"
+      ]
+    },
+    {
+      "id": "js-risk-sparse-array-assumption",
+      "record_type": "failure_mode_record",
+      "name": "Sparse array treated as dense data",
+      "summary": "Holes, deleted indexes, or unexpectedly absent elements behave differently from explicit undefined values during iteration.",
+      "source_concept": "Failure mode derived from Arrays",
+      "programming_problem_addressed": "Prevents or diagnoses: Sparse array treated as dense data.",
+      "runtime_context": "JavaScript language and program design",
+      "transfers_to_google_apps_script": "direct_language_transfer",
+      "apps_script_translation_note": "The language reasoning is generally applicable to Apps Script JavaScript. Verify current V8 support when syntax or built-ins are version-sensitive.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "Holes, deleted indexes, or unexpectedly absent elements behave differently from explicit undefined values during iteration."
+      ],
+      "tests_or_checks": [
+        "Array with a hole",
+        "Explicit undefined element",
+        "Deleted element",
+        "Index-preserving join"
+      ],
+      "diagnostic_questions": [
+        "Does every numeric index in the expected range exist, or is length only an upper boundary?"
+      ],
+      "related_record_ids": [
+        "js-data-arrays",
+        "js-hof-map"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "4",
+        "chapter_title": "Data Structures: Objects and Arrays",
+        "section_heading": "Arrays",
+        "page_or_anchor": "PDF pp. 67-90; book p. 55-78",
+        "project_or_example_reference": "",
+        "support_role": "source_synthesis_support",
+        "support_strength": "synthesized",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "Holes, deleted indexes, or unexpectedly absent elements behave differently from explicit undefined values during iteration."
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false,
+        "source_boundary_note": "This is a cross-source synthesis of source-supported JavaScript failure behavior."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "sparse-array-treated-as-dense-data"
+      ],
+      "failure_mode": "Sparse array treated as dense data",
+      "description": "Holes, deleted indexes, or unexpectedly absent elements behave differently from explicit undefined values during iteration.",
+      "where_it_appears": [
+        "Programmatically constructed arrays",
+        "Index-based joins",
+        "Filtered/reindexed data"
+      ],
+      "root_cause": "The code assumes every index from zero to length minus one represents a real record.",
+      "symptoms": [
+        "Callbacks skip elements",
+        "Length exceeds processed count",
+        "Index alignment breaks"
+      ],
+      "why_it_misleads": "Printing the array may not make the distinction between a hole and an explicit value obvious.",
+      "better_question": "Does every numeric index in the expected range exist, or is length only an upper boundary?",
+      "prevention_or_mitigation": [
+        "Construct dense arrays intentionally",
+        "Avoid delete on array indexes",
+        "Compare processed count with expected count"
+      ]
+    },
+    {
+      "id": "js-risk-this-binding",
+      "record_type": "failure_mode_record",
+      "name": "Unexpected this binding",
+      "summary": "A method is passed or called in a way that changes what this refers to.",
+      "source_concept": "Failure mode derived from Methods",
+      "programming_problem_addressed": "Prevents or diagnoses: Unexpected this binding.",
+      "runtime_context": "JavaScript language and program design",
+      "transfers_to_google_apps_script": "direct_language_transfer",
+      "apps_script_translation_note": "The language reasoning is generally applicable to Apps Script JavaScript. Verify current V8 support when syntax or built-ins are version-sensitive.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "A method is passed or called in a way that changes what this refers to."
+      ],
+      "tests_or_checks": [
+        "Direct call",
+        "Detached call",
+        "Callback call",
+        "Bound call",
+        "Arrow-wrapper call"
+      ],
+      "diagnostic_questions": [
+        "What exact call expression determines this for this invocation?"
+      ],
+      "related_record_ids": [
+        "js-object-methods-and-this",
+        "js-fn-functions-as-values"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "6",
+        "chapter_title": "The Secret Life of Objects",
+        "section_heading": "Methods",
+        "page_or_anchor": "PDF p. 106; book p. 94",
+        "project_or_example_reference": "",
+        "support_role": "source_synthesis_support",
+        "support_strength": "synthesized",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "A method is passed or called in a way that changes what this refers to."
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false,
+        "source_boundary_note": "This is a cross-source synthesis of source-supported JavaScript failure behavior."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "unexpected-this-binding"
+      ],
+      "failure_mode": "Unexpected this binding",
+      "description": "A method is passed or called in a way that changes what this refers to.",
+      "where_it_appears": [
+        "Detached methods",
+        "Callbacks",
+        "Event handlers",
+        "Class methods"
+      ],
+      "root_cause": "The function depends on call-site binding but is reused as an ordinary function value.",
+      "symptoms": [
+        "Property read from undefined or wrong object",
+        "Method works directly but fails as callback",
+        "State updated on unintended object"
+      ],
+      "why_it_misleads": "The method body looks correct; the defect is in how the call was formed.",
+      "better_question": "What exact call expression determines this for this invocation?",
+      "prevention_or_mitigation": [
+        "Prefer explicit parameters for simple helpers",
+        "Bind deliberately when method identity is required",
+        "Avoid hidden this dependencies in row transformations"
+      ]
+    },
+    {
+      "id": "js-risk-closure-state",
+      "record_type": "failure_mode_record",
+      "name": "Closure captures stale or hidden state",
+      "summary": "A function continues to reference an outer binding whose value, lifecycle, or mutation is not obvious to callers.",
+      "source_concept": "Failure mode derived from Closure",
+      "programming_problem_addressed": "Prevents or diagnoses: Closure captures stale or hidden state.",
+      "runtime_context": "JavaScript language and program design",
+      "transfers_to_google_apps_script": "direct_language_transfer",
+      "apps_script_translation_note": "The language reasoning is generally applicable to Apps Script JavaScript. Verify current V8 support when syntax or built-ins are version-sensitive.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "A function continues to reference an outer binding whose value, lifecycle, or mutation is not obvious to callers."
+      ],
+      "tests_or_checks": [
+        "Create two closures from different configs",
+        "Mutate outer binding after creation",
+        "Run handlers in different order"
+      ],
+      "diagnostic_questions": [
+        "Which outer bindings does this function read or change, and when do those bindings change?"
+      ],
+      "related_record_ids": [
+        "js-fn-closure",
+        "js-fn-lexical-scope"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "3",
+        "chapter_title": "Functions",
+        "section_heading": "Closure",
+        "page_or_anchor": "PDF pp. 57-58; book p. 45-46",
+        "project_or_example_reference": "",
+        "support_role": "source_synthesis_support",
+        "support_strength": "synthesized",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "A function continues to reference an outer binding whose value, lifecycle, or mutation is not obvious to callers."
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false,
+        "source_boundary_note": "This is a cross-source synthesis of source-supported JavaScript failure behavior."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "closure-captures-stale-or-hidden-state"
+      ],
+      "failure_mode": "Closure captures stale or hidden state",
+      "description": "A function continues to reference an outer binding whose value, lifecycle, or mutation is not obvious to callers.",
+      "where_it_appears": [
+        "Callback factories",
+        "Configuration closures",
+        "Client event handlers",
+        "Retry counters"
+      ],
+      "root_cause": "State is implicit in the surrounding lexical environment instead of represented in the function contract.",
+      "symptoms": [
+        "Old configuration used",
+        "Handlers share a counter unexpectedly",
+        "Test order changes behavior"
+      ],
+      "why_it_misleads": "The function signature appears pure even though the closure carries mutable dependencies.",
+      "better_question": "Which outer bindings does this function read or change, and when do those bindings change?",
+      "prevention_or_mitigation": [
+        "Capture immutable values intentionally",
+        "Pass changing dependencies explicitly",
+        "Reset or reconstruct closures between independent workflows"
+      ]
+    },
+    {
+      "id": "js-risk-global-state",
+      "record_type": "failure_mode_record",
+      "name": "Global mutable state couples executions",
+      "summary": "Top-level mutable values let unrelated functions influence one another and may be mistaken for durable or isolated state.",
+      "source_concept": "Failure mode derived from Bindings and scopes",
+      "programming_problem_addressed": "Prevents or diagnoses: Global mutable state couples executions.",
+      "runtime_context": "Google Apps Script runtime extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "Top-level mutable values let unrelated functions influence one another and may be mistaken for durable or isolated state."
+      ],
+      "tests_or_checks": [
+        "Fresh execution",
+        "Concurrent-style interleaving",
+        "Reordered calls",
+        "Configuration mutation"
+      ],
+      "diagnostic_questions": [
+        "What function owns this state, and what lifecycle is actually required?"
+      ],
+      "related_record_ids": [
+        "js-fn-lexical-scope",
+        "js-fn-pure-row-normalizer"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "3",
+        "chapter_title": "Functions",
+        "section_heading": "Bindings and scopes",
+        "page_or_anchor": "PDF p. 51; book p. 39",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "Top-level mutable values let unrelated functions influence one another and may be mistaken for durable or isolated state."
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": false,
+        "source_boundary_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "global-mutable-state-couples-executions"
+      ],
+      "failure_mode": "Global mutable state couples executions",
+      "description": "Top-level mutable values let unrelated functions influence one another and may be mistaken for durable or isolated state.",
+      "where_it_appears": [
+        "Configuration mutation",
+        "Caches",
+        "Current-row globals",
+        "Apps Script execution assumptions"
+      ],
+      "root_cause": "Convenience replaces explicit dependency passing and lifecycle ownership.",
+      "symptoms": [
+        "Function works only after another function ran",
+        "Tests cannot run independently",
+        "Concurrent or separate execution behaves differently"
+      ],
+      "why_it_misleads": "The dependency is invisible at the call site and may reset or persist differently across runtimes.",
+      "better_question": "What function owns this state, and what lifecycle is actually required?",
+      "prevention_or_mitigation": [
+        "Keep constants immutable",
+        "Pass run-specific context explicitly",
+        "Use a verified persistence service only for durable state"
+      ]
+    },
+    {
+      "id": "js-risk-prototype-confusion",
+      "record_type": "failure_mode_record",
+      "name": "Prototype-chain confusion",
+      "summary": "Inherited properties or methods are mistaken for own data fields, or custom prototype behavior changes ordinary object assumptions.",
+      "source_concept": "Failure mode derived from Prototypes",
+      "programming_problem_addressed": "Prevents or diagnoses: Prototype-chain confusion.",
+      "runtime_context": "JavaScript language and program design",
+      "transfers_to_google_apps_script": "direct_language_transfer",
+      "apps_script_translation_note": "The language reasoning is generally applicable to Apps Script JavaScript. Verify current V8 support when syntax or built-ins are version-sensitive.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "Inherited properties or methods are mistaken for own data fields, or custom prototype behavior changes ordinary object assumptions."
+      ],
+      "tests_or_checks": [
+        "Inherited property fixture",
+        "Object.create(null) fixture",
+        "JSON round-trip",
+        "Own-property test"
+      ],
+      "diagnostic_questions": [
+        "Is this value a plain data record, a class instance, or an object with inherited properties?"
+      ],
+      "related_record_ids": [
+        "js-object-prototypes",
+        "js-object-map"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "6",
+        "chapter_title": "The Secret Life of Objects",
+        "section_heading": "Prototypes",
+        "page_or_anchor": "PDF pp. 107-108; book p. 95-96",
+        "project_or_example_reference": "",
+        "support_role": "source_synthesis_support",
+        "support_strength": "synthesized",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "Inherited properties or methods are mistaken for own data fields, or custom prototype behavior changes ordinary object assumptions."
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false,
+        "source_boundary_note": "This is a cross-source synthesis of source-supported JavaScript failure behavior."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "prototype-chain-confusion"
+      ],
+      "failure_mode": "Prototype-chain confusion",
+      "description": "Inherited properties or methods are mistaken for own data fields, or custom prototype behavior changes ordinary object assumptions.",
+      "where_it_appears": [
+        "for...in iteration",
+        "Dictionary-like objects",
+        "Class instances",
+        "Deserialized data"
+      ],
+      "root_cause": "The code does not distinguish own properties, inherited behavior, and plain JSON-style records.",
+      "symptoms": [
+        "Unexpected key appears",
+        "Method disappears after serialization",
+        "Membership test succeeds for inherited name"
+      ],
+      "why_it_misleads": "The object prints like a record even though behavior comes from its prototype.",
+      "better_question": "Is this value a plain data record, a class instance, or an object with inherited properties?",
+      "prevention_or_mitigation": [
+        "Use Object.keys/entries for own enumerable data",
+        "Use Map for arbitrary keys when appropriate",
+        "Do not serialize behavior as if it were data"
+      ]
+    },
+    {
+      "id": "js-risk-class-overengineering",
+      "record_type": "failure_mode_record",
+      "name": "Class overengineering",
+      "summary": "A simple data transformation is wrapped in classes, inheritance, and mutable instance state that add indirection without a stable behavioral model.",
+      "source_concept": "Failure mode derived from Classes",
+      "programming_problem_addressed": "Prevents or diagnoses: Class overengineering.",
+      "runtime_context": "JavaScript language and program design",
+      "transfers_to_google_apps_script": "direct_language_transfer",
+      "apps_script_translation_note": "The language reasoning is generally applicable to Apps Script JavaScript. Verify current V8 support when syntax or built-ins are version-sensitive.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "A simple data transformation is wrapped in classes, inheritance, and mutable instance state that add indirection without a stable behavioral model."
+      ],
+      "tests_or_checks": [
+        "Rewrite one path with plain records",
+        "Compare call-site complexity",
+        "Test serialization and reconstruction"
+      ],
+      "diagnostic_questions": [
+        "What state or substitutable behavior requires a class rather than a plain object plus functions?"
+      ],
+      "related_record_ids": [
+        "js-object-classes",
+        "decision-plain-object-vs-class"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "6",
+        "chapter_title": "The Secret Life of Objects",
+        "section_heading": "Classes",
+        "page_or_anchor": "PDF pp. 109-110; book p. 97-98",
+        "project_or_example_reference": "",
+        "support_role": "source_synthesis_support",
+        "support_strength": "synthesized",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "A simple data transformation is wrapped in classes, inheritance, and mutable instance state that add indirection without a stable behavioral model."
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false,
+        "source_boundary_note": "This is a cross-source synthesis of source-supported JavaScript failure behavior."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "class-overengineering"
+      ],
+      "failure_mode": "Class overengineering",
+      "description": "A simple data transformation is wrapped in classes, inheritance, and mutable instance state that add indirection without a stable behavioral model.",
+      "where_it_appears": [
+        "Small Apps Script projects",
+        "Report schemas",
+        "Configuration wrappers",
+        "Single-use workflow objects"
+      ],
+      "root_cause": "The design chooses an object-oriented form before proving that identity, encapsulated state, or polymorphism is needed.",
+      "symptoms": [
+        "Many tiny classes",
+        "Difficult fixture setup",
+        "Hidden mutation",
+        "Subclass branches instead of explicit configuration"
+      ],
+      "why_it_misleads": "The design can look sophisticated while making the operational path harder to inspect.",
+      "better_question": "What state or substitutable behavior requires a class rather than a plain object plus functions?",
+      "prevention_or_mitigation": [
+        "Default to plain data and pure helpers",
+        "Use a class only when invariants and lifecycle become clearer",
+        "Avoid inheritance for report-type switches"
+      ]
+    },
+    {
+      "id": "js-risk-regex-overmatching",
+      "record_type": "failure_mode_record",
+      "name": "Regular expression overmatching",
+      "summary": "A pattern accepts more text than intended because it is unanchored, overly broad, or greedy.",
+      "source_concept": "Failure mode derived from Greed",
+      "programming_problem_addressed": "Prevents or diagnoses: Regular expression overmatching.",
+      "runtime_context": "JavaScript language and program design",
+      "transfers_to_google_apps_script": "direct_language_transfer",
+      "apps_script_translation_note": "The language reasoning is generally applicable to Apps Script JavaScript. Verify current V8 support when syntax or built-ins are version-sensitive.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "A pattern accepts more text than intended because it is unanchored, overly broad, or greedy."
+      ],
+      "tests_or_checks": [
+        "Positive cases",
+        "Near misses",
+        "Long adversarial input",
+        "Multiple delimiters",
+        "Unicode text"
+      ],
+      "diagnostic_questions": [
+        "Which realistic near-miss inputs must this pattern reject?"
+      ],
+      "related_record_ids": [
+        "js-regex-greed",
+        "js-regex-boundaries-lookahead"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "9",
+        "chapter_title": "Regular Expressions",
+        "section_heading": "Greed",
+        "page_or_anchor": "PDF pp. 162-163; book p. 150-151",
+        "project_or_example_reference": "",
+        "support_role": "source_synthesis_support",
+        "support_strength": "synthesized",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "A pattern accepts more text than intended because it is unanchored, overly broad, or greedy."
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false,
+        "source_boundary_note": "This is a cross-source synthesis of source-supported JavaScript failure behavior."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "regular-expression-overmatching"
+      ],
+      "failure_mode": "Regular expression overmatching",
+      "description": "A pattern accepts more text than intended because it is unanchored, overly broad, or greedy.",
+      "where_it_appears": [
+        "Filenames",
+        "Location labels",
+        "Dates",
+        "Structured notes"
+      ],
+      "root_cause": "The pattern is tested only against positive examples or uses wildcards where a specific grammar is needed.",
+      "symptoms": [
+        "Wrong report type selected",
+        "Extra text captured",
+        "Malformed date accepted",
+        "Multiple fields collapse into one match"
+      ],
+      "why_it_misleads": "The successful match is mistaken for proof that the input is valid.",
+      "better_question": "Which realistic near-miss inputs must this pattern reject?",
+      "prevention_or_mitigation": [
+        "Anchor complete-field validators",
+        "Constrain character classes and repetition",
+        "Validate captured semantic values separately"
+      ]
+    },
+    {
+      "id": "js-risk-date-parsing",
+      "record_type": "failure_mode_record",
+      "name": "Date parsing assumption",
+      "summary": "Text is converted to a date without an explicit format, calendar validity check, or timezone meaning.",
+      "source_concept": "Failure mode derived from The date class",
+      "programming_problem_addressed": "Prevents or diagnoses: Date parsing assumption.",
+      "runtime_context": "JavaScript language and program design",
+      "transfers_to_google_apps_script": "direct_language_transfer",
+      "apps_script_translation_note": "The language reasoning is generally applicable to Apps Script JavaScript. Verify current V8 support when syntax or built-ins are version-sensitive.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "Text is converted to a date without an explicit format, calendar validity check, or timezone meaning."
+      ],
+      "tests_or_checks": [
+        "Ambiguous 01/02 date",
+        "Leap day",
+        "Invalid month/day",
+        "UTC/local boundary",
+        "Year-end period"
+      ],
+      "diagnostic_questions": [
+        "Is this input a timestamp, a local calendar date, a spreadsheet serial, or display text?"
+      ],
+      "related_record_ids": [
+        "js-regex-date-object",
+        "js-risk-timezone-rollover"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "9",
+        "chapter_title": "Regular Expressions",
+        "section_heading": "The date class",
+        "page_or_anchor": "PDF pp. 150-172; book p. 138-160",
+        "project_or_example_reference": "",
+        "support_role": "source_synthesis_support",
+        "support_strength": "synthesized",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "Text is converted to a date without an explicit format, calendar validity check, or timezone meaning."
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false,
+        "source_boundary_note": "This is a cross-source synthesis of source-supported JavaScript failure behavior."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "date-parsing-assumption"
+      ],
+      "failure_mode": "Date parsing assumption",
+      "description": "Text is converted to a date without an explicit format, calendar validity check, or timezone meaning.",
+      "where_it_appears": [
+        "CSV/XLSX dates",
+        "Filenames",
+        "API timestamps",
+        "Fiscal-week mapping"
+      ],
+      "root_cause": "The code delegates ambiguous input to implementation-dependent or locale-sensitive parsing.",
+      "symptoms": [
+        "Month/day swap",
+        "Invalid date rolls into another date",
+        "Off-by-one day",
+        "Wrong fiscal period"
+      ],
+      "why_it_misleads": "The result is still a valid Date object, so the semantic error can pass type checks.",
+      "better_question": "Is this input a timestamp, a local calendar date, a spreadsheet serial, or display text?",
+      "prevention_or_mitigation": [
+        "Parse known components",
+        "Validate reconstructed components",
+        "Define business timezone",
+        "Map fiscal periods through authoritative rules"
+      ]
+    },
+    {
+      "id": "js-risk-locale-assumption",
+      "record_type": "failure_mode_record",
+      "name": "Locale assumption",
+      "summary": "Code assumes one decimal separator, date order, case mapping, character set, or display format.",
+      "source_concept": "Failure mode derived from International characters",
+      "programming_problem_addressed": "Prevents or diagnoses: Locale assumption.",
+      "runtime_context": "JavaScript language and program design",
+      "transfers_to_google_apps_script": "direct_language_transfer",
+      "apps_script_translation_note": "The language reasoning is generally applicable to Apps Script JavaScript. Verify current V8 support when syntax or built-ins are version-sensitive.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "Code assumes one decimal separator, date order, case mapping, character set, or display format."
+      ],
+      "tests_or_checks": [
+        "Comma/period decimals",
+        "Accented text",
+        "Non-ASCII whitespace",
+        "Different date order"
+      ],
+      "diagnostic_questions": [
+        "Which fields are locale-neutral raw values, and which are human-formatted strings?"
+      ],
+      "related_record_ids": [
+        "js-regex-international-characters",
+        "js-regex-code-units-characters"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "9",
+        "chapter_title": "Regular Expressions",
+        "section_heading": "International characters",
+        "page_or_anchor": "PDF pp. 152-153; book p. 140-141",
+        "project_or_example_reference": "",
+        "support_role": "source_synthesis_support",
+        "support_strength": "synthesized",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "Code assumes one decimal separator, date order, case mapping, character set, or display format."
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false,
+        "source_boundary_note": "This is a cross-source synthesis of source-supported JavaScript failure behavior."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "locale-assumption"
+      ],
+      "failure_mode": "Locale assumption",
+      "description": "Code assumes one decimal separator, date order, case mapping, character set, or display format.",
+      "where_it_appears": [
+        "Localized spreadsheets",
+        "Multilingual notes",
+        "Currency/number parsing",
+        "Filename cleanup"
+      ],
+      "root_cause": "Displayed text is treated as a stable machine format.",
+      "symptoms": [
+        "Comma decimal parsed as thousands",
+        "Accented name fails match",
+        "Date fields swap",
+        "Case normalization loses distinction"
+      ],
+      "why_it_misleads": "The code passes fixtures from the developer’s locale and fails on legitimate user data.",
+      "better_question": "Which fields are locale-neutral raw values, and which are human-formatted strings?",
+      "prevention_or_mitigation": [
+        "Prefer raw typed values",
+        "Specify allowed formats",
+        "Test multilingual and locale variants",
+        "Avoid destructive ASCII-only cleanup"
+      ]
+    },
+    {
+      "id": "js-risk-json-serialization-loss",
+      "record_type": "failure_mode_record",
+      "name": "JSON serialization loses information",
+      "summary": "A JSON round-trip drops or changes values that are not representable in JSON or whose meaning depends on object identity/type.",
+      "source_concept": "Failure mode derived from JSON",
+      "programming_problem_addressed": "Prevents or diagnoses: JSON serialization loses information.",
+      "runtime_context": "JavaScript language and program design",
+      "transfers_to_google_apps_script": "direct_language_transfer",
+      "apps_script_translation_note": "The language reasoning is generally applicable to Apps Script JavaScript. Verify current V8 support when syntax or built-ins are version-sensitive.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "A JSON round-trip drops or changes values that are not representable in JSON or whose meaning depends on object identity/type."
+      ],
+      "tests_or_checks": [
+        "Undefined",
+        "Date",
+        "NaN/Infinity",
+        "Nested arrays",
+        "Circular reference",
+        "Class instance"
+      ],
+      "diagnostic_questions": [
+        "Which fields must survive with exactly what type and semantic meaning?"
+      ],
+      "related_record_ids": [
+        "js-data-json-parse-stringify",
+        "js-object-prototypes"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "4",
+        "chapter_title": "Data Structures: Objects and Arrays",
+        "section_heading": "JSON",
+        "page_or_anchor": "PDF p. 87; book p. 75",
+        "project_or_example_reference": "",
+        "support_role": "source_synthesis_support",
+        "support_strength": "synthesized",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "A JSON round-trip drops or changes values that are not representable in JSON or whose meaning depends on object identity/type."
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false,
+        "source_boundary_note": "This is a cross-source synthesis of source-supported JavaScript failure behavior."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "json-serialization-loses-information"
+      ],
+      "failure_mode": "JSON serialization loses information",
+      "description": "A JSON round-trip drops or changes values that are not representable in JSON or whose meaning depends on object identity/type.",
+      "where_it_appears": [
+        "API payloads",
+        "Properties-like storage",
+        "Run logs",
+        "Client/server calls"
+      ],
+      "root_cause": "The code treats serialization as lossless cloning or persistence for arbitrary JavaScript values.",
+      "symptoms": [
+        "Undefined field disappears",
+        "Date becomes string",
+        "Function/method vanishes",
+        "NaN or Infinity changes meaning",
+        "Cycle throws"
+      ],
+      "why_it_misleads": "The parsed object may look structurally similar while losing type and behavior.",
+      "better_question": "Which fields must survive with exactly what type and semantic meaning?",
+      "prevention_or_mitigation": [
+        "Define a JSON-safe schema",
+        "Encode dates and special values explicitly",
+        "Version payloads",
+        "Test round-trip invariants"
+      ]
+    },
+    {
+      "id": "js-risk-broad-catch-hides-error",
+      "record_type": "failure_mode_record",
+      "name": "Broad catch block hides the defect",
+      "summary": "A catch block converts every failure into a fallback, generic message, or apparent success without distinguishing expected from unexpected errors.",
+      "source_concept": "Failure mode derived from Selective catching",
+      "programming_problem_addressed": "Prevents or diagnoses: Broad catch block hides the defect.",
+      "runtime_context": "JavaScript language and program design",
+      "transfers_to_google_apps_script": "direct_language_transfer",
+      "apps_script_translation_note": "The language reasoning is generally applicable to Apps Script JavaScript. Verify current V8 support when syntax or built-ins are version-sensitive.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "A catch block converts every failure into a fallback, generic message, or apparent success without distinguishing expected from unexpected errors."
+      ],
+      "tests_or_checks": [
+        "Expected validation error",
+        "Programming TypeError",
+        "Service permission error",
+        "Cleanup failure"
+      ],
+      "diagnostic_questions": [
+        "Which specific error can this layer handle, and which errors must propagate?"
+      ],
+      "related_record_ids": [
+        "js-error-selective-catching",
+        "js-error-propagation"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "8",
+        "chapter_title": "Bugs and Errors",
+        "section_heading": "Selective catching",
+        "page_or_anchor": "PDF pp. 145-146; book p. 133-134",
+        "project_or_example_reference": "",
+        "support_role": "source_synthesis_support",
+        "support_strength": "synthesized",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "A catch block converts every failure into a fallback, generic message, or apparent success without distinguishing expected from unexpected errors."
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false,
+        "source_boundary_note": "This is a cross-source synthesis of source-supported JavaScript failure behavior."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "broad-catch-block-hides-the-defect"
+      ],
+      "failure_mode": "Broad catch block hides the defect",
+      "description": "A catch block converts every failure into a fallback, generic message, or apparent success without distinguishing expected from unexpected errors.",
+      "where_it_appears": [
+        "Import processors",
+        "API calls",
+        "Form submissions",
+        "Triggers"
+      ],
+      "root_cause": "The code catches at a level that cannot recover and discards the original cause or context.",
+      "symptoms": [
+        "Empty output instead of failure",
+        "Success message after skipped work",
+        "Repeated retries of validation errors"
+      ],
+      "why_it_misleads": "Users see a benign symptom while the actual programming error is removed from evidence.",
+      "better_question": "Which specific error can this layer handle, and which errors must propagate?",
+      "prevention_or_mitigation": [
+        "Catch only recognized recoverable conditions",
+        "Preserve cause and safe context",
+        "Use finally for unconditional cleanup",
+        "Never return success from an unknown catch"
+      ]
+    },
+    {
+      "id": "js-risk-silent-failure",
+      "record_type": "failure_mode_record",
+      "name": "Silent failure",
+      "summary": "A workflow fails, skips data, or stops early without an observable failed status, useful log, or user message.",
+      "source_concept": "Failure mode derived from Error propagation",
+      "programming_problem_addressed": "Prevents or diagnoses: Silent failure.",
+      "runtime_context": "Google Apps Script runtime extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "A workflow fails, skips data, or stops early without an observable failed status, useful log, or user message."
+      ],
+      "tests_or_checks": [
+        "Injected failure at every stage",
+        "Ignored return/status test",
+        "Trigger execution review",
+        "Missing-output reconciliation"
+      ],
+      "diagnostic_questions": [
+        "What artifact proves the workflow reached a verified completion state?"
+      ],
+      "related_record_ids": [
+        "js-core-errors-should-carry-context",
+        "js-error-user-vs-developer-message"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "8",
+        "chapter_title": "Bugs and Errors",
+        "section_heading": "Error propagation",
+        "page_or_anchor": "PDF pp. 140-141; book p. 128-129",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "A workflow fails, skips data, or stops early without an observable failed status, useful log, or user message."
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": false,
+        "source_boundary_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "silent-failure"
+      ],
+      "failure_mode": "Silent failure",
+      "description": "A workflow fails, skips data, or stops early without an observable failed status, useful log, or user message.",
+      "where_it_appears": [
+        "Triggers",
+        "Batch processors",
+        "Email generation",
+        "API integrations"
+      ],
+      "root_cause": "Errors are swallowed, return values are ignored, or completion is inferred before all effects finish.",
+      "symptoms": [
+        "Missing output",
+        "Partial data",
+        "No execution record",
+        "User keeps resubmitting"
+      ],
+      "why_it_misleads": "Absence of an error message is mistaken for success.",
+      "better_question": "What artifact proves the workflow reached a verified completion state?",
+      "prevention_or_mitigation": [
+        "Use explicit terminal statuses",
+        "Check service/API results",
+        "Record counts and output references",
+        "Surface a diagnostic ID on failure"
+      ]
+    },
+    {
+      "id": "js-risk-async-ordering",
+      "record_type": "failure_mode_record",
+      "name": "Asynchronous ordering assumption",
+      "summary": "Code assumes operations finish in the order they start or that shared state still represents the initiating request.",
+      "source_concept": "Failure mode derived from Asynchronous bugs",
+      "programming_problem_addressed": "Prevents or diagnoses: Asynchronous ordering assumption.",
+      "runtime_context": "JavaScript language and program design",
+      "transfers_to_google_apps_script": "direct_language_transfer",
+      "apps_script_translation_note": "The language reasoning is generally applicable to Apps Script JavaScript. Verify current V8 support when syntax or built-ins are version-sensitive.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "Code assumes operations finish in the order they start or that shared state still represents the initiating request."
+      ],
+      "tests_or_checks": [
+        "Reverse completion order",
+        "Rapid repeated action",
+        "Failure between dependent steps"
+      ],
+      "diagnostic_questions": [
+        "What happens when the second request completes before the first?"
+      ],
+      "related_record_ids": [
+        "js-async-bugs",
+        "js-async-google-script-run-boundary"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "11",
+        "chapter_title": "Asynchronous Programming",
+        "section_heading": "Asynchronous bugs",
+        "page_or_anchor": "PDF pp. 201-202; book p. 189-190",
+        "project_or_example_reference": "",
+        "support_role": "source_synthesis_support",
+        "support_strength": "synthesized",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "Code assumes operations finish in the order they start or that shared state still represents the initiating request."
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false,
+        "source_boundary_note": "This is a cross-source synthesis of source-supported JavaScript failure behavior."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "asynchronous-ordering-assumption"
+      ],
+      "failure_mode": "Asynchronous ordering assumption",
+      "description": "Code assumes operations finish in the order they start or that shared state still represents the initiating request.",
+      "where_it_appears": [
+        "HTMLService callbacks",
+        "Browser fetch",
+        "Timers",
+        "Concurrent external requests"
+      ],
+      "root_cause": "Completion order is not modeled and results lack a request or state version.",
+      "symptoms": [
+        "Older response overwrites newer UI",
+        "Spinner clears too early",
+        "Wrong file result displayed"
+      ],
+      "why_it_misleads": "Each individual callback may be correct even though their interleaving is wrong.",
+      "better_question": "What happens when the second request completes before the first?",
+      "prevention_or_mitigation": [
+        "Attach request IDs",
+        "Ignore stale responses",
+        "Serialize dependent operations",
+        "Keep independent results separate"
+      ]
+    },
+    {
+      "id": "js-risk-double-submit",
+      "record_type": "failure_mode_record",
+      "name": "Double submission",
+      "summary": "One user intent triggers the server action more than once through repeated clicks, duplicate handlers, or both click and form submission paths.",
+      "source_concept": "Failure mode derived from Default actions",
+      "programming_problem_addressed": "Prevents or diagnoses: Double submission.",
+      "runtime_context": "Google Apps Script runtime extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "One user intent triggers the server action more than once through repeated clicks, duplicate handlers, or both click and form submission paths."
+      ],
+      "tests_or_checks": [
+        "Double click",
+        "Enter key plus click",
+        "Duplicate listener",
+        "Timeout then retry"
+      ],
+      "diagnostic_questions": [
+        "What prevents the same logical submission from producing the side effect twice?"
+      ],
+      "related_record_ids": [
+        "js-event-default-actions",
+        "js-async-google-script-run-boundary",
+        "js-risk-missing-idempotency"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "15",
+        "chapter_title": "Handling Events",
+        "section_heading": "Default actions",
+        "page_or_anchor": "PDF p. 249; book p. 237",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "One user intent triggers the server action more than once through repeated clicks, duplicate handlers, or both click and form submission paths."
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": false,
+        "source_boundary_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "double-submission"
+      ],
+      "failure_mode": "Double submission",
+      "description": "One user intent triggers the server action more than once through repeated clicks, duplicate handlers, or both click and form submission paths.",
+      "where_it_appears": [
+        "HTMLService forms",
+        "Upload buttons",
+        "Retry controls",
+        "Slow server calls"
+      ],
+      "root_cause": "The UI does not enter a locked processing state and the server has no idempotency key.",
+      "symptoms": [
+        "Duplicate row/file/email",
+        "Two loading indicators",
+        "Conflicting callbacks"
+      ],
+      "why_it_misleads": "The duplicate may look like two legitimate requests in server logs.",
+      "better_question": "What prevents the same logical submission from producing the side effect twice?",
+      "prevention_or_mitigation": [
+        "Disable controls while active",
+        "Use one submit path",
+        "Assign an operation key",
+        "Make server effect idempotent"
+      ]
+    },
+    {
+      "id": "js-risk-client-server-boundary-confusion",
+      "record_type": "failure_mode_record",
+      "name": "Client/server boundary confusion",
+      "summary": "Code, state, or validation is assigned to the wrong side of a client/server system.",
+      "source_concept": "Failure mode derived from Design",
+      "programming_problem_addressed": "Prevents or diagnoses: Client/server boundary confusion.",
+      "runtime_context": "JavaScript language and program design",
+      "transfers_to_google_apps_script": "direct_language_transfer",
+      "apps_script_translation_note": "The language reasoning is generally applicable to Apps Script JavaScript. Verify current V8 support when syntax or built-ins are version-sensitive.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "Code, state, or validation is assigned to the wrong side of a client/server system."
+      ],
+      "tests_or_checks": [
+        "Unsupported argument shape",
+        "Tampered client payload",
+        "Server exception",
+        "Stale client state"
+      ],
+      "diagnostic_questions": [
+        "Which runtime executes this line, and what plain data crosses the boundary?"
+      ],
+      "related_record_ids": [
+        "js-core-client-server-contracts",
+        "js-browser-htmlservice-client-boundary"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "21",
+        "chapter_title": "Project: Skill-Sharing Website",
+        "section_heading": "Design",
+        "page_or_anchor": "PDF p. 367; book p. 355",
+        "project_or_example_reference": "",
+        "support_role": "source_synthesis_support",
+        "support_strength": "synthesized",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "Code, state, or validation is assigned to the wrong side of a client/server system."
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false,
+        "source_boundary_note": "This is a cross-source synthesis of source-supported JavaScript failure behavior."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "client-server-boundary-confusion"
+      ],
+      "failure_mode": "Client/server boundary confusion",
+      "description": "Code, state, or validation is assigned to the wrong side of a client/server system.",
+      "where_it_appears": [
+        "HTMLService Web Apps",
+        "google.script.run",
+        "Browser fetch",
+        "Server .gs functions"
+      ],
+      "root_cause": "The design treats one JavaScript codebase as one runtime and ignores serialization, trust, and execution identity boundaries.",
+      "symptoms": [
+        "DOM object passed to server",
+        "Secret exposed to client",
+        "Client-only validation trusted",
+        "Server return shape unhandled"
+      ],
+      "why_it_misleads": "Both sides use JavaScript syntax, making the runtime split visually easy to miss.",
+      "better_question": "Which runtime executes this line, and what plain data crosses the boundary?",
+      "prevention_or_mitigation": [
+        "Label client and server files/functions",
+        "Define serializable request/result contracts",
+        "Validate authoritatively on server",
+        "Keep secrets server-side"
+      ]
+    },
+    {
+      "id": "js-risk-browser-node-appsscript-confusion",
+      "record_type": "failure_mode_record",
+      "name": "Browser, Node.js, and Apps Script are treated as one runtime",
+      "summary": "JavaScript syntax is mistaken for proof that browser, Node.js, and Apps Script APIs and lifecycle rules are interchangeable.",
+      "source_concept": "Failure mode derived from What is JavaScript?",
+      "programming_problem_addressed": "Prevents or diagnoses: Browser, Node.js, and Apps Script are treated as one runtime.",
+      "runtime_context": "Google Apps Script runtime extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "JavaScript syntax is mistaken for proof that browser, Node.js, and Apps Script APIs and lifecycle rules are interchangeable."
+      ],
+      "tests_or_checks": [
+        "Run in actual client .html",
+        "Run in server .gs",
+        "Static global-name inventory"
+      ],
+      "diagnostic_questions": [
+        "For every non-language global, which host defines it in this exact execution context?"
+      ],
+      "related_record_ids": [
+        "js-core-javascript-is-hosted",
+        "js-node-not-appsscript"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "Introduction",
+        "chapter_title": "Introduction",
+        "section_heading": "What is JavaScript?",
+        "page_or_anchor": "PDF pp. 17-18; book p. 5-6",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "JavaScript syntax is mistaken for proof that browser, Node.js, and Apps Script APIs and lifecycle rules are interchangeable."
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": false,
+        "source_boundary_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "browser-node-js-and-apps-script-are-treated-as-one-runtime"
+      ],
+      "failure_mode": "Browser, Node.js, and Apps Script are treated as one runtime",
+      "description": "JavaScript syntax is mistaken for proof that browser, Node.js, and Apps Script APIs and lifecycle rules are interchangeable.",
+      "where_it_appears": [
+        "API selection",
+        "Modules",
+        "Files",
+        "HTTP",
+        "DOM",
+        "Async code"
+      ],
+      "root_cause": "The code is categorized only by language instead of by host environment.",
+      "symptoms": [
+        "document is undefined",
+        "require is undefined",
+        "fetch/UrlFetch mismatch",
+        "Deployment-specific failure"
+      ],
+      "why_it_misleads": "A familiar JavaScript name can obscure that it belongs to a host, not the language.",
+      "better_question": "For every non-language global, which host defines it in this exact execution context?",
+      "prevention_or_mitigation": [
+        "Create a runtime inventory",
+        "Verify host APIs in authoritative docs",
+        "Keep boundary adapters separate"
+      ]
+    },
+    {
+      "id": "js-risk-dom-in-server-code",
+      "record_type": "failure_mode_record",
+      "name": "DOM API used in server-side .gs code",
+      "summary": "Server code references document, window, DOM nodes, or browser event APIs that exist only in a browser client.",
+      "source_concept": "Failure mode derived from Document structure",
+      "programming_problem_addressed": "Prevents or diagnoses: DOM API used in server-side .gs code.",
+      "runtime_context": "Google Apps Script runtime extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "Server code references document, window, DOM nodes, or browser event APIs that exist only in a browser client."
+      ],
+      "tests_or_checks": [
+        "Static scan for browser globals in .gs",
+        "Client/server contract test"
+      ],
+      "diagnostic_questions": [
+        "Does this function execute in HTMLService client JavaScript or on the Apps Script server?"
+      ],
+      "related_record_ids": [
+        "js-browser-htmlservice-client-boundary",
+        "gas-translate-dom-htmlservice-client"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "14",
+        "chapter_title": "The Document Object Model",
+        "section_heading": "Document structure",
+        "page_or_anchor": "PDF p. 226; book p. 214",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "Server code references document, window, DOM nodes, or browser event APIs that exist only in a browser client."
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": false,
+        "source_boundary_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "dom-api-used-in-server-side-gs-code"
+      ],
+      "failure_mode": "DOM API used in server-side .gs code",
+      "description": "Server code references document, window, DOM nodes, or browser event APIs that exist only in a browser client.",
+      "where_it_appears": [
+        "Apps Script .gs files",
+        "Shared helper copied from HTML client"
+      ],
+      "root_cause": "The developer does not identify the execution runtime before choosing an API.",
+      "symptoms": [
+        "ReferenceError for document/window",
+        "Server helper cannot accept node value",
+        "Client UI logic mixed with service calls"
+      ],
+      "why_it_misleads": "The same project contains both HTML and .gs JavaScript, so file location can be overlooked.",
+      "better_question": "Does this function execute in HTMLService client JavaScript or on the Apps Script server?",
+      "prevention_or_mitigation": [
+        "Keep DOM adapters in client files",
+        "Pass plain values to server functions",
+        "Name boundary modules/files clearly"
+      ]
+    },
+    {
+      "id": "js-risk-fetch-urlfetch-confusion",
+      "record_type": "failure_mode_record",
+      "name": "Browser fetch and UrlFetchApp are treated as interchangeable",
+      "summary": "Code transfers request syntax, response handling, CORS assumptions, or credentials between browser fetch and server UrlFetchApp without translation.",
+      "source_concept": "Failure mode derived from Fetch",
+      "programming_problem_addressed": "Prevents or diagnoses: Browser fetch and UrlFetchApp are treated as interchangeable.",
+      "runtime_context": "Google Apps Script runtime extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "Code transfers request syntax, response handling, CORS assumptions, or credentials between browser fetch and server UrlFetchApp without translation."
+      ],
+      "tests_or_checks": [
+        "Client request fixture",
+        "Server request fixture",
+        "Non-2xx response",
+        "Credential/CORS boundary test"
+      ],
+      "diagnostic_questions": [
+        "Where must the request originate, and which current API contract governs it?"
+      ],
+      "related_record_ids": [
+        "js-http-fetch",
+        "js-http-browser-fetch-vs-urlfetch"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "18",
+        "chapter_title": "HTTP and Forms",
+        "section_heading": "Fetch",
+        "page_or_anchor": "PDF pp. 311-312; book p. 299-300",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "Code transfers request syntax, response handling, CORS assumptions, or credentials between browser fetch and server UrlFetchApp without translation."
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": false,
+        "source_boundary_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "browser-fetch-and-urlfetchapp-are-treated-as-interchangeable"
+      ],
+      "failure_mode": "Browser fetch and UrlFetchApp are treated as interchangeable",
+      "description": "Code transfers request syntax, response handling, CORS assumptions, or credentials between browser fetch and server UrlFetchApp without translation.",
+      "where_it_appears": [
+        "API integrations",
+        "HTMLService client calls",
+        "Server .gs HTTP calls"
+      ],
+      "root_cause": "HTTP concepts are correctly recognized but the host-specific API and security model are not.",
+      "symptoms": [
+        "Wrong method signature",
+        "Promise handling in server code",
+        "Response status ignored",
+        "CORS diagnosis applied server-side"
+      ],
+      "why_it_misleads": "Both mechanisms make HTTP requests, so conceptual similarity hides API differences.",
+      "better_question": "Where must the request originate, and which current API contract governs it?",
+      "prevention_or_mitigation": [
+        "Choose client or server intentionally",
+        "Verify current method/options/response types",
+        "Handle status and authentication explicitly"
+      ]
+    },
+    {
+      "id": "js-risk-node-api-in-appsscript",
+      "record_type": "failure_mode_record",
+      "name": "Node.js API called from Apps Script",
+      "summary": "Code attempts to use Node globals, modules, package resolution, filesystem, streams, or server APIs directly in Apps Script.",
+      "source_concept": "Failure mode derived from Node",
+      "programming_problem_addressed": "Prevents or diagnoses: Node.js API called from Apps Script.",
+      "runtime_context": "Google Apps Script runtime extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "Code attempts to use Node globals, modules, package resolution, filesystem, streams, or server APIs directly in Apps Script."
+      ],
+      "tests_or_checks": [
+        "Static scan for Node globals/modules",
+        "Deploy representative build",
+        "Permission and bundle-size review"
+      ],
+      "diagnostic_questions": [
+        "Which Node capability is required, and what verified Apps Script service or architecture supplies the actual need?"
+      ],
+      "related_record_ids": [
+        "js-node-not-appsscript",
+        "gas-translate-node-filesystem"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "20",
+        "chapter_title": "Node.js",
+        "section_heading": "Node",
+        "page_or_anchor": "PDF pp. 350-366; book p. 338-354",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "Code attempts to use Node globals, modules, package resolution, filesystem, streams, or server APIs directly in Apps Script."
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": false,
+        "source_boundary_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "node-js-api-called-from-apps-script"
+      ],
+      "failure_mode": "Node.js API called from Apps Script",
+      "description": "Code attempts to use Node globals, modules, package resolution, filesystem, streams, or server APIs directly in Apps Script.",
+      "where_it_appears": [
+        "require/import assumptions",
+        "fs/path/http modules",
+        "NPM examples"
+      ],
+      "root_cause": "Source or package code is copied without translating its runtime dependencies.",
+      "symptoms": [
+        "require is undefined",
+        "Module cannot resolve",
+        "Filesystem path fails",
+        "Build works locally but not deployed"
+      ],
+      "why_it_misleads": "The code is valid JavaScript in Node, so syntax checking alone does not reveal the host mismatch.",
+      "better_question": "Which Node capability is required, and what verified Apps Script service or architecture supplies the actual need?",
+      "prevention_or_mitigation": [
+        "Inventory dependencies",
+        "Use Apps Script services where appropriate",
+        "Use a verified build/external service only with explicit deployment design"
+      ]
+    },
+    {
+      "id": "js-risk-module-runtime-assumption",
+      "record_type": "failure_mode_record",
+      "name": "Module support is assumed from another runtime",
+      "summary": "Code organization concepts are conflated with a particular loader, syntax, resolution algorithm, or build tool.",
+      "source_concept": "Failure mode derived from ES modules",
+      "programming_problem_addressed": "Prevents or diagnoses: Module support is assumed from another runtime.",
+      "runtime_context": "Google Apps Script runtime extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "Code organization concepts are conflated with a particular loader, syntax, resolution algorithm, or build tool."
+      ],
+      "tests_or_checks": [
+        "Local build",
+        "Deployment smoke test",
+        "Dependency graph",
+        "Rollback test"
+      ],
+      "diagnostic_questions": [
+        "Does the project need a conceptual module boundary, a runtime module loader, or a build-time bundle?"
+      ],
+      "related_record_ids": [
+        "js-module-es-modules",
+        "js-module-commonjs",
+        "js-module-build-bundle"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "10",
+        "chapter_title": "Modules",
+        "section_heading": "ES modules",
+        "page_or_anchor": "PDF pp. 174-175; book p. 162-163",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "Code organization concepts are conflated with a particular loader, syntax, resolution algorithm, or build tool."
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": false,
+        "source_boundary_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "module-support-is-assumed-from-another-runtime"
+      ],
+      "failure_mode": "Module support is assumed from another runtime",
+      "description": "Code organization concepts are conflated with a particular loader, syntax, resolution algorithm, or build tool.",
+      "where_it_appears": [
+        "ES import/export",
+        "CommonJS require",
+        "clasp/bundling",
+        "Apps Script files"
+      ],
+      "root_cause": "The current deployment environment and build pipeline are not inspected.",
+      "symptoms": [
+        "Syntax/deploy error",
+        "Wrong load order",
+        "Unresolved dependency",
+        "Local/deployed behavior differs"
+      ],
+      "why_it_misleads": "The architectural module boundary can be sound even while the chosen runtime mechanism is unsupported.",
+      "better_question": "Does the project need a conceptual module boundary, a runtime module loader, or a build-time bundle?",
+      "prevention_or_mitigation": [
+        "Start with interfaces and dependency direction",
+        "Verify current Apps Script support/toolchain",
+        "Keep a deployable known-good artifact"
+      ]
+    },
+    {
+      "id": "js-risk-quota-timeout",
+      "record_type": "failure_mode_record",
+      "name": "Quota or execution-time failure",
+      "summary": "A valid algorithm exceeds a current hosted-service quota, rate, payload, memory, or execution-time boundary.",
+      "source_concept": "Failure mode derived from Asynchronous programming",
+      "programming_problem_addressed": "Prevents or diagnoses: Quota or execution-time failure.",
+      "runtime_context": "Google Apps Script runtime extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "A valid algorithm exceeds a current hosted-service quota, rate, payload, memory, or execution-time boundary."
+      ],
+      "tests_or_checks": [
+        "Largest realistic fixture",
+        "Rate-limit simulation",
+        "Timeout near side effect",
+        "Different account/deployment context"
+      ],
+      "diagnostic_questions": [
+        "What current limit is approached, and what measured input-to-cost relationship predicts it?"
+      ],
+      "related_record_ids": [
+        "gas-translate-quotas",
+        "gas-translate-long-running-operations"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "11",
+        "chapter_title": "Asynchronous Programming",
+        "section_heading": "Asynchronous programming",
+        "page_or_anchor": "PDF pp. 185-204; book p. 173-192",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "A valid algorithm exceeds a current hosted-service quota, rate, payload, memory, or execution-time boundary."
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": false,
+        "source_boundary_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "quota-or-execution-time-failure"
+      ],
+      "failure_mode": "Quota or execution-time failure",
+      "description": "A valid algorithm exceeds a current hosted-service quota, rate, payload, memory, or execution-time boundary.",
+      "where_it_appears": [
+        "Large spreadsheets",
+        "Uploads",
+        "Mail/API loops",
+        "Triggers",
+        "Long transformations"
+      ],
+      "root_cause": "Capacity is estimated from language logic or remembered limits rather than measured workload and current platform documentation.",
+      "symptoms": [
+        "Stops after partial work",
+        "Intermittent service exception",
+        "Slow UI",
+        "Batch succeeds only on small files"
+      ],
+      "why_it_misleads": "The same code passes normal fixtures and fails only at realistic scale or account context.",
+      "better_question": "What current limit is approached, and what measured input-to-cost relationship predicts it?",
+      "prevention_or_mitigation": [
+        "Verify current quotas",
+        "Batch service operations",
+        "Measure representative inputs",
+        "Checkpoint idempotently",
+        "Fail before live side effects when capacity is insufficient"
+      ]
+    },
+    {
+      "id": "js-risk-permission-scope",
+      "record_type": "failure_mode_record",
+      "name": "Permission, scope, or execution-identity mismatch",
+      "summary": "The code is valid but the executing user/deployment lacks access, requests excessive access, or runs under an unexpected identity.",
+      "source_concept": "Failure mode derived from Security and HTTPS",
+      "programming_problem_addressed": "Prevents or diagnoses: Permission, scope, or execution-identity mismatch.",
+      "runtime_context": "Google Apps Script runtime extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "The code is valid but the executing user/deployment lacks access, requests excessive access, or runs under an unexpected identity."
+      ],
+      "tests_or_checks": [
+        "Owner/non-owner test",
+        "Revoked access",
+        "Trigger identity",
+        "Deployment access matrix"
+      ],
+      "diagnostic_questions": [
+        "Who executes this path, whose resource is touched, and which exact current scope grants it?"
+      ],
+      "related_record_ids": [
+        "gas-translate-authorization-scopes",
+        "js-http-security-https"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "18",
+        "chapter_title": "HTTP and Forms",
+        "section_heading": "Security and HTTPS",
+        "page_or_anchor": "PDF p. 314; book p. 302",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "The code is valid but the executing user/deployment lacks access, requests excessive access, or runs under an unexpected identity."
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": false,
+        "source_boundary_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "permission-scope-or-execution-identity-mismatch"
+      ],
+      "failure_mode": "Permission, scope, or execution-identity mismatch",
+      "description": "The code is valid but the executing user/deployment lacks access, requests excessive access, or runs under an unexpected identity.",
+      "where_it_appears": [
+        "Drive/Sheets/Mail access",
+        "Web Apps",
+        "Triggers",
+        "External requests"
+      ],
+      "root_cause": "Authorization is tested only as the owner and current scopes/deployment settings are not inventoried.",
+      "symptoms": [
+        "Permission denied",
+        "Consent loop",
+        "Owner works but manager fails",
+        "Data accessed under wrong account"
+      ],
+      "why_it_misleads": "A permissions failure can look like a data or API defect when tested under different identities.",
+      "better_question": "Who executes this path, whose resource is touched, and which exact current scope grants it?",
+      "prevention_or_mitigation": [
+        "Map service calls to current scopes",
+        "Test representative non-owner users",
+        "Minimize privileges",
+        "Document deployment identity"
+      ]
+    },
+    {
+      "id": "js-risk-trigger-race-condition",
+      "record_type": "failure_mode_record",
+      "name": "Trigger race condition",
+      "summary": "Two trigger or user executions read and change the same logical state without a safe concurrency and idempotency design.",
+      "source_concept": "Failure mode derived from Asynchronous bugs",
+      "programming_problem_addressed": "Prevents or diagnoses: Trigger race condition.",
+      "runtime_context": "Google Apps Script runtime extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "Two trigger or user executions read and change the same logical state without a safe concurrency and idempotency design."
+      ],
+      "tests_or_checks": [
+        "Parallel invocation",
+        "Lock timeout",
+        "Retry after partial completion",
+        "Same event delivered twice"
+      ],
+      "diagnostic_questions": [
+        "What shared resource can two executions touch between the read and the write?"
+      ],
+      "related_record_ids": [
+        "gas-translate-concurrency-locks-idempotency",
+        "gas-translate-triggers"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "11",
+        "chapter_title": "Asynchronous Programming",
+        "section_heading": "Asynchronous bugs",
+        "page_or_anchor": "PDF pp. 201-202; book p. 189-190",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "Two trigger or user executions read and change the same logical state without a safe concurrency and idempotency design."
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": false,
+        "source_boundary_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "trigger-race-condition"
+      ],
+      "failure_mode": "Trigger race condition",
+      "description": "Two trigger or user executions read and change the same logical state without a safe concurrency and idempotency design.",
+      "where_it_appears": [
+        "Time-driven triggers",
+        "Form-submit triggers",
+        "Concurrent Web App calls",
+        "Scheduled sync jobs"
+      ],
+      "root_cause": "The workflow assumes serialized execution or uses a check-then-write sequence without a protected operation key.",
+      "symptoms": [
+        "Duplicate rows/emails",
+        "Lost update",
+        "Conflicting status",
+        "Intermittent only under load"
+      ],
+      "why_it_misleads": "Each isolated execution is correct; the failure exists only in interleaving.",
+      "better_question": "What shared resource can two executions touch between the read and the write?",
+      "prevention_or_mitigation": [
+        "Use deterministic operation keys",
+        "Verify and use the narrowest appropriate lock",
+        "Recheck state after lock",
+        "Make effects idempotent"
+      ]
+    },
+    {
+      "id": "js-risk-live-write-without-dry-run",
+      "record_type": "failure_mode_record",
+      "name": "Live write without dry-run evidence",
+      "summary": "The first end-to-end test mutates production Sheets, files, APIs, or sends messages before transformation and reconciliation are proven.",
+      "source_concept": "Failure mode derived from Functions and side effects",
+      "programming_problem_addressed": "Prevents or diagnoses: Live write without dry-run evidence.",
+      "runtime_context": "Internal Google Apps Script workflow extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "The first end-to-end test mutates production Sheets, files, APIs, or sends messages before transformation and reconciliation are proven."
+      ],
+      "tests_or_checks": [
+        "Assert no service writes in dry mode",
+        "Plan-hash comparison",
+        "Wrong-destination fixture",
+        "Failure before/after first effect"
+      ],
+      "diagnostic_questions": [
+        "What exact action plan can be reviewed without executing any external mutation?"
+      ],
+      "related_record_ids": [
+        "js-error-dry-run-live-boundary",
+        "internal-dry-run-live-pattern"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "3",
+        "chapter_title": "Functions",
+        "section_heading": "Functions and side effects",
+        "page_or_anchor": "PDF p. 64; book p. 52",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "The first end-to-end test mutates production Sheets, files, APIs, or sends messages before transformation and reconciliation are proven."
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "live-write-without-dry-run-evidence"
+      ],
+      "failure_mode": "Live write without dry-run evidence",
+      "description": "The first end-to-end test mutates production Sheets, files, APIs, or sends messages before transformation and reconciliation are proven.",
+      "where_it_appears": [
+        "Report imports",
+        "Scorecard updates",
+        "Emails",
+        "File creation"
+      ],
+      "root_cause": "Calculation and effects share one path with no inspectable action plan.",
+      "symptoms": [
+        "Wrong rows overwritten",
+        "Duplicate remote records",
+        "Recipient mistake",
+        "No basis for rollback"
+      ],
+      "why_it_misleads": "A successful service call can be mistaken for a correct business transformation.",
+      "better_question": "What exact action plan can be reviewed without executing any external mutation?",
+      "prevention_or_mitigation": [
+        "Build one deterministic plan",
+        "Render counts/diffs/control totals",
+        "Require explicit live mode",
+        "Verify destination and post-write result"
+      ]
+    },
+    {
+      "id": "js-risk-missing-idempotency",
+      "record_type": "failure_mode_record",
+      "name": "Missing idempotency",
+      "summary": "A retry, duplicate event, or repeated click can perform the same logical side effect more than once.",
+      "source_concept": "Failure mode derived from Asynchronous bugs",
+      "programming_problem_addressed": "Prevents or diagnoses: Missing idempotency.",
+      "runtime_context": "Internal Google Apps Script workflow extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "A retry, duplicate event, or repeated click can perform the same logical side effect more than once."
+      ],
+      "tests_or_checks": [
+        "Same request twice",
+        "Timeout after effect before response",
+        "Trigger redelivery",
+        "Manual retry"
+      ],
+      "diagnostic_questions": [
+        "What stable key identifies this logical effect across attempts and executions?"
+      ],
+      "related_record_ids": [
+        "internal-retry-idempotency",
+        "gas-translate-concurrency-locks-idempotency"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "11",
+        "chapter_title": "Asynchronous Programming",
+        "section_heading": "Asynchronous bugs",
+        "page_or_anchor": "PDF pp. 201-202; book p. 189-190",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "A retry, duplicate event, or repeated click can perform the same logical side effect more than once."
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "missing-idempotency"
+      ],
+      "failure_mode": "Missing idempotency",
+      "description": "A retry, duplicate event, or repeated click can perform the same logical side effect more than once.",
+      "where_it_appears": [
+        "Emails",
+        "Remote creates",
+        "File exports",
+        "Append operations",
+        "Trigger jobs"
+      ],
+      "root_cause": "The workflow identifies attempts but not the stable logical operation they represent.",
+      "symptoms": [
+        "Duplicate output",
+        "Two remote records",
+        "Repeated notification",
+        "Manual cleanup"
+      ],
+      "why_it_misleads": "Every attempt may have a unique execution ID, hiding that they are the same business operation.",
+      "better_question": "What stable key identifies this logical effect across attempts and executions?",
+      "prevention_or_mitigation": [
+        "Derive a deterministic operation key",
+        "Check durable completion evidence",
+        "Use create-or-update semantics where valid",
+        "Reconcile timeout-after-success"
+      ]
+    },
+    {
+      "id": "js-risk-user-facing-error-too-technical",
+      "record_type": "failure_mode_record",
+      "name": "User-facing error is too technical",
+      "summary": "A raw exception, stack trace, service name, or implementation detail is shown instead of an actionable workflow message.",
+      "source_concept": "Failure mode derived from Debugging",
+      "programming_problem_addressed": "Prevents or diagnoses: User-facing error is too technical.",
+      "runtime_context": "Internal Google Apps Script workflow extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "A raw exception, stack trace, service name, or implementation detail is shown instead of an actionable workflow message."
+      ],
+      "tests_or_checks": [
+        "Validation error",
+        "Permission error",
+        "Unexpected exception",
+        "Partial success",
+        "Sensitive payload redaction"
+      ],
+      "diagnostic_questions": [
+        "What can the user change now, and what diagnostic reference lets a developer investigate safely?"
+      ],
+      "related_record_ids": [
+        "js-error-user-vs-developer-message",
+        "internal-webapp-status-state"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "8",
+        "chapter_title": "Bugs and Errors",
+        "section_heading": "Debugging",
+        "page_or_anchor": "PDF p. 139; book p. 127",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "A raw exception, stack trace, service name, or implementation detail is shown instead of an actionable workflow message."
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "user-facing-error-is-too-technical"
+      ],
+      "failure_mode": "User-facing error is too technical",
+      "description": "A raw exception, stack trace, service name, or implementation detail is shown instead of an actionable workflow message.",
+      "where_it_appears": [
+        "Web Apps",
+        "Forms",
+        "Upload processors",
+        "Email/report tools"
+      ],
+      "root_cause": "Developer diagnostics and user recovery guidance are not separated.",
+      "symptoms": [
+        "User cannot tell what to fix",
+        "Sensitive internals exposed",
+        "Repeated submission",
+        "Support lacks correlation ID"
+      ],
+      "why_it_misleads": "More technical detail can feel informative while giving the user no safe next action.",
+      "better_question": "What can the user change now, and what diagnostic reference lets a developer investigate safely?",
+      "prevention_or_mitigation": [
+        "Return stage, plain-language problem, preserved input, next action, and diagnostic ID",
+        "Keep stack/cause in restricted logs"
+      ]
+    },
+    {
+      "id": "js-risk-row-count-drift",
+      "record_type": "failure_mode_record",
+      "name": "Row-count or control-total drift",
+      "summary": "Rows or totals change during filtering, mapping, deduplication, or aggregation without an explicit reconciliation explanation.",
+      "source_concept": "Failure mode derived from Filtering arrays",
+      "programming_problem_addressed": "Prevents or diagnoses: Row-count or control-total drift.",
+      "runtime_context": "Internal Google Apps Script workflow extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "Rows or totals change during filtering, mapping, deduplication, or aggregation without an explicit reconciliation explanation."
+      ],
+      "tests_or_checks": [
+        "Duplicate rows",
+        "Filtered row",
+        "Malformed row",
+        "Zero-value row",
+        "Known control total"
+      ],
+      "diagnostic_questions": [
+        "How does input count equal accepted plus rejected plus intentionally deduplicated records?"
+      ],
+      "related_record_ids": [
+        "js-hof-filter",
+        "js-hof-reduce"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "5",
+        "chapter_title": "Higher-Order Functions",
+        "section_heading": "Filtering arrays",
+        "page_or_anchor": "PDF p. 96; book p. 84",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "Rows or totals change during filtering, mapping, deduplication, or aggregation without an explicit reconciliation explanation."
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "row-count-or-control-total-drift"
+      ],
+      "failure_mode": "Row-count or control-total drift",
+      "description": "Rows or totals change during filtering, mapping, deduplication, or aggregation without an explicit reconciliation explanation.",
+      "where_it_appears": [
+        "Report transformations",
+        "Dashboard aggregation",
+        "Exports"
+      ],
+      "root_cause": "Stages do not report accepted, rejected, duplicated, and output counts under one invariant.",
+      "symptoms": [
+        "Output appears plausible but omits rows",
+        "Totals differ",
+        "Duplicate collapse is invisible"
+      ],
+      "why_it_misleads": "A transformation can be internally consistent while silently discarding data.",
+      "better_question": "How does input count equal accepted plus rejected plus intentionally deduplicated records?",
+      "prevention_or_mitigation": [
+        "Emit stage counts",
+        "Use stable record keys",
+        "Reconcile control totals",
+        "Require reasons for every excluded row"
+      ]
+    },
+    {
+      "id": "js-risk-header-mapping-collision",
+      "record_type": "failure_mode_record",
+      "name": "Header normalization collision",
+      "summary": "Two distinct source headers normalize to the same key or one alias maps to multiple target fields.",
+      "source_concept": "Failure mode derived from Objects",
+      "programming_problem_addressed": "Prevents or diagnoses: Header normalization collision.",
+      "runtime_context": "Internal Google Apps Script workflow extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "Two distinct source headers normalize to the same key or one alias maps to multiple target fields."
+      ],
+      "tests_or_checks": [
+        "Case/whitespace variants",
+        "Punctuation collision",
+        "Duplicate source header",
+        "Alias collision"
+      ],
+      "diagnostic_questions": [
+        "Is the normalized header map one-to-one for this exact source version?"
+      ],
+      "related_record_ids": [
+        "js-data-row-object-normalization",
+        "internal-config-driven-report-types"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "4",
+        "chapter_title": "Data Structures: Objects and Arrays",
+        "section_heading": "Objects",
+        "page_or_anchor": "PDF pp. 70-72; book p. 58-60",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "Two distinct source headers normalize to the same key or one alias maps to multiple target fields."
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "header-normalization-collision"
+      ],
+      "failure_mode": "Header normalization collision",
+      "description": "Two distinct source headers normalize to the same key or one alias maps to multiple target fields.",
+      "where_it_appears": [
+        "CSV/XLSX parsers",
+        "Versioned report imports",
+        "Location/metric mapping"
+      ],
+      "root_cause": "Normalization removes meaningful distinctions or mapping configuration is not checked for uniqueness.",
+      "symptoms": [
+        "Later column overwrites earlier value",
+        "Wrong field populated",
+        "Version detection ambiguous"
+      ],
+      "why_it_misleads": "The normalized record looks clean and valid after one source column has already been lost.",
+      "better_question": "Is the normalized header map one-to-one for this exact source version?",
+      "prevention_or_mitigation": [
+        "Validate unique normalized headers",
+        "Version schemas explicitly",
+        "Reject ambiguous aliases"
+      ]
+    },
+    {
+      "id": "js-risk-partial-write-inconsistency",
+      "record_type": "failure_mode_record",
+      "name": "Partial write leaves inconsistent state",
+      "summary": "A workflow completes some external effects and then fails without recording, compensating, or safely resuming the remainder.",
+      "source_concept": "Failure mode derived from Cleaning up after exceptions",
+      "programming_problem_addressed": "Prevents or diagnoses: Partial write leaves inconsistent state.",
+      "runtime_context": "Internal Google Apps Script workflow extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "A workflow completes some external effects and then fails without recording, compensating, or safely resuming the remainder."
+      ],
+      "tests_or_checks": [
+        "Failure before first effect",
+        "Failure between effects",
+        "Failure after effect before status update"
+      ],
+      "diagnostic_questions": [
+        "Which effects are complete, and what invariant must hold after interruption at each boundary?"
+      ],
+      "related_record_ids": [
+        "js-error-finally-cleanup",
+        "internal-partial-failure-reporting"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "8",
+        "chapter_title": "Bugs and Errors",
+        "section_heading": "Cleaning up after exceptions",
+        "page_or_anchor": "PDF pp. 143-144; book p. 131-132",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "A workflow completes some external effects and then fails without recording, compensating, or safely resuming the remainder."
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "partial-write-leaves-inconsistent-state"
+      ],
+      "failure_mode": "Partial write leaves inconsistent state",
+      "description": "A workflow completes some external effects and then fails without recording, compensating, or safely resuming the remainder.",
+      "where_it_appears": [
+        "Multi-range writes",
+        "File plus email workflows",
+        "API batches",
+        "Run-history updates"
+      ],
+      "root_cause": "Side effects are interleaved with validation or no consistency policy exists for failure between effects.",
+      "symptoms": [
+        "Output exists but status says failed",
+        "Email references missing file",
+        "Some rows updated"
+      ],
+      "why_it_misleads": "The error is real, but “failed” does not describe which irreversible effects already occurred.",
+      "better_question": "Which effects are complete, and what invariant must hold after interruption at each boundary?",
+      "prevention_or_mitigation": [
+        "Order effects deliberately",
+        "Record per-effect status",
+        "Use transactional support only if verified",
+        "Design idempotent resume or reviewed compensation"
+      ]
+    },
+    {
+      "id": "js-risk-validation-after-side-effect",
+      "record_type": "failure_mode_record",
+      "name": "Validation occurs after a side effect",
+      "summary": "The workflow writes, sends, creates, or updates before all required input and destination checks pass.",
+      "source_concept": "Failure mode derived from Functions and side effects",
+      "programming_problem_addressed": "Prevents or diagnoses: Validation occurs after a side effect.",
+      "runtime_context": "Internal Google Apps Script workflow extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "The workflow writes, sends, creates, or updates before all required input and destination checks pass."
+      ],
+      "tests_or_checks": [
+        "Failure at each validation rule",
+        "Service-call spy in dry mode",
+        "Plan completeness assertion"
+      ],
+      "diagnostic_questions": [
+        "What side effect occurs before the last possible validation failure?"
+      ],
+      "related_record_ids": [
+        "js-fn-parse-validate-transform-export",
+        "js-error-dry-run-live-boundary"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "3",
+        "chapter_title": "Functions",
+        "section_heading": "Functions and side effects",
+        "page_or_anchor": "PDF p. 64; book p. 52",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "The workflow writes, sends, creates, or updates before all required input and destination checks pass."
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "validation-occurs-after-a-side-effect"
+      ],
+      "failure_mode": "Validation occurs after a side effect",
+      "description": "The workflow writes, sends, creates, or updates before all required input and destination checks pass.",
+      "where_it_appears": [
+        "Sheet writes",
+        "Emails",
+        "API calls",
+        "File persistence"
+      ],
+      "root_cause": "Parsing, validation, transformation, and effect code are interleaved.",
+      "symptoms": [
+        "Invalid record partially saved",
+        "Notification about rejected data",
+        "Cleanup required"
+      ],
+      "why_it_misleads": "The later validation error can distract from the earlier irreversible action.",
+      "better_question": "What side effect occurs before the last possible validation failure?",
+      "prevention_or_mitigation": [
+        "Complete validation and plan generation first",
+        "Use pure stages",
+        "Guard the live adapter with a validated-plan type/status"
+      ]
+    },
+    {
+      "id": "js-risk-sensitive-log-leak",
+      "record_type": "failure_mode_record",
+      "name": "Sensitive data leaks into logs or error messages",
+      "summary": "Raw payloads, tokens, personal information, comments, or recipient data are recorded beyond what diagnosis requires.",
+      "source_concept": "Failure mode derived from Debugging",
+      "programming_problem_addressed": "Prevents or diagnoses: Sensitive data leaks into logs or error messages.",
+      "runtime_context": "Internal Google Apps Script workflow extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "Raw payloads, tokens, personal information, comments, or recipient data are recorded beyond what diagnosis requires."
+      ],
+      "tests_or_checks": [
+        "Token field",
+        "Free-text comment",
+        "Email recipient list",
+        "Stack trace",
+        "Redaction regression"
+      ],
+      "diagnostic_questions": [
+        "What is the minimum safe context needed to reproduce or correlate this failure?"
+      ],
+      "related_record_ids": [
+        "js-error-debugging",
+        "gas-translate-logging-diagnostics"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "8",
+        "chapter_title": "Bugs and Errors",
+        "section_heading": "Debugging",
+        "page_or_anchor": "PDF p. 139; book p. 127",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "Raw payloads, tokens, personal information, comments, or recipient data are recorded beyond what diagnosis requires."
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "sensitive-data-leaks-into-logs-or-error-messages"
+      ],
+      "failure_mode": "Sensitive data leaks into logs or error messages",
+      "description": "Raw payloads, tokens, personal information, comments, or recipient data are recorded beyond what diagnosis requires.",
+      "where_it_appears": [
+        "API integration logs",
+        "Form errors",
+        "Email/report diagnostics",
+        "Run history"
+      ],
+      "root_cause": "Logging is added reactively by serializing whole objects instead of selecting safe fields.",
+      "symptoms": [
+        "Secrets visible to maintainers",
+        "Personal comments retained",
+        "User-facing stack includes payload"
+      ],
+      "why_it_misleads": "Verbose logs feel useful during debugging and the exposure may not be visible in normal UI.",
+      "better_question": "What is the minimum safe context needed to reproduce or correlate this failure?",
+      "prevention_or_mitigation": [
+        "Log counts, IDs, stage, schema version, and sanitized error class",
+        "Redact secrets",
+        "Review retention/access"
+      ]
+    },
+    {
+      "id": "js-risk-retry-duplicates",
+      "record_type": "failure_mode_record",
+      "name": "Retry duplicates a completed side effect",
+      "summary": "A timeout or lost response is interpreted as no effect, so the retry repeats an operation that actually succeeded.",
+      "source_concept": "Failure mode derived from Failure",
+      "programming_problem_addressed": "Prevents or diagnoses: Retry duplicates a completed side effect.",
+      "runtime_context": "Internal Google Apps Script workflow extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "A timeout or lost response is interpreted as no effect, so the retry repeats an operation that actually succeeded."
+      ],
+      "tests_or_checks": [
+        "Timeout-after-success",
+        "Lost response",
+        "Manual retry",
+        "Concurrent retry"
+      ],
+      "diagnostic_questions": [
+        "How can the workflow determine whether the logical operation already completed before retrying?"
+      ],
+      "related_record_ids": [
+        "js-async-failure",
+        "internal-retry-idempotency"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "11",
+        "chapter_title": "Asynchronous Programming",
+        "section_heading": "Failure",
+        "page_or_anchor": "PDF pp. 190-191; book p. 178-179",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "A timeout or lost response is interpreted as no effect, so the retry repeats an operation that actually succeeded."
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "retry-duplicates-a-completed-side-effect"
+      ],
+      "failure_mode": "Retry duplicates a completed side effect",
+      "description": "A timeout or lost response is interpreted as no effect, so the retry repeats an operation that actually succeeded.",
+      "where_it_appears": [
+        "HTTP POST/create",
+        "Email send",
+        "File creation",
+        "Append row"
+      ],
+      "root_cause": "Attempt outcome is unknown and the workflow lacks a stable operation key or reconciliation query.",
+      "symptoms": [
+        "Duplicate remote records",
+        "Two files",
+        "Repeated message",
+        "Conflicting status"
+      ],
+      "why_it_misleads": "The first attempt appears failed from the caller even though the destination completed it.",
+      "better_question": "How can the workflow determine whether the logical operation already completed before retrying?",
+      "prevention_or_mitigation": [
+        "Use idempotency keys where supported",
+        "Query by deterministic key",
+        "Record operation before/after states",
+        "Classify unknown outcomes separately"
+      ]
+    },
+    {
+      "id": "js-risk-stale-cache",
+      "record_type": "failure_mode_record",
+      "name": "Stale or missing cache treated as truth",
+      "summary": "Cached data is used as authoritative current state despite expiry, eviction, or another execution changing the source.",
+      "source_concept": "Failure mode derived from Storing data client-side",
+      "programming_problem_addressed": "Prevents or diagnoses: Stale or missing cache treated as truth.",
+      "runtime_context": "Google Apps Script runtime extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "Cached data is used as authoritative current state despite expiry, eviction, or another execution changing the source."
+      ],
+      "tests_or_checks": [
+        "Expired key",
+        "Source changes",
+        "Concurrent invalidation",
+        "Cold start"
+      ],
+      "diagnostic_questions": [
+        "Can the workflow remain correct if this cache value is stale or absent?"
+      ],
+      "related_record_ids": [
+        "gas-translate-client-storage",
+        "js-storage-browser-vs-properties"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "18",
+        "chapter_title": "HTTP and Forms",
+        "section_heading": "Storing data client-side",
+        "page_or_anchor": "PDF pp. 324-326; book p. 312-314",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "Cached data is used as authoritative current state despite expiry, eviction, or another execution changing the source."
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": false,
+        "source_boundary_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "stale-or-missing-cache-treated-as-truth"
+      ],
+      "failure_mode": "Stale or missing cache treated as truth",
+      "description": "Cached data is used as authoritative current state despite expiry, eviction, or another execution changing the source.",
+      "where_it_appears": [
+        "CacheService",
+        "Browser storage",
+        "In-memory maps",
+        "Dashboard data"
+      ],
+      "root_cause": "The design does not distinguish optimization from durable source of truth.",
+      "symptoms": [
+        "Old mapping/target",
+        "Incorrect permission decision",
+        "Missing key causes failure",
+        "Users see different state"
+      ],
+      "why_it_misleads": "Fast cache reads look reliable until invalidation or eviction occurs.",
+      "better_question": "Can the workflow remain correct if this cache value is stale or absent?",
+      "prevention_or_mitigation": [
+        "Use cache only for recomputable data",
+        "Attach version/freshness",
+        "Fall back to authoritative source",
+        "Never cache authorization truth casually"
+      ]
+    },
+    {
+      "id": "js-risk-timezone-rollover",
+      "record_type": "failure_mode_record",
+      "name": "Timezone or period rollover error",
+      "summary": "A timestamp or date is assigned to the wrong business day, fiscal week, month, or year at a timezone boundary.",
+      "source_concept": "Failure mode derived from The date class",
+      "programming_problem_addressed": "Prevents or diagnoses: Timezone or period rollover error.",
+      "runtime_context": "Google Apps Script runtime extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "A timestamp or date is assigned to the wrong business day, fiscal week, month, or year at a timezone boundary."
+      ],
+      "tests_or_checks": [
+        "Midnight UTC/local",
+        "DST transition",
+        "Year end",
+        "53-week year",
+        "Spreadsheet serial/date object"
+      ],
+      "diagnostic_questions": [
+        "Which timezone and calendar define the authoritative period for this record?"
+      ],
+      "related_record_ids": [
+        "gas-translate-date-timezone",
+        "internal-date-fiscal-week-logic"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "9",
+        "chapter_title": "Regular Expressions",
+        "section_heading": "The date class",
+        "page_or_anchor": "PDF pp. 150-172; book p. 138-160",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "A timestamp or date is assigned to the wrong business day, fiscal week, month, or year at a timezone boundary."
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": false,
+        "source_boundary_note": "This applies source-supported JavaScript reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "timezone-or-period-rollover-error"
+      ],
+      "failure_mode": "Timezone or period rollover error",
+      "description": "A timestamp or date is assigned to the wrong business day, fiscal week, month, or year at a timezone boundary.",
+      "where_it_appears": [
+        "Scheduled jobs",
+        "Spreadsheet dates",
+        "API timestamps",
+        "Fiscal scorecards"
+      ],
+      "root_cause": "The code mixes UTC, project, spreadsheet, browser, or locale assumptions without an explicit canonical business calendar.",
+      "symptoms": [
+        "Sunday/Monday misclassification",
+        "December record enters next fiscal year",
+        "Duplicate/missing day near DST"
+      ],
+      "why_it_misleads": "The date prints correctly in one context while its underlying instant or interpretation differs elsewhere.",
+      "better_question": "Which timezone and calendar define the authoritative period for this record?",
+      "prevention_or_mitigation": [
+        "Use explicit canonical date keys",
+        "Format only at boundaries",
+        "Test project/spreadsheet/browser contexts",
+        "Use authoritative fiscal mapping"
+      ]
+    },
+    {
+      "id": "js-risk-location-mapping-collision",
+      "record_type": "failure_mode_record",
+      "name": "Location mapping collision or false match",
+      "summary": "A normalized alias or fuzzy pattern resolves two locations or selects the wrong location.",
+      "source_concept": "Failure mode derived from Choice patterns",
+      "programming_problem_addressed": "Prevents or diagnoses: Location mapping collision or false match.",
+      "runtime_context": "Internal Google Apps Script workflow extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "A normalized alias or fuzzy pattern resolves two locations or selects the wrong location."
+      ],
+      "tests_or_checks": [
+        "Same abbreviation across brands",
+        "Whitespace/case variant",
+        "Typo",
+        "New location",
+        "Inactive location"
+      ],
+      "diagnostic_questions": [
+        "Does this raw label map uniquely within the current brand/context registry?"
+      ],
+      "related_record_ids": [
+        "internal-location-mapping",
+        "js-regex-choice"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "9",
+        "chapter_title": "Regular Expressions",
+        "section_heading": "Choice patterns",
+        "page_or_anchor": "PDF p. 158; book p. 146",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "A normalized alias or fuzzy pattern resolves two locations or selects the wrong location."
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "location-mapping-collision-or-false-match"
+      ],
+      "failure_mode": "Location mapping collision or false match",
+      "description": "A normalized alias or fuzzy pattern resolves two locations or selects the wrong location.",
+      "where_it_appears": [
+        "Restaurant reports",
+        "Email routing",
+        "Scorecards",
+        "Warehouse forms"
+      ],
+      "root_cause": "Mapping favors convenience over a unique authoritative identifier and ambiguous input is not rejected.",
+      "symptoms": [
+        "Data posted to wrong location",
+        "Wrong manager notified",
+        "Unknown location silently folded into known one"
+      ],
+      "why_it_misleads": "A plausible location name makes the false match hard to notice in aggregate reports.",
+      "better_question": "Does this raw label map uniquely within the current brand/context registry?",
+      "prevention_or_mitigation": [
+        "Use explicit alias table",
+        "Validate one-to-one mappings",
+        "Reject ambiguity",
+        "Log unresolved labels without live routing"
+      ]
+    },
+    {
+      "id": "js-risk-formula-injection",
+      "record_type": "failure_mode_record",
+      "name": "Spreadsheet formula injection from imported text",
+      "summary": "Imported untrusted text is written to a spreadsheet in a form that may be interpreted as a formula rather than literal content.",
+      "source_concept": "Failure mode derived from Text fields",
+      "programming_problem_addressed": "Prevents or diagnoses: Spreadsheet formula injection from imported text.",
+      "runtime_context": "Internal Google Apps Script workflow extension",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book.",
+      "use_when": [
+        "When reviewing code paths where this failure could corrupt data, hide an error, or confuse a user."
+      ],
+      "do_not_use_when": [
+        "Do not diagnose from the label alone; reproduce the symptom and inspect values, runtime, and side effects."
+      ],
+      "common_failure_modes": [
+        "Imported untrusted text is written to a spreadsheet in a form that may be interpreted as a formula rather than literal content."
+      ],
+      "tests_or_checks": [
+        "Leading =, +, -, @",
+        "Whitespace before prefix",
+        "Quoted CSV field",
+        "Legitimate formula field"
+      ],
+      "diagnostic_questions": [
+        "Which fields may contain user-controlled text, and how will the destination interpret leading formula characters?"
+      ],
+      "related_record_ids": [
+        "internal-csv-xlsx-upload-validation",
+        "js-form-text-fields"
+      ],
+      "source_traceability": {
+        "source_file": "Eloquent JavaScript.pdf",
+        "book_title": "Eloquent JavaScript",
+        "author": "Marijn Haverbeke",
+        "edition": "4th edition",
+        "chapter_number": "18",
+        "chapter_title": "HTTP and Forms",
+        "section_heading": "Text fields",
+        "page_or_anchor": "PDF pp. 319-320; book p. 307-308",
+        "project_or_example_reference": "",
+        "support_role": "translation_basis",
+        "support_strength": "conceptual",
+        "directly_supported_claims": [
+          "The cited source section supplies the JavaScript concept underlying this risk."
+        ],
+        "inferred_claims": [
+          "Imported untrusted text is written to a spreadsheet in a form that may be interpreted as a formula rather than literal content."
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesized or translated from the cited source concepts; the extension is not a direct claim from the book.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported JavaScript concepts to internal Google Apps Script tools. It is not a direct claim from the book."
+      },
+      "tags": [
+        "failure-mode",
+        "pitfall",
+        "spreadsheet-formula-injection-from-imported-text"
+      ],
+      "failure_mode": "Spreadsheet formula injection from imported text",
+      "description": "Imported untrusted text is written to a spreadsheet in a form that may be interpreted as a formula rather than literal content.",
+      "where_it_appears": [
+        "CSV uploads",
+        "Free-text comments",
+        "Export files",
+        "Manager forms"
+      ],
+      "root_cause": "The workflow treats all strings as inert data and does not define how formula-like prefixes are handled.",
+      "symptoms": [
+        "Unexpected formula evaluation",
+        "External link or function appears",
+        "Export changes meaning when opened"
+      ],
+      "why_it_misleads": "The text can look like ordinary input in the source file while becoming active in the destination application.",
+      "better_question": "Which fields may contain user-controlled text, and how will the destination interpret leading formula characters?",
+      "prevention_or_mitigation": [
+        "Define a literal-text policy",
+        "Use destination APIs/options that preserve text when available",
+        "Sanitize only with reviewed requirements",
+        "Test exports in destination"
+      ]
+    }
+  ]
+}

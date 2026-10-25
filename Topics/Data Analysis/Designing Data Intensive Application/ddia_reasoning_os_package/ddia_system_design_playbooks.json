@@ -1,0 +1,1610 @@
+{
+  "system_design_playbooks": [
+    {
+      "id": "ddia_playbook_01_diagnose_a_data_consistency_bug",
+      "playbook_name": "Diagnose a data consistency bug",
+      "goal": "Produce a practical, evidence-grounded engineering conclusion for: Diagnose a data consistency bug.",
+      "best_fit_context": [
+        "backend/data-system design review",
+        "incident triage",
+        "migration planning",
+        "AI-assisted code or architecture review"
+      ],
+      "preconditions": [
+        "current code, architecture, logs, metrics, or configuration are available",
+        "source-supported DDIA concepts are used as reasoning aids, not proof of production behavior"
+      ],
+      "inspection_steps": [
+        "map authoritative data and derived data",
+        "trace the read path and write path",
+        "identify transaction, retry, ordering, schema, partition, and replication boundaries",
+        "list assumptions that require current verification",
+        "choose the smallest test that can confirm or falsify the diagnosis"
+      ],
+      "source_records_to_consult": [
+        "ddia_concept_replication_lag_creates_stale_reads",
+        "ddia_concept_write_skew_under_snapshot_isolation"
+      ],
+      "questions_to_ask": [
+        "ddia_question_019_replication",
+        "ddia_question_020_replication",
+        "ddia_question_021_replication",
+        "ddia_question_022_replication",
+        "ddia_question_023_replication",
+        "ddia_question_024_replication"
+      ],
+      "safe_outputs": [
+        "tradeoff table with assumptions",
+        "test plan or observability checklist",
+        "smallest safe mitigation",
+        "explicit uncertainty and verification requirements"
+      ],
+      "dangerous_outputs": [
+        "claiming root cause without evidence",
+        "assuming current vendor guarantees from the book alone",
+        "adding Kafka, consensus, or distributed transactions without a concrete need"
+      ],
+      "tests_or_experiments": [
+        "fault injection at the relevant boundary",
+        "concurrency or replay test",
+        "source-versus-derived reconciliation",
+        "configuration and documentation verification"
+      ],
+      "observability_needed": [
+        "operation IDs",
+        "event IDs or transaction IDs",
+        "partition or replica identity",
+        "timestamps plus causal context",
+        "metrics for lag, retries, aborts, duplicates, and drift"
+      ],
+      "human_review_triggers": [
+        "financial, safety, privacy, compliance, or irreversible effects",
+        "low-confidence inference",
+        "architecture change with major operational cost"
+      ],
+      "completion_criteria": [
+        "the suspected DDIA concept is mapped to evidence",
+        "current behavior is verified or explicitly marked unknown",
+        "the recommendation is no more complex than the evidence requires"
+      ],
+      "failure_modes": [
+        "ddia_failure_write_skew",
+        "ddia_failure_replication_lag"
+      ],
+      "related_record_ids": [
+        "ddia_concept_replication_lag_creates_stale_reads",
+        "ddia_concept_write_skew_under_snapshot_isolation"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "5",
+        "chapter_title": "Replication",
+        "section_heading": "Leaders and Followers",
+        "page_or_anchor": "MOBI_TEXT_CHAR_329050",
+        "figure_table_diagram_or_example": "",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited chapter supports the concepts used by the playbook Diagnose a data consistency bug."
+        ],
+        "inferred_claims": [
+          "The procedural checklist is an engineering extension for applying the book safely."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The source provides concepts and tradeoffs; the playbook converts them into a practical review sequence.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_playbook_02_diagnose_duplicate_writes_caused_by_retries",
+      "playbook_name": "Diagnose duplicate writes caused by retries",
+      "goal": "Produce a practical, evidence-grounded engineering conclusion for: Diagnose duplicate writes caused by retries.",
+      "best_fit_context": [
+        "backend/data-system design review",
+        "incident triage",
+        "migration planning",
+        "AI-assisted code or architecture review"
+      ],
+      "preconditions": [
+        "current code, architecture, logs, metrics, or configuration are available",
+        "source-supported DDIA concepts are used as reasoning aids, not proof of production behavior"
+      ],
+      "inspection_steps": [
+        "map authoritative data and derived data",
+        "trace the read path and write path",
+        "identify transaction, retry, ordering, schema, partition, and replication boundaries",
+        "list assumptions that require current verification",
+        "choose the smallest test that can confirm or falsify the diagnosis"
+      ],
+      "source_records_to_consult": [
+        "ddia_concept_idempotent_operations_enable_safe_retries"
+      ],
+      "questions_to_ask": [
+        "ddia_question_079_api_data_integration",
+        "ddia_question_080_api_data_integration",
+        "ddia_question_081_api_data_integration",
+        "ddia_question_082_api_data_integration",
+        "ddia_question_083_api_data_integration",
+        "ddia_question_084_api_data_integration"
+      ],
+      "safe_outputs": [
+        "tradeoff table with assumptions",
+        "test plan or observability checklist",
+        "smallest safe mitigation",
+        "explicit uncertainty and verification requirements"
+      ],
+      "dangerous_outputs": [
+        "claiming root cause without evidence",
+        "assuming current vendor guarantees from the book alone",
+        "adding Kafka, consensus, or distributed transactions without a concrete need"
+      ],
+      "tests_or_experiments": [
+        "fault injection at the relevant boundary",
+        "concurrency or replay test",
+        "source-versus-derived reconciliation",
+        "configuration and documentation verification"
+      ],
+      "observability_needed": [
+        "operation IDs",
+        "event IDs or transaction IDs",
+        "partition or replica identity",
+        "timestamps plus causal context",
+        "metrics for lag, retries, aborts, duplicates, and drift"
+      ],
+      "human_review_triggers": [
+        "financial, safety, privacy, compliance, or irreversible effects",
+        "low-confidence inference",
+        "architecture change with major operational cost"
+      ],
+      "completion_criteria": [
+        "the suspected DDIA concept is mapped to evidence",
+        "current behavior is verified or explicitly marked unknown",
+        "the recommendation is no more complex than the evidence requires"
+      ],
+      "failure_modes": [
+        "ddia_failure_retry_duplication"
+      ],
+      "related_record_ids": [
+        "ddia_concept_idempotent_operations_enable_safe_retries"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "12",
+        "chapter_title": "The Future of Data Systems",
+        "section_heading": "Data Integration",
+        "page_or_anchor": "MOBI_TEXT_CHAR_1118309",
+        "figure_table_diagram_or_example": "",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited chapter supports the concepts used by the playbook Diagnose duplicate writes caused by retries."
+        ],
+        "inferred_claims": [
+          "The procedural checklist is an engineering extension for applying the book safely."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The source provides concepts and tradeoffs; the playbook converts them into a practical review sequence.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_playbook_03_evaluate_whether_a_workflow_needs_a_transaction",
+      "playbook_name": "Evaluate whether a workflow needs a transaction",
+      "goal": "Produce a practical, evidence-grounded engineering conclusion for: Evaluate whether a workflow needs a transaction.",
+      "best_fit_context": [
+        "backend/data-system design review",
+        "incident triage",
+        "migration planning",
+        "AI-assisted code or architecture review"
+      ],
+      "preconditions": [
+        "current code, architecture, logs, metrics, or configuration are available",
+        "source-supported DDIA concepts are used as reasoning aids, not proof of production behavior"
+      ],
+      "inspection_steps": [
+        "map authoritative data and derived data",
+        "trace the read path and write path",
+        "identify transaction, retry, ordering, schema, partition, and replication boundaries",
+        "list assumptions that require current verification",
+        "choose the smallest test that can confirm or falsify the diagnosis"
+      ],
+      "source_records_to_consult": [
+        "ddia_concept_transactions_bundle_correctness_boundaries"
+      ],
+      "questions_to_ask": [
+        "ddia_question_031_transactions",
+        "ddia_question_032_transactions",
+        "ddia_question_033_transactions",
+        "ddia_question_034_transactions",
+        "ddia_question_035_transactions",
+        "ddia_question_036_transactions"
+      ],
+      "safe_outputs": [
+        "tradeoff table with assumptions",
+        "test plan or observability checklist",
+        "smallest safe mitigation",
+        "explicit uncertainty and verification requirements"
+      ],
+      "dangerous_outputs": [
+        "claiming root cause without evidence",
+        "assuming current vendor guarantees from the book alone",
+        "adding Kafka, consensus, or distributed transactions without a concrete need"
+      ],
+      "tests_or_experiments": [
+        "fault injection at the relevant boundary",
+        "concurrency or replay test",
+        "source-versus-derived reconciliation",
+        "configuration and documentation verification"
+      ],
+      "observability_needed": [
+        "operation IDs",
+        "event IDs or transaction IDs",
+        "partition or replica identity",
+        "timestamps plus causal context",
+        "metrics for lag, retries, aborts, duplicates, and drift"
+      ],
+      "human_review_triggers": [
+        "financial, safety, privacy, compliance, or irreversible effects",
+        "low-confidence inference",
+        "architecture change with major operational cost"
+      ],
+      "completion_criteria": [
+        "the suspected DDIA concept is mapped to evidence",
+        "current behavior is verified or explicitly marked unknown",
+        "the recommendation is no more complex than the evidence requires"
+      ],
+      "failure_modes": [],
+      "related_record_ids": [
+        "ddia_concept_transactions_bundle_correctness_boundaries"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "The Slippery Concept of a Transaction",
+        "page_or_anchor": "MOBI_TEXT_CHAR_479908",
+        "figure_table_diagram_or_example": "",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited chapter supports the concepts used by the playbook Evaluate whether a workflow needs a transaction."
+        ],
+        "inferred_claims": [
+          "The procedural checklist is an engineering extension for applying the book safely."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The source provides concepts and tradeoffs; the playbook converts them into a practical review sequence.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_playbook_04_choose_a_data_model",
+      "playbook_name": "Choose a data model",
+      "goal": "Produce a practical, evidence-grounded engineering conclusion for: Choose a data model.",
+      "best_fit_context": [
+        "backend/data-system design review",
+        "incident triage",
+        "migration planning",
+        "AI-assisted code or architecture review"
+      ],
+      "preconditions": [
+        "current code, architecture, logs, metrics, or configuration are available",
+        "source-supported DDIA concepts are used as reasoning aids, not proof of production behavior"
+      ],
+      "inspection_steps": [
+        "map authoritative data and derived data",
+        "trace the read path and write path",
+        "identify transaction, retry, ordering, schema, partition, and replication boundaries",
+        "list assumptions that require current verification",
+        "choose the smallest test that can confirm or falsify the diagnosis"
+      ],
+      "source_records_to_consult": [
+        "ddia_concept_relational_model_for_many_to_many_data"
+      ],
+      "questions_to_ask": [
+        "ddia_question_001_data_model",
+        "ddia_question_002_data_model",
+        "ddia_question_003_data_model",
+        "ddia_question_004_data_model",
+        "ddia_question_005_data_model",
+        "ddia_question_006_data_model"
+      ],
+      "safe_outputs": [
+        "tradeoff table with assumptions",
+        "test plan or observability checklist",
+        "smallest safe mitigation",
+        "explicit uncertainty and verification requirements"
+      ],
+      "dangerous_outputs": [
+        "claiming root cause without evidence",
+        "assuming current vendor guarantees from the book alone",
+        "adding Kafka, consensus, or distributed transactions without a concrete need"
+      ],
+      "tests_or_experiments": [
+        "fault injection at the relevant boundary",
+        "concurrency or replay test",
+        "source-versus-derived reconciliation",
+        "configuration and documentation verification"
+      ],
+      "observability_needed": [
+        "operation IDs",
+        "event IDs or transaction IDs",
+        "partition or replica identity",
+        "timestamps plus causal context",
+        "metrics for lag, retries, aborts, duplicates, and drift"
+      ],
+      "human_review_triggers": [
+        "financial, safety, privacy, compliance, or irreversible effects",
+        "low-confidence inference",
+        "architecture change with major operational cost"
+      ],
+      "completion_criteria": [
+        "the suspected DDIA concept is mapped to evidence",
+        "current behavior is verified or explicitly marked unknown",
+        "the recommendation is no more complex than the evidence requires"
+      ],
+      "failure_modes": [],
+      "related_record_ids": [
+        "ddia_concept_relational_model_for_many_to_many_data"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "2",
+        "chapter_title": "Data Models and Query Languages",
+        "section_heading": "Relational Model Versus Document Model",
+        "page_or_anchor": "MOBI_TEXT_CHAR_75336",
+        "figure_table_diagram_or_example": "",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited chapter supports the concepts used by the playbook Choose a data model."
+        ],
+        "inferred_claims": [
+          "The procedural checklist is an engineering extension for applying the book safely."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The source provides concepts and tradeoffs; the playbook converts them into a practical review sequence.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_playbook_05_choose_a_replication_strategy",
+      "playbook_name": "Choose a replication strategy",
+      "goal": "Produce a practical, evidence-grounded engineering conclusion for: Choose a replication strategy.",
+      "best_fit_context": [
+        "backend/data-system design review",
+        "incident triage",
+        "migration planning",
+        "AI-assisted code or architecture review"
+      ],
+      "preconditions": [
+        "current code, architecture, logs, metrics, or configuration are available",
+        "source-supported DDIA concepts are used as reasoning aids, not proof of production behavior"
+      ],
+      "inspection_steps": [
+        "map authoritative data and derived data",
+        "trace the read path and write path",
+        "identify transaction, retry, ordering, schema, partition, and replication boundaries",
+        "list assumptions that require current verification",
+        "choose the smallest test that can confirm or falsify the diagnosis"
+      ],
+      "source_records_to_consult": [
+        "ddia_concept_single_leader_replication_write_authority"
+      ],
+      "questions_to_ask": [],
+      "safe_outputs": [
+        "tradeoff table with assumptions",
+        "test plan or observability checklist",
+        "smallest safe mitigation",
+        "explicit uncertainty and verification requirements"
+      ],
+      "dangerous_outputs": [
+        "claiming root cause without evidence",
+        "assuming current vendor guarantees from the book alone",
+        "adding Kafka, consensus, or distributed transactions without a concrete need"
+      ],
+      "tests_or_experiments": [
+        "fault injection at the relevant boundary",
+        "concurrency or replay test",
+        "source-versus-derived reconciliation",
+        "configuration and documentation verification"
+      ],
+      "observability_needed": [
+        "operation IDs",
+        "event IDs or transaction IDs",
+        "partition or replica identity",
+        "timestamps plus causal context",
+        "metrics for lag, retries, aborts, duplicates, and drift"
+      ],
+      "human_review_triggers": [
+        "financial, safety, privacy, compliance, or irreversible effects",
+        "low-confidence inference",
+        "architecture change with major operational cost"
+      ],
+      "completion_criteria": [
+        "the suspected DDIA concept is mapped to evidence",
+        "current behavior is verified or explicitly marked unknown",
+        "the recommendation is no more complex than the evidence requires"
+      ],
+      "failure_modes": [],
+      "related_record_ids": [
+        "ddia_concept_single_leader_replication_write_authority"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "5",
+        "chapter_title": "Replication",
+        "section_heading": "Leaders and Followers",
+        "page_or_anchor": "MOBI_TEXT_CHAR_329050",
+        "figure_table_diagram_or_example": "",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited chapter supports the concepts used by the playbook Choose a replication strategy."
+        ],
+        "inferred_claims": [
+          "The procedural checklist is an engineering extension for applying the book safely."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The source provides concepts and tradeoffs; the playbook converts them into a practical review sequence.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_playbook_06_choose_a_partitioning_strategy",
+      "playbook_name": "Choose a partitioning strategy",
+      "goal": "Produce a practical, evidence-grounded engineering conclusion for: Choose a partitioning strategy.",
+      "best_fit_context": [
+        "backend/data-system design review",
+        "incident triage",
+        "migration planning",
+        "AI-assisted code or architecture review"
+      ],
+      "preconditions": [
+        "current code, architecture, logs, metrics, or configuration are available",
+        "source-supported DDIA concepts are used as reasoning aids, not proof of production behavior"
+      ],
+      "inspection_steps": [
+        "map authoritative data and derived data",
+        "trace the read path and write path",
+        "identify transaction, retry, ordering, schema, partition, and replication boundaries",
+        "list assumptions that require current verification",
+        "choose the smallest test that can confirm or falsify the diagnosis"
+      ],
+      "source_records_to_consult": [
+        "ddia_concept_partitioning_spreads_data_and_load"
+      ],
+      "questions_to_ask": [
+        "ddia_question_025_partitioning",
+        "ddia_question_026_partitioning",
+        "ddia_question_027_partitioning",
+        "ddia_question_028_partitioning",
+        "ddia_question_029_partitioning",
+        "ddia_question_030_partitioning"
+      ],
+      "safe_outputs": [
+        "tradeoff table with assumptions",
+        "test plan or observability checklist",
+        "smallest safe mitigation",
+        "explicit uncertainty and verification requirements"
+      ],
+      "dangerous_outputs": [
+        "claiming root cause without evidence",
+        "assuming current vendor guarantees from the book alone",
+        "adding Kafka, consensus, or distributed transactions without a concrete need"
+      ],
+      "tests_or_experiments": [
+        "fault injection at the relevant boundary",
+        "concurrency or replay test",
+        "source-versus-derived reconciliation",
+        "configuration and documentation verification"
+      ],
+      "observability_needed": [
+        "operation IDs",
+        "event IDs or transaction IDs",
+        "partition or replica identity",
+        "timestamps plus causal context",
+        "metrics for lag, retries, aborts, duplicates, and drift"
+      ],
+      "human_review_triggers": [
+        "financial, safety, privacy, compliance, or irreversible effects",
+        "low-confidence inference",
+        "architecture change with major operational cost"
+      ],
+      "completion_criteria": [
+        "the suspected DDIA concept is mapped to evidence",
+        "current behavior is verified or explicitly marked unknown",
+        "the recommendation is no more complex than the evidence requires"
+      ],
+      "failure_modes": [],
+      "related_record_ids": [
+        "ddia_concept_partitioning_spreads_data_and_load"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "6",
+        "chapter_title": "Partitioning",
+        "section_heading": "Partitioning and Replication",
+        "page_or_anchor": "MOBI_TEXT_CHAR_433344",
+        "figure_table_diagram_or_example": "",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited chapter supports the concepts used by the playbook Choose a partitioning strategy."
+        ],
+        "inferred_claims": [
+          "The procedural checklist is an engineering extension for applying the book safely."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The source provides concepts and tradeoffs; the playbook converts them into a practical review sequence.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_playbook_07_evaluate_transaction_isolation_risk",
+      "playbook_name": "Evaluate transaction isolation risk",
+      "goal": "Produce a practical, evidence-grounded engineering conclusion for: Evaluate transaction isolation risk.",
+      "best_fit_context": [
+        "backend/data-system design review",
+        "incident triage",
+        "migration planning",
+        "AI-assisted code or architecture review"
+      ],
+      "preconditions": [
+        "current code, architecture, logs, metrics, or configuration are available",
+        "source-supported DDIA concepts are used as reasoning aids, not proof of production behavior"
+      ],
+      "inspection_steps": [
+        "map authoritative data and derived data",
+        "trace the read path and write path",
+        "identify transaction, retry, ordering, schema, partition, and replication boundaries",
+        "list assumptions that require current verification",
+        "choose the smallest test that can confirm or falsify the diagnosis"
+      ],
+      "source_records_to_consult": [
+        "ddia_concept_serializability_as_strongest_isolation_model"
+      ],
+      "questions_to_ask": [],
+      "safe_outputs": [
+        "tradeoff table with assumptions",
+        "test plan or observability checklist",
+        "smallest safe mitigation",
+        "explicit uncertainty and verification requirements"
+      ],
+      "dangerous_outputs": [
+        "claiming root cause without evidence",
+        "assuming current vendor guarantees from the book alone",
+        "adding Kafka, consensus, or distributed transactions without a concrete need"
+      ],
+      "tests_or_experiments": [
+        "fault injection at the relevant boundary",
+        "concurrency or replay test",
+        "source-versus-derived reconciliation",
+        "configuration and documentation verification"
+      ],
+      "observability_needed": [
+        "operation IDs",
+        "event IDs or transaction IDs",
+        "partition or replica identity",
+        "timestamps plus causal context",
+        "metrics for lag, retries, aborts, duplicates, and drift"
+      ],
+      "human_review_triggers": [
+        "financial, safety, privacy, compliance, or irreversible effects",
+        "low-confidence inference",
+        "architecture change with major operational cost"
+      ],
+      "completion_criteria": [
+        "the suspected DDIA concept is mapped to evidence",
+        "current behavior is verified or explicitly marked unknown",
+        "the recommendation is no more complex than the evidence requires"
+      ],
+      "failure_modes": [
+        "ddia_failure_phantoms"
+      ],
+      "related_record_ids": [
+        "ddia_concept_serializability_as_strongest_isolation_model"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "The Slippery Concept of a Transaction",
+        "page_or_anchor": "MOBI_TEXT_CHAR_479908",
+        "figure_table_diagram_or_example": "",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited chapter supports the concepts used by the playbook Evaluate transaction isolation risk."
+        ],
+        "inferred_claims": [
+          "The procedural checklist is an engineering extension for applying the book safely."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The source provides concepts and tradeoffs; the playbook converts them into a practical review sequence.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_playbook_08_design_idempotent_processing",
+      "playbook_name": "Design idempotent processing",
+      "goal": "Produce a practical, evidence-grounded engineering conclusion for: Design idempotent processing.",
+      "best_fit_context": [
+        "backend/data-system design review",
+        "incident triage",
+        "migration planning",
+        "AI-assisted code or architecture review"
+      ],
+      "preconditions": [
+        "current code, architecture, logs, metrics, or configuration are available",
+        "source-supported DDIA concepts are used as reasoning aids, not proof of production behavior"
+      ],
+      "inspection_steps": [
+        "map authoritative data and derived data",
+        "trace the read path and write path",
+        "identify transaction, retry, ordering, schema, partition, and replication boundaries",
+        "list assumptions that require current verification",
+        "choose the smallest test that can confirm or falsify the diagnosis"
+      ],
+      "source_records_to_consult": [
+        "ddia_concept_duplicate_suppression_needs_durable_identifiers"
+      ],
+      "questions_to_ask": [],
+      "safe_outputs": [
+        "tradeoff table with assumptions",
+        "test plan or observability checklist",
+        "smallest safe mitigation",
+        "explicit uncertainty and verification requirements"
+      ],
+      "dangerous_outputs": [
+        "claiming root cause without evidence",
+        "assuming current vendor guarantees from the book alone",
+        "adding Kafka, consensus, or distributed transactions without a concrete need"
+      ],
+      "tests_or_experiments": [
+        "fault injection at the relevant boundary",
+        "concurrency or replay test",
+        "source-versus-derived reconciliation",
+        "configuration and documentation verification"
+      ],
+      "observability_needed": [
+        "operation IDs",
+        "event IDs or transaction IDs",
+        "partition or replica identity",
+        "timestamps plus causal context",
+        "metrics for lag, retries, aborts, duplicates, and drift"
+      ],
+      "human_review_triggers": [
+        "financial, safety, privacy, compliance, or irreversible effects",
+        "low-confidence inference",
+        "architecture change with major operational cost"
+      ],
+      "completion_criteria": [
+        "the suspected DDIA concept is mapped to evidence",
+        "current behavior is verified or explicitly marked unknown",
+        "the recommendation is no more complex than the evidence requires"
+      ],
+      "failure_modes": [],
+      "related_record_ids": [
+        "ddia_concept_duplicate_suppression_needs_durable_identifiers"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "12",
+        "chapter_title": "The Future of Data Systems",
+        "section_heading": "Data Integration",
+        "page_or_anchor": "MOBI_TEXT_CHAR_1118309",
+        "figure_table_diagram_or_example": "",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited chapter supports the concepts used by the playbook Design idempotent processing."
+        ],
+        "inferred_claims": [
+          "The procedural checklist is an engineering extension for applying the book safely."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The source provides concepts and tradeoffs; the playbook converts them into a practical review sequence.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_playbook_09_design_schema_evolution_safely",
+      "playbook_name": "Design schema evolution safely",
+      "goal": "Produce a practical, evidence-grounded engineering conclusion for: Design schema evolution safely.",
+      "best_fit_context": [
+        "backend/data-system design review",
+        "incident triage",
+        "migration planning",
+        "AI-assisted code or architecture review"
+      ],
+      "preconditions": [
+        "current code, architecture, logs, metrics, or configuration are available",
+        "source-supported DDIA concepts are used as reasoning aids, not proof of production behavior"
+      ],
+      "inspection_steps": [
+        "map authoritative data and derived data",
+        "trace the read path and write path",
+        "identify transaction, retry, ordering, schema, partition, and replication boundaries",
+        "list assumptions that require current verification",
+        "choose the smallest test that can confirm or falsify the diagnosis"
+      ],
+      "source_records_to_consult": [
+        "ddia_concept_backward_and_forward_compatibility"
+      ],
+      "questions_to_ask": [
+        "ddia_question_013_encoding_and_schema_evolution",
+        "ddia_question_014_encoding_and_schema_evolution",
+        "ddia_question_015_encoding_and_schema_evolution",
+        "ddia_question_016_encoding_and_schema_evolution",
+        "ddia_question_017_encoding_and_schema_evolution",
+        "ddia_question_018_encoding_and_schema_evolution"
+      ],
+      "safe_outputs": [
+        "tradeoff table with assumptions",
+        "test plan or observability checklist",
+        "smallest safe mitigation",
+        "explicit uncertainty and verification requirements"
+      ],
+      "dangerous_outputs": [
+        "claiming root cause without evidence",
+        "assuming current vendor guarantees from the book alone",
+        "adding Kafka, consensus, or distributed transactions without a concrete need"
+      ],
+      "tests_or_experiments": [
+        "fault injection at the relevant boundary",
+        "concurrency or replay test",
+        "source-versus-derived reconciliation",
+        "configuration and documentation verification"
+      ],
+      "observability_needed": [
+        "operation IDs",
+        "event IDs or transaction IDs",
+        "partition or replica identity",
+        "timestamps plus causal context",
+        "metrics for lag, retries, aborts, duplicates, and drift"
+      ],
+      "human_review_triggers": [
+        "financial, safety, privacy, compliance, or irreversible effects",
+        "low-confidence inference",
+        "architecture change with major operational cost"
+      ],
+      "completion_criteria": [
+        "the suspected DDIA concept is mapped to evidence",
+        "current behavior is verified or explicitly marked unknown",
+        "the recommendation is no more complex than the evidence requires"
+      ],
+      "failure_modes": [
+        "ddia_failure_schema_incompatibility"
+      ],
+      "related_record_ids": [
+        "ddia_concept_backward_and_forward_compatibility"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "4",
+        "chapter_title": "Encoding and Evolution",
+        "section_heading": "Formats for Encoding Data",
+        "page_or_anchor": "MOBI_TEXT_CHAR_249938",
+        "figure_table_diagram_or_example": "",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited chapter supports the concepts used by the playbook Design schema evolution safely."
+        ],
+        "inferred_claims": [
+          "The procedural checklist is an engineering extension for applying the book safely."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The source provides concepts and tradeoffs; the playbook converts them into a practical review sequence.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_playbook_10_design_a_batch_processing_workflow",
+      "playbook_name": "Design a batch processing workflow",
+      "goal": "Produce a practical, evidence-grounded engineering conclusion for: Design a batch processing workflow.",
+      "best_fit_context": [
+        "backend/data-system design review",
+        "incident triage",
+        "migration planning",
+        "AI-assisted code or architecture review"
+      ],
+      "preconditions": [
+        "current code, architecture, logs, metrics, or configuration are available",
+        "source-supported DDIA concepts are used as reasoning aids, not proof of production behavior"
+      ],
+      "inspection_steps": [
+        "map authoritative data and derived data",
+        "trace the read path and write path",
+        "identify transaction, retry, ordering, schema, partition, and replication boundaries",
+        "list assumptions that require current verification",
+        "choose the smallest test that can confirm or falsify the diagnosis"
+      ],
+      "source_records_to_consult": [
+        "ddia_concept_batch_jobs_process_bounded_input"
+      ],
+      "questions_to_ask": [
+        "ddia_question_061_batch_processing",
+        "ddia_question_062_batch_processing",
+        "ddia_question_063_batch_processing",
+        "ddia_question_064_batch_processing",
+        "ddia_question_065_batch_processing",
+        "ddia_question_066_batch_processing"
+      ],
+      "safe_outputs": [
+        "tradeoff table with assumptions",
+        "test plan or observability checklist",
+        "smallest safe mitigation",
+        "explicit uncertainty and verification requirements"
+      ],
+      "dangerous_outputs": [
+        "claiming root cause without evidence",
+        "assuming current vendor guarantees from the book alone",
+        "adding Kafka, consensus, or distributed transactions without a concrete need"
+      ],
+      "tests_or_experiments": [
+        "fault injection at the relevant boundary",
+        "concurrency or replay test",
+        "source-versus-derived reconciliation",
+        "configuration and documentation verification"
+      ],
+      "observability_needed": [
+        "operation IDs",
+        "event IDs or transaction IDs",
+        "partition or replica identity",
+        "timestamps plus causal context",
+        "metrics for lag, retries, aborts, duplicates, and drift"
+      ],
+      "human_review_triggers": [
+        "financial, safety, privacy, compliance, or irreversible effects",
+        "low-confidence inference",
+        "architecture change with major operational cost"
+      ],
+      "completion_criteria": [
+        "the suspected DDIA concept is mapped to evidence",
+        "current behavior is verified or explicitly marked unknown",
+        "the recommendation is no more complex than the evidence requires"
+      ],
+      "failure_modes": [],
+      "related_record_ids": [
+        "ddia_concept_batch_jobs_process_bounded_input"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "10",
+        "chapter_title": "Batch Processing",
+        "section_heading": "Batch Processing with Unix Tools",
+        "page_or_anchor": "MOBI_TEXT_CHAR_876395",
+        "figure_table_diagram_or_example": "",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited chapter supports the concepts used by the playbook Design a batch processing workflow."
+        ],
+        "inferred_claims": [
+          "The procedural checklist is an engineering extension for applying the book safely."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The source provides concepts and tradeoffs; the playbook converts them into a practical review sequence.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_playbook_11_design_a_stream_processing_workflow",
+      "playbook_name": "Design a stream processing workflow",
+      "goal": "Produce a practical, evidence-grounded engineering conclusion for: Design a stream processing workflow.",
+      "best_fit_context": [
+        "backend/data-system design review",
+        "incident triage",
+        "migration planning",
+        "AI-assisted code or architecture review"
+      ],
+      "preconditions": [
+        "current code, architecture, logs, metrics, or configuration are available",
+        "source-supported DDIA concepts are used as reasoning aids, not proof of production behavior"
+      ],
+      "inspection_steps": [
+        "map authoritative data and derived data",
+        "trace the read path and write path",
+        "identify transaction, retry, ordering, schema, partition, and replication boundaries",
+        "list assumptions that require current verification",
+        "choose the smallest test that can confirm or falsify the diagnosis"
+      ],
+      "source_records_to_consult": [
+        "ddia_concept_event_streams_model_unbounded_data"
+      ],
+      "questions_to_ask": [
+        "ddia_question_067_stream_processing",
+        "ddia_question_068_stream_processing",
+        "ddia_question_069_stream_processing",
+        "ddia_question_070_stream_processing",
+        "ddia_question_071_stream_processing",
+        "ddia_question_072_stream_processing"
+      ],
+      "safe_outputs": [
+        "tradeoff table with assumptions",
+        "test plan or observability checklist",
+        "smallest safe mitigation",
+        "explicit uncertainty and verification requirements"
+      ],
+      "dangerous_outputs": [
+        "claiming root cause without evidence",
+        "assuming current vendor guarantees from the book alone",
+        "adding Kafka, consensus, or distributed transactions without a concrete need"
+      ],
+      "tests_or_experiments": [
+        "fault injection at the relevant boundary",
+        "concurrency or replay test",
+        "source-versus-derived reconciliation",
+        "configuration and documentation verification"
+      ],
+      "observability_needed": [
+        "operation IDs",
+        "event IDs or transaction IDs",
+        "partition or replica identity",
+        "timestamps plus causal context",
+        "metrics for lag, retries, aborts, duplicates, and drift"
+      ],
+      "human_review_triggers": [
+        "financial, safety, privacy, compliance, or irreversible effects",
+        "low-confidence inference",
+        "architecture change with major operational cost"
+      ],
+      "completion_criteria": [
+        "the suspected DDIA concept is mapped to evidence",
+        "current behavior is verified or explicitly marked unknown",
+        "the recommendation is no more complex than the evidence requires"
+      ],
+      "failure_modes": [],
+      "related_record_ids": [
+        "ddia_concept_event_streams_model_unbounded_data"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "11",
+        "chapter_title": "Stream Processing",
+        "section_heading": "Transmitting Event Streams",
+        "page_or_anchor": "MOBI_TEXT_CHAR_997523",
+        "figure_table_diagram_or_example": "",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited chapter supports the concepts used by the playbook Design a stream processing workflow."
+        ],
+        "inferred_claims": [
+          "The procedural checklist is an engineering extension for applying the book safely."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The source provides concepts and tradeoffs; the playbook converts them into a practical review sequence.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_playbook_12_evaluate_materialized_views_or_derived_data",
+      "playbook_name": "Evaluate materialized views or derived data",
+      "goal": "Produce a practical, evidence-grounded engineering conclusion for: Evaluate materialized views or derived data.",
+      "best_fit_context": [
+        "backend/data-system design review",
+        "incident triage",
+        "migration planning",
+        "AI-assisted code or architecture review"
+      ],
+      "preconditions": [
+        "current code, architecture, logs, metrics, or configuration are available",
+        "source-supported DDIA concepts are used as reasoning aids, not proof of production behavior"
+      ],
+      "inspection_steps": [
+        "map authoritative data and derived data",
+        "trace the read path and write path",
+        "identify transaction, retry, ordering, schema, partition, and replication boundaries",
+        "list assumptions that require current verification",
+        "choose the smallest test that can confirm or falsify the diagnosis"
+      ],
+      "source_records_to_consult": [
+        "ddia_concept_derived_data_needs_clear_authority_boundaries"
+      ],
+      "questions_to_ask": [
+        "ddia_question_073_derived_data",
+        "ddia_question_074_derived_data",
+        "ddia_question_075_derived_data",
+        "ddia_question_076_derived_data",
+        "ddia_question_077_derived_data",
+        "ddia_question_078_derived_data"
+      ],
+      "safe_outputs": [
+        "tradeoff table with assumptions",
+        "test plan or observability checklist",
+        "smallest safe mitigation",
+        "explicit uncertainty and verification requirements"
+      ],
+      "dangerous_outputs": [
+        "claiming root cause without evidence",
+        "assuming current vendor guarantees from the book alone",
+        "adding Kafka, consensus, or distributed transactions without a concrete need"
+      ],
+      "tests_or_experiments": [
+        "fault injection at the relevant boundary",
+        "concurrency or replay test",
+        "source-versus-derived reconciliation",
+        "configuration and documentation verification"
+      ],
+      "observability_needed": [
+        "operation IDs",
+        "event IDs or transaction IDs",
+        "partition or replica identity",
+        "timestamps plus causal context",
+        "metrics for lag, retries, aborts, duplicates, and drift"
+      ],
+      "human_review_triggers": [
+        "financial, safety, privacy, compliance, or irreversible effects",
+        "low-confidence inference",
+        "architecture change with major operational cost"
+      ],
+      "completion_criteria": [
+        "the suspected DDIA concept is mapped to evidence",
+        "current behavior is verified or explicitly marked unknown",
+        "the recommendation is no more complex than the evidence requires"
+      ],
+      "failure_modes": [
+        "ddia_failure_derived_data_inconsistency"
+      ],
+      "related_record_ids": [
+        "ddia_concept_derived_data_needs_clear_authority_boundaries"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "12",
+        "chapter_title": "The Future of Data Systems",
+        "section_heading": "Data Integration",
+        "page_or_anchor": "MOBI_TEXT_CHAR_1118309",
+        "figure_table_diagram_or_example": "",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited chapter supports the concepts used by the playbook Evaluate materialized views or derived data."
+        ],
+        "inferred_claims": [
+          "The procedural checklist is an engineering extension for applying the book safely."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The source provides concepts and tradeoffs; the playbook converts them into a practical review sequence.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_playbook_13_design_cdc_based_integration",
+      "playbook_name": "Design CDC-based integration",
+      "goal": "Produce a practical, evidence-grounded engineering conclusion for: Design CDC-based integration.",
+      "best_fit_context": [
+        "backend/data-system design review",
+        "incident triage",
+        "migration planning",
+        "AI-assisted code or architecture review"
+      ],
+      "preconditions": [
+        "current code, architecture, logs, metrics, or configuration are available",
+        "source-supported DDIA concepts are used as reasoning aids, not proof of production behavior"
+      ],
+      "inspection_steps": [
+        "map authoritative data and derived data",
+        "trace the read path and write path",
+        "identify transaction, retry, ordering, schema, partition, and replication boundaries",
+        "list assumptions that require current verification",
+        "choose the smallest test that can confirm or falsify the diagnosis"
+      ],
+      "source_records_to_consult": [
+        "ddia_concept_change_data_capture_links_databases_to_streams"
+      ],
+      "questions_to_ask": [],
+      "safe_outputs": [
+        "tradeoff table with assumptions",
+        "test plan or observability checklist",
+        "smallest safe mitigation",
+        "explicit uncertainty and verification requirements"
+      ],
+      "dangerous_outputs": [
+        "claiming root cause without evidence",
+        "assuming current vendor guarantees from the book alone",
+        "adding Kafka, consensus, or distributed transactions without a concrete need"
+      ],
+      "tests_or_experiments": [
+        "fault injection at the relevant boundary",
+        "concurrency or replay test",
+        "source-versus-derived reconciliation",
+        "configuration and documentation verification"
+      ],
+      "observability_needed": [
+        "operation IDs",
+        "event IDs or transaction IDs",
+        "partition or replica identity",
+        "timestamps plus causal context",
+        "metrics for lag, retries, aborts, duplicates, and drift"
+      ],
+      "human_review_triggers": [
+        "financial, safety, privacy, compliance, or irreversible effects",
+        "low-confidence inference",
+        "architecture change with major operational cost"
+      ],
+      "completion_criteria": [
+        "the suspected DDIA concept is mapped to evidence",
+        "current behavior is verified or explicitly marked unknown",
+        "the recommendation is no more complex than the evidence requires"
+      ],
+      "failure_modes": [
+        "ddia_failure_cdc_schema_break"
+      ],
+      "related_record_ids": [
+        "ddia_concept_change_data_capture_links_databases_to_streams"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "11",
+        "chapter_title": "Stream Processing",
+        "section_heading": "Transmitting Event Streams",
+        "page_or_anchor": "MOBI_TEXT_CHAR_997523",
+        "figure_table_diagram_or_example": "",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited chapter supports the concepts used by the playbook Design CDC-based integration."
+        ],
+        "inferred_claims": [
+          "The procedural checklist is an engineering extension for applying the book safely."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The source provides concepts and tradeoffs; the playbook converts them into a practical review sequence.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_playbook_14_review_a_data_pipeline_for_correctness",
+      "playbook_name": "Review a data pipeline for correctness",
+      "goal": "Produce a practical, evidence-grounded engineering conclusion for: Review a data pipeline for correctness.",
+      "best_fit_context": [
+        "backend/data-system design review",
+        "incident triage",
+        "migration planning",
+        "AI-assisted code or architecture review"
+      ],
+      "preconditions": [
+        "current code, architecture, logs, metrics, or configuration are available",
+        "source-supported DDIA concepts are used as reasoning aids, not proof of production behavior"
+      ],
+      "inspection_steps": [
+        "map authoritative data and derived data",
+        "trace the read path and write path",
+        "identify transaction, retry, ordering, schema, partition, and replication boundaries",
+        "list assumptions that require current verification",
+        "choose the smallest test that can confirm or falsify the diagnosis"
+      ],
+      "source_records_to_consult": [
+        "ddia_concept_end_to_end_correctness_beats_local_guarantees_alone"
+      ],
+      "questions_to_ask": [
+        "ddia_question_091_ai_agent_code_review",
+        "ddia_question_092_ai_agent_code_review",
+        "ddia_question_093_ai_agent_code_review",
+        "ddia_question_094_ai_agent_code_review",
+        "ddia_question_095_ai_agent_code_review",
+        "ddia_question_096_ai_agent_code_review"
+      ],
+      "safe_outputs": [
+        "tradeoff table with assumptions",
+        "test plan or observability checklist",
+        "smallest safe mitigation",
+        "explicit uncertainty and verification requirements"
+      ],
+      "dangerous_outputs": [
+        "claiming root cause without evidence",
+        "assuming current vendor guarantees from the book alone",
+        "adding Kafka, consensus, or distributed transactions without a concrete need"
+      ],
+      "tests_or_experiments": [
+        "fault injection at the relevant boundary",
+        "concurrency or replay test",
+        "source-versus-derived reconciliation",
+        "configuration and documentation verification"
+      ],
+      "observability_needed": [
+        "operation IDs",
+        "event IDs or transaction IDs",
+        "partition or replica identity",
+        "timestamps plus causal context",
+        "metrics for lag, retries, aborts, duplicates, and drift"
+      ],
+      "human_review_triggers": [
+        "financial, safety, privacy, compliance, or irreversible effects",
+        "low-confidence inference",
+        "architecture change with major operational cost"
+      ],
+      "completion_criteria": [
+        "the suspected DDIA concept is mapped to evidence",
+        "current behavior is verified or explicitly marked unknown",
+        "the recommendation is no more complex than the evidence requires"
+      ],
+      "failure_modes": [
+        "ddia_failure_dual_write_inconsistency"
+      ],
+      "related_record_ids": [
+        "ddia_concept_end_to_end_correctness_beats_local_guarantees_alone"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "12",
+        "chapter_title": "The Future of Data Systems",
+        "section_heading": "Data Integration",
+        "page_or_anchor": "MOBI_TEXT_CHAR_1118309",
+        "figure_table_diagram_or_example": "",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited chapter supports the concepts used by the playbook Review a data pipeline for correctness."
+        ],
+        "inferred_claims": [
+          "The procedural checklist is an engineering extension for applying the book safely."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The source provides concepts and tradeoffs; the playbook converts them into a practical review sequence.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_playbook_15_build_an_observability_checklist_for_data_systems",
+      "playbook_name": "Build an observability checklist for data systems",
+      "goal": "Produce a practical, evidence-grounded engineering conclusion for: Build an observability checklist for data systems.",
+      "best_fit_context": [
+        "backend/data-system design review",
+        "incident triage",
+        "migration planning",
+        "AI-assisted code or architecture review"
+      ],
+      "preconditions": [
+        "current code, architecture, logs, metrics, or configuration are available",
+        "source-supported DDIA concepts are used as reasoning aids, not proof of production behavior"
+      ],
+      "inspection_steps": [
+        "map authoritative data and derived data",
+        "trace the read path and write path",
+        "identify transaction, retry, ordering, schema, partition, and replication boundaries",
+        "list assumptions that require current verification",
+        "choose the smallest test that can confirm or falsify the diagnosis"
+      ],
+      "source_records_to_consult": [
+        "ddia_concept_operability_as_a_design_property"
+      ],
+      "questions_to_ask": [
+        "ddia_question_085_operations_and_observability",
+        "ddia_question_086_operations_and_observability",
+        "ddia_question_087_operations_and_observability",
+        "ddia_question_088_operations_and_observability",
+        "ddia_question_089_operations_and_observability",
+        "ddia_question_090_operations_and_observability"
+      ],
+      "safe_outputs": [
+        "tradeoff table with assumptions",
+        "test plan or observability checklist",
+        "smallest safe mitigation",
+        "explicit uncertainty and verification requirements"
+      ],
+      "dangerous_outputs": [
+        "claiming root cause without evidence",
+        "assuming current vendor guarantees from the book alone",
+        "adding Kafka, consensus, or distributed transactions without a concrete need"
+      ],
+      "tests_or_experiments": [
+        "fault injection at the relevant boundary",
+        "concurrency or replay test",
+        "source-versus-derived reconciliation",
+        "configuration and documentation verification"
+      ],
+      "observability_needed": [
+        "operation IDs",
+        "event IDs or transaction IDs",
+        "partition or replica identity",
+        "timestamps plus causal context",
+        "metrics for lag, retries, aborts, duplicates, and drift"
+      ],
+      "human_review_triggers": [
+        "financial, safety, privacy, compliance, or irreversible effects",
+        "low-confidence inference",
+        "architecture change with major operational cost"
+      ],
+      "completion_criteria": [
+        "the suspected DDIA concept is mapped to evidence",
+        "current behavior is verified or explicitly marked unknown",
+        "the recommendation is no more complex than the evidence requires"
+      ],
+      "failure_modes": [],
+      "related_record_ids": [
+        "ddia_concept_operability_as_a_design_property"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "1",
+        "chapter_title": "Reliable, Scalable, and Maintainable Applications",
+        "section_heading": "Thinking About Data Systems",
+        "page_or_anchor": "MOBI_TEXT_CHAR_6800",
+        "figure_table_diagram_or_example": "",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited chapter supports the concepts used by the playbook Build an observability checklist for data systems."
+        ],
+        "inferred_claims": [
+          "The procedural checklist is an engineering extension for applying the book safely."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The source provides concepts and tradeoffs; the playbook converts them into a practical review sequence.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_playbook_16_review_an_api_connected_system_for_partial_failures",
+      "playbook_name": "Review an API-connected system for partial failures",
+      "goal": "Produce a practical, evidence-grounded engineering conclusion for: Review an API-connected system for partial failures.",
+      "best_fit_context": [
+        "backend/data-system design review",
+        "incident triage",
+        "migration planning",
+        "AI-assisted code or architecture review"
+      ],
+      "preconditions": [
+        "current code, architecture, logs, metrics, or configuration are available",
+        "source-supported DDIA concepts are used as reasoning aids, not proof of production behavior"
+      ],
+      "inspection_steps": [
+        "map authoritative data and derived data",
+        "trace the read path and write path",
+        "identify transaction, retry, ordering, schema, partition, and replication boundaries",
+        "list assumptions that require current verification",
+        "choose the smallest test that can confirm or falsify the diagnosis"
+      ],
+      "source_records_to_consult": [
+        "ddia_concept_timeouts_are_suspicion_not_proof"
+      ],
+      "questions_to_ask": [
+        "ddia_question_043_distributed_systems",
+        "ddia_question_044_distributed_systems",
+        "ddia_question_045_distributed_systems",
+        "ddia_question_046_distributed_systems",
+        "ddia_question_047_distributed_systems",
+        "ddia_question_048_distributed_systems"
+      ],
+      "safe_outputs": [
+        "tradeoff table with assumptions",
+        "test plan or observability checklist",
+        "smallest safe mitigation",
+        "explicit uncertainty and verification requirements"
+      ],
+      "dangerous_outputs": [
+        "claiming root cause without evidence",
+        "assuming current vendor guarantees from the book alone",
+        "adding Kafka, consensus, or distributed transactions without a concrete need"
+      ],
+      "tests_or_experiments": [
+        "fault injection at the relevant boundary",
+        "concurrency or replay test",
+        "source-versus-derived reconciliation",
+        "configuration and documentation verification"
+      ],
+      "observability_needed": [
+        "operation IDs",
+        "event IDs or transaction IDs",
+        "partition or replica identity",
+        "timestamps plus causal context",
+        "metrics for lag, retries, aborts, duplicates, and drift"
+      ],
+      "human_review_triggers": [
+        "financial, safety, privacy, compliance, or irreversible effects",
+        "low-confidence inference",
+        "architecture change with major operational cost"
+      ],
+      "completion_criteria": [
+        "the suspected DDIA concept is mapped to evidence",
+        "current behavior is verified or explicitly marked unknown",
+        "the recommendation is no more complex than the evidence requires"
+      ],
+      "failure_modes": [],
+      "related_record_ids": [
+        "ddia_concept_timeouts_are_suspicion_not_proof"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "8",
+        "chapter_title": "The Trouble with Distributed Systems",
+        "section_heading": "Faults and Partial Failures",
+        "page_or_anchor": "MOBI_TEXT_CHAR_595332",
+        "figure_table_diagram_or_example": "",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited chapter supports the concepts used by the playbook Review an API-connected system for partial failures."
+        ],
+        "inferred_claims": [
+          "The procedural checklist is an engineering extension for applying the book safely."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The source provides concepts and tradeoffs; the playbook converts them into a practical review sequence.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_playbook_17_decide_when_not_to_introduce_distributed_complexity",
+      "playbook_name": "Decide when not to introduce distributed complexity",
+      "goal": "Produce a practical, evidence-grounded engineering conclusion for: Decide when not to introduce distributed complexity.",
+      "best_fit_context": [
+        "backend/data-system design review",
+        "incident triage",
+        "migration planning",
+        "AI-assisted code or architecture review"
+      ],
+      "preconditions": [
+        "current code, architecture, logs, metrics, or configuration are available",
+        "source-supported DDIA concepts are used as reasoning aids, not proof of production behavior"
+      ],
+      "inspection_steps": [
+        "map authoritative data and derived data",
+        "trace the read path and write path",
+        "identify transaction, retry, ordering, schema, partition, and replication boundaries",
+        "list assumptions that require current verification",
+        "choose the smallest test that can confirm or falsify the diagnosis"
+      ],
+      "source_records_to_consult": [
+        "ddia_concept_simplicity_against_accidental_complexity"
+      ],
+      "questions_to_ask": [
+        "ddia_question_091_ai_agent_code_review",
+        "ddia_question_092_ai_agent_code_review",
+        "ddia_question_093_ai_agent_code_review",
+        "ddia_question_094_ai_agent_code_review",
+        "ddia_question_095_ai_agent_code_review",
+        "ddia_question_096_ai_agent_code_review"
+      ],
+      "safe_outputs": [
+        "tradeoff table with assumptions",
+        "test plan or observability checklist",
+        "smallest safe mitigation",
+        "explicit uncertainty and verification requirements"
+      ],
+      "dangerous_outputs": [
+        "claiming root cause without evidence",
+        "assuming current vendor guarantees from the book alone",
+        "adding Kafka, consensus, or distributed transactions without a concrete need"
+      ],
+      "tests_or_experiments": [
+        "fault injection at the relevant boundary",
+        "concurrency or replay test",
+        "source-versus-derived reconciliation",
+        "configuration and documentation verification"
+      ],
+      "observability_needed": [
+        "operation IDs",
+        "event IDs or transaction IDs",
+        "partition or replica identity",
+        "timestamps plus causal context",
+        "metrics for lag, retries, aborts, duplicates, and drift"
+      ],
+      "human_review_triggers": [
+        "financial, safety, privacy, compliance, or irreversible effects",
+        "low-confidence inference",
+        "architecture change with major operational cost"
+      ],
+      "completion_criteria": [
+        "the suspected DDIA concept is mapped to evidence",
+        "current behavior is verified or explicitly marked unknown",
+        "the recommendation is no more complex than the evidence requires"
+      ],
+      "failure_modes": [
+        "ddia_failure_unnecessary_distributed_complexity"
+      ],
+      "related_record_ids": [
+        "ddia_concept_simplicity_against_accidental_complexity"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "1",
+        "chapter_title": "Reliable, Scalable, and Maintainable Applications",
+        "section_heading": "Thinking About Data Systems",
+        "page_or_anchor": "MOBI_TEXT_CHAR_6800",
+        "figure_table_diagram_or_example": "",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited chapter supports the concepts used by the playbook Decide when not to introduce distributed complexity."
+        ],
+        "inferred_claims": [
+          "The procedural checklist is an engineering extension for applying the book safely."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The source provides concepts and tradeoffs; the playbook converts them into a practical review sequence.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    }
+  ]
+}

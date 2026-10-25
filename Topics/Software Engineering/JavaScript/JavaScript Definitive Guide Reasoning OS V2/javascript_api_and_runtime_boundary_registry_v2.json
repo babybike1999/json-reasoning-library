@@ -1,0 +1,1099 @@
+{
+  "package_metadata": {
+    "package_name": "JavaScript Language, Runtime, and Code-Quality Reasoning OS V2",
+    "module_name": "api_and_runtime_boundary_registry",
+    "repair_type": "focused_v2_repair_not_full_rebuild",
+    "generated_at": "2026-06-21T05:00:11.155979+00:00",
+    "primary_source": {
+      "title": "JavaScript: The Definitive Guide",
+      "edition": "Seventh Edition",
+      "author": "David Flanagan",
+      "publisher": "O'Reilly Media",
+      "release_year": 2020,
+      "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+      "source_sha256": "b511aca2b98ae4eec4966c87d5e6b6c1704cbafe7dd076b924db46cb8d20ae07"
+    },
+    "v1_package_reference": {
+      "source_zip": "Javascript Reasoning.zip",
+      "source_zip_sha256": "60242e2ad2cfcc9bdf79f2fc73b392b7f149339dc95d6234f00db683f368d98d",
+      "not_overwritten": true
+    },
+    "authority_order": [
+      "Original uploaded book source",
+      "Current generated JavaScript Reasoning OS package",
+      "User repair prompt",
+      "Current official documentation only if available",
+      "General engineering reasoning"
+    ],
+    "source_limitation_warning": "Current browser, Node, npm, bundler, tool, framework, and Google Apps Script behavior is not asserted unless explicitly verified. V2 flags such items for current documentation checks.",
+    "purpose": "Explicit browser/Node/ECMAScript/tooling/Apps Script boundary registry."
+  },
+  "runtime_boundary_records": [
+    {
+      "id": "js-boundary-ecmascript-core",
+      "feature_or_api": "ECMAScript language core",
+      "belongs_to": "ECMAScript standard language semantics",
+      "available_in": [
+        "Browsers with JavaScript engines",
+        "Node.js",
+        "Other compliant hosts, subject to feature support"
+      ],
+      "not_guaranteed_in": [
+        "Host-specific DOM APIs",
+        "Node core modules",
+        "Google Apps Script services",
+        "Tooling transforms unless configured"
+      ],
+      "problem_solved": "Define the portable syntax and semantics of JavaScript itself.",
+      "common_use": [
+        "Type/value logic",
+        "Objects/functions/classes/modules syntax",
+        "Promises and iteration protocols"
+      ],
+      "common_misuse": [
+        "Assuming language core includes file, network, DOM, or spreadsheet APIs"
+      ],
+      "runtime_boundary_warning": "Core language code is the most portable layer, but feature support still depends on engine version for newer ECMAScript additions.",
+      "current_verification_required": true,
+      "related_risk_ids": [
+        "js-risk-browser-node-api-confusion",
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 1,
+        "chapter_title": "Introduction to JavaScript",
+        "sections": [
+          "JavaScript Names Versions and Modes"
+        ],
+        "source_basis": "Runtime boundary record separated in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-boundary-standard-library",
+      "feature_or_api": "JavaScript standard library",
+      "belongs_to": "ECMAScript standard library",
+      "available_in": [
+        "Browsers and Node where supported by engine version"
+      ],
+      "not_guaranteed_in": [
+        "DOM document APIs",
+        "Node fs/http/stream modules",
+        "Apps Script service objects"
+      ],
+      "problem_solved": "Provide built-in data structures, dates, regex, JSON, console-like and URL/timer APIs as covered in the source.",
+      "common_use": [
+        "Map/Set",
+        "JSON",
+        "Date",
+        "RegExp",
+        "URL and timers where host support applies"
+      ],
+      "common_misuse": [
+        "Treating standard library APIs as identical to all host APIs",
+        "Assuming 2026 support for features not in the 2020 source"
+      ],
+      "runtime_boundary_warning": "Verify support and behavior for features added or changed after the book source and for host-integrated APIs.",
+      "current_verification_required": true,
+      "related_risk_ids": [
+        "js-risk-json-serialization-loss",
+        "js-risk-date-timezone",
+        "js-risk-regex-overmatching"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "The JavaScript Standard Library"
+        ],
+        "source_basis": "Runtime boundary record separated in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-boundary-browser-dom",
+      "feature_or_api": "browser DOM",
+      "belongs_to": "Web browser platform",
+      "available_in": [
+        "Web browsers and browser-like DOM environments after verification"
+      ],
+      "not_guaranteed_in": [
+        "Plain Node.js",
+        "Server-side scripts without DOM",
+        "Apps Script server-side .gs files"
+      ],
+      "problem_solved": "Manipulate HTML documents and elements.",
+      "common_use": [
+        "Query elements",
+        "Update document content",
+        "Read attributes/classes/styles"
+      ],
+      "common_misuse": [
+        "Using document/window in Node or Apps Script server code",
+        "Assuming DOM collection is a normal array"
+      ],
+      "runtime_boundary_warning": "DOM is a browser host API, not ECMAScript language core.",
+      "current_verification_required": true,
+      "related_risk_ids": [
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.3 Scripting Documents"
+        ],
+        "source_basis": "Runtime boundary record separated in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-boundary-browser-events",
+      "feature_or_api": "browser events",
+      "belongs_to": "Web browser platform",
+      "available_in": [
+        "Web browsers and compatible DOM event environments after verification"
+      ],
+      "not_guaranteed_in": [
+        "Plain Node.js EventEmitter APIs",
+        "Apps Script server-side functions"
+      ],
+      "problem_solved": "React to user and document lifecycle events.",
+      "common_use": [
+        "click/input/submit handlers",
+        "event delegation",
+        "preventing default browser actions"
+      ],
+      "common_misuse": [
+        "Assuming Node EventEmitter and DOM EventTarget semantics are the same",
+        "Forgetting listener cleanup"
+      ],
+      "runtime_boundary_warning": "Browser event propagation/default-action behavior is host platform behavior and must not be projected onto Node or Apps Script.",
+      "current_verification_required": true,
+      "related_risk_ids": [
+        "js-risk-async-ordering",
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.2 Events"
+        ],
+        "source_basis": "Runtime boundary record separated in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-boundary-browser-networking",
+      "feature_or_api": "browser networking",
+      "belongs_to": "Web browser platform",
+      "available_in": [
+        "Web browsers after verifying API support, security model, and deployment context"
+      ],
+      "not_guaranteed_in": [
+        "ECMAScript core",
+        "Node unless using Node-provided or polyfilled compatible APIs",
+        "Apps Script server functions unless using Apps Script services"
+      ],
+      "problem_solved": "Make HTTP/network requests from browser code.",
+      "common_use": [
+        "Fetch resources",
+        "Submit forms",
+        "Load JSON"
+      ],
+      "common_misuse": [
+        "Assuming fulfilled promise means HTTP success",
+        "Ignoring CORS, credentials, origin, and security rules"
+      ],
+      "runtime_boundary_warning": "Networking behavior is security-sensitive and must be checked against current browser documentation and deployment policy.",
+      "current_verification_required": true,
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-async-ordering",
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.11 Networking"
+        ],
+        "source_basis": "Runtime boundary record separated in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-boundary-browser-storage",
+      "feature_or_api": "browser storage",
+      "belongs_to": "Web browser platform",
+      "available_in": [
+        "Web browsers after verifying storage API, quota, privacy, and partitioning behavior"
+      ],
+      "not_guaranteed_in": [
+        "Node core language",
+        "Apps Script server-side storage unless using Apps Script APIs"
+      ],
+      "problem_solved": "Persist client-side data.",
+      "common_use": [
+        "Store small user preferences",
+        "Cache data within browser constraints"
+      ],
+      "common_misuse": [
+        "Storing secrets in client storage",
+        "Assuming quota/lifetime/private-mode behavior without verification"
+      ],
+      "runtime_boundary_warning": "Browser storage is client-side and deployment/privacy-policy sensitive; verify current platform behavior.",
+      "current_verification_required": true,
+      "related_risk_ids": [
+        "js-risk-browser-node-api-confusion",
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.12 Storage"
+        ],
+        "source_basis": "Runtime boundary record separated in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-boundary-workers",
+      "feature_or_api": "browser workers",
+      "belongs_to": "Web browser platform",
+      "available_in": [
+        "Web browsers with worker support after verification"
+      ],
+      "not_guaranteed_in": [
+        "ECMAScript core alone",
+        "Plain Node worker_threads without Node-specific API differences",
+        "Apps Script server runtime"
+      ],
+      "problem_solved": "Run work off the browser main thread and communicate with messages.",
+      "common_use": [
+        "CPU-heavy browser work",
+        "Background processing",
+        "Message-based isolation"
+      ],
+      "common_misuse": [
+        "Expecting shared ordinary object identity",
+        "Ignoring worker lifecycle/error paths"
+      ],
+      "runtime_boundary_warning": "Worker semantics are host-defined around messaging, transfer, and lifecycle; verify current browser support.",
+      "current_verification_required": true,
+      "related_risk_ids": [
+        "js-risk-worker-message-boundary",
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.13 Worker Threads and Messaging"
+        ],
+        "source_basis": "Runtime boundary record separated in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-boundary-node-modules",
+      "feature_or_api": "Node modules",
+      "belongs_to": "Node host environment",
+      "available_in": [
+        "Node.js runtime subject to module configuration and version"
+      ],
+      "not_guaranteed_in": [
+        "Browsers without bundling/transforms",
+        "Apps Script server-side runtime as Node replacement"
+      ],
+      "problem_solved": "Load code and packages in Node.",
+      "common_use": [
+        "CommonJS require",
+        "ES module import under Node configuration",
+        "Load built-in modules"
+      ],
+      "common_misuse": [
+        "Assuming browser import behavior equals Node loader behavior",
+        "Mixing CJS/ESM without config"
+      ],
+      "runtime_boundary_warning": "Node module behavior is version/configuration dependent; verify current Node docs and package metadata.",
+      "current_verification_required": true,
+      "related_risk_ids": [
+        "js-risk-module-system-mismatch",
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 16,
+        "chapter_title": "Server-Side JavaScript with Node",
+        "sections": [
+          "16.1 Node Programming Basics",
+          "10.2 Modules in Node"
+        ],
+        "source_basis": "Runtime boundary record separated in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-boundary-node-files",
+      "feature_or_api": "Node files",
+      "belongs_to": "Node host environment",
+      "available_in": [
+        "Node.js runtime with filesystem permissions available"
+      ],
+      "not_guaranteed_in": [
+        "Web browsers",
+        "Apps Script client HTML",
+        "ECMAScript core"
+      ],
+      "problem_solved": "Read and write filesystem data from server-side/local scripts.",
+      "common_use": [
+        "Read configuration",
+        "Process files",
+        "Write generated output"
+      ],
+      "common_misuse": [
+        "Using fs in browser bundle",
+        "Assuming deployment filesystem is writable",
+        "Ignoring async file errors"
+      ],
+      "runtime_boundary_warning": "Filesystem is a Node host API; do not infer availability in browser or Apps Script.",
+      "current_verification_required": true,
+      "related_risk_ids": [
+        "js-risk-browser-node-api-confusion",
+        "js-risk-callback-error-path"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 16,
+        "chapter_title": "Server-Side JavaScript with Node",
+        "sections": [
+          "16.7 Working with Files"
+        ],
+        "source_basis": "Runtime boundary record separated in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-boundary-node-streams",
+      "feature_or_api": "Node streams",
+      "belongs_to": "Node host environment",
+      "available_in": [
+        "Node.js runtime"
+      ],
+      "not_guaranteed_in": [
+        "Browser DOM streams unless explicitly using compatible API after verification",
+        "Apps Script services"
+      ],
+      "problem_solved": "Process incremental data efficiently.",
+      "common_use": [
+        "File/network streams",
+        "Piping data",
+        "Large uploads/downloads in Node"
+      ],
+      "common_misuse": [
+        "Buffering unbounded data",
+        "Ignoring error/finish/backpressure"
+      ],
+      "runtime_boundary_warning": "Node streams have Node-specific lifecycle and error behavior; verify current Node API details.",
+      "current_verification_required": true,
+      "related_risk_ids": [
+        "js-risk-stream-lifecycle"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 16,
+        "chapter_title": "Server-Side JavaScript with Node",
+        "sections": [
+          "16.5 Streams"
+        ],
+        "source_basis": "Runtime boundary record separated in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-boundary-node-http",
+      "feature_or_api": "Node HTTP",
+      "belongs_to": "Node host environment",
+      "available_in": [
+        "Node.js runtime"
+      ],
+      "not_guaranteed_in": [
+        "Browsers as server APIs",
+        "ECMAScript core",
+        "Apps Script web apps unless using Apps Script web app APIs"
+      ],
+      "problem_solved": "Implement HTTP clients and servers in Node.",
+      "common_use": [
+        "Create servers",
+        "Make HTTP requests",
+        "Handle request/response streams"
+      ],
+      "common_misuse": [
+        "Assuming browser fetch/server semantics",
+        "Ignoring stream lifecycle/security/deployment behavior"
+      ],
+      "runtime_boundary_warning": "Node HTTP APIs are server-side Node APIs and are deployment/security sensitive.",
+      "current_verification_required": true,
+      "related_risk_ids": [
+        "js-risk-stream-lifecycle",
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 16,
+        "chapter_title": "Server-Side JavaScript with Node",
+        "sections": [
+          "16.8 HTTP Clients and Servers"
+        ],
+        "source_basis": "Runtime boundary record separated in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-boundary-node-child-processes",
+      "feature_or_api": "Node child processes",
+      "belongs_to": "Node host environment",
+      "available_in": [
+        "Node.js runtime with OS process permissions"
+      ],
+      "not_guaranteed_in": [
+        "Browsers",
+        "Apps Script",
+        "Restricted serverless platforms unless verified"
+      ],
+      "problem_solved": "Run external programs or shell commands from Node.",
+      "common_use": [
+        "Invoke trusted tools",
+        "Isolate process-level work",
+        "Integrate with OS utilities"
+      ],
+      "common_misuse": [
+        "Passing unsanitized input to shell",
+        "Using child process for CPU sharing when worker thread is better",
+        "Assuming availability in deployment"
+      ],
+      "runtime_boundary_warning": "Child processes are security-sensitive and platform-dependent; verify current Node and deployment docs.",
+      "current_verification_required": true,
+      "related_risk_ids": [
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 16,
+        "chapter_title": "Server-Side JavaScript with Node",
+        "sections": [
+          "16.10 Working with Child Processes"
+        ],
+        "source_basis": "Runtime boundary record separated in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-boundary-node-worker-threads",
+      "feature_or_api": "Node worker threads",
+      "belongs_to": "Node host environment",
+      "available_in": [
+        "Node.js runtime with worker_threads support after verification"
+      ],
+      "not_guaranteed_in": [
+        "Browsers without browser Worker API differences accounted for",
+        "Apps Script"
+      ],
+      "problem_solved": "Run CPU-bound JavaScript in parallel threads and communicate by messages.",
+      "common_use": [
+        "CPU-heavy Node tasks",
+        "Threaded isolation",
+        "Message passing"
+      ],
+      "common_misuse": [
+        "Expecting shared object identity",
+        "Ignoring transfer/clone/error/exit behavior"
+      ],
+      "runtime_boundary_warning": "Node worker_threads are not the same API as browser workers; verify version and lifecycle behavior.",
+      "current_verification_required": true,
+      "related_risk_ids": [
+        "js-risk-worker-message-boundary",
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 16,
+        "chapter_title": "Server-Side JavaScript with Node",
+        "sections": [
+          "16.11 Worker Threads"
+        ],
+        "source_basis": "Runtime boundary record separated in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-boundary-tooling-ecosystem",
+      "feature_or_api": "tooling ecosystem",
+      "belongs_to": "Build/test/development tools",
+      "available_in": [
+        "Project environments where tool is installed and configured"
+      ],
+      "not_guaranteed_in": [
+        "ECMAScript runtime by itself",
+        "Production runtime unless bundled/transpiled output is deployed"
+      ],
+      "problem_solved": "Lint, format, test, bundle, transpile, package, or type-check JavaScript projects.",
+      "common_use": [
+        "ESLint",
+        "Prettier",
+        "Jest",
+        "npm",
+        "bundlers",
+        "Babel",
+        "JSX",
+        "Flow"
+      ],
+      "common_misuse": [
+        "Assuming tool behavior is language semantics",
+        "Trusting tests that do not run the same transform/runtime as production"
+      ],
+      "runtime_boundary_warning": "Tooling behavior is version/configuration dependent and must be verified against current official docs and project configs.",
+      "current_verification_required": true,
+      "related_risk_ids": [
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 17,
+        "chapter_title": "JavaScript Tools and Extensions",
+        "sections": [
+          "JavaScript Tools and Extensions"
+        ],
+        "source_basis": "Runtime boundary record separated in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-boundary-google-apps-script-extension",
+      "feature_or_api": "Google Apps Script operational extension",
+      "belongs_to": "google_apps_script_extension",
+      "available_in": [
+        "Google Apps Script projects after checking current Google documentation"
+      ],
+      "not_guaranteed_in": [
+        "ECMAScript core as a complete platform",
+        "Plain browser code",
+        "Node.js runtime"
+      ],
+      "problem_solved": "Automate Google Workspace and build Apps Script web apps with server/client boundary awareness.",
+      "common_use": [
+        "Server-side .gs functions",
+        "HtmlService client/server split",
+        "Spreadsheet automation",
+        "Triggers",
+        "File upload/CSV/XLSX workflows with verified services"
+      ],
+      "common_misuse": [
+        "Assuming Node fs/npm/streams exist",
+        "Assuming DOM is available in server-side Apps Script",
+        "Ignoring authorization scopes, quotas, deployment mode, and service-specific docs"
+      ],
+      "runtime_boundary_warning": "Apps Script is an operational extension in this package, not book-covered JavaScript. Verify current Google documentation before asserting behavior.",
+      "current_verification_required": true,
+      "related_risk_ids": [
+        "js-risk-apps-script-runtime-confusion",
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Runtime boundary record separated in V2.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "google_apps_script_extension",
+        "authority_order_position": 4,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      },
+      "runtime_or_environment": "google_apps_script_extension"
+    }
+  ],
+  "google_apps_script_extension_records": [
+    {
+      "id": "js-apps-script-runtime-boundary",
+      "extension_name": "Apps Script runtime boundary",
+      "runtime_or_environment": "google_apps_script_extension",
+      "current_verification_required": true,
+      "summary": "Keep Apps Script server-side JavaScript separate from browser and Node assumptions.",
+      "operational_boundary": "Server-side Apps Script functions execute in Apps Script, while user-facing HTML executes in the browser context provided by HtmlService.",
+      "safe_use": [
+        "Use Apps Script services only in server-side files",
+        "Use browser APIs only in client HTML",
+        "Create explicit client/server adapters"
+      ],
+      "unsafe_assumptions": [
+        "Using fs/process/npm packages as if in Node",
+        "Using document/window in .gs files",
+        "Treating Apps Script triggers as ordinary browser events"
+      ],
+      "current_google_documentation_to_verify": [
+        "Apps Script runtime overview",
+        "V8 runtime docs",
+        "Apps Script services reference",
+        "Quotas and limitations"
+      ],
+      "checks_or_diagnostics": [
+        "Label each file as server-side Apps Script, HtmlService browser HTML, shared generated script, or local build artifact.",
+        "Verify service/API methods, quotas, auth scopes, trigger behavior, deployment access, and file handling against current Google documentation.",
+        "Use small probes or tests for platform-bound behavior before bulk automation."
+      ],
+      "related_risk_ids": [
+        "js-risk-apps-script-runtime-confusion",
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Google Apps Script operational extension required by repair prompt; not covered by the uploaded book.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "google_apps_script_extension",
+        "authority_order_position": 4,
+        "confidence": "medium",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Operational extension only; current Google documentation is mandatory before relying on behavior."
+      }
+    },
+    {
+      "id": "js-apps-script-htmlservice-browser-server-split",
+      "extension_name": "HtmlService browser/server split",
+      "runtime_or_environment": "google_apps_script_extension",
+      "current_verification_required": true,
+      "summary": "Review Apps Script web apps as two cooperating runtimes.",
+      "operational_boundary": "HtmlService UI code is browser-side; server functions are called across a boundary and cannot share live object identity or synchronous call stack with client code.",
+      "safe_use": [
+        "Define request/response data shapes",
+        "Serialize only JSON-compatible values unless docs say otherwise",
+        "Handle client-side success and failure callbacks/promises according to current docs"
+      ],
+      "unsafe_assumptions": [
+        "Calling server functions as if they return synchronously",
+        "Accessing SpreadsheetApp directly from client HTML",
+        "Passing DOM nodes or functions across boundary"
+      ],
+      "current_google_documentation_to_verify": [
+        "HtmlService guide",
+        "google.script.run/client-server communication docs",
+        "Web app deployment docs"
+      ],
+      "checks_or_diagnostics": [
+        "Label each file as server-side Apps Script, HtmlService browser HTML, shared generated script, or local build artifact.",
+        "Verify service/API methods, quotas, auth scopes, trigger behavior, deployment access, and file handling against current Google documentation.",
+        "Use small probes or tests for platform-bound behavior before bulk automation."
+      ],
+      "related_risk_ids": [
+        "js-risk-apps-script-runtime-confusion",
+        "js-risk-json-serialization-loss",
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Google Apps Script operational extension required by repair prompt; not covered by the uploaded book.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "google_apps_script_extension",
+        "authority_order_position": 4,
+        "confidence": "medium",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Operational extension only; current Google documentation is mandatory before relying on behavior."
+      }
+    },
+    {
+      "id": "js-apps-script-spreadsheetapp-automation-safety",
+      "extension_name": "SpreadsheetApp automation safety",
+      "runtime_or_environment": "google_apps_script_extension",
+      "current_verification_required": true,
+      "summary": "Review spreadsheet automation for range size, idempotence, and data-shape preservation.",
+      "operational_boundary": "Spreadsheet reads/writes are service operations with current quotas, authorization, batching, range semantics, and performance considerations outside the book.",
+      "safe_use": [
+        "Batch reads/writes where current docs recommend",
+        "Validate sheet names/ranges before writes",
+        "Use backups or dry-run plans for destructive edits"
+      ],
+      "unsafe_assumptions": [
+        "Writing cell-by-cell at scale without verifying quotas/performance",
+        "Assuming active sheet/range is stable",
+        "Mutating user spreadsheets without rollback plan"
+      ],
+      "current_google_documentation_to_verify": [
+        "SpreadsheetApp reference",
+        "Authorization scopes",
+        "Quotas",
+        "Best practices for service calls"
+      ],
+      "checks_or_diagnostics": [
+        "Label each file as server-side Apps Script, HtmlService browser HTML, shared generated script, or local build artifact.",
+        "Verify service/API methods, quotas, auth scopes, trigger behavior, deployment access, and file handling against current Google documentation.",
+        "Use small probes or tests for platform-bound behavior before bulk automation."
+      ],
+      "related_risk_ids": [
+        "js-risk-apps-script-runtime-confusion",
+        "js-risk-shared-object-mutation"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Google Apps Script operational extension required by repair prompt; not covered by the uploaded book.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "google_apps_script_extension",
+        "authority_order_position": 4,
+        "confidence": "medium",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Operational extension only; current Google documentation is mandatory before relying on behavior."
+      }
+    },
+    {
+      "id": "js-apps-script-trigger-async-misconception",
+      "extension_name": "Triggers and asynchronous misconception risk",
+      "runtime_or_environment": "google_apps_script_extension",
+      "current_verification_required": true,
+      "summary": "Prevent confusion between Apps Script triggers, browser events, and JavaScript promises.",
+      "operational_boundary": "Triggers are Apps Script platform mechanisms and their scheduling, event objects, auth mode, and failure handling are platform-defined.",
+      "safe_use": [
+        "Verify trigger type/event object/current auth behavior",
+        "Make trigger handlers idempotent",
+        "Log/report failures explicitly"
+      ],
+      "unsafe_assumptions": [
+        "Assuming a trigger can await client browser state",
+        "Assuming trigger order/timing without docs",
+        "Ignoring installable/simple trigger differences"
+      ],
+      "current_google_documentation_to_verify": [
+        "Triggers guide",
+        "Event objects docs",
+        "Quotas and restrictions",
+        "Execution logs docs"
+      ],
+      "checks_or_diagnostics": [
+        "Label each file as server-side Apps Script, HtmlService browser HTML, shared generated script, or local build artifact.",
+        "Verify service/API methods, quotas, auth scopes, trigger behavior, deployment access, and file handling against current Google documentation.",
+        "Use small probes or tests for platform-bound behavior before bulk automation."
+      ],
+      "related_risk_ids": [
+        "js-risk-apps-script-runtime-confusion",
+        "js-risk-async-ordering",
+        "js-risk-callback-error-path"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Google Apps Script operational extension required by repair prompt; not covered by the uploaded book.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "google_apps_script_extension",
+        "authority_order_position": 4,
+        "confidence": "medium",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Operational extension only; current Google documentation is mandatory before relying on behavior."
+      }
+    },
+    {
+      "id": "js-apps-script-file-upload-processing-boundary",
+      "extension_name": "File upload and CSV/XLSX processing boundary",
+      "runtime_or_environment": "google_apps_script_extension",
+      "current_verification_required": true,
+      "summary": "Keep upload parsing and spreadsheet writes separated by explicit validation.",
+      "operational_boundary": "User-uploaded file bytes, browser forms, server-side Apps Script blobs/files, and spreadsheet writes cross multiple data and authorization boundaries.",
+      "safe_use": [
+        "Validate file type and size with current docs",
+        "Parse CSV/XLSX with verified libraries/services",
+        "Normalize rows before spreadsheet writes",
+        "Keep user-visible progress/error reporting clear"
+      ],
+      "unsafe_assumptions": [
+        "Assuming browser File object is available server-side",
+        "Assuming XLSX parsing library/package availability",
+        "Writing parsed data before validation"
+      ],
+      "current_google_documentation_to_verify": [
+        "HtmlService forms/file upload docs",
+        "Drive/Blob utilities docs",
+        "SpreadsheetApp docs",
+        "Current quotas"
+      ],
+      "checks_or_diagnostics": [
+        "Label each file as server-side Apps Script, HtmlService browser HTML, shared generated script, or local build artifact.",
+        "Verify service/API methods, quotas, auth scopes, trigger behavior, deployment access, and file handling against current Google documentation.",
+        "Use small probes or tests for platform-bound behavior before bulk automation."
+      ],
+      "related_risk_ids": [
+        "js-risk-apps-script-runtime-confusion",
+        "js-risk-json-serialization-loss",
+        "js-risk-apps-script-runtime-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Google Apps Script operational extension required by repair prompt; not covered by the uploaded book.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "google_apps_script_extension",
+        "authority_order_position": 4,
+        "confidence": "medium",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Operational extension only; current Google documentation is mandatory before relying on behavior."
+      }
+    },
+    {
+      "id": "js-apps-script-ai-agent-code-review",
+      "extension_name": "AI-agent review of Apps Script code",
+      "runtime_or_environment": "google_apps_script_extension",
+      "current_verification_required": true,
+      "summary": "Give AI reviewers a strict operating model for Apps Script projects.",
+      "operational_boundary": "The reviewer must classify each source file, mark unverified Apps Script claims, and avoid rewriting Apps Script as Node/browser JavaScript.",
+      "safe_use": [
+        "Produce a file-role map",
+        "List current docs needed before deployment",
+        "Flag scopes/quotas/triggers/data-loss risks",
+        "Suggest minimal probes for platform behavior"
+      ],
+      "unsafe_assumptions": [
+        "Inventing current quota/service behavior",
+        "Moving server code into client HTML",
+        "Replacing Apps Script services with Node-only packages"
+      ],
+      "current_google_documentation_to_verify": [
+        "Current Google Apps Script guides and references relevant to services used"
+      ],
+      "checks_or_diagnostics": [
+        "Label each file as server-side Apps Script, HtmlService browser HTML, shared generated script, or local build artifact.",
+        "Verify service/API methods, quotas, auth scopes, trigger behavior, deployment access, and file handling against current Google documentation.",
+        "Use small probes or tests for platform-bound behavior before bulk automation."
+      ],
+      "related_risk_ids": [
+        "js-risk-apps-script-runtime-confusion",
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Google Apps Script operational extension required by repair prompt; not covered by the uploaded book.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "google_apps_script_extension",
+        "authority_order_position": 4,
+        "confidence": "medium",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Operational extension only; current Google documentation is mandatory before relying on behavior."
+      }
+    },
+    {
+      "id": "js-apps-script-current-google-docs-required",
+      "extension_name": "Current Google documentation requirement",
+      "runtime_or_environment": "google_apps_script_extension",
+      "current_verification_required": true,
+      "summary": "Treat all Apps Script service behavior as current-verification required.",
+      "operational_boundary": "The uploaded book does not cover Apps Script. Any claim about HtmlService, SpreadsheetApp, triggers, quotas, scopes, deployment, upload handling, or service availability requires current Google docs.",
+      "safe_use": [
+        "State verification requirement explicitly",
+        "Cite checked docs in downstream work",
+        "Keep speculative behavior out of production changes"
+      ],
+      "unsafe_assumptions": [
+        "Claiming unsupported behavior from memory",
+        "Assuming old Apps Script limitations still apply or no longer apply",
+        "Ignoring deployment/access mode differences"
+      ],
+      "current_google_documentation_to_verify": [
+        "Google Apps Script release notes",
+        "Service references",
+        "Guides for web apps/triggers/quotas/scopes"
+      ],
+      "checks_or_diagnostics": [
+        "Label each file as server-side Apps Script, HtmlService browser HTML, shared generated script, or local build artifact.",
+        "Verify service/API methods, quotas, auth scopes, trigger behavior, deployment access, and file handling against current Google documentation.",
+        "Use small probes or tests for platform-bound behavior before bulk automation."
+      ],
+      "related_risk_ids": [
+        "js-risk-apps-script-runtime-confusion",
+        "js-risk-apps-script-runtime-confusion",
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Google Apps Script operational extension required by repair prompt; not covered by the uploaded book.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "google_apps_script_extension",
+        "authority_order_position": 4,
+        "confidence": "medium",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Operational extension only; current Google documentation is mandatory before relying on behavior."
+      }
+    }
+  ],
+  "boundary_integrity_rules": {
+    "browser_apis_not_claimed_for_node": true,
+    "node_apis_not_claimed_for_browser": true,
+    "apps_script_marked_as_extension": true,
+    "current_verification_required_for_host_platform_behavior": true
+  }
+}

@@ -1,0 +1,1278 @@
+{
+  "distributed_system_trouble": [
+    {
+      "id": "ddia_concept_partial_failure_is_normal_in_distributed_systems",
+      "record_type": "concept",
+      "name": "Partial failure is normal in distributed systems",
+      "summary": "Use this concept to reason about some nodes or messages fail while others continue. It helps explain local reasoning treats remote actions as all-or-nothing and improves decisions about how the workflow behaves when one step times out.",
+      "engineering_question_answered": "When facing some nodes or messages fail while others continue, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "some nodes or messages fail while others continue",
+      "failure_mode_addressed": "local reasoning treats remote actions as all-or-nothing",
+      "decision_improved": "how the workflow behaves when one step times out",
+      "operating_condition": "Relevant when a system design, incident, or code path involves partial failure, distributed systems.",
+      "assumptions": [
+        "The workload or architecture actually involves partial failure.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about how the workflow behaves when one step times out, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble local reasoning treats remote actions as all-or-nothing.",
+        "The team must decide about how the workflow behaves when one step times out.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test some nodes or messages fail while others continue.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "local reasoning treats remote actions as all-or-nothing",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for some nodes or messages fail while others continue?",
+        "What evidence shows that local reasoning treats remote actions as all-or-nothing is or is not occurring?",
+        "Which current component guarantee is being relied on for how the workflow behaves when one step times out?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "8",
+        "chapter_title": "The Trouble with Distributed Systems",
+        "section_heading": "Faults and Partial Failures",
+        "page_or_anchor": "MOBI_TEXT_CHAR_595332",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about some nodes or messages fail while others continue.",
+          "It connects the topic to tradeoffs or failure behavior involving local reasoning treats remote actions as all-or-nothing."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": false,
+      "related_record_ids": [
+        "ddia_concept_timeouts_are_suspicion_not_proof",
+        "ddia_concept_network_partitions_break_assumptions_about_reachability",
+        "ddia_concept_clock_skew_undermines_timestamp_assumptions",
+        "ddia_concept_monotonic_clocks_for_measuring_durations"
+      ],
+      "tags": [
+        "partial failure",
+        "distributed systems",
+        "chapter-8"
+      ]
+    },
+    {
+      "id": "ddia_concept_timeouts_are_suspicion_not_proof",
+      "record_type": "concept",
+      "name": "Timeouts are suspicion not proof",
+      "summary": "Use this concept to reason about distinguishing no response from definite failure. It helps explain retries create duplicate work or unsafe failover and improves decisions about which operations are safe under uncertain completion.",
+      "engineering_question_answered": "When facing distinguishing no response from definite failure, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "distinguishing no response from definite failure",
+      "failure_mode_addressed": "retries create duplicate work or unsafe failover",
+      "decision_improved": "which operations are safe under uncertain completion",
+      "operating_condition": "Relevant when a system design, incident, or code path involves timeout, network, retry.",
+      "assumptions": [
+        "The workload or architecture actually involves timeout.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which operations are safe under uncertain completion, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble retries create duplicate work or unsafe failover.",
+        "The team must decide about which operations are safe under uncertain completion.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test distinguishing no response from definite failure.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "retries create duplicate work or unsafe failover",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for distinguishing no response from definite failure?",
+        "What evidence shows that retries create duplicate work or unsafe failover is or is not occurring?",
+        "Which current component guarantee is being relied on for which operations are safe under uncertain completion?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "8",
+        "chapter_title": "The Trouble with Distributed Systems",
+        "section_heading": "Unreliable Networks",
+        "page_or_anchor": "MOBI_TEXT_CHAR_343001",
+        "figure_table_diagram_or_example": "",
+        "support_role": "caution",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about distinguishing no response from definite failure.",
+          "It connects the topic to tradeoffs or failure behavior involving retries create duplicate work or unsafe failover."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": false,
+      "related_record_ids": [
+        "ddia_concept_partial_failure_is_normal_in_distributed_systems",
+        "ddia_concept_network_partitions_break_assumptions_about_reachability",
+        "ddia_concept_clock_skew_undermines_timestamp_assumptions",
+        "ddia_concept_monotonic_clocks_for_measuring_durations"
+      ],
+      "tags": [
+        "timeout",
+        "network",
+        "retry",
+        "chapter-8"
+      ]
+    },
+    {
+      "id": "ddia_concept_network_partitions_break_assumptions_about_reachability",
+      "record_type": "concept",
+      "name": "Network partitions break assumptions about reachability",
+      "summary": "Use this concept to reason about handling separated nodes that cannot communicate. It helps explain split brain or divergent state emerges and improves decisions about which side may accept writes during partitions.",
+      "engineering_question_answered": "When facing handling separated nodes that cannot communicate, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "handling separated nodes that cannot communicate",
+      "failure_mode_addressed": "split brain or divergent state emerges",
+      "decision_improved": "which side may accept writes during partitions",
+      "operating_condition": "Relevant when a system design, incident, or code path involves network partition, split brain.",
+      "assumptions": [
+        "The workload or architecture actually involves network partition.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which side may accept writes during partitions, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble split brain or divergent state emerges.",
+        "The team must decide about which side may accept writes during partitions.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test handling separated nodes that cannot communicate.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "split brain or divergent state emerges",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for handling separated nodes that cannot communicate?",
+        "What evidence shows that split brain or divergent state emerges is or is not occurring?",
+        "Which current component guarantee is being relied on for which side may accept writes during partitions?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "8",
+        "chapter_title": "The Trouble with Distributed Systems",
+        "section_heading": "Unreliable Networks",
+        "page_or_anchor": "MOBI_TEXT_CHAR_343001",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about handling separated nodes that cannot communicate.",
+          "It connects the topic to tradeoffs or failure behavior involving split brain or divergent state emerges."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": false,
+      "related_record_ids": [
+        "ddia_concept_partial_failure_is_normal_in_distributed_systems",
+        "ddia_concept_timeouts_are_suspicion_not_proof",
+        "ddia_concept_clock_skew_undermines_timestamp_assumptions",
+        "ddia_concept_monotonic_clocks_for_measuring_durations"
+      ],
+      "tags": [
+        "network partition",
+        "split brain",
+        "chapter-8"
+      ]
+    },
+    {
+      "id": "ddia_concept_clock_skew_undermines_timestamp_assumptions",
+      "record_type": "concept",
+      "name": "Clock skew undermines timestamp assumptions",
+      "summary": "Use this concept to reason about avoiding correctness that depends on perfectly synchronized physical clocks. It helps explain ordering, expiry, or conflict resolution becomes wrong and improves decisions about which logic depends on wall-clock order.",
+      "engineering_question_answered": "When facing avoiding correctness that depends on perfectly synchronized physical clocks, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "avoiding correctness that depends on perfectly synchronized physical clocks",
+      "failure_mode_addressed": "ordering, expiry, or conflict resolution becomes wrong",
+      "decision_improved": "which logic depends on wall-clock order",
+      "operating_condition": "Relevant when a system design, incident, or code path involves clock skew, time, ordering.",
+      "assumptions": [
+        "The workload or architecture actually involves clock skew.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which logic depends on wall-clock order, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble ordering, expiry, or conflict resolution becomes wrong.",
+        "The team must decide about which logic depends on wall-clock order.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test avoiding correctness that depends on perfectly synchronized physical clocks.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "ordering, expiry, or conflict resolution becomes wrong",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for avoiding correctness that depends on perfectly synchronized physical clocks?",
+        "What evidence shows that ordering, expiry, or conflict resolution becomes wrong is or is not occurring?",
+        "Which current component guarantee is being relied on for which logic depends on wall-clock order?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "8",
+        "chapter_title": "The Trouble with Distributed Systems",
+        "section_heading": "Unreliable Clocks",
+        "page_or_anchor": "MOBI_TEXT_CHAR_356161",
+        "figure_table_diagram_or_example": "",
+        "support_role": "caution",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about avoiding correctness that depends on perfectly synchronized physical clocks.",
+          "It connects the topic to tradeoffs or failure behavior involving ordering, expiry, or conflict resolution becomes wrong."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_partial_failure_is_normal_in_distributed_systems",
+        "ddia_concept_timeouts_are_suspicion_not_proof",
+        "ddia_concept_network_partitions_break_assumptions_about_reachability",
+        "ddia_concept_monotonic_clocks_for_measuring_durations"
+      ],
+      "tags": [
+        "clock skew",
+        "time",
+        "ordering",
+        "chapter-8"
+      ]
+    },
+    {
+      "id": "ddia_concept_monotonic_clocks_for_measuring_durations",
+      "record_type": "concept",
+      "name": "Monotonic clocks for measuring durations",
+      "summary": "Use this concept to reason about using clocks suited to elapsed time rather than wall time. It helps explain timeouts and latency measurements jump backward or forward and improves decisions about which time source is used for duration measurement.",
+      "engineering_question_answered": "When facing using clocks suited to elapsed time rather than wall time, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "using clocks suited to elapsed time rather than wall time",
+      "failure_mode_addressed": "timeouts and latency measurements jump backward or forward",
+      "decision_improved": "which time source is used for duration measurement",
+      "operating_condition": "Relevant when a system design, incident, or code path involves monotonic clock, latency, timeout.",
+      "assumptions": [
+        "The workload or architecture actually involves monotonic clock.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which time source is used for duration measurement, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble timeouts and latency measurements jump backward or forward.",
+        "The team must decide about which time source is used for duration measurement.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test using clocks suited to elapsed time rather than wall time.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "timeouts and latency measurements jump backward or forward",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for using clocks suited to elapsed time rather than wall time?",
+        "What evidence shows that timeouts and latency measurements jump backward or forward is or is not occurring?",
+        "Which current component guarantee is being relied on for which time source is used for duration measurement?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "8",
+        "chapter_title": "The Trouble with Distributed Systems",
+        "section_heading": "Unreliable Clocks",
+        "page_or_anchor": "MOBI_TEXT_CHAR_356161",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_recommendation",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about using clocks suited to elapsed time rather than wall time.",
+          "It connects the topic to tradeoffs or failure behavior involving timeouts and latency measurements jump backward or forward."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_partial_failure_is_normal_in_distributed_systems",
+        "ddia_concept_timeouts_are_suspicion_not_proof",
+        "ddia_concept_network_partitions_break_assumptions_about_reachability",
+        "ddia_concept_clock_skew_undermines_timestamp_assumptions"
+      ],
+      "tags": [
+        "monotonic clock",
+        "latency",
+        "timeout",
+        "chapter-8"
+      ]
+    },
+    {
+      "id": "ddia_concept_process_pauses_can_invalidate_leases",
+      "record_type": "concept",
+      "name": "Process pauses can invalidate leases",
+      "summary": "Use this concept to reason about recognizing that a paused process may resume with stale authority. It helps explain old leader continues writing after losing leadership and improves decisions about whether leases are protected by fencing tokens.",
+      "engineering_question_answered": "When facing recognizing that a paused process may resume with stale authority, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "recognizing that a paused process may resume with stale authority",
+      "failure_mode_addressed": "old leader continues writing after losing leadership",
+      "decision_improved": "whether leases are protected by fencing tokens",
+      "operating_condition": "Relevant when a system design, incident, or code path involves lease, fencing, process pause.",
+      "assumptions": [
+        "The workload or architecture actually involves lease.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether leases are protected by fencing tokens, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble old leader continues writing after losing leadership.",
+        "The team must decide about whether leases are protected by fencing tokens.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test recognizing that a paused process may resume with stale authority.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "old leader continues writing after losing leadership",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for recognizing that a paused process may resume with stale authority?",
+        "What evidence shows that old leader continues writing after losing leadership is or is not occurring?",
+        "Which current component guarantee is being relied on for whether leases are protected by fencing tokens?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "8",
+        "chapter_title": "The Trouble with Distributed Systems",
+        "section_heading": "Knowledge, Truth, and Lies",
+        "page_or_anchor": "MOBI_TEXT_CHAR_595301",
+        "figure_table_diagram_or_example": "",
+        "support_role": "technical_example",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about recognizing that a paused process may resume with stale authority.",
+          "It connects the topic to tradeoffs or failure behavior involving old leader continues writing after losing leadership."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "demonstrated_by_source_example",
+        "explanation": "The record abstracts a practical pattern illustrated by an example in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_partial_failure_is_normal_in_distributed_systems",
+        "ddia_concept_timeouts_are_suspicion_not_proof",
+        "ddia_concept_network_partitions_break_assumptions_about_reachability",
+        "ddia_concept_clock_skew_undermines_timestamp_assumptions"
+      ],
+      "tags": [
+        "lease",
+        "fencing",
+        "process pause",
+        "chapter-8"
+      ]
+    },
+    {
+      "id": "ddia_concept_fencing_tokens_protect_shared_resources",
+      "record_type": "concept",
+      "name": "Fencing tokens protect shared resources",
+      "summary": "Use this concept to reason about rejecting stale actors using monotonically increasing tokens. It helps explain split-brain writers corrupt shared state and improves decisions about where external resources enforce fencing.",
+      "engineering_question_answered": "When facing rejecting stale actors using monotonically increasing tokens, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "rejecting stale actors using monotonically increasing tokens",
+      "failure_mode_addressed": "split-brain writers corrupt shared state",
+      "decision_improved": "where external resources enforce fencing",
+      "operating_condition": "Relevant when a system design, incident, or code path involves fencing, lease, split brain.",
+      "assumptions": [
+        "The workload or architecture actually involves fencing.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about where external resources enforce fencing, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble split-brain writers corrupt shared state.",
+        "The team must decide about where external resources enforce fencing.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test rejecting stale actors using monotonically increasing tokens.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "split-brain writers corrupt shared state",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for rejecting stale actors using monotonically increasing tokens?",
+        "What evidence shows that split-brain writers corrupt shared state is or is not occurring?",
+        "Which current component guarantee is being relied on for where external resources enforce fencing?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "8",
+        "chapter_title": "The Trouble with Distributed Systems",
+        "section_heading": "Knowledge, Truth, and Lies",
+        "page_or_anchor": "MOBI_TEXT_CHAR_595301",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about rejecting stale actors using monotonically increasing tokens.",
+          "It connects the topic to tradeoffs or failure behavior involving split-brain writers corrupt shared state."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_partial_failure_is_normal_in_distributed_systems",
+        "ddia_concept_timeouts_are_suspicion_not_proof",
+        "ddia_concept_network_partitions_break_assumptions_about_reachability",
+        "ddia_concept_clock_skew_undermines_timestamp_assumptions"
+      ],
+      "tags": [
+        "fencing",
+        "lease",
+        "split brain",
+        "chapter-8"
+      ]
+    }
+  ],
+  "consistency_and_consensus": [
+    {
+      "id": "ddia_concept_eventual_consistency_is_not_a_user_guarantee_by_itself",
+      "record_type": "concept",
+      "name": "Eventual consistency is not a user guarantee by itself",
+      "summary": "Use this concept to reason about knowing that convergence says little about what a user observes now. It helps explain application promises freshness that replicas cannot deliver and improves decisions about which user journeys need explicit consistency guarantees.",
+      "engineering_question_answered": "When facing knowing that convergence says little about what a user observes now, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "knowing that convergence says little about what a user observes now",
+      "failure_mode_addressed": "application promises freshness that replicas cannot deliver",
+      "decision_improved": "which user journeys need explicit consistency guarantees",
+      "operating_condition": "Relevant when a system design, incident, or code path involves eventual consistency, user experience.",
+      "assumptions": [
+        "The workload or architecture actually involves eventual consistency.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which user journeys need explicit consistency guarantees, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble application promises freshness that replicas cannot deliver.",
+        "The team must decide about which user journeys need explicit consistency guarantees.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test knowing that convergence says little about what a user observes now.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "application promises freshness that replicas cannot deliver",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for knowing that convergence says little about what a user observes now?",
+        "What evidence shows that application promises freshness that replicas cannot deliver is or is not occurring?",
+        "Which current component guarantee is being relied on for which user journeys need explicit consistency guarantees?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "9",
+        "chapter_title": "Consistency and Consensus",
+        "section_heading": "Consistency Guarantees",
+        "page_or_anchor": "MOBI_TEXT_CHAR_419117",
+        "figure_table_diagram_or_example": "",
+        "support_role": "caution",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about knowing that convergence says little about what a user observes now.",
+          "It connects the topic to tradeoffs or failure behavior involving application promises freshness that replicas cannot deliver."
+        ],
+        "inferred_claims": [
+          "Eventual consistency is not a user guarantee by itself can guide engineering triage when the stated operating condition is present."
+        ]
+      },
+      "derivation": {
+        "classification": "strongly_implied_by_source",
+        "explanation": "The record is a near implication of the cited discussion and is useful for engineering diagnosis.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_linearizability_makes_operations_appear_atomic_and_current",
+        "ddia_concept_cap_as_a_constraint_on_linearizable_systems",
+        "ddia_concept_causality_defines_what_must_be_ordered",
+        "ddia_concept_total_order_broadcast_as_replication_primitive"
+      ],
+      "tags": [
+        "eventual consistency",
+        "user experience",
+        "chapter-9"
+      ]
+    },
+    {
+      "id": "ddia_concept_linearizability_makes_operations_appear_atomic_and_current",
+      "record_type": "concept",
+      "name": "Linearizability makes operations appear atomic and current",
+      "summary": "Use this concept to reason about providing a single up-to-date view for selected operations. It helps explain clients observe stale or reordered state where a single copy is assumed and improves decisions about which operations require a single-copy illusion.",
+      "engineering_question_answered": "When facing providing a single up-to-date view for selected operations, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "providing a single up-to-date view for selected operations",
+      "failure_mode_addressed": "clients observe stale or reordered state where a single copy is assumed",
+      "decision_improved": "which operations require a single-copy illusion",
+      "operating_condition": "Relevant when a system design, incident, or code path involves linearizability, consistency.",
+      "assumptions": [
+        "The workload or architecture actually involves linearizability.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which operations require a single-copy illusion, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble clients observe stale or reordered state where a single copy is assumed.",
+        "The team must decide about which operations require a single-copy illusion.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test providing a single up-to-date view for selected operations.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "clients observe stale or reordered state where a single copy is assumed",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for providing a single up-to-date view for selected operations?",
+        "What evidence shows that clients observe stale or reordered state where a single copy is assumed is or is not occurring?",
+        "Which current component guarantee is being relied on for which operations require a single-copy illusion?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "9",
+        "chapter_title": "Consistency and Consensus",
+        "section_heading": "Linearizability",
+        "page_or_anchor": "MOBI_TEXT_CHAR_394288",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_definition",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about providing a single up-to-date view for selected operations.",
+          "It connects the topic to tradeoffs or failure behavior involving clients observe stale or reordered state where a single copy is assumed."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_eventual_consistency_is_not_a_user_guarantee_by_itself",
+        "ddia_concept_cap_as_a_constraint_on_linearizable_systems",
+        "ddia_concept_causality_defines_what_must_be_ordered",
+        "ddia_concept_total_order_broadcast_as_replication_primitive"
+      ],
+      "tags": [
+        "linearizability",
+        "consistency",
+        "chapter-9"
+      ]
+    },
+    {
+      "id": "ddia_concept_cap_as_a_constraint_on_linearizable_systems",
+      "record_type": "concept",
+      "name": "CAP as a constraint on linearizable systems",
+      "summary": "Use this concept to reason about understanding tradeoffs under network partitions without oversimplifying. It helps explain teams use CAP slogans instead of analyzing guarantees and improves decisions about which operations favor availability or linearizability during partition.",
+      "engineering_question_answered": "When facing understanding tradeoffs under network partitions without oversimplifying, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "understanding tradeoffs under network partitions without oversimplifying",
+      "failure_mode_addressed": "teams use CAP slogans instead of analyzing guarantees",
+      "decision_improved": "which operations favor availability or linearizability during partition",
+      "operating_condition": "Relevant when a system design, incident, or code path involves cap, availability, linearizability.",
+      "assumptions": [
+        "The workload or architecture actually involves cap.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which operations favor availability or linearizability during partition, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble teams use CAP slogans instead of analyzing guarantees.",
+        "The team must decide about which operations favor availability or linearizability during partition.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test understanding tradeoffs under network partitions without oversimplifying.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "teams use CAP slogans instead of analyzing guarantees",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for understanding tradeoffs under network partitions without oversimplifying?",
+        "What evidence shows that teams use CAP slogans instead of analyzing guarantees is or is not occurring?",
+        "Which current component guarantee is being relied on for which operations favor availability or linearizability during partition?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "9",
+        "chapter_title": "Consistency and Consensus",
+        "section_heading": "Linearizability",
+        "page_or_anchor": "MOBI_TEXT_CHAR_394288",
+        "figure_table_diagram_or_example": "",
+        "support_role": "caution",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about understanding tradeoffs under network partitions without oversimplifying.",
+          "It connects the topic to tradeoffs or failure behavior involving teams use CAP slogans instead of analyzing guarantees."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_eventual_consistency_is_not_a_user_guarantee_by_itself",
+        "ddia_concept_linearizability_makes_operations_appear_atomic_and_current",
+        "ddia_concept_causality_defines_what_must_be_ordered",
+        "ddia_concept_total_order_broadcast_as_replication_primitive"
+      ],
+      "tags": [
+        "cap",
+        "availability",
+        "linearizability",
+        "chapter-9"
+      ]
+    },
+    {
+      "id": "ddia_concept_causality_defines_what_must_be_ordered",
+      "record_type": "concept",
+      "name": "Causality defines what must be ordered",
+      "summary": "Use this concept to reason about preserving cause-and-effect relationships across events. It helps explain effects are processed before causes and improves decisions about which dependencies require causal ordering.",
+      "engineering_question_answered": "When facing preserving cause-and-effect relationships across events, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "preserving cause-and-effect relationships across events",
+      "failure_mode_addressed": "effects are processed before causes",
+      "decision_improved": "which dependencies require causal ordering",
+      "operating_condition": "Relevant when a system design, incident, or code path involves causality, ordering.",
+      "assumptions": [
+        "The workload or architecture actually involves causality.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which dependencies require causal ordering, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble effects are processed before causes.",
+        "The team must decide about which dependencies require causal ordering.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test preserving cause-and-effect relationships across events.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "effects are processed before causes",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for preserving cause-and-effect relationships across events?",
+        "What evidence shows that effects are processed before causes is or is not occurring?",
+        "Which current component guarantee is being relied on for which dependencies require causal ordering?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "9",
+        "chapter_title": "Consistency and Consensus",
+        "section_heading": "Ordering Guarantees",
+        "page_or_anchor": "MOBI_TEXT_CHAR_643565",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about preserving cause-and-effect relationships across events.",
+          "It connects the topic to tradeoffs or failure behavior involving effects are processed before causes."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": false,
+      "related_record_ids": [
+        "ddia_concept_eventual_consistency_is_not_a_user_guarantee_by_itself",
+        "ddia_concept_linearizability_makes_operations_appear_atomic_and_current",
+        "ddia_concept_cap_as_a_constraint_on_linearizable_systems",
+        "ddia_concept_total_order_broadcast_as_replication_primitive"
+      ],
+      "tags": [
+        "causality",
+        "ordering",
+        "chapter-9"
+      ]
+    },
+    {
+      "id": "ddia_concept_total_order_broadcast_as_replication_primitive",
+      "record_type": "concept",
+      "name": "Total order broadcast as replication primitive",
+      "summary": "Use this concept to reason about delivering messages to all nodes in the same order. It helps explain replicas apply writes in different orders and diverge and improves decisions about whether a shared order log is needed.",
+      "engineering_question_answered": "When facing delivering messages to all nodes in the same order, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "delivering messages to all nodes in the same order",
+      "failure_mode_addressed": "replicas apply writes in different orders and diverge",
+      "decision_improved": "whether a shared order log is needed",
+      "operating_condition": "Relevant when a system design, incident, or code path involves total order broadcast, replication, log.",
+      "assumptions": [
+        "The workload or architecture actually involves total order broadcast.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether a shared order log is needed, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble replicas apply writes in different orders and diverge.",
+        "The team must decide about whether a shared order log is needed.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test delivering messages to all nodes in the same order.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "replicas apply writes in different orders and diverge",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for delivering messages to all nodes in the same order?",
+        "What evidence shows that replicas apply writes in different orders and diverge is or is not occurring?",
+        "Which current component guarantee is being relied on for whether a shared order log is needed?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "9",
+        "chapter_title": "Consistency and Consensus",
+        "section_heading": "Ordering Guarantees",
+        "page_or_anchor": "MOBI_TEXT_CHAR_643565",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about delivering messages to all nodes in the same order.",
+          "It connects the topic to tradeoffs or failure behavior involving replicas apply writes in different orders and diverge."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_eventual_consistency_is_not_a_user_guarantee_by_itself",
+        "ddia_concept_linearizability_makes_operations_appear_atomic_and_current",
+        "ddia_concept_cap_as_a_constraint_on_linearizable_systems",
+        "ddia_concept_causality_defines_what_must_be_ordered"
+      ],
+      "tags": [
+        "total order broadcast",
+        "replication",
+        "log",
+        "chapter-9"
+      ]
+    },
+    {
+      "id": "ddia_concept_two_phase_commit_coordinates_atomic_commit",
+      "record_type": "concept",
+      "name": "Two-phase commit coordinates atomic commit",
+      "summary": "Use this concept to reason about making multiple participants commit or abort as one unit. It helps explain participants disagree after coordinator failure and improves decisions about whether atomic commit across resources is worth blocking risk.",
+      "engineering_question_answered": "When facing making multiple participants commit or abort as one unit, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "making multiple participants commit or abort as one unit",
+      "failure_mode_addressed": "participants disagree after coordinator failure",
+      "decision_improved": "whether atomic commit across resources is worth blocking risk",
+      "operating_condition": "Relevant when a system design, incident, or code path involves 2pc, distributed transaction.",
+      "assumptions": [
+        "The workload or architecture actually involves 2pc.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether atomic commit across resources is worth blocking risk, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble participants disagree after coordinator failure.",
+        "The team must decide about whether atomic commit across resources is worth blocking risk.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test making multiple participants commit or abort as one unit.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "participants disagree after coordinator failure",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for making multiple participants commit or abort as one unit?",
+        "What evidence shows that participants disagree after coordinator failure is or is not occurring?",
+        "Which current component guarantee is being relied on for whether atomic commit across resources is worth blocking risk?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "9",
+        "chapter_title": "Consistency and Consensus",
+        "section_heading": "Distributed Transactions and Consensus",
+        "page_or_anchor": "MOBI_TEXT_CHAR_711547",
+        "figure_table_diagram_or_example": "",
+        "support_role": "tradeoff_explanation",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about making multiple participants commit or abort as one unit.",
+          "It connects the topic to tradeoffs or failure behavior involving participants disagree after coordinator failure."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_eventual_consistency_is_not_a_user_guarantee_by_itself",
+        "ddia_concept_linearizability_makes_operations_appear_atomic_and_current",
+        "ddia_concept_cap_as_a_constraint_on_linearizable_systems",
+        "ddia_concept_causality_defines_what_must_be_ordered"
+      ],
+      "tags": [
+        "2pc",
+        "distributed transaction",
+        "chapter-9"
+      ]
+    },
+    {
+      "id": "ddia_concept_consensus_chooses_one_value_despite_faults",
+      "record_type": "concept",
+      "name": "Consensus chooses one value despite faults",
+      "summary": "Use this concept to reason about agreeing on leadership or committed values in a distributed system. It helps explain split brain or conflicting decisions occur and improves decisions about when replicated state machines or leader election are required.",
+      "engineering_question_answered": "When facing agreeing on leadership or committed values in a distributed system, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "agreeing on leadership or committed values in a distributed system",
+      "failure_mode_addressed": "split brain or conflicting decisions occur",
+      "decision_improved": "when replicated state machines or leader election are required",
+      "operating_condition": "Relevant when a system design, incident, or code path involves consensus, leader election.",
+      "assumptions": [
+        "The workload or architecture actually involves consensus.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about when replicated state machines or leader election are required, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble split brain or conflicting decisions occur.",
+        "The team must decide about when replicated state machines or leader election are required.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test agreeing on leadership or committed values in a distributed system.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "split brain or conflicting decisions occur",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for agreeing on leadership or committed values in a distributed system?",
+        "What evidence shows that split brain or conflicting decisions occur is or is not occurring?",
+        "Which current component guarantee is being relied on for when replicated state machines or leader election are required?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "9",
+        "chapter_title": "Consistency and Consensus",
+        "section_heading": "Distributed Transactions and Consensus",
+        "page_or_anchor": "MOBI_TEXT_CHAR_711547",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_definition",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about agreeing on leadership or committed values in a distributed system.",
+          "It connects the topic to tradeoffs or failure behavior involving split brain or conflicting decisions occur."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_eventual_consistency_is_not_a_user_guarantee_by_itself",
+        "ddia_concept_linearizability_makes_operations_appear_atomic_and_current",
+        "ddia_concept_cap_as_a_constraint_on_linearizable_systems",
+        "ddia_concept_causality_defines_what_must_be_ordered"
+      ],
+      "tags": [
+        "consensus",
+        "leader election",
+        "chapter-9"
+      ]
+    },
+    {
+      "id": "ddia_concept_coordination_services_centralize_hard_guarantees",
+      "record_type": "concept",
+      "name": "Coordination services centralize hard guarantees",
+      "summary": "Use this concept to reason about outsourcing locks, membership, and configuration to specialized systems. It helps explain applications reimplement unsafe coordination incorrectly and improves decisions about whether a small coordination kernel is enough.",
+      "engineering_question_answered": "When facing outsourcing locks, membership, and configuration to specialized systems, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "outsourcing locks, membership, and configuration to specialized systems",
+      "failure_mode_addressed": "applications reimplement unsafe coordination incorrectly",
+      "decision_improved": "whether a small coordination kernel is enough",
+      "operating_condition": "Relevant when a system design, incident, or code path involves coordination, zookeeper, metadata.",
+      "assumptions": [
+        "The workload or architecture actually involves coordination.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether a small coordination kernel is enough, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble applications reimplement unsafe coordination incorrectly.",
+        "The team must decide about whether a small coordination kernel is enough.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test outsourcing locks, membership, and configuration to specialized systems.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "applications reimplement unsafe coordination incorrectly",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for outsourcing locks, membership, and configuration to specialized systems?",
+        "What evidence shows that applications reimplement unsafe coordination incorrectly is or is not occurring?",
+        "Which current component guarantee is being relied on for whether a small coordination kernel is enough?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "9",
+        "chapter_title": "Consistency and Consensus",
+        "section_heading": "Distributed Transactions and Consensus",
+        "page_or_anchor": "MOBI_TEXT_CHAR_711547",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_recommendation",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about outsourcing locks, membership, and configuration to specialized systems.",
+          "It connects the topic to tradeoffs or failure behavior involving applications reimplement unsafe coordination incorrectly."
+        ],
+        "inferred_claims": [
+          "Coordination services centralize hard guarantees can guide engineering triage when the stated operating condition is present."
+        ]
+      },
+      "derivation": {
+        "classification": "strongly_implied_by_source",
+        "explanation": "The record is a near implication of the cited discussion and is useful for engineering diagnosis.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_eventual_consistency_is_not_a_user_guarantee_by_itself",
+        "ddia_concept_linearizability_makes_operations_appear_atomic_and_current",
+        "ddia_concept_cap_as_a_constraint_on_linearizable_systems",
+        "ddia_concept_causality_defines_what_must_be_ordered"
+      ],
+      "tags": [
+        "coordination",
+        "zookeeper",
+        "metadata",
+        "chapter-9"
+      ]
+    }
+  ]
+}

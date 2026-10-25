@@ -1,0 +1,693 @@
+{
+  "source_domain": "general_operational_extension",
+  "workflows": [
+    {
+      "id": "wf-001",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Understanding an unfamiliar codebase",
+      "preconditions": [
+        "Code is available and behavior must be preserved."
+      ],
+      "steps": [
+        "Inventory entrypoints, tests, and package layout.",
+        "Identify domain-like modules, adapters, configuration, and side-effect boundaries.",
+        "Trace one representative request/use case from edge to persistence.",
+        "Record observed facts separately from proposals."
+      ],
+      "evidence_required": [
+        "Exact filenames/symbols inspected.",
+        "Test commands found or missing.",
+        "Dependency and configuration entrypoints."
+      ],
+      "failure_signs": [
+        "Recommendations mention files not inspected.",
+        "Patterns are proposed before tracing behavior."
+      ],
+      "stop_conditions": [
+        "Stop when you can explain one critical workflow and its side effects."
+      ],
+      "rollback_guidance": [
+        "Revert exploratory edits; keep only notes/tests."
+      ],
+      "applicable_book_records": [
+        "rp-046",
+        "rp-047",
+        "ap-001",
+        "ap-105"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-046",
+          "rp-047",
+          "ap-001",
+          "ap-105"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-002",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Identifying current behavior",
+      "preconditions": [
+        "Existing behavior is unclear but must not break."
+      ],
+      "steps": [
+        "Find tests, logs, docs, and entrypoints.",
+        "Run or read tests if execution is not available.",
+        "Create characterization examples around observable input/output.",
+        "Label surprising behavior as observed, not desired."
+      ],
+      "evidence_required": [
+        "Observed inputs/outputs, state changes, and failures."
+      ],
+      "failure_signs": [
+        "Assumptions replace evidence.",
+        "Characterization tests assert implementation internals only."
+      ],
+      "stop_conditions": [
+        "Stop when current behavior is captured enough for planned change."
+      ],
+      "rollback_guidance": [
+        "Remove characterization tests only after desired behavior replaces them deliberately."
+      ],
+      "applicable_book_records": [
+        "rp-122",
+        "ap-051",
+        "cb-023"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-122",
+          "ap-051",
+          "cb-023"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-003",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Reproducing a bug",
+      "preconditions": [
+        "Bug report has symptom, stack trace, or user scenario."
+      ],
+      "steps": [
+        "Minimize inputs and environment required.",
+        "Identify where invalid state first appears.",
+        "Reproduce with the narrowest test level that exercises the failure.",
+        "Record whether failure is expected absence, domain rejection, infrastructure failure, or defect."
+      ],
+      "evidence_required": [
+        "Failing command, test, or script; stack trace; input data."
+      ],
+      "failure_signs": [
+        "Patch is proposed before reproduction.",
+        "Failure only reproduces through broad brittle setup when a smaller seam exists."
+      ],
+      "stop_conditions": [
+        "Stop when one deterministic failing test or exact manual reproduction exists."
+      ],
+      "rollback_guidance": [
+        "Back out speculative fixes and keep reproduction case."
+      ],
+      "applicable_book_records": [
+        "rp-115",
+        "rp-117",
+        "rule-017"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-115",
+          "rp-117"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-004",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Creating a failing test",
+      "preconditions": [
+        "A bug or missing behavior is understood enough to express."
+      ],
+      "steps": [
+        "Choose unit/domain/service/integration/E2E level based on failure boundary.",
+        "Write the test to fail for the observed reason.",
+        "Assert behavior, not incidental implementation.",
+        "Then patch the smallest code path."
+      ],
+      "evidence_required": [
+        "Test fails before fix and passes after fix."
+      ],
+      "failure_signs": [
+        "Test passes before fix.",
+        "Test relies on sleeps, network, or unrelated data."
+      ],
+      "stop_conditions": [
+        "Stop when failure is locked by a focused test."
+      ],
+      "rollback_guidance": [
+        "If test level is too broad, keep it temporarily and add narrower test after seam extraction."
+      ],
+      "applicable_book_records": [
+        "rp-057",
+        "rp-080",
+        "ap-020",
+        "cb-038"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-057",
+          "rp-080",
+          "ap-020",
+          "cb-038"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-005",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Adding characterization tests",
+      "preconditions": [
+        "Refactor will preserve behavior, not change it."
+      ],
+      "steps": [
+        "Select high-value current behaviors.",
+        "Capture observable outputs and side effects.",
+        "Mark known bugs explicitly if tests preserve them temporarily.",
+        "Avoid asserting private implementation."
+      ],
+      "evidence_required": [
+        "Representative inputs, outputs, persistence effects, errors."
+      ],
+      "failure_signs": [
+        "Tests only mirror code structure.",
+        "No rollback plan if behavior changes."
+      ],
+      "stop_conditions": [
+        "Stop when refactor risk is covered enough for first slice."
+      ],
+      "rollback_guidance": [
+        "Delete or update characterization tests when behavior is intentionally changed."
+      ],
+      "applicable_book_records": [
+        "rp-122",
+        "ap-051",
+        "cb-023"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-122",
+          "ap-051",
+          "cb-023"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-006",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Isolating pure logic",
+      "preconditions": [
+        "A function mixes decisions with I/O, time, randomness, or persistence."
+      ],
+      "steps": [
+        "Identify pure decision inputs and outputs.",
+        "Extract pure calculation or domain method.",
+        "Inject or pass mechanisms around it.",
+        "Unit test pure logic and keep seam/integration test."
+      ],
+      "evidence_required": [
+        "Before/after tests; dependency list; extracted function signature."
+      ],
+      "failure_signs": [
+        "Extraction changes behavior.",
+        "Pure function still reads globals or performs I/O."
+      ],
+      "stop_conditions": [
+        "Stop when core decision can run in memory."
+      ],
+      "rollback_guidance": [
+        "Inline extraction if it creates no clarity or tests."
+      ],
+      "applicable_book_records": [
+        "rp-048",
+        "rp-104",
+        "ap-002",
+        "cb-018"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-048",
+          "rp-104",
+          "ap-002",
+          "cb-018"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-007",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Introducing a boundary",
+      "preconditions": [
+        "Tests or changes are blocked by a concrete dependency."
+      ],
+      "steps": [
+        "Name the pain: speed, volatility, side effect, or domain leakage.",
+        "Define the smallest port/protocol needed by the caller.",
+        "Write fake and contract/integration tests.",
+        "Move concrete implementation to adapter."
+      ],
+      "evidence_required": [
+        "Call sites, fake, real adapter, contract expectations."
+      ],
+      "failure_signs": [
+        "Interface mirrors entire vendor/library.",
+        "Boundary introduced without a test or change need."
+      ],
+      "stop_conditions": [
+        "Stop after one use case uses the new seam safely."
+      ],
+      "rollback_guidance": [
+        "Remove port if it becomes unused pass-through."
+      ],
+      "applicable_book_records": [
+        "rp-041",
+        "rp-073",
+        "ap-012",
+        "cb-013"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-041",
+          "rp-073",
+          "ap-012",
+          "cb-013"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-008",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Replacing duplication with configuration",
+      "preconditions": [
+        "Repeated code differs only by stable parameters or policy."
+      ],
+      "steps": [
+        "Check whether duplication hides domain differences.",
+        "Extract data/config only for true variation.",
+        "Validate configuration at startup or boundary.",
+        "Keep policy code typed and tested."
+      ],
+      "evidence_required": [
+        "Examples of duplicated branches and intended variation."
+      ],
+      "failure_signs": [
+        "Config grows into an untyped rule engine.",
+        "Secrets or environment reads scatter."
+      ],
+      "stop_conditions": [
+        "Stop when duplication is removed without hiding behavior."
+      ],
+      "rollback_guidance": [
+        "Restore explicit branches if config obscures domain rules."
+      ],
+      "applicable_book_records": [
+        "rp-044",
+        "rp-076",
+        "ap-055",
+        "cb-021"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-044",
+          "rp-076",
+          "ap-055",
+          "cb-021"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-009",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Migrating from scripts to modules",
+      "preconditions": [
+        "A script is reused, tested, or growing side effects."
+      ],
+      "steps": [
+        "Separate argument parsing from core function.",
+        "Move reusable logic into module with typed boundary.",
+        "Inject filesystem/network/config dependencies.",
+        "Add tests around core behavior and one CLI/integration path."
+      ],
+      "evidence_required": [
+        "Script entrypoint, extracted function, tests."
+      ],
+      "failure_signs": [
+        "Script imports execute work at import time.",
+        "Migration creates package ceremony without reuse/tests."
+      ],
+      "stop_conditions": [
+        "Stop when core logic is importable without side effects."
+      ],
+      "rollback_guidance": [
+        "Keep script wrapper thin and reversible."
+      ],
+      "applicable_book_records": [
+        "rp-046",
+        "rp-098",
+        "ap-065"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-046",
+          "rp-098",
+          "ap-065"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-010",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Adding types incrementally",
+      "preconditions": [
+        "Existing code is partially or untyped."
+      ],
+      "steps": [
+        "Prioritize new, high-churn, high-value, complex, and leaf modules.",
+        "Annotate public boundaries first where useful.",
+        "Run checker with a staged config.",
+        "Track Any and ignores."
+      ],
+      "evidence_required": [
+        "Type checker config/report; annotated files; ignored errors list."
+      ],
+      "failure_signs": [
+        "Strict mode blocks progress with no plan.",
+        "Annotations are broad Any or ceremonial."
+      ],
+      "stop_conditions": [
+        "Stop each slice when checker passes and tests still protect behavior."
+      ],
+      "rollback_guidance": [
+        "Revert or narrow annotations that misrepresent runtime behavior."
+      ],
+      "applicable_book_records": [
+        "rp-008",
+        "rp-026",
+        "rp-091",
+        "cb-039"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-008",
+          "rp-026",
+          "rp-091",
+          "cb-039"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-011",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Strengthening error contracts",
+      "preconditions": [
+        "Callers cannot distinguish failure modes."
+      ],
+      "steps": [
+        "List observed failures: absence, invalid input, domain rejection, infrastructure, programming defect.",
+        "Choose Optional/result/exception per caller recovery needs.",
+        "Update public signatures/docs/tests.",
+        "Translate errors at adapters."
+      ],
+      "evidence_required": [
+        "Failure examples and caller handling expectations."
+      ],
+      "failure_signs": [
+        "All failures become None or RuntimeError.",
+        "Infrastructure errors leak to external callers."
+      ],
+      "stop_conditions": [
+        "Stop when tests cover each public failure mode."
+      ],
+      "rollback_guidance": [
+        "Roll back broad hierarchy if it adds no caller value."
+      ],
+      "applicable_book_records": [
+        "rp-010",
+        "rp-011",
+        "ap-039",
+        "cb-014"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-010",
+          "rp-011",
+          "ap-039",
+          "cb-014"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-012",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Introducing repositories safely",
+      "preconditions": [
+        "Persistence details make domain/application tests slow or coupled."
+      ],
+      "steps": [
+        "Choose one aggregate/use case.",
+        "Define smallest repository port.",
+        "Add fake for service tests and real adapter integration/contract test.",
+        "Do not move commit policy into repository."
+      ],
+      "evidence_required": [
+        "Existing persistence coupling; fake/real tests; service using port."
+      ],
+      "failure_signs": [
+        "Repository duplicates ORM without reducing pain.",
+        "One repository per table appears by default."
+      ],
+      "stop_conditions": [
+        "Stop after one workflow uses repository and tests are clearer."
+      ],
+      "rollback_guidance": [
+        "Inline repository if it remains unused pass-through."
+      ],
+      "applicable_book_records": [
+        "ap-008",
+        "ap-091",
+        "cb-001",
+        "cb-012"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis"
+        ],
+        "record_ids": [
+          "ap-008",
+          "ap-091",
+          "cb-001",
+          "cb-012"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-013",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Introducing a service layer safely",
+      "preconditions": [
+        "Entrypoint mixes protocol, persistence, and domain decisions."
+      ],
+      "steps": [
+        "Pick one endpoint/use case.",
+        "Create typed command/input object if helpful.",
+        "Move orchestration to service; keep domain rules in model/functions.",
+        "Test service with fake dependencies and keep entrypoint test thin."
+      ],
+      "evidence_required": [
+        "Before/after entrypoint; service tests; error mapping."
+      ],
+      "failure_signs": [
+        "Service only forwards calls.",
+        "Domain rules migrate into orchestration without reason."
+      ],
+      "stop_conditions": [
+        "Stop when one entrypoint is thinner and behavior preserved."
+      ],
+      "rollback_guidance": [
+        "Move logic back if service adds no responsibility."
+      ],
+      "applicable_book_records": [
+        "ap-017",
+        "ap-092",
+        "cb-008"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis"
+        ],
+        "record_ids": [
+          "ap-017",
+          "ap-092",
+          "cb-008"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-014",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Refactoring without breaking behavior",
+      "preconditions": [
+        "A structural improvement is needed."
+      ],
+      "steps": [
+        "State intended behavior change: none or specific.",
+        "Add tests before moving code.",
+        "Make one small change at a time.",
+        "Run relevant checks after each slice.",
+        "Record rollback."
+      ],
+      "evidence_required": [
+        "Passing tests before/after; diff scoped to one responsibility."
+      ],
+      "failure_signs": [
+        "Big-bang rename and behavior edits in one patch.",
+        "No rollback path."
+      ],
+      "stop_conditions": [
+        "Stop when the demonstrated problem is solved; do not continue pattern migration for aesthetics."
+      ],
+      "rollback_guidance": [
+        "Revert last slice; keep tests if valid."
+      ],
+      "applicable_book_records": [
+        "rp-122",
+        "ap-105",
+        "cb-039"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-122",
+          "ap-105",
+          "cb-039"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-015",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Deciding when not to refactor",
+      "preconditions": [
+        "Code is ugly but stable or refactor value is unclear."
+      ],
+      "steps": [
+        "Identify concrete pain: bugs, test cost, change cost, performance, security, or comprehension risk.",
+        "Estimate smallest safe improvement.",
+        "If no evidence exists, document non-action and monitor."
+      ],
+      "evidence_required": [
+        "Bug frequency, change history, test pain, team feedback."
+      ],
+      "failure_signs": [
+        "Refactor justified only by taste or pattern preference.",
+        "Leaving known high-risk code untouched without mitigation."
+      ],
+      "stop_conditions": [
+        "Stop when decision is evidence-based."
+      ],
+      "rollback_guidance": [
+        "Create a revisit condition rather than speculative patch."
+      ],
+      "applicable_book_records": [
+        "rp-009",
+        "rp-114",
+        "ap-053",
+        "cb-015"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-009",
+          "rp-114",
+          "ap-053",
+          "cb-015"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    }
+  ],
+  "generated_at": "2026-06-16T06:13:43+00:00"
+}

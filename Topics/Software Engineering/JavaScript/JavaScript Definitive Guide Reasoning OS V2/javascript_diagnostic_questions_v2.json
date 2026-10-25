@@ -1,0 +1,1073 @@
+{
+  "package_metadata": {
+    "package_name": "JavaScript Language, Runtime, and Code-Quality Reasoning OS V2",
+    "module_name": "diagnostic_questions",
+    "repair_type": "focused_v2_repair_not_full_rebuild",
+    "generated_at": "2026-06-21T05:00:11.155979+00:00",
+    "primary_source": {
+      "title": "JavaScript: The Definitive Guide",
+      "edition": "Seventh Edition",
+      "author": "David Flanagan",
+      "publisher": "O'Reilly Media",
+      "release_year": 2020,
+      "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+      "source_sha256": "b511aca2b98ae4eec4966c87d5e6b6c1704cbafe7dd076b924db46cb8d20ae07"
+    },
+    "v1_package_reference": {
+      "source_zip": "Javascript Reasoning.zip",
+      "source_zip_sha256": "60242e2ad2cfcc9bdf79f2fc73b392b7f149339dc95d6234f00db683f368d98d",
+      "not_overwritten": true
+    },
+    "authority_order": [
+      "Original uploaded book source",
+      "Current generated JavaScript Reasoning OS package",
+      "User repair prompt",
+      "Current official documentation only if available",
+      "General engineering reasoning"
+    ],
+    "source_limitation_warning": "Current browser, Node, npm, bundler, tool, framework, and Google Apps Script behavior is not asserted unless explicitly verified. V2 flags such items for current documentation checks.",
+    "purpose": "Concrete diagnostic questions for JavaScript AI review."
+  },
+  "diagnostic_questions": [
+    {
+      "id": "js-dq-runtime-executing-file",
+      "theme": "runtime boundary",
+      "question": "Which runtime executes this file: browser, Node, Apps Script server, HtmlService browser code, bundled browser code, test runner, or build tool?",
+      "decision_it_informs": "browser_vs_node_apps_script_runtime",
+      "why_it_matters": "Every API assumption depends on the host runtime.",
+      "evidence_needed": [
+        "File path/extension",
+        "package/build config",
+        "HTML script tag or Apps Script manifest",
+        "test runner environment"
+      ],
+      "good_answer_signs": [
+        "Specific runtime named and supported by config/deployment evidence",
+        "Host APIs separated into adapters"
+      ],
+      "red_flag_answer_signs": [
+        "Answer says only JavaScript",
+        "Uses document and fs in same unclassified module"
+      ],
+      "related_record_ids": [
+        "js-boundary-ecmascript-core",
+        "js-boundary-browser-dom",
+        "js-boundary-node-files",
+        "js-boundary-google-apps-script-extension"
+      ],
+      "related_risk_ids": [
+        "js-risk-browser-node-api-confusion",
+        "js-risk-apps-script-runtime-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-module-system",
+      "theme": "module system",
+      "question": "Which module system is this file using, and which loader actually loads it?",
+      "decision_it_informs": "commonjs_vs_es_module",
+      "why_it_matters": "import/export/require behavior depends on loader configuration and runtime.",
+      "evidence_needed": [
+        "package.json type/exports",
+        "file extension",
+        "script type",
+        "bundler/test transform"
+      ],
+      "good_answer_signs": [
+        "ESM/CommonJS/adapter boundary is named",
+        "Default/named export shape checked"
+      ],
+      "red_flag_answer_signs": [
+        "Mixes require/import without explanation",
+        "Works only through undocumented bundler behavior"
+      ],
+      "related_record_ids": [
+        "js-sem-es-modules",
+        "js-sem-commonjs-modules"
+      ],
+      "related_risk_ids": [
+        "js-risk-module-system-mismatch"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-nullish-property-base",
+      "theme": "nullish access",
+      "question": "Which value could be null or undefined before this property access, element access, destructuring, or call?",
+      "decision_it_informs": "null_undefined_guarding",
+      "why_it_matters": "Nullish property access is a common JavaScript runtime crash.",
+      "evidence_needed": [
+        "Assignments and branches before access",
+        "API/DOM/query result docs",
+        "tests for missing values"
+      ],
+      "good_answer_signs": [
+        "Required values asserted explicitly or optional absence handled with ?. and ??",
+        "Tests include missing parent object"
+      ],
+      "red_flag_answer_signs": [
+        "Optional chaining hides required invariant",
+        "Uses || and erases 0/empty string"
+      ],
+      "related_record_ids": [
+        "js-sem-null-vs-undefined",
+        "js-sem-property-access",
+        "js-sem-optional-chaining"
+      ],
+      "related_risk_ids": [
+        "js-risk-null-undefined-access"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-implicit-conversion-site",
+      "theme": "type conversion",
+      "question": "Which comparison, arithmetic operation, string concatenation, truthiness check, object-to-primitive conversion, or JSON conversion depends on implicit type conversion?",
+      "decision_it_informs": "coercion_review",
+      "why_it_matters": "Coercion bugs differ by operator and often appear at external input boundaries.",
+      "evidence_needed": [
+        "Operators near input values",
+        "parse/validation step",
+        "tests for string/number/falsy values"
+      ],
+      "good_answer_signs": [
+        "Input normalized before computation",
+        "Loose comparison documented and tested"
+      ],
+      "red_flag_answer_signs": [
+        "Form/query/CSV string used directly in + or ==",
+        "No tests for empty string/0/null/undefined"
+      ],
+      "related_record_ids": [
+        "js-sem-implicit-conversion",
+        "js-sem-equality-comparison",
+        "js-sem-truthiness"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-shared-reference-mutation",
+      "theme": "mutation",
+      "question": "Which object or array is being mutated through a shared reference?",
+      "decision_it_informs": "safe_refactor_mutation",
+      "why_it_matters": "Assignment does not clone objects; mutation can leak across callers/modules/tests.",
+      "evidence_needed": [
+        "Object ownership path",
+        "mutating methods/property writes",
+        "callers that retain references"
+      ],
+      "good_answer_signs": [
+        "Mutation is documented or clone boundary is explicit",
+        "Aliasing test exists"
+      ],
+      "red_flag_answer_signs": [
+        "Helper mutates input silently",
+        "Shallow clone treated as deep copy"
+      ],
+      "related_record_ids": [
+        "js-sem-object-references",
+        "js-sem-array-iteration-methods"
+      ],
+      "related_risk_ids": [
+        "js-risk-shared-object-mutation"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-sparse-array",
+      "theme": "arrays",
+      "question": "Could this array be sparse, or does length exceed the count of present elements?",
+      "decision_it_informs": "array_iteration_choice",
+      "why_it_matters": "Sparse arrays change callback invocation and serialization behavior.",
+      "evidence_needed": [
+        "Array construction/deletion code",
+        "Object.keys(arr)",
+        "tests for holes"
+      ],
+      "good_answer_signs": [
+        "Dense arrays intentionally initialized",
+        "Removal uses splice/filter where list semantics needed"
+      ],
+      "red_flag_answer_signs": [
+        "Array(n).map without fill",
+        "delete arr[i] used for list removal"
+      ],
+      "related_record_ids": [
+        "js-sem-arrays-length-sparse"
+      ],
+      "related_risk_ids": [
+        "js-risk-sparse-array-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-this-invocation",
+      "theme": "this binding",
+      "question": "Which functions use this, and exactly how are they invoked at each call site?",
+      "decision_it_informs": "this_binding_review",
+      "why_it_matters": "this is determined by invocation form and changes under callbacks/extraction.",
+      "evidence_needed": [
+        "Function bodies with this",
+        "call sites",
+        "bind/call/apply/arrow choices"
+      ],
+      "good_answer_signs": [
+        "Receiver is preserved or binding/wrapper is explicit",
+        "Method extraction tested"
+      ],
+      "red_flag_answer_signs": [
+        "Bare callback passed as obj.method",
+        "Arrow used as prototype method needing dynamic receiver"
+      ],
+      "related_record_ids": [
+        "js-sem-this-binding"
+      ],
+      "related_risk_ids": [
+        "js-risk-this-binding"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-closure-captured-vars",
+      "theme": "closure state",
+      "question": "Which variables are captured by this closure, and can they change before the closure runs again?",
+      "decision_it_informs": "closure_state_review",
+      "why_it_matters": "Closures retain bindings and can keep mutable state alive.",
+      "evidence_needed": [
+        "Outer variables",
+        "reassignments/mutations after closure creation",
+        "lifetime of returned callbacks"
+      ],
+      "good_answer_signs": [
+        "Captured state intentional and reset/tested",
+        "Snapshot passed explicitly when needed"
+      ],
+      "red_flag_answer_signs": [
+        "Long-lived callback captures broad mutable object",
+        "Tests depend on hidden closure state"
+      ],
+      "related_record_ids": [
+        "js-sem-closures"
+      ],
+      "related_risk_ids": [
+        "js-risk-closure-state"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-prototype-own-property",
+      "theme": "prototype and property ownership",
+      "question": "Is this property expected to be own, inherited, enumerable, symbol-keyed, accessor, or data?",
+      "decision_it_informs": "property_lookup_reflection",
+      "why_it_matters": "Reflection/copy/serialization APIs see different property sets.",
+      "evidence_needed": [
+        "Object.hasOwn/Object.keys/Reflect.ownKeys/descriptors",
+        "prototype chain"
+      ],
+      "good_answer_signs": [
+        "Ownership and enumerability checks match intent",
+        "Descriptors preserved when needed"
+      ],
+      "red_flag_answer_signs": [
+        "for/in over untrusted object",
+        "Spread assumed to copy non-enumerable/symbol/accessor semantics"
+      ],
+      "related_record_ids": [
+        "js-sem-property-lookup-prototype",
+        "js-sem-enumeration-ownership"
+      ],
+      "related_risk_ids": [
+        "js-risk-prototype-shadowing",
+        "js-risk-metaprogramming-opacity"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-class-method-placement",
+      "theme": "classes",
+      "question": "Should this method live on the prototype, as an instance field, or in a closure?",
+      "decision_it_informs": "class_vs_closure_method_placement",
+      "why_it_matters": "Placement changes identity, memory use, this behavior, and subclassing/mocking.",
+      "evidence_needed": [
+        "Own keys/prototype methods",
+        "captured variables",
+        "call sites requiring bound this"
+      ],
+      "good_answer_signs": [
+        "Prototype used for shared behavior",
+        "Instance function justified by lexical this/private capture"
+      ],
+      "red_flag_answer_signs": [
+        "Per-instance methods by habit",
+        "Prototype method assumes constructor-local closure"
+      ],
+      "related_record_ids": [
+        "js-sem-classes-prototypes",
+        "js-decision-prototype-method-vs-instance-method"
+      ],
+      "related_risk_ids": [
+        "js-risk-this-binding",
+        "js-risk-prototype-shadowing"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-promise-rejection-path",
+      "theme": "promises",
+      "question": "Which Promise rejection path is handled, and which caller observes the failure?",
+      "decision_it_informs": "promise_error_handling",
+      "why_it_matters": "Unhandled rejections and swallowed failures are high-value async bugs.",
+      "evidence_needed": [
+        "Promise-returning calls",
+        "await/catch/return statements",
+        "test rejection branches"
+      ],
+      "good_answer_signs": [
+        "Every rejection is awaited/caught/reported at clear boundary",
+        "Tests fail on rejection"
+      ],
+      "red_flag_answer_signs": [
+        "Floating promise",
+        "catch logs and continues with corrupt state",
+        "async test does not await"
+      ],
+      "related_record_ids": [
+        "js-sem-promises",
+        "js-async-promise-rejection-handling"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-async-must-finish-before-return",
+      "theme": "async ordering",
+      "question": "Which async operation must finish before this result is returned, rendered, written, or sent?",
+      "decision_it_informs": "await_ordering",
+      "why_it_matters": "Source order is not completion order across callbacks/promises/events/streams.",
+      "evidence_needed": [
+        "await/return chain",
+        "Promise combinators",
+        "event/timer/network ordering",
+        "stream completion signal"
+      ],
+      "good_answer_signs": [
+        "Dependencies awaited explicitly",
+        "Independent work started concurrently intentionally"
+      ],
+      "red_flag_answer_signs": [
+        "setTimeout used as synchronization",
+        "Function returns before async work completes"
+      ],
+      "related_record_ids": [
+        "js-sem-async-await",
+        "js-async-await-ordering"
+      ],
+      "related_risk_ids": [
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-callback-error-channel",
+      "theme": "callback error channel",
+      "question": "For this callback API, what is the documented error channel and is it tested?",
+      "decision_it_informs": "callback_to_promise_review",
+      "why_it_matters": "Callback errors are not necessarily thrown exceptions.",
+      "evidence_needed": [
+        "API docs/signature",
+        "error argument/event",
+        "wrapper code",
+        "tests"
+      ],
+      "good_answer_signs": [
+        "Error branch rejects/reports exactly once",
+        "Success and error both tested"
+      ],
+      "red_flag_answer_signs": [
+        "Wrapper ignores err",
+        "Throw inside async callback expected to reject outer promise"
+      ],
+      "related_record_ids": [
+        "js-async-callback-error-conventions"
+      ],
+      "related_risk_ids": [
+        "js-risk-callback-error-path"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-async-iteration-lifecycle",
+      "theme": "async iteration",
+      "question": "Can this async iterable or stream error, end early, or run forever?",
+      "decision_it_informs": "async_iteration_stream_review",
+      "why_it_matters": "Async iteration has lifecycle and cleanup behavior beyond array iteration.",
+      "evidence_needed": [
+        "Source async iterable docs",
+        "loop try/catch/finally",
+        "early break behavior"
+      ],
+      "good_answer_signs": [
+        "Empty/error/early-break cases tested",
+        "Bounded/unbounded nature documented"
+      ],
+      "red_flag_answer_signs": [
+        "Collects unbounded source into array",
+        "No error path around for await"
+      ],
+      "related_record_ids": [
+        "js-sem-async-iteration",
+        "js-async-node-streams"
+      ],
+      "related_risk_ids": [
+        "js-risk-stream-lifecycle",
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-browser-api-in-node",
+      "theme": "browser vs Node",
+      "question": "Which browser API is unavailable in Node for this code path?",
+      "decision_it_informs": "runtime_boundary_review",
+      "why_it_matters": "DOM/window/storage/event APIs are browser host APIs.",
+      "evidence_needed": [
+        "Runtime map",
+        "imports/globals",
+        "test environment"
+      ],
+      "good_answer_signs": [
+        "Browser-only code isolated",
+        "Node tests use intentional DOM environment if needed"
+      ],
+      "red_flag_answer_signs": [
+        "document/window used in server script",
+        "Jest environment hides production Node absence"
+      ],
+      "related_record_ids": [
+        "js-boundary-browser-dom",
+        "js-boundary-browser-storage"
+      ],
+      "related_risk_ids": [
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-node-api-in-browser",
+      "theme": "browser vs Node",
+      "question": "Which Node API is unavailable in the browser bundle for this code path?",
+      "decision_it_informs": "runtime_boundary_review",
+      "why_it_matters": "Node fs/path/process/Buffer/child_process and other core APIs do not automatically exist in browsers.",
+      "evidence_needed": [
+        "Bundler config",
+        "imports of Node built-ins",
+        "target runtime"
+      ],
+      "good_answer_signs": [
+        "Node-only adapter isolated",
+        "Bundler external/polyfill choices explicit"
+      ],
+      "red_flag_answer_signs": [
+        "fs/path/process imported by frontend module",
+        "Polyfill appears accidentally"
+      ],
+      "related_record_ids": [
+        "js-boundary-node-files",
+        "js-boundary-node-child-processes"
+      ],
+      "related_risk_ids": [
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-apps-script-current-docs",
+      "theme": "Apps Script",
+      "question": "Which Apps Script service/API must be verified against current Google documentation before relying on this behavior?",
+      "decision_it_informs": "apps_script_review",
+      "why_it_matters": "The book does not cover Apps Script and platform behavior changes over time.",
+      "evidence_needed": [
+        "Services used",
+        "trigger type",
+        "scopes/quotas",
+        "deployment settings",
+        "HtmlService docs"
+      ],
+      "good_answer_signs": [
+        "Specific Google docs required are listed",
+        "Claims are marked verification-required"
+      ],
+      "red_flag_answer_signs": [
+        "Quota/scope/trigger behavior asserted from memory",
+        "Apps Script treated as Node/browser"
+      ],
+      "related_record_ids": [
+        "js-apps-script-current-google-docs-required"
+      ],
+      "related_risk_ids": [
+        "js-risk-apps-script-runtime-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-json-loss",
+      "theme": "JSON",
+      "question": "Which JavaScript values are lost, stringified, or changed during JSON serialization?",
+      "decision_it_informs": "json_boundary_review",
+      "why_it_matters": "JSON is not a complete JavaScript object serializer.",
+      "evidence_needed": [
+        "Payload value types",
+        "toJSON/replacer/reviver",
+        "round-trip tests"
+      ],
+      "good_answer_signs": [
+        "Plain JSON schema or explicit custom serialization",
+        "Dates/Maps/Sets/undefined handled"
+      ],
+      "red_flag_answer_signs": [
+        "JSON clone of class instance",
+        "Date expected to parse back automatically"
+      ],
+      "related_record_ids": [
+        "js-sem-json-serialization"
+      ],
+      "related_risk_ids": [
+        "js-risk-json-serialization-loss"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-date-timezone",
+      "theme": "dates",
+      "question": "Which date/time assumption depends on local timezone, UTC, parse format, or DST?",
+      "decision_it_informs": "date_time_review",
+      "why_it_matters": "Date behavior can change between browser/server/CI/user timezone.",
+      "evidence_needed": [
+        "Date constructors/parsers",
+        "get* vs getUTC*",
+        "stored/display format",
+        "timezone tests"
+      ],
+      "good_answer_signs": [
+        "Instant/local date distinction explicit",
+        "Tests around midnight/DST/timezones"
+      ],
+      "red_flag_answer_signs": [
+        "Ambiguous date string parsed directly",
+        "toString used for storage"
+      ],
+      "related_record_ids": [
+        "js-sem-date-time"
+      ],
+      "related_risk_ids": [
+        "js-risk-date-timezone"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-regex-negative-tests",
+      "theme": "regex",
+      "question": "Which invalid inputs prove this regex does not overmatch, and which valid Unicode/multiline inputs prove it does not undermatch?",
+      "decision_it_informs": "regex_review",
+      "why_it_matters": "Regex success often means substring match and flags/state change behavior.",
+      "evidence_needed": [
+        "Pattern/flags",
+        "positive/negative test matrix",
+        "dynamic input escaping"
+      ],
+      "good_answer_signs": [
+        "Anchors/flags/escaping intentional",
+        "Negative tests included"
+      ],
+      "red_flag_answer_signs": [
+        "Only one happy input test",
+        "Global regex reused with test",
+        "User input interpolated unescaped"
+      ],
+      "related_record_ids": [
+        "js-sem-regexp-patterns"
+      ],
+      "related_risk_ids": [
+        "js-risk-regex-overmatching"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-fetch-http-parse-errors",
+      "theme": "networking",
+      "question": "Does this networking code distinguish network failure, HTTP error status, body parsing error, stale response, and application error?",
+      "decision_it_informs": "fetch_network_review",
+      "why_it_matters": "A fulfilled networking promise may still need status and body validation.",
+      "evidence_needed": [
+        "API docs/current environment",
+        "status checks",
+        "parse try/catch",
+        "abort/sequence logic"
+      ],
+      "good_answer_signs": [
+        "Each failure layer handled/tested",
+        "Stale responses ignored or cancelled"
+      ],
+      "red_flag_answer_signs": [
+        "await fetch(...).json() used as whole error policy",
+        "Only 200 test exists"
+      ],
+      "related_record_ids": [
+        "js-async-fetch-networking-promises"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-stream-completion",
+      "theme": "Node streams",
+      "question": "Which event, promise, or helper proves the stream has completed successfully, and which path handles stream errors?",
+      "decision_it_informs": "node_stream_review",
+      "why_it_matters": "Data chunks are not completion and stream errors can be unhandled.",
+      "evidence_needed": [
+        "stream code",
+        "pipeline/helper use",
+        "error/end/finish/close tests"
+      ],
+      "good_answer_signs": [
+        "Completion and error paths explicit",
+        "Large input tested"
+      ],
+      "red_flag_answer_signs": [
+        "Return from data handler",
+        "No error listener/test"
+      ],
+      "related_record_ids": [
+        "js-async-node-streams",
+        "js-boundary-node-streams"
+      ],
+      "related_risk_ids": [
+        "js-risk-stream-lifecycle"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-worker-message-schema",
+      "theme": "workers",
+      "question": "What is the worker message schema, and how are request IDs, errors, unsupported values, and termination handled?",
+      "decision_it_informs": "worker_boundary_review",
+      "why_it_matters": "Worker boundaries copy/transfer messages and have separate lifecycle/error paths.",
+      "evidence_needed": [
+        "postMessage/message handlers",
+        "payload types",
+        "correlation IDs",
+        "error/exit handlers"
+      ],
+      "good_answer_signs": [
+        "Schema and lifecycle documented/tested",
+        "Unsupported payload tested"
+      ],
+      "red_flag_answer_signs": [
+        "Shared object mutation expected",
+        "No error/terminate path"
+      ],
+      "related_record_ids": [
+        "js-async-worker-messaging"
+      ],
+      "related_risk_ids": [
+        "js-risk-worker-message-boundary"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-tooling-executed-code",
+      "theme": "tooling",
+      "question": "Is the code being reviewed the same code executed in tests, development, CI, and production after lint/format/bundle/transpile steps?",
+      "decision_it_informs": "tooling_review",
+      "why_it_matters": "Tooling can transform syntax, modules, globals, and output shape.",
+      "evidence_needed": [
+        "package scripts",
+        "bundler/Babel/Jest config",
+        "source maps",
+        "generated output"
+      ],
+      "good_answer_signs": [
+        "Same target path is tested or differences documented",
+        "Versions/config pinned"
+      ],
+      "red_flag_answer_signs": [
+        "Tests use transform unavailable in production",
+        "Generated output never inspected"
+      ],
+      "related_record_ids": [
+        "js-tooling-babel",
+        "js-tooling-bundling",
+        "js-tooling-jest"
+      ],
+      "related_risk_ids": [
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-dq-refactor-behavior-test",
+      "theme": "safe refactor",
+      "question": "Which test proves this refactor preserved JavaScript-specific behavior: nullish, coercion, mutation, this, closure, prototype, module, async, JSON, date, regex, and runtime boundaries?",
+      "decision_it_informs": "safe_refactor_plan",
+      "why_it_matters": "Refactors often change semantics without changing visible syntax much.",
+      "evidence_needed": [
+        "Before/after tests",
+        "edge-case matrix",
+        "runtime smoke tests"
+      ],
+      "good_answer_signs": [
+        "Tests target the actual risk changed by refactor",
+        "Old and new behavior compared on edge cases"
+      ],
+      "red_flag_answer_signs": [
+        "Only snapshot/format test",
+        "No async rejection/nullish/mutation cases"
+      ],
+      "related_record_ids": [
+        "js-workflow-safe-refactor-plan"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion",
+        "js-risk-null-undefined-access",
+        "js-risk-shared-object-mutation",
+        "js-risk-this-binding",
+        "js-risk-unhandled-promise-rejection"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Diagnostic question created for concrete JavaScript review.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    }
+  ],
+  "themes": [
+    "Apps Script",
+    "JSON",
+    "Node streams",
+    "arrays",
+    "async iteration",
+    "async ordering",
+    "browser vs Node",
+    "callback error channel",
+    "classes",
+    "closure state",
+    "dates",
+    "module system",
+    "mutation",
+    "networking",
+    "nullish access",
+    "promises",
+    "prototype and property ownership",
+    "regex",
+    "runtime boundary",
+    "safe refactor",
+    "this binding",
+    "tooling",
+    "type conversion",
+    "workers"
+  ]
+}

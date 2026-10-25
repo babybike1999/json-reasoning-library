@@ -1,0 +1,1110 @@
+{
+  "file_metadata": {
+    "file_name": "data_structures_algorithms_js_trees_v1.json",
+    "package_id": "data_structures_algorithms_js_reasoning_os_v1",
+    "package_version": "1.0",
+    "generated_at_utc": "2026-08-25T17:45:26.946739+00:00",
+    "purpose": "Tree/BST definitions, traversal, search, removal, limitations, and hierarchy restraint.",
+    "record_count": 18,
+    "source_title": "Data Structures and Algorithms with JavaScript",
+    "source_author": "Michael McMillan",
+    "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+    "source_boundary": "Source-supported concepts are separated from low-confidence Apps Script, spreadsheet, internal-tool, and AI-agent extensions. Current platform behavior must be verified.",
+    "copyright_safety": "Concepts and implementation logic are paraphrased. No long source passages, long code listings, full algorithm implementations, or exercise solutions are reproduced."
+  },
+  "tree_records": [
+    {
+      "id": "dsa-tree-terminology",
+      "record_type": "tree_record",
+      "name": "Tree terminology and hierarchy",
+      "summary": "The source defines a tree through nodes connected by parent-child relationships and identifies roots, children, leaves, paths, levels, and depth.",
+      "source_concept": "Tree terminology and hierarchy",
+      "programming_problem_addressed": "Represents hierarchical relationships and establishes vocabulary for traversal.",
+      "data_shape_assumption": "Each nonroot node has a parent in the modeled tree.",
+      "algorithmic_role": "Hierarchy model.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Explaining hierarchical structure"
+      ],
+      "do_not_use_when": [
+        "Relationships are many-to-many or cyclic"
+      ],
+      "common_failure_modes": [
+        "Confusing tree depth with array index",
+        "Multiple parents violate the tree model"
+      ],
+      "tests_or_checks": [
+        "Verify one root and parent relationships for all nonroot nodes."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-tree-binary-definition",
+        "dsa-decision-sorted-array-versus-tree"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Trees Defined",
+        "page_or_anchor": "OEBPS/ch10.html#idp36001232",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines core tree relationships including root, parent, child, leaf, path, level, and depth."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_definition",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "tree",
+        "hierarchy",
+        "terminology"
+      ]
+    },
+    {
+      "id": "dsa-tree-binary-definition",
+      "record_type": "tree_record",
+      "name": "Binary tree definition",
+      "summary": "A binary tree limits each node to at most two child nodes, commonly called left and right.",
+      "source_concept": "Binary tree definition",
+      "programming_problem_addressed": "Constrains a hierarchy to two branches per node.",
+      "data_shape_assumption": "Each node has zero, one, or two children.",
+      "algorithmic_role": "Binary hierarchy structure.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "A binary relationship is inherent"
+      ],
+      "do_not_use_when": [
+        "Arbitrary child counts are required"
+      ],
+      "common_failure_modes": [
+        "Calling any two-column hierarchy a binary search tree"
+      ],
+      "tests_or_checks": [
+        "Verify no node has more than two children."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-term-binary-tree",
+        "dsa-tree-bst-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Binary Trees and Binary Search Trees",
+        "page_or_anchor": "OEBPS/ch10.html#idp36001824",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines binary trees by the two-child limit."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_data_structure",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "tree",
+        "binary-tree"
+      ]
+    },
+    {
+      "id": "dsa-tree-bst-ordering",
+      "record_type": "tree_record",
+      "name": "Binary search tree ordering invariant",
+      "summary": "The source places values smaller than a node in its left subtree and larger values in its right subtree.",
+      "source_concept": "Binary search tree ordering invariant",
+      "programming_problem_addressed": "Supports directed insertion, search, and ordered traversal.",
+      "data_shape_assumption": "Values have a consistent comparison rule and duplicate handling is defined.",
+      "algorithmic_role": "Ordered hierarchical index.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "BST operations are genuinely needed"
+      ],
+      "do_not_use_when": [
+        "Comparator or duplicate policy is unclear"
+      ],
+      "common_failure_modes": [
+        "Inconsistent comparator",
+        "Unspecified duplicate placement"
+      ],
+      "tests_or_checks": [
+        "For every node, verify subtree ordering under the same comparator."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-ds-bst",
+        "dsa-tree-insert"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Binary Trees and Binary Search Trees",
+        "page_or_anchor": "OEBPS/ch10.html#idp36001824",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines BST left/right placement by value comparison."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_data_structure",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "tree",
+        "bst",
+        "invariant"
+      ]
+    },
+    {
+      "id": "dsa-tree-node-bst-classes",
+      "record_type": "tree_record",
+      "name": "Node and BST class responsibilities",
+      "summary": "The source defines nodes with data and child links, while the BST owns the root and tree-level operations.",
+      "source_concept": "Node and BST class responsibilities",
+      "programming_problem_addressed": "Separates node state from tree operations.",
+      "data_shape_assumption": "Nodes hold comparable data and child references.",
+      "algorithmic_role": "BST object model.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Teaching tree implementation"
+      ],
+      "do_not_use_when": [
+        "A custom tree is unnecessary in the target runtime"
+      ],
+      "common_failure_modes": [
+        "Root not updated",
+        "Child references lost"
+      ],
+      "tests_or_checks": [
+        "Test empty-tree initialization and first insertion."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-tree-insert",
+        "dsa-decision-custom-versus-native"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Building a Binary Search Tree Implementation",
+        "page_or_anchor": "OEBPS/ch10.html#idp36049280",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source builds Node and BST classes with data, left/right links, and a root."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "tree",
+        "class",
+        "node"
+      ]
+    },
+    {
+      "id": "dsa-tree-insert",
+      "record_type": "tree_record",
+      "name": "BST insertion by repeated comparison",
+      "summary": "Insertion begins at the root, follows left or right links according to comparison, and attaches the new node at the first open position.",
+      "source_concept": "BST insertion by repeated comparison",
+      "programming_problem_addressed": "Adds a value while preserving BST ordering.",
+      "data_shape_assumption": "A comparator and duplicate rule are fixed.",
+      "algorithmic_role": "Directed tree descent.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Maintaining a BST invariant"
+      ],
+      "do_not_use_when": [
+        "Data is not consistently comparable"
+      ],
+      "common_failure_modes": [
+        "Infinite descent on duplicates",
+        "Wrong branch comparison"
+      ],
+      "tests_or_checks": [
+        "Insert ascending, descending, mixed, and duplicate values and verify ordering."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-tree-bst-ordering",
+        "dsa-tree-search-specific"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Building a Binary Search Tree Implementation",
+        "page_or_anchor": "OEBPS/ch10.html#idp36049280",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source inserts by descending left or right until an empty child link is found."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "tree",
+        "bst",
+        "insert"
+      ]
+    },
+    {
+      "id": "dsa-tree-traversals",
+      "record_type": "tree_record",
+      "name": "BST traversal families",
+      "summary": "The source presents in-order, pre-order, and post-order traversals, each visiting the current node at a different point relative to its subtrees.",
+      "source_concept": "BST traversal families",
+      "programming_problem_addressed": "Visits every node in an order suited to the required output or operation.",
+      "data_shape_assumption": "Tree links are valid and traversal terminates at absent children.",
+      "algorithmic_role": "Recursive tree visitation.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Systematic tree processing"
+      ],
+      "do_not_use_when": [
+        "Traversal order has not been tied to an output meaning"
+      ],
+      "common_failure_modes": [
+        "Wrong visit position",
+        "Missing base case"
+      ],
+      "tests_or_checks": [
+        "Compare traversal outputs on a small hand-verified tree."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-tree-inorder",
+        "dsa-tree-preorder",
+        "dsa-tree-postorder"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Traversing a Binary Search Tree",
+        "page_or_anchor": "OEBPS/ch10.html#idp36049872",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines and demonstrates in-order, pre-order, and post-order BST traversals."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "tree",
+        "traversal"
+      ]
+    },
+    {
+      "id": "dsa-tree-inorder",
+      "record_type": "tree_record",
+      "name": "In-order traversal",
+      "summary": "In-order traversal visits the left subtree, then the current node, then the right subtree; under the BST invariant this yields values in sorted order.",
+      "source_concept": "In-order traversal",
+      "programming_problem_addressed": "Produces ordered values from a BST.",
+      "data_shape_assumption": "BST ordering is valid.",
+      "algorithmic_role": "Left-node-right traversal.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Sorted output from a valid BST"
+      ],
+      "do_not_use_when": [
+        "The tree is binary but not search-ordered"
+      ],
+      "common_failure_modes": [
+        "Assuming sorted output from a non-BST"
+      ],
+      "tests_or_checks": [
+        "Verify output is nondecreasing under the comparator."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-tree-bst-ordering",
+        "dsa-tree-traversals"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Traversing a Binary Search Tree",
+        "page_or_anchor": "OEBPS/ch10.html#idp36049872",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source explains in-order traversal and its ordered output for a BST."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "tree",
+        "inorder",
+        "sorted"
+      ]
+    },
+    {
+      "id": "dsa-tree-preorder",
+      "record_type": "tree_record",
+      "name": "Pre-order traversal",
+      "summary": "Pre-order traversal visits the current node before traversing its left and right subtrees.",
+      "source_concept": "Pre-order traversal",
+      "programming_problem_addressed": "Processes parent nodes before descendants.",
+      "data_shape_assumption": "Tree links form a finite tree.",
+      "algorithmic_role": "Node-left-right traversal.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Parent-first processing or structural serialization concepts"
+      ],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Confusing it with sorted traversal"
+      ],
+      "tests_or_checks": [
+        "Verify root is first in a nonempty tree."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-tree-traversals"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Traversing a Binary Search Tree",
+        "page_or_anchor": "OEBPS/ch10.html#idp36049872",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines pre-order traversal as visiting the node before its subtrees."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "tree",
+        "preorder"
+      ]
+    },
+    {
+      "id": "dsa-tree-postorder",
+      "record_type": "tree_record",
+      "name": "Post-order traversal",
+      "summary": "Post-order traversal visits both subtrees before the current node.",
+      "source_concept": "Post-order traversal",
+      "programming_problem_addressed": "Processes descendants before their parent.",
+      "data_shape_assumption": "Tree links form a finite tree.",
+      "algorithmic_role": "Left-right-node traversal.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Child-first aggregation or cleanup concepts"
+      ],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Processing parent too early"
+      ],
+      "tests_or_checks": [
+        "Verify root is last in a nonempty tree."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-tree-traversals"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Traversing a Binary Search Tree",
+        "page_or_anchor": "OEBPS/ch10.html#idp36049872",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines post-order traversal as visiting subtrees before the node."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "tree",
+        "postorder"
+      ]
+    },
+    {
+      "id": "dsa-tree-min-max",
+      "record_type": "tree_record",
+      "name": "BST minimum and maximum search",
+      "summary": "The source finds the minimum by repeatedly following left links and the maximum by repeatedly following right links.",
+      "source_concept": "BST minimum and maximum search",
+      "programming_problem_addressed": "Retrieves extreme ordered values without scanning every node.",
+      "data_shape_assumption": "BST ordering is valid and the tree is nonempty or empty handling is defined.",
+      "algorithmic_role": "Directed extreme search.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "A BST is already maintained"
+      ],
+      "do_not_use_when": [
+        "The structure is not a BST"
+      ],
+      "common_failure_modes": [
+        "Dereferencing an empty root",
+        "Corrupted ordering"
+      ],
+      "tests_or_checks": [
+        "Test empty, one-node, left-only, and right-only shapes."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-tree-bst-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Searching for the Minimum and Maximum Value",
+        "page_or_anchor": "OEBPS/ch10.html#idp36840048",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source follows left links for the minimum and right links for the maximum."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "tree",
+        "min",
+        "max"
+      ]
+    },
+    {
+      "id": "dsa-tree-search-specific",
+      "record_type": "tree_record",
+      "name": "Search for a specific BST value",
+      "summary": "The source compares the target with the current node and follows one child branch until it finds the value or reaches an absent link.",
+      "source_concept": "Search for a specific BST value",
+      "programming_problem_addressed": "Finds a comparable value in a BST.",
+      "data_shape_assumption": "Ordering and comparator are valid.",
+      "algorithmic_role": "Directed tree search.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "BST lookup"
+      ],
+      "do_not_use_when": [
+        "A dictionary provides clearer direct key lookup"
+      ],
+      "common_failure_modes": [
+        "Comparator mismatch between insert and search"
+      ],
+      "tests_or_checks": [
+        "Search root, leaf, internal, absent, and duplicate values."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-tree-insert",
+        "dsa-decision-binary-versus-map"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Searching for a Specific Value",
+        "page_or_anchor": "OEBPS/ch10.html#idp36840672",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source searches by comparing and descending left or right."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "tree",
+        "search",
+        "bst"
+      ]
+    },
+    {
+      "id": "dsa-tree-remove",
+      "record_type": "tree_record",
+      "name": "BST node removal",
+      "summary": "The source handles removal according to whether the target is a leaf, has one child, or has two children, preserving tree links and ordering.",
+      "source_concept": "BST node removal",
+      "programming_problem_addressed": "Deletes a value without breaking the BST.",
+      "data_shape_assumption": "Target search and parent/child relationships are correct.",
+      "algorithmic_role": "Case-based structural mutation.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Maintaining a custom BST"
+      ],
+      "do_not_use_when": [
+        "Deletion correctness is not exhaustively tested"
+      ],
+      "common_failure_modes": [
+        "Losing a subtree",
+        "Incorrect successor replacement",
+        "Root deletion bug"
+      ],
+      "tests_or_checks": [
+        "Test leaf, one-left-child, one-right-child, two-child, root, and missing-node cases."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-tree-remove-leaf",
+        "dsa-tree-remove-one-child",
+        "dsa-tree-remove-two-children"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Removing Nodes from a BST",
+        "page_or_anchor": "OEBPS/ch10.html#idp37514800",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source distinguishes removal cases based on child count and preserves BST links."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "tree",
+        "remove",
+        "bst"
+      ]
+    },
+    {
+      "id": "dsa-tree-remove-leaf",
+      "record_type": "tree_record",
+      "name": "Remove a leaf node",
+      "summary": "A leaf can be removed by clearing the parent link that points to it, with a separate root case.",
+      "source_concept": "Remove a leaf node",
+      "programming_problem_addressed": "Deletes a node with no children.",
+      "data_shape_assumption": "Parent relationship is known.",
+      "algorithmic_role": "BST removal case.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Root leaf not handled"
+      ],
+      "tests_or_checks": [
+        "Remove the only node and a nonroot leaf."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-tree-remove"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Removing Nodes from a BST",
+        "page_or_anchor": "OEBPS/ch10.html#idp37514800",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source treats no-child removal as a distinct case."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "tree",
+        "remove",
+        "leaf"
+      ]
+    },
+    {
+      "id": "dsa-tree-remove-one-child",
+      "record_type": "tree_record",
+      "name": "Remove a node with one child",
+      "summary": "The parent is relinked directly to the target’s sole child, with root handling where necessary.",
+      "source_concept": "Remove a node with one child",
+      "programming_problem_addressed": "Deletes a node while retaining its one subtree.",
+      "data_shape_assumption": "Exactly one child exists.",
+      "algorithmic_role": "BST removal case.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Linking the wrong side",
+        "Losing the child subtree"
+      ],
+      "tests_or_checks": [
+        "Test left-only and right-only child cases at root and nonroot."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-tree-remove"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Removing Nodes from a BST",
+        "page_or_anchor": "OEBPS/ch10.html#idp37514800",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source treats one-child removal by promoting the child link."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "tree",
+        "remove",
+        "one-child"
+      ]
+    },
+    {
+      "id": "dsa-tree-remove-two-children",
+      "record_type": "tree_record",
+      "name": "Remove a node with two children",
+      "summary": "The source replaces the removed node with an ordered successor from its right subtree and then repairs the affected links.",
+      "source_concept": "Remove a node with two children",
+      "programming_problem_addressed": "Deletes a two-child node while preserving order.",
+      "data_shape_assumption": "An ordered successor can be found and removed safely.",
+      "algorithmic_role": "BST removal case.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Duplicate successor remains",
+        "Successor subtree lost"
+      ],
+      "tests_or_checks": [
+        "Remove two-child nodes where successor is immediate and deeper."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-tree-remove",
+        "dsa-tree-min-max"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Removing Nodes from a BST",
+        "page_or_anchor": "OEBPS/ch10.html#idp37514800",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source uses the smallest node in the right subtree as replacement in the two-child case."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "tree",
+        "remove",
+        "two-children"
+      ]
+    },
+    {
+      "id": "dsa-tree-count-occurrences",
+      "record_type": "tree_record",
+      "name": "Count repeated BST values",
+      "summary": "The source augments nodes with a count so duplicate insertions can increase frequency rather than creating indistinguishable structural duplicates.",
+      "source_concept": "Count repeated BST values",
+      "programming_problem_addressed": "Tracks value frequency within a BST.",
+      "data_shape_assumption": "Duplicate values are semantically countable as one node plus frequency.",
+      "algorithmic_role": "Frequency-aware insertion/search.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "A tree is already appropriate and duplicate counts matter"
+      ],
+      "do_not_use_when": [
+        "A dictionary frequency table is simpler"
+      ],
+      "common_failure_modes": [
+        "Count not decremented on removal",
+        "Duplicate policy inconsistent"
+      ],
+      "tests_or_checks": [
+        "Insert and remove duplicates and verify node count and tree structure."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-dict-counting-pattern",
+        "dsa-tree-bst-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Counting Occurrences",
+        "page_or_anchor": "OEBPS/ch10.html#idp37650848",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source adds a count field and functions to update repeated occurrences."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "tree",
+        "count",
+        "duplicates"
+      ]
+    },
+    {
+      "id": "dsa-tree-source-limitation-no-balancing",
+      "record_type": "source_limitation",
+      "name": "BST balancing is not developed in the source",
+      "summary": "The detected BST chapter covers insertion, traversal, search, removal, and occurrence counts but does not develop self-balancing trees or a balancing strategy.",
+      "source_concept": "BST balancing is not developed in the source",
+      "programming_problem_addressed": "Prevents the package from overstating the source as guidance on balanced search trees.",
+      "data_shape_assumption": "Insertion order can affect a naive BST shape, but the source does not analyze balancing.",
+      "algorithmic_role": "Scope boundary.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Evaluating whether the book supports a production tree recommendation"
+      ],
+      "do_not_use_when": [
+        "Adding unsupported AVL/red-black claims to source-derived records"
+      ],
+      "common_failure_modes": [
+        "Assuming all BST operations remain efficient regardless of shape"
+      ],
+      "tests_or_checks": [
+        "Inspect source outline before making balancing claims."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-decision-sorted-array-versus-tree",
+        "dsa-risk-tree-overengineering"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Chapter 10. Binary Trees and Binary Search Trees",
+        "page_or_anchor": "OEBPS/ch10.html#binarytrees",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "scope audit",
+        "directly_supported_claims": [
+          "The chapter sections detected cover definitions, construction, traversal, searches, removal, and counts."
+        ],
+        "inferred_claims": [
+          "No balancing section or balancing algorithm was detected, so balancing behavior is outside this source package."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "tree",
+        "limitation",
+        "balancing"
+      ]
+    },
+    {
+      "id": "dsa-tree-hierarchy-extension",
+      "record_type": "google_apps_script_translation_extension",
+      "name": "Hierarchy modeling without automatically implementing a tree",
+      "summary": "Account categories, menu categories, or responsibility hierarchies can be reasoned about as trees, but an Apps Script implementation should often remain a flat table with parent IDs unless tree operations are truly needed.",
+      "source_concept": "Hierarchy modeling without automatically implementing a tree",
+      "programming_problem_addressed": "Represents parent-child structure while avoiding unnecessary custom node code.",
+      "data_shape_assumption": "Each record has a stable ID and optional parent ID.",
+      "algorithmic_role": "Hierarchy representation and traversal.",
+      "runtime_context": "Google Sheets/Apps Script; project data shape and runtime must be verified.",
+      "transfers_to_google_apps_script": "conceptual_only",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Hierarchy questions are explicit"
+      ],
+      "do_not_use_when": [
+        "A simple category column answers the reporting need"
+      ],
+      "common_failure_modes": [
+        "Orphan parent IDs",
+        "Cycles in supposedly hierarchical data",
+        "Tree overengineering"
+      ],
+      "tests_or_checks": [
+        "Validate one root policy, parent existence, and absence of cycles."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-risk-tree-overengineering",
+        "dsa-decision-sorted-array-versus-tree"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Trees Defined",
+        "page_or_anchor": "OEBPS/ch10.html#idp36001232",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines tree hierarchy and traversal concepts."
+        ],
+        "inferred_claims": [
+          "Flat parent-ID tables are an Apps Script design extension, not a source recommendation."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "tree",
+        "hierarchy",
+        "apps-script"
+      ]
+    }
+  ]
+}

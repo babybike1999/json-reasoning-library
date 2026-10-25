@@ -1,0 +1,1361 @@
+{
+  "file_metadata": {
+    "file_name": "data_structures_algorithms_js_lists_v1.json",
+    "package_id": "data_structures_algorithms_js_reasoning_os_v1",
+    "package_version": "1.0",
+    "generated_at_utc": "2026-08-25T17:45:26.946739+00:00",
+    "purpose": "List and linked-list reasoning, applications, and restraint rules.",
+    "record_count": 22,
+    "source_title": "Data Structures and Algorithms with JavaScript",
+    "source_author": "Michael McMillan",
+    "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+    "source_boundary": "Source-supported concepts are separated from low-confidence Apps Script, spreadsheet, internal-tool, and AI-agent extensions. Current platform behavior must be verified.",
+    "copyright_safety": "Concepts and implementation logic are paraphrased. No long source passages, long code listings, full algorithm implementations, or exercise solutions are reproduced."
+  },
+  "list_records": [
+    {
+      "id": "dsa-list-adt",
+      "record_type": "list_record",
+      "name": "List abstract data type",
+      "summary": "The source defines a list as an ordered sequence with length, current position, insertion, removal, clearing, retrieval, and movement operations.",
+      "source_concept": "List abstract data type",
+      "programming_problem_addressed": "Specifies ordered collection behavior independently of storage.",
+      "data_shape_assumption": "Elements form a sequence and cursor position may be meaningful.",
+      "algorithmic_role": "Operation contract for ordered data.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "A named collection interface improves clarity"
+      ],
+      "do_not_use_when": [
+        "A plain array and direct iteration are sufficient"
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Test empty, one-element, front, end, insertion, removal, and cursor boundaries."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-core-adt-separates-interface-storage",
+        "dsa-list-array-backed-implementation"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "A List ADT",
+        "page_or_anchor": "OEBPS/ch03.html#idp19348032",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source explicitly defines the List ADT properties and operations."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_data_structure",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "list",
+        "adt"
+      ]
+    },
+    {
+      "id": "dsa-list-array-backed-implementation",
+      "record_type": "list_record",
+      "name": "Array-backed list implementation",
+      "summary": "The source implements the list contract with an internal array, a list size, and a current-position cursor.",
+      "source_concept": "Array-backed list implementation",
+      "programming_problem_addressed": "Turns an abstract list contract into JavaScript state and methods.",
+      "data_shape_assumption": "Array storage can satisfy the required list operations.",
+      "algorithmic_role": "Concrete ADT implementation.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Teaching interface-versus-implementation"
+      ],
+      "do_not_use_when": [
+        "Copying the source class without a modern need"
+      ],
+      "common_failure_modes": [
+        "Public callers depending on internal dataStore indexes",
+        "Duplicating native array functionality without benefit"
+      ],
+      "tests_or_checks": [
+        "Verify every ADT method preserves list size and cursor invariants."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-list-adt",
+        "dsa-decision-custom-versus-native"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "A List Class Implementation",
+        "page_or_anchor": "OEBPS/ch03.html#idp19405376",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source derives a class implementation from the List ADT and uses an array as internal storage."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "list",
+        "implementation",
+        "array"
+      ]
+    },
+    {
+      "id": "dsa-list-append",
+      "record_type": "list_record",
+      "name": "Append to a list",
+      "summary": "Append adds an element at the current logical end and increments list length.",
+      "source_concept": "Append to a list",
+      "programming_problem_addressed": "Adds an ordered item at the end.",
+      "data_shape_assumption": "End insertion preserves intended order.",
+      "algorithmic_role": "List mutation.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Arrival order should be retained"
+      ],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Length counter drifts from storage length"
+      ],
+      "tests_or_checks": [
+        "Assert logical length matches stored element count."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-list-adt"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "Append: Adding an Element to a List",
+        "page_or_anchor": "OEBPS/ch03.html#idp19442912",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines append as adding at the list end and updating list size."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "list",
+        "append"
+      ]
+    },
+    {
+      "id": "dsa-list-find-remove",
+      "record_type": "list_record",
+      "name": "Find before remove in a list",
+      "summary": "The source locates an element, uses the resulting position for removal, and reports failure when no element is found.",
+      "source_concept": "Find before remove in a list",
+      "programming_problem_addressed": "Removes a matching value from an ordered list.",
+      "data_shape_assumption": "Equality identifies the target and duplicate policy is known.",
+      "algorithmic_role": "Search-then-mutate.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Removing the first matching element in a small list"
+      ],
+      "do_not_use_when": [
+        "Stable unique IDs and direct indexes are available"
+      ],
+      "common_failure_modes": [
+        "Removing the wrong duplicate",
+        "Using a stale position after mutation"
+      ],
+      "tests_or_checks": [
+        "Test absent value and duplicate values."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-list-find",
+        "dsa-risk-duplicate-not-detected"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "Remove: Removing an Element from a List",
+        "page_or_anchor": "OEBPS/ch03.html#idp19518128",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source removes a list item by finding its position and deleting it when found."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "list",
+        "find",
+        "remove"
+      ]
+    },
+    {
+      "id": "dsa-list-find",
+      "record_type": "list_record",
+      "name": "Find an element in a list",
+      "summary": "The source scans internal storage and returns the matching position or a sentinel for absence.",
+      "source_concept": "Find an element in a list",
+      "programming_problem_addressed": "Locates a value in an ordered list implementation.",
+      "data_shape_assumption": "A matching rule can compare elements.",
+      "algorithmic_role": "Sequential lookup.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Repeated list finding can become repeated scans.",
+      "use_when": [
+        "Small list or occasional search"
+      ],
+      "do_not_use_when": [
+        "Repeated key lookup justifies a dictionary"
+      ],
+      "common_failure_modes": [
+        "Ignoring absence sentinel"
+      ],
+      "tests_or_checks": [
+        "Test first, middle, last, duplicate, and missing values."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-search-sequential",
+        "dsa-decision-array-scan-versus-lookup"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "Find: Finding an Element in a List",
+        "page_or_anchor": "OEBPS/ch03.html#idp19732672",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source implements find by scanning list storage and returning a position or failure sentinel."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "list",
+        "search"
+      ]
+    },
+    {
+      "id": "dsa-list-insert",
+      "record_type": "list_record",
+      "name": "Insert relative to an existing element",
+      "summary": "The source finds a reference element and inserts the new value immediately after it when present.",
+      "source_concept": "Insert relative to an existing element",
+      "programming_problem_addressed": "Adds an item at a logical position defined by another item.",
+      "data_shape_assumption": "The reference element can be found and duplicate semantics are acceptable.",
+      "algorithmic_role": "Search-plus-insert.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Relative position is meaningful"
+      ],
+      "do_not_use_when": [
+        "Reference labels are nonunique"
+      ],
+      "common_failure_modes": [
+        "Ambiguous reference match",
+        "Silent failure when reference is missing"
+      ],
+      "tests_or_checks": [
+        "Test missing and duplicate reference elements."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-list-find",
+        "dsa-risk-duplicate-not-detected"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "Insert: Inserting an Element into a List",
+        "page_or_anchor": "OEBPS/ch03.html#idp19934352",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source inserts a new element after finding an existing element."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "list",
+        "insert"
+      ]
+    },
+    {
+      "id": "dsa-list-clear",
+      "record_type": "list_record",
+      "name": "Clear all list state",
+      "summary": "Clearing removes stored elements and resets logical length and cursor state.",
+      "source_concept": "Clear all list state",
+      "programming_problem_addressed": "Returns a list to its empty invariant.",
+      "data_shape_assumption": "No retained element state is needed.",
+      "algorithmic_role": "State reset.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Starting a new run or explicitly discarding all entries"
+      ],
+      "do_not_use_when": [
+        "Audit or undo requirements require retaining history"
+      ],
+      "common_failure_modes": [
+        "Resetting storage but not counters/cursor"
+      ],
+      "tests_or_checks": [
+        "Assert empty storage, zero length, and valid cursor."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-list-adt"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "Clear: Removing All Elements from a List",
+        "page_or_anchor": "OEBPS/ch03.html#idp20112640",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source clear operation resets stored elements, size, and position."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "list",
+        "clear",
+        "state"
+      ]
+    },
+    {
+      "id": "dsa-list-contains",
+      "record_type": "list_record",
+      "name": "List membership test",
+      "summary": "Contains scans list elements and returns whether the requested value is present.",
+      "source_concept": "List membership test",
+      "programming_problem_addressed": "Answers a Boolean membership question.",
+      "data_shape_assumption": "Equality semantics are defined.",
+      "algorithmic_role": "Sequential membership test.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Occasional membership on a small ordered list"
+      ],
+      "do_not_use_when": [
+        "Uniqueness and repeated membership are dominant"
+      ],
+      "common_failure_modes": [
+        "Using list membership where a set would express the invariant"
+      ],
+      "tests_or_checks": [
+        "Test present, absent, and duplicate values."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-set-membership",
+        "dsa-decision-set-versus-list"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "Contains: Determining if a Given Value Is in a List",
+        "page_or_anchor": "OEBPS/ch03.html#idp20275408",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines contains as a Boolean search through list storage."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "list",
+        "membership"
+      ]
+    },
+    {
+      "id": "dsa-list-cursor-movement",
+      "record_type": "list_record",
+      "name": "Cursor movement and current-element retrieval",
+      "summary": "The list implementation tracks a current position and supports movement to a position followed by retrieval of the current element.",
+      "source_concept": "Cursor movement and current-element retrieval",
+      "programming_problem_addressed": "Represents stateful traversal and position-based access.",
+      "data_shape_assumption": "The cursor is within list bounds.",
+      "algorithmic_role": "Stateful navigation.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "The abstraction explicitly needs a current item"
+      ],
+      "do_not_use_when": [
+        "Stateless array iteration is clearer"
+      ],
+      "common_failure_modes": [
+        "Moving beyond bounds",
+        "Receiving undefined instead of a deliberate error"
+      ],
+      "tests_or_checks": [
+        "Test negative, length, and out-of-range moves."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-list-iterator-abstraction",
+        "dsa-risk-row-shape-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "Moving To and Retrieving a List Element",
+        "page_or_anchor": "OEBPS/ch03.html#idp20188832",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source notes limited error checking and explains that out-of-range access can yield an undefined value."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "list",
+        "cursor",
+        "bounds"
+      ]
+    },
+    {
+      "id": "dsa-list-iterator-functions",
+      "record_type": "list_record",
+      "name": "Forward and backward list iterator functions",
+      "summary": "The source implements movement tests and next/previous retrieval around a current-position cursor.",
+      "source_concept": "Forward and backward list iterator functions",
+      "programming_problem_addressed": "Traverses in either direction through a list.",
+      "data_shape_assumption": "The cursor and list size invariants remain synchronized.",
+      "algorithmic_role": "Iterator mechanics.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Bidirectional traversal is part of the list abstraction"
+      ],
+      "do_not_use_when": [
+        "Mutation occurs during traversal without defined semantics"
+      ],
+      "common_failure_modes": [
+        "Calling a moving accessor more than once per item",
+        "Off-by-one cursor behavior"
+      ],
+      "tests_or_checks": [
+        "Trace cursor before and after each next/previous call."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-list-iterator-abstraction",
+        "dsa-risk-mutation-during-iteration"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "Iterating Through a List",
+        "page_or_anchor": "OEBPS/ch03.html#idp20416544",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source explains next/previous movement semantics and warns that a moving accessor advances position."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "list",
+        "iterator",
+        "cursor"
+      ]
+    },
+    {
+      "id": "dsa-list-iterator-abstraction",
+      "record_type": "list_record",
+      "name": "Iterator abstraction over list storage",
+      "summary": "The source presents iterators as a uniform traversal interface that avoids direct dependence on the internal array.",
+      "source_concept": "Iterator abstraction over list storage",
+      "programming_problem_addressed": "Decouples client traversal from storage representation.",
+      "data_shape_assumption": "List order is stable during iteration.",
+      "algorithmic_role": "Abstract traversal.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Storage hiding or uniform traversal justifies the abstraction"
+      ],
+      "do_not_use_when": [
+        "A direct for-of style loop is simpler in the verified runtime"
+      ],
+      "common_failure_modes": [
+        "Adding or removing elements during iterator traversal"
+      ],
+      "tests_or_checks": [
+        "Verify forward and backward traversal visits expected elements once."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-core-iterator-hides-storage",
+        "dsa-risk-mutation-during-iteration"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "Iterating Through a List",
+        "page_or_anchor": "OEBPS/ch03.html#idp19405840",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source lists storage independence and uniform access as iterator advantages and warns not to combine iteration with add/remove operations."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_definition",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "list",
+        "iterator",
+        "abstraction"
+      ]
+    },
+    {
+      "id": "dsa-list-kiosk-application",
+      "record_type": "list_record",
+      "name": "List-based availability and checkout workflow",
+      "summary": "The source models available movies and customer checkouts as lists, moving an item from availability to a customer record when a checkout succeeds.",
+      "source_concept": "List-based availability and checkout workflow",
+      "programming_problem_addressed": "Maintains ordered availability and transaction state in a small simulation.",
+      "data_shape_assumption": "Titles can identify available items and customer objects record checkouts.",
+      "algorithmic_role": "Find, remove, append workflow.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Learning how list operations compose into a workflow"
+      ],
+      "do_not_use_when": [
+        "Treating the example as production inventory or concurrency guidance"
+      ],
+      "common_failure_modes": [
+        "Nonunique title keys",
+        "No transactional rollback",
+        "No concurrency handling"
+      ],
+      "tests_or_checks": [
+        "Test available, unavailable, duplicate-title, and failed-transfer cases."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-tool-warehouse-pickup-form",
+        "dsa-risk-live-write-before-validation"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "Using Lists to Manage a Kiosk",
+        "page_or_anchor": "OEBPS/ch03.html#idp20746480",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source example checks availability, removes a movie from one list, and appends a customer checkout to another."
+        ],
+        "inferred_claims": [
+          "Production inventory transfer needs stable IDs, validation, concurrency controls, and audit history not supplied by the example."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_example",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "list",
+        "workflow",
+        "example"
+      ]
+    },
+    {
+      "id": "dsa-list-shell-file-reading",
+      "record_type": "runtime_boundary",
+      "name": "Source-shell file reading in the list example",
+      "summary": "The list application reads a text file through the source JavaScript shell; this is environment-specific support code, not a portable list concept.",
+      "source_concept": "Source-shell file reading in the list example",
+      "programming_problem_addressed": "Separates data ingestion from list behavior.",
+      "data_shape_assumption": "A runtime-specific file-reading facility returns text lines.",
+      "algorithmic_role": "Input adapter.",
+      "runtime_context": "SpiderMonkey shell file I/O.",
+      "transfers_to_google_apps_script": "node_or_shell_specific",
+      "apps_script_translation_note": "Use an Apps Script-appropriate, currently verified file or upload API rather than source shell read functions.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Auditing ported examples"
+      ],
+      "do_not_use_when": [
+        "Claiming the book describes DriveApp or Apps Script uploads"
+      ],
+      "common_failure_modes": [
+        "Copying shell I/O into Apps Script"
+      ],
+      "tests_or_checks": [
+        "Identify and replace every source-shell global before running."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-risk-node-spidermonkey-appsscript-confusion",
+        "dsa-workflow-verify-source-era-runtime"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "Reading Text Files",
+        "page_or_anchor": "OEBPS/ch03.html#idp20841328",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source uses shell-based text-file reading in the kiosk application."
+        ],
+        "inferred_claims": [
+          "Apps Script needs a different, currently verified ingestion adapter."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "current_verification_flag",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": false,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "runtime",
+        "file-io",
+        "spidermonkey"
+      ]
+    },
+    {
+      "id": "dsa-list-array-shortcomings",
+      "record_type": "list_record",
+      "name": "Array shortcomings for frequent insertion and deletion",
+      "summary": "The linked-list chapter motivates node-based lists by noting the shifting work associated with inserting or removing array elements.",
+      "source_concept": "Array shortcomings for frequent insertion and deletion",
+      "programming_problem_addressed": "Chooses a representation for frequent structural edits.",
+      "data_shape_assumption": "Order is retained and edits can occur away from the end.",
+      "algorithmic_role": "Structure-selection rationale.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Array edits may require moving many elements; the source treats linked lists as an alternative.",
+      "use_when": [
+        "Frequent insertion/deletion dominates"
+      ],
+      "do_not_use_when": [
+        "Arrays remain simpler and workload is small"
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-array-front-middle-shift-cost",
+        "dsa-list-linked-definition"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "6",
+        "chapter_title": "Linked Lists",
+        "section_heading": "Shortcomings of Arrays",
+        "page_or_anchor": "OEBPS/ch06.html#idp26696752",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source cites array insertion/deletion shifting as a motivation for linked lists."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_complexity_claim",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "linked-list",
+        "performance"
+      ]
+    },
+    {
+      "id": "dsa-list-linked-definition",
+      "record_type": "list_record",
+      "name": "Singly linked list definition",
+      "summary": "A linked list is built from node objects, each holding an element and a reference to the next node, beginning from a head node.",
+      "source_concept": "Singly linked list definition",
+      "programming_problem_addressed": "Represents an ordered sequence through references rather than positional shifting.",
+      "data_shape_assumption": "Each node can store a value and a next link.",
+      "algorithmic_role": "Node-linked sequence.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Link operations materially fit the problem"
+      ],
+      "do_not_use_when": [
+        "Random index access or platform-native collections are preferable"
+      ],
+      "common_failure_modes": [
+        "Broken links",
+        "Lost head",
+        "Cycles created accidentally"
+      ],
+      "tests_or_checks": [
+        "Traverse from head and verify reachability and termination."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-ds-linked-list",
+        "dsa-list-linked-node-class"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "6",
+        "chapter_title": "Linked Lists",
+        "section_heading": "Linked Lists Defined",
+        "page_or_anchor": "OEBPS/ch06.html#idp26702720",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines linked lists as nodes connected through next references."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_data_structure",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "linked-list",
+        "node",
+        "next"
+      ]
+    },
+    {
+      "id": "dsa-list-linked-node-class",
+      "record_type": "list_record",
+      "name": "Node and linked-list classes",
+      "summary": "The source separates node state from list operations: nodes contain element/link fields, while the list manages the head and searches for nodes.",
+      "source_concept": "Node and linked-list classes",
+      "programming_problem_addressed": "Encapsulates node data and list-level navigation.",
+      "data_shape_assumption": "A sentinel or head convention is consistently followed.",
+      "algorithmic_role": "Linked-list object model.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Teaching node/list responsibility separation"
+      ],
+      "do_not_use_when": [
+        "A custom class adds no operational value"
+      ],
+      "common_failure_modes": [
+        "Mixing sentinel data with user data",
+        "Exposing links to uncontrolled callers"
+      ],
+      "tests_or_checks": [
+        "Verify empty-list and first-insertion behavior."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-list-linked-definition",
+        "dsa-decision-custom-versus-native"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "6",
+        "chapter_title": "Linked Lists",
+        "section_heading": "An Object-Based Linked List Design",
+        "page_or_anchor": "OEBPS/ch06.html#idp26703344",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines separate Node and linked-list classes and maintains a head reference."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "linked-list",
+        "class",
+        "node"
+      ]
+    },
+    {
+      "id": "dsa-list-linked-insert",
+      "record_type": "list_record",
+      "name": "Insert a linked-list node by relinking",
+      "summary": "Insertion finds a target node, links the new node to the target’s successor, and then links the target to the new node.",
+      "source_concept": "Insert a linked-list node by relinking",
+      "programming_problem_addressed": "Inserts without shifting an array suffix.",
+      "data_shape_assumption": "The target node exists and links are valid.",
+      "algorithmic_role": "Pointer update.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Insertion relative to a known node is required"
+      ],
+      "do_not_use_when": [
+        "Target lookup dominates and there is no index"
+      ],
+      "common_failure_modes": [
+        "Losing the original successor",
+        "Target not found"
+      ],
+      "tests_or_checks": [
+        "Verify predecessor/new/successor chain after front, middle, and end insertion."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-list-linked-remove"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "6",
+        "chapter_title": "Linked Lists",
+        "section_heading": "Inserting New Nodes",
+        "page_or_anchor": "OEBPS/ch06.html#idp27015488",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source inserts a node by updating next references around a found node."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "linked-list",
+        "insert",
+        "links"
+      ]
+    },
+    {
+      "id": "dsa-list-linked-remove",
+      "record_type": "list_record",
+      "name": "Remove a linked-list node by bypassing it",
+      "summary": "Removal finds the predecessor of the target and redirects its next link around the removed node.",
+      "source_concept": "Remove a linked-list node by bypassing it",
+      "programming_problem_addressed": "Removes a node while retaining the rest of the chain.",
+      "data_shape_assumption": "The target and predecessor relationships are identifiable.",
+      "algorithmic_role": "Pointer update.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Removing a known linked-list item"
+      ],
+      "do_not_use_when": [
+        "Head/sentinel cases are not defined"
+      ],
+      "common_failure_modes": [
+        "Removing the wrong duplicate",
+        "Dereferencing missing predecessor",
+        "Dangling links"
+      ],
+      "tests_or_checks": [
+        "Test first data node, middle, last, absent, and duplicate values."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-list-linked-insert"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "6",
+        "chapter_title": "Linked Lists",
+        "section_heading": "Removing Nodes from a Linked List",
+        "page_or_anchor": "OEBPS/ch06.html#idp27016112",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source removes a node by finding its previous node and redirecting the previous link."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "linked-list",
+        "remove",
+        "links"
+      ]
+    },
+    {
+      "id": "dsa-list-doubly-linked",
+      "record_type": "list_record",
+      "name": "Doubly linked list",
+      "summary": "The source adds a previous link to each node so the list can move in both directions and removal can update links on both sides.",
+      "source_concept": "Doubly linked list",
+      "programming_problem_addressed": "Supports backward traversal and bidirectional relinking.",
+      "data_shape_assumption": "Each node consistently maintains next and previous links.",
+      "algorithmic_role": "Bidirectional linked sequence.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Backward traversal is essential"
+      ],
+      "do_not_use_when": [
+        "Extra link state and implementation complexity are not justified"
+      ],
+      "common_failure_modes": [
+        "Updating only one side of a link pair"
+      ],
+      "tests_or_checks": [
+        "For every adjacent pair, verify A.next is B and B.previous is A."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-list-linked-definition"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "6",
+        "chapter_title": "Linked Lists",
+        "section_heading": "Doubly Linked Lists",
+        "page_or_anchor": "OEBPS/ch06.html#idp27337664",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines doubly linked lists by adding previous links and updates both directions during operations."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_data_structure",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "linked-list",
+        "doubly-linked"
+      ]
+    },
+    {
+      "id": "dsa-list-circular-linked",
+      "record_type": "list_record",
+      "name": "Circular linked list",
+      "summary": "The source links the final node back to the head so traversal can continue cyclically rather than terminate at a null link.",
+      "source_concept": "Circular linked list",
+      "programming_problem_addressed": "Represents cyclic sequences and repeated rotation.",
+      "data_shape_assumption": "A defined head/sentinel marks the cycle boundary.",
+      "algorithmic_role": "Circular traversal.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Round-robin or cyclic navigation genuinely matters"
+      ],
+      "do_not_use_when": [
+        "Termination and finite traversal are easier with a linear list"
+      ],
+      "common_failure_modes": [
+        "Infinite traversal",
+        "Losing the sentinel boundary"
+      ],
+      "tests_or_checks": [
+        "Traverse exactly the expected number of nodes and confirm return to head."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-risk-queue-retry-duplication"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "6",
+        "chapter_title": "Linked Lists",
+        "section_heading": "Circularly Linked Lists",
+        "page_or_anchor": "OEBPS/ch06.html#idp27906304",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines a circular list by linking the end back to the head and adapts traversal accordingly."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_data_structure",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "linked-list",
+        "circular",
+        "cycle"
+      ]
+    },
+    {
+      "id": "dsa-list-other-navigation",
+      "record_type": "list_record",
+      "name": "Additional linked-list navigation and display functions",
+      "summary": "The source extends linked-list traversal with movement and display helpers, illustrating how operations accumulate around a chosen representation.",
+      "source_concept": "Additional linked-list navigation and display functions",
+      "programming_problem_addressed": "Provides user-facing navigation over linked nodes.",
+      "data_shape_assumption": "A current node can be maintained consistently.",
+      "algorithmic_role": "Stateful linked traversal.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "The abstraction needs explicit current-node navigation"
+      ],
+      "do_not_use_when": [
+        "Direct iteration is simpler"
+      ],
+      "common_failure_modes": [
+        "Current pointer becomes detached after removal"
+      ],
+      "tests_or_checks": [
+        "After each mutation, verify current node remains reachable from head."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-list-doubly-linked",
+        "dsa-list-circular-linked"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "6",
+        "chapter_title": "Linked Lists",
+        "section_heading": "Other Linked List Functions",
+        "page_or_anchor": "OEBPS/ch06.html#idp29112688",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source adds navigation/display operations to its linked-list implementations."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "linked-list",
+        "navigation"
+      ]
+    },
+    {
+      "id": "dsa-list-ordered-validation-extension",
+      "record_type": "internal_tool_extension",
+      "name": "Ordered validation issue list",
+      "summary": "As an internal-tool extension, validation issues can remain in an ordered list so users see errors in source-row or workflow order.",
+      "source_concept": "Ordered validation issue list",
+      "programming_problem_addressed": "Preserves actionable error ordering for a report processor or form workflow.",
+      "data_shape_assumption": "Each issue is a record with source row, field, severity, and message.",
+      "algorithmic_role": "Ordered error accumulation.",
+      "runtime_context": "Internal tools and Apps Script; current behavior must be verified.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Collecting all validation issues before writing"
+      ],
+      "do_not_use_when": [
+        "Only the first fatal parser error can be interpreted safely"
+      ],
+      "common_failure_modes": [
+        "Losing row provenance",
+        "Sorting away workflow order unintentionally"
+      ],
+      "tests_or_checks": [
+        "Verify issue order and original row indexes."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-sheet-accumulate-validation-errors",
+        "dsa-decision-structured-errors-versus-throw"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "A List ADT",
+        "page_or_anchor": "OEBPS/ch03.html#idp19348032",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines lists as ordered sequences and provides iteration operations."
+        ],
+        "inferred_claims": [
+          "Using ordered record arrays for validation issues is an internal-tool extension."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "list",
+        "validation",
+        "internal-tool"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1707 @@
+{
+  "failure_modes_and_anomalies": [
+    {
+      "id": "ddia_failure_lost_updates",
+      "failure_or_anomaly_name": "Lost updates",
+      "plain_language_description": "Concurrent read-modify-write cycles overwrite a previous result.",
+      "technical_description": "Two writers read the same old value and each writes a new value; one effect is lost.",
+      "where_it_appears": [
+        "Chapter 7: Transactions",
+        "Weak Isolation Levels"
+      ],
+      "symptoms": [
+        "counter goes down",
+        "edits disappear",
+        "inventory count ignores one purchase"
+      ],
+      "root_cause_pattern": "unprotected read-modify-write under concurrency",
+      "conditions_required": [
+        "two or more writers",
+        "operation depends on previous value"
+      ],
+      "example_scenario": "Two workers increment the same balance using stale reads.",
+      "why_it_surprises_engineers": "It may pass tests with one worker and fail only under timing overlap.",
+      "prevention_or_mitigation": [
+        "atomic update",
+        "compare-and-set",
+        "row lock",
+        "serializable transaction"
+      ],
+      "tests_or_observability": [
+        "concurrency test with barriers",
+        "audit log of old/new values",
+        "DB isolation check"
+      ],
+      "related_concepts": [
+        "ddia_concept_lost_update_protection"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "Weak Isolation Levels",
+        "page_or_anchor": "MOBI_TEXT_CHAR_488682",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Lost updates."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_dirty_reads",
+      "failure_or_anomaly_name": "Dirty reads",
+      "plain_language_description": "A transaction observes data that another transaction has not committed.",
+      "technical_description": "Uncommitted writes become visible and may later roll back.",
+      "where_it_appears": [
+        "Chapter 7: Transactions",
+        "Weak Isolation Levels"
+      ],
+      "symptoms": [
+        "temporary state leaks",
+        "report includes data that disappears"
+      ],
+      "root_cause_pattern": "isolation level permits reading uncommitted data",
+      "conditions_required": [
+        "concurrent transaction has written but not committed"
+      ],
+      "example_scenario": "A status page shows an order that rolls back moments later.",
+      "why_it_surprises_engineers": "The read looked successful but observed a state that never became durable.",
+      "prevention_or_mitigation": [
+        "read committed or stronger",
+        "avoid read-uncommitted mode"
+      ],
+      "tests_or_observability": [
+        "isolation-level query",
+        "test rollback after visible write"
+      ],
+      "related_concepts": [
+        "ddia_concept_read_committed_prevents_dirty_reads_and_writes"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "Weak Isolation Levels",
+        "page_or_anchor": "MOBI_TEXT_CHAR_488682",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Dirty reads."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_dirty_writes",
+      "failure_or_anomaly_name": "Dirty writes",
+      "plain_language_description": "One transaction overwrites another transaction's uncommitted write.",
+      "technical_description": "Concurrent writes target same object before either commits.",
+      "where_it_appears": [
+        "Chapter 7: Transactions",
+        "Weak Isolation Levels"
+      ],
+      "symptoms": [
+        "committed value depends on race",
+        "rollback cannot restore invariant"
+      ],
+      "root_cause_pattern": "write-write conflict not prevented",
+      "conditions_required": [
+        "same object",
+        "overlapping transactions"
+      ],
+      "example_scenario": "Two updates to the same record interleave before commit.",
+      "why_it_surprises_engineers": "The database may accept each statement but the combined transaction history is unsafe.",
+      "prevention_or_mitigation": [
+        "write locks",
+        "read committed or stronger",
+        "conflict detection"
+      ],
+      "tests_or_observability": [
+        "transaction log inspection",
+        "write-write overlap test"
+      ],
+      "related_concepts": [
+        "ddia_concept_read_committed_prevents_dirty_reads_and_writes"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "Weak Isolation Levels",
+        "page_or_anchor": "MOBI_TEXT_CHAR_488682",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Dirty writes."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_read_skew",
+      "failure_or_anomaly_name": "Read skew",
+      "plain_language_description": "A reader sees parts of the database from different points in time.",
+      "technical_description": "Multi-object read is not from a consistent snapshot.",
+      "where_it_appears": [
+        "Chapter 7: Transactions",
+        "Weak Isolation Levels"
+      ],
+      "symptoms": [
+        "inconsistent report",
+        "sum of accounts does not balance"
+      ],
+      "root_cause_pattern": "non-repeatable reads during multi-object query",
+      "conditions_required": [
+        "reader scans while writer updates related objects"
+      ],
+      "example_scenario": "A transfer debits one account before the reader sees the corresponding credit.",
+      "why_it_surprises_engineers": "Each row may be valid while the report as a whole is impossible.",
+      "prevention_or_mitigation": [
+        "snapshot isolation",
+        "repeatable read for analytical transaction"
+      ],
+      "tests_or_observability": [
+        "repeat same multi-row query during transfer",
+        "compare snapshot timestamps"
+      ],
+      "related_concepts": [
+        "ddia_concept_snapshot_isolation_prevents_read_skew"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "Weak Isolation Levels",
+        "page_or_anchor": "MOBI_TEXT_CHAR_488682",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Read skew."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_write_skew",
+      "failure_or_anomaly_name": "Write skew",
+      "plain_language_description": "Two transactions each make a decision from a snapshot and update different rows, violating a shared rule.",
+      "technical_description": "Predicate-based invariant is not protected by write-write conflict alone.",
+      "where_it_appears": [
+        "Chapter 7: Transactions",
+        "Weak Isolation Levels"
+      ],
+      "symptoms": [
+        "invariant broken without direct row conflict",
+        "two on-call shifts removed"
+      ],
+      "root_cause_pattern": "snapshot isolation without predicate conflict",
+      "conditions_required": [
+        "shared invariant",
+        "disjoint writes",
+        "concurrent decisions"
+      ],
+      "example_scenario": "Two doctors each see another doctor on call and both go off call.",
+      "why_it_surprises_engineers": "No single row was overwritten, so simple conflict detection misses it.",
+      "prevention_or_mitigation": [
+        "serializable isolation",
+        "explicit locks on invariant",
+        "materialized constraint row"
+      ],
+      "tests_or_observability": [
+        "concurrency test of invariant",
+        "serializable retry logs"
+      ],
+      "related_concepts": [
+        "ddia_concept_write_skew_under_snapshot_isolation"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "Weak Isolation Levels",
+        "page_or_anchor": "MOBI_TEXT_CHAR_488682",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Write skew."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_phantoms",
+      "failure_or_anomaly_name": "Phantoms",
+      "plain_language_description": "A transaction's predicate would match a row inserted or changed by another transaction.",
+      "technical_description": "Range or predicate reads are not protected from concurrent inserts.",
+      "where_it_appears": [
+        "Chapter 7: Transactions",
+        "Serializability"
+      ],
+      "symptoms": [
+        "double booking",
+        "uniqueness rule violated by concurrent insert"
+      ],
+      "root_cause_pattern": "predicate lock absent or insufficient",
+      "conditions_required": [
+        "decision uses absence or count of matching rows"
+      ],
+      "example_scenario": "Two users book the same available room based on a query that found no reservation.",
+      "why_it_surprises_engineers": "The conflict is with a set of rows, not a row both transactions touched.",
+      "prevention_or_mitigation": [
+        "predicate locks",
+        "serializable isolation",
+        "unique constraints where possible"
+      ],
+      "tests_or_observability": [
+        "race test with concurrent inserts",
+        "lock inspection"
+      ],
+      "related_concepts": [
+        "ddia_concept_serializability_as_strongest_isolation_model"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "Serializability",
+        "page_or_anchor": "MOBI_TEXT_CHAR_479711",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Phantoms."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_race_condition_across_services",
+      "failure_or_anomaly_name": "Race condition across services",
+      "plain_language_description": "Timing between independently failing services changes the outcome.",
+      "technical_description": "The workflow lacks a single atomic boundary and assumes remote calls complete cleanly.",
+      "where_it_appears": [
+        "Chapter 8: The Trouble with Distributed Systems",
+        "Faults and Partial Failures"
+      ],
+      "symptoms": [
+        "intermittent duplicates",
+        "impossible state",
+        "flaky incident reproduction"
+      ],
+      "root_cause_pattern": "partial failure plus non-idempotent side effects",
+      "conditions_required": [
+        "multiple services",
+        "retries or timeouts",
+        "shared business invariant"
+      ],
+      "example_scenario": "API call succeeds, caller times out, retry performs second effect.",
+      "why_it_surprises_engineers": "The observed bug depends on network timing rather than deterministic code order.",
+      "prevention_or_mitigation": [
+        "idempotency key",
+        "transaction/outbox",
+        "reconciliation"
+      ],
+      "tests_or_observability": [
+        "trace correlation by request ID",
+        "fault-injection timeout test"
+      ],
+      "related_concepts": [
+        "ddia_concept_partial_failure_is_normal_in_distributed_systems"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "8",
+        "chapter_title": "The Trouble with Distributed Systems",
+        "section_heading": "Faults and Partial Failures",
+        "page_or_anchor": "MOBI_TEXT_CHAR_595332",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Race condition across services."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_replication_lag",
+      "failure_or_anomaly_name": "Replication lag",
+      "plain_language_description": "A replica is behind the leader and serves old data.",
+      "technical_description": "Asynchronous replication makes freshness delay visible to clients.",
+      "where_it_appears": [
+        "Chapter 5: Replication",
+        "Problems with Replication Lag"
+      ],
+      "symptoms": [
+        "saved value missing",
+        "report stale",
+        "read after write fails"
+      ],
+      "root_cause_pattern": "read routed to lagging follower",
+      "conditions_required": [
+        "leader/follower setup",
+        "async replication",
+        "read from follower"
+      ],
+      "example_scenario": "User saves a profile change and refreshes a page served from a follower.",
+      "why_it_surprises_engineers": "The write succeeded, but the read path used a delayed copy.",
+      "prevention_or_mitigation": [
+        "route critical reads to leader",
+        "read-your-writes session logic",
+        "lag monitoring"
+      ],
+      "tests_or_observability": [
+        "replication lag metric",
+        "trace read replica identity",
+        "write/read timestamp comparison"
+      ],
+      "related_concepts": [
+        "ddia_concept_replication_lag_creates_stale_reads"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "5",
+        "chapter_title": "Replication",
+        "section_heading": "Problems with Replication Lag",
+        "page_or_anchor": "MOBI_TEXT_CHAR_328890",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Replication lag."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_stale_reads_after_failover",
+      "failure_or_anomaly_name": "Stale reads after failover",
+      "plain_language_description": "A promoted or selected replica lacks recent acknowledged writes.",
+      "technical_description": "Failover semantics and replication mode allow data loss or old state.",
+      "where_it_appears": [
+        "Chapter 5: Replication",
+        "Leaders and Followers"
+      ],
+      "symptoms": [
+        "recent writes vanish",
+        "leader change precedes inconsistency"
+      ],
+      "root_cause_pattern": "asynchronous replica promoted or read from old replica",
+      "conditions_required": [
+        "leader failure",
+        "async replication",
+        "incomplete catch-up"
+      ],
+      "example_scenario": "A failover promotes a follower that had not received the latest writes.",
+      "why_it_surprises_engineers": "Availability recovery can trade against recency or durability.",
+      "prevention_or_mitigation": [
+        "synchronous replica for critical data",
+        "failover validation",
+        "client fencing"
+      ],
+      "tests_or_observability": [
+        "failover drill",
+        "compare leader log positions",
+        "durability audit"
+      ],
+      "related_concepts": [
+        "ddia_concept_synchronous_versus_asynchronous_replicas"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "5",
+        "chapter_title": "Replication",
+        "section_heading": "Leaders and Followers",
+        "page_or_anchor": "MOBI_TEXT_CHAR_329050",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Stale reads after failover."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_split_brain",
+      "failure_or_anomaly_name": "Split brain",
+      "plain_language_description": "Two actors believe they are the leader or authority at the same time.",
+      "technical_description": "Membership or lease uncertainty allows concurrent owners.",
+      "where_it_appears": [
+        "Chapter 8: The Trouble with Distributed Systems",
+        "Knowledge, Truth, and Lies"
+      ],
+      "symptoms": [
+        "double writes",
+        "divergent logs",
+        "conflicting leaders"
+      ],
+      "root_cause_pattern": "partition, pause, or bad failover without fencing",
+      "conditions_required": [
+        "shared resource",
+        "ambiguous leadership"
+      ],
+      "example_scenario": "Old primary resumes after a pause and continues writing to shared storage.",
+      "why_it_surprises_engineers": "Each side may have local evidence that it is still allowed to act.",
+      "prevention_or_mitigation": [
+        "consensus-backed leadership",
+        "fencing tokens",
+        "reject stale epochs"
+      ],
+      "tests_or_observability": [
+        "leader epoch in writes",
+        "chaos pause test",
+        "storage rejects old token"
+      ],
+      "related_concepts": [
+        "ddia_concept_fencing_tokens_protect_shared_resources"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "8",
+        "chapter_title": "The Trouble with Distributed Systems",
+        "section_heading": "Knowledge, Truth, and Lies",
+        "page_or_anchor": "MOBI_TEXT_CHAR_595301",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Split brain."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_clock_skew",
+      "failure_or_anomaly_name": "Clock skew",
+      "plain_language_description": "Different machines disagree about current time or time moves unexpectedly.",
+      "technical_description": "Wall-clock timestamps are used for ordering, leases, expiry, or conflict resolution.",
+      "where_it_appears": [
+        "Chapter 8: The Trouble with Distributed Systems",
+        "Unreliable Clocks"
+      ],
+      "symptoms": [
+        "events appear out of order",
+        "TTL expires early",
+        "last-write-wins loses newer intent"
+      ],
+      "root_cause_pattern": "physical clocks treated as perfectly synchronized",
+      "conditions_required": [
+        "multi-node system",
+        "time-based decisions"
+      ],
+      "example_scenario": "A write with an older physical timestamp overwrites a causally later update.",
+      "why_it_surprises_engineers": "The timestamp looks authoritative but does not encode causality.",
+      "prevention_or_mitigation": [
+        "logical clocks where needed",
+        "monotonic clocks for durations",
+        "avoid clock-only correctness"
+      ],
+      "tests_or_observability": [
+        "NTP offset metrics",
+        "compare event causality to timestamps"
+      ],
+      "related_concepts": [
+        "ddia_concept_clock_skew_undermines_timestamp_assumptions"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "8",
+        "chapter_title": "The Trouble with Distributed Systems",
+        "section_heading": "Unreliable Clocks",
+        "page_or_anchor": "MOBI_TEXT_CHAR_356161",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Clock skew."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_network_partition",
+      "failure_or_anomaly_name": "Network partition",
+      "plain_language_description": "Nodes cannot communicate even though some continue running.",
+      "technical_description": "The system must choose what work can proceed without full connectivity.",
+      "where_it_appears": [
+        "Chapter 8: The Trouble with Distributed Systems",
+        "Unreliable Networks"
+      ],
+      "symptoms": [
+        "timeouts",
+        "unavailable shard",
+        "divergent updates"
+      ],
+      "root_cause_pattern": "communication failure separates participants",
+      "conditions_required": [
+        "distributed nodes",
+        "network dependency"
+      ],
+      "example_scenario": "Two datacenters both accept writes while disconnected.",
+      "why_it_surprises_engineers": "The absence of messages is not proof of crashed nodes.",
+      "prevention_or_mitigation": [
+        "explicit consistency policy",
+        "quorum/consensus",
+        "degrade safely"
+      ],
+      "tests_or_observability": [
+        "partition simulation",
+        "routing logs",
+        "quorum membership audit"
+      ],
+      "related_concepts": [
+        "ddia_concept_network_partitions_break_assumptions_about_reachability"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "8",
+        "chapter_title": "The Trouble with Distributed Systems",
+        "section_heading": "Unreliable Networks",
+        "page_or_anchor": "MOBI_TEXT_CHAR_343001",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Network partition."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_retry_duplication",
+      "failure_or_anomaly_name": "Retry duplication",
+      "plain_language_description": "A retry repeats a side effect because the first attempt may have succeeded.",
+      "technical_description": "Timeout ambiguity plus non-idempotent write creates duplicate state.",
+      "where_it_appears": [
+        "Chapter 12: The Future of Data Systems",
+        "Aiming for Correctness"
+      ],
+      "symptoms": [
+        "duplicate charge",
+        "duplicate row",
+        "job effect performed twice"
+      ],
+      "root_cause_pattern": "completion uncertain but retry has new identity",
+      "conditions_required": [
+        "client/server call",
+        "timeout",
+        "side effect"
+      ],
+      "example_scenario": "Payment request times out after charge succeeds, then retry charges again.",
+      "why_it_surprises_engineers": "The retry is meant to improve reliability but changes semantics.",
+      "prevention_or_mitigation": [
+        "idempotency key",
+        "durable operation ID",
+        "dedupe table"
+      ],
+      "tests_or_observability": [
+        "retry fault injection",
+        "unique key on operation ID",
+        "audit effects per request"
+      ],
+      "related_concepts": [
+        "ddia_concept_idempotent_operations_enable_safe_retries"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "12",
+        "chapter_title": "The Future of Data Systems",
+        "section_heading": "Aiming for Correctness",
+        "page_or_anchor": "MOBI_TEXT_CHAR_1126164",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Retry duplication."
+        ],
+        "inferred_claims": [
+          "The concrete modern symptom list is operationalized for engineering triage."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_failure_ordering_ambiguity",
+      "failure_or_anomaly_name": "Ordering ambiguity",
+      "plain_language_description": "Events are processed in an order that does not match causal expectations.",
+      "technical_description": "The system lacks or misinterprets causal, total, or partition-local ordering.",
+      "where_it_appears": [
+        "Chapter 9: Consistency and Consensus",
+        "Ordering Guarantees"
+      ],
+      "symptoms": [
+        "delete before create",
+        "status regresses",
+        "consumer sees effect before cause"
+      ],
+      "root_cause_pattern": "wrong ordering guarantee assumed",
+      "conditions_required": [
+        "concurrent events",
+        "multiple partitions or producers"
+      ],
+      "example_scenario": "A shipment event is handled before the order-created event.",
+      "why_it_surprises_engineers": "One component's order guarantee may not span the whole workflow.",
+      "prevention_or_mitigation": [
+        "partition by entity",
+        "include causal metadata",
+        "design for reordering"
+      ],
+      "tests_or_observability": [
+        "event timeline reconstruction",
+        "partition key audit",
+        "consumer reorder tests"
+      ],
+      "related_concepts": [
+        "ddia_concept_causality_defines_what_must_be_ordered"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "9",
+        "chapter_title": "Consistency and Consensus",
+        "section_heading": "Ordering Guarantees",
+        "page_or_anchor": "MOBI_TEXT_CHAR_643565",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Ordering ambiguity."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_exactly_once_misconception",
+      "failure_or_anomaly_name": "Exactly-once misconception",
+      "plain_language_description": "Engineers assume a processing framework prevents all duplicate external effects.",
+      "technical_description": "The guarantee is scoped and may not cover sinks, APIs, or custom side effects.",
+      "where_it_appears": [
+        "Chapter 11: Stream Processing",
+        "Processing Streams"
+      ],
+      "symptoms": [
+        "duplicate emails",
+        "double writes despite exactly-once setting"
+      ],
+      "root_cause_pattern": "framework guarantee misunderstood; sink not transactional/idempotent",
+      "conditions_required": [
+        "stream processor",
+        "external side effect"
+      ],
+      "example_scenario": "A stream app writes to a DB and calls an API; crash repeats the API call.",
+      "why_it_surprises_engineers": "The label sounds absolute but correctness is end-to-end.",
+      "prevention_or_mitigation": [
+        "idempotent sink",
+        "transactional write with offsets",
+        "dedupe by event ID"
+      ],
+      "tests_or_observability": [
+        "crash-after-side-effect test",
+        "inspect sink guarantee docs"
+      ],
+      "related_concepts": [
+        "ddia_concept_exactly_once_means_carefully_scoped_effect_semantics"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "11",
+        "chapter_title": "Stream Processing",
+        "section_heading": "Processing Streams",
+        "page_or_anchor": "MOBI_TEXT_CHAR_997370",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Exactly-once misconception."
+        ],
+        "inferred_claims": [
+          "The concrete modern symptom list is operationalized for engineering triage."
+        ]
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_hot_partition",
+      "failure_or_anomaly_name": "Hot partition",
+      "plain_language_description": "One partition receives disproportionate load.",
+      "technical_description": "Partition key or range choice concentrates traffic.",
+      "where_it_appears": [
+        "Chapter 6: Partitioning",
+        "Partitioning of Key-Value Data"
+      ],
+      "symptoms": [
+        "one shard high CPU",
+        "p99 latency localized",
+        "throttling by key"
+      ],
+      "root_cause_pattern": "skewed key distribution or sequential key range",
+      "conditions_required": [
+        "partitioned storage or stream"
+      ],
+      "example_scenario": "All writes for today's date route to one partition.",
+      "why_it_surprises_engineers": "Overall cluster capacity hides a single hot key or range.",
+      "prevention_or_mitigation": [
+        "better partition key",
+        "salting",
+        "adaptive splitting",
+        "workload-aware routing"
+      ],
+      "tests_or_observability": [
+        "per-partition metrics",
+        "key-frequency histogram",
+        "load test with real key distribution"
+      ],
+      "related_concepts": [
+        "ddia_concept_key_range_partitioning"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "6",
+        "chapter_title": "Partitioning",
+        "section_heading": "Partitioning of Key-Value Data",
+        "page_or_anchor": "MOBI_TEXT_CHAR_434400",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Hot partition."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_rebalancing_disruption",
+      "failure_or_anomaly_name": "Rebalancing disruption",
+      "plain_language_description": "Moving partitions harms availability or latency during topology change.",
+      "technical_description": "Data movement competes with normal work or routing changes too quickly.",
+      "where_it_appears": [
+        "Chapter 6: Partitioning",
+        "Rebalancing Partitions"
+      ],
+      "symptoms": [
+        "latency spike during scaling",
+        "wrong-node requests",
+        "incomplete data movement"
+      ],
+      "root_cause_pattern": "rebalance not throttled or not atomic enough",
+      "conditions_required": [
+        "cluster resize or skew mitigation"
+      ],
+      "example_scenario": "Adding nodes triggers mass partition movement and overloads the cluster.",
+      "why_it_surprises_engineers": "Scaling out can temporarily make service worse.",
+      "prevention_or_mitigation": [
+        "incremental rebalancing",
+        "throttles",
+        "routing versioning",
+        "verification after move"
+      ],
+      "tests_or_observability": [
+        "rebalance event logs",
+        "per-node transfer metrics",
+        "read/write correctness checks"
+      ],
+      "related_concepts": [
+        "ddia_concept_rebalancing_without_excessive_disruption"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "6",
+        "chapter_title": "Partitioning",
+        "section_heading": "Rebalancing Partitions",
+        "page_or_anchor": "MOBI_TEXT_CHAR_53463",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Rebalancing disruption."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_schema_incompatibility",
+      "failure_or_anomaly_name": "Schema incompatibility",
+      "plain_language_description": "Old and new components cannot decode each other's data.",
+      "technical_description": "Schema evolution violates backward or forward compatibility.",
+      "where_it_appears": [
+        "Chapter 4: Encoding and Evolution",
+        "Formats for Encoding Data"
+      ],
+      "symptoms": [
+        "deploy breaks consumers",
+        "old messages unreadable",
+        "missing field crash"
+      ],
+      "root_cause_pattern": "incompatible encoding change or lockstep deployment assumption",
+      "conditions_required": [
+        "rolling deploy",
+        "stored data or queued messages"
+      ],
+      "example_scenario": "A new writer removes a field still required by old readers.",
+      "why_it_surprises_engineers": "Compatibility is a relation between deployed versions, not a property of one schema.",
+      "prevention_or_mitigation": [
+        "compatibility tests",
+        "tolerant readers",
+        "schema registry policy"
+      ],
+      "tests_or_observability": [
+        "old-reader/new-writer and new-reader/old-writer tests",
+        "message replay"
+      ],
+      "related_concepts": [
+        "ddia_concept_backward_and_forward_compatibility"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "4",
+        "chapter_title": "Encoding and Evolution",
+        "section_heading": "Formats for Encoding Data",
+        "page_or_anchor": "MOBI_TEXT_CHAR_249938",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Schema incompatibility."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_derived_data_inconsistency",
+      "failure_or_anomaly_name": "Derived-data inconsistency",
+      "plain_language_description": "Cache, index, view, or warehouse disagrees with the source of truth.",
+      "technical_description": "Propagation, replay, or transformation is incomplete or non-atomic.",
+      "where_it_appears": [
+        "Chapter 12: The Future of Data Systems",
+        "Data Integration"
+      ],
+      "symptoms": [
+        "report mismatch",
+        "search result missing",
+        "cache says old state"
+      ],
+      "root_cause_pattern": "derived system not updated consistently or has lag",
+      "conditions_required": [
+        "source plus derived representation"
+      ],
+      "example_scenario": "Database row changed but search index update failed.",
+      "why_it_surprises_engineers": "The derived copy may look like data but is a rebuildable projection.",
+      "prevention_or_mitigation": [
+        "CDC/outbox",
+        "reconciliation",
+        "rebuild path",
+        "authoritative-source definition"
+      ],
+      "tests_or_observability": [
+        "source-vs-derived diff job",
+        "lag metrics",
+        "replay from log"
+      ],
+      "related_concepts": [
+        "ddia_concept_derived_data_needs_clear_authority_boundaries"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "12",
+        "chapter_title": "The Future of Data Systems",
+        "section_heading": "Data Integration",
+        "page_or_anchor": "MOBI_TEXT_CHAR_1118309",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Derived-data inconsistency."
+        ],
+        "inferred_claims": [
+          "The concrete modern symptom list is operationalized for engineering triage."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_failure_backfill_double_count",
+      "failure_or_anomaly_name": "Backfill double count",
+      "plain_language_description": "A reprocessing job counts records already included by incremental processing.",
+      "technical_description": "Batch and streaming paths overlap without a clear cutover or idempotent output.",
+      "where_it_appears": [
+        "Chapter 10: Batch Processing",
+        "Beyond MapReduce"
+      ],
+      "symptoms": [
+        "metrics jump",
+        "duplicate aggregates",
+        "historical correction over-applies"
+      ],
+      "root_cause_pattern": "non-idempotent backfill or missing watermark/cutoff",
+      "conditions_required": [
+        "derived data pipeline",
+        "historical replay"
+      ],
+      "example_scenario": "A backfill writes totals while a stream processor also writes the same period.",
+      "why_it_surprises_engineers": "Reprocessing is useful but changes output semantics without replacement rules.",
+      "prevention_or_mitigation": [
+        "idempotent upserts",
+        "replace partition output",
+        "define cutover watermark"
+      ],
+      "tests_or_observability": [
+        "compare before/after aggregates",
+        "dry run",
+        "output key uniqueness"
+      ],
+      "related_concepts": [
+        "ddia_concept_batch_outputs_should_be_atomic_or_replaceable"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "10",
+        "chapter_title": "Batch Processing",
+        "section_heading": "Beyond MapReduce",
+        "page_or_anchor": "MOBI_TEXT_CHAR_940512",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Backfill double count."
+        ],
+        "inferred_claims": [
+          "The concrete modern symptom list is operationalized for engineering triage."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_failure_stream_join_timing_issue",
+      "failure_or_anomaly_name": "Stream join timing issue",
+      "plain_language_description": "A join or window misses or misclassifies late/out-of-order events.",
+      "technical_description": "Event time, processing time, and allowed lateness are mismatched.",
+      "where_it_appears": [
+        "Chapter 11: Stream Processing",
+        "Processing Streams"
+      ],
+      "symptoms": [
+        "missing match",
+        "late correction",
+        "inconsistent dashboard"
+      ],
+      "root_cause_pattern": "watermark/window assumptions too strict or unclear",
+      "conditions_required": [
+        "stream join",
+        "delayed event sources"
+      ],
+      "example_scenario": "A click arrives after the purchase window has closed.",
+      "why_it_surprises_engineers": "The record is valid but arrived outside the processor's chosen time model.",
+      "prevention_or_mitigation": [
+        "explicit event-time semantics",
+        "lateness policy",
+        "compensation updates"
+      ],
+      "tests_or_observability": [
+        "late-arrival histogram",
+        "replay with delayed events",
+        "watermark audit"
+      ],
+      "related_concepts": [
+        "ddia_concept_stream_joins_and_windows_depend_on_time_semantics"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "11",
+        "chapter_title": "Stream Processing",
+        "section_heading": "Processing Streams",
+        "page_or_anchor": "MOBI_TEXT_CHAR_997370",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Stream join timing issue."
+        ],
+        "inferred_claims": [
+          "The concrete modern symptom list is operationalized for engineering triage."
+        ]
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_missing_event",
+      "failure_or_anomaly_name": "Missing event",
+      "plain_language_description": "A consumer never observes an event required for downstream correctness.",
+      "technical_description": "Acknowledgment, retention, offset, or producer failure hides the event.",
+      "where_it_appears": [
+        "Chapter 11: Stream Processing",
+        "Transmitting Event Streams"
+      ],
+      "symptoms": [
+        "state transition absent",
+        "warehouse row missing",
+        "stuck workflow"
+      ],
+      "root_cause_pattern": "event lost before durable publication or skipped by consumer offset",
+      "conditions_required": [
+        "message broker or CDC pipeline"
+      ],
+      "example_scenario": "Consumer acknowledges before committing the database effect, then crashes.",
+      "why_it_surprises_engineers": "A message system may protect delivery differently from application effects.",
+      "prevention_or_mitigation": [
+        "commit effect before ack",
+        "transactional outbox",
+        "replay from retained log"
+      ],
+      "tests_or_observability": [
+        "offset audit",
+        "gap detection",
+        "crash test around ack boundary"
+      ],
+      "related_concepts": [
+        "ddia_concept_message_acknowledgments_define_delivery_outcome"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "11",
+        "chapter_title": "Stream Processing",
+        "section_heading": "Transmitting Event Streams",
+        "page_or_anchor": "MOBI_TEXT_CHAR_997523",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Missing event."
+        ],
+        "inferred_claims": [
+          "The concrete modern symptom list is operationalized for engineering triage."
+        ]
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_duplicate_event",
+      "failure_or_anomaly_name": "Duplicate event",
+      "plain_language_description": "The same logical event is processed more than once.",
+      "technical_description": "At-least-once delivery, retries, or replay repeats delivery.",
+      "where_it_appears": [
+        "Chapter 11: Stream Processing",
+        "Transmitting Event Streams"
+      ],
+      "symptoms": [
+        "duplicate notification",
+        "aggregate too high",
+        "duplicated projection row"
+      ],
+      "root_cause_pattern": "consumer side effect not idempotent under redelivery",
+      "conditions_required": [
+        "broker redelivery",
+        "replay",
+        "retry"
+      ],
+      "example_scenario": "Worker commits side effect but crashes before acknowledging message.",
+      "why_it_surprises_engineers": "Delivery reliability often implies possible duplicates.",
+      "prevention_or_mitigation": [
+        "dedupe by event ID",
+        "idempotent upsert",
+        "transactional offset and sink"
+      ],
+      "tests_or_observability": [
+        "redelivery test",
+        "event ID uniqueness audit",
+        "sink idempotency check"
+      ],
+      "related_concepts": [
+        "ddia_concept_message_acknowledgments_define_delivery_outcome"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "11",
+        "chapter_title": "Stream Processing",
+        "section_heading": "Transmitting Event Streams",
+        "page_or_anchor": "MOBI_TEXT_CHAR_997523",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Duplicate event."
+        ],
+        "inferred_claims": [
+          "The concrete modern symptom list is operationalized for engineering triage."
+        ]
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_dual_write_inconsistency",
+      "failure_or_anomaly_name": "Dual-write inconsistency",
+      "plain_language_description": "A workflow writes two systems but only one write succeeds.",
+      "technical_description": "No atomic boundary spans the database and external side effect.",
+      "where_it_appears": [
+        "Chapter 12: The Future of Data Systems",
+        "Aiming for Correctness"
+      ],
+      "symptoms": [
+        "DB says sent but email not sent",
+        "index update missing"
+      ],
+      "root_cause_pattern": "independent writes with crash or timeout between them",
+      "conditions_required": [
+        "database plus queue/API/cache"
+      ],
+      "example_scenario": "Service writes database, then crashes before publishing event.",
+      "why_it_surprises_engineers": "Each component can be durable while the cross-component workflow is not.",
+      "prevention_or_mitigation": [
+        "outbox pattern",
+        "CDC",
+        "reconciliation",
+        "idempotent retry"
+      ],
+      "tests_or_observability": [
+        "crash-between-writes test",
+        "compare DB rows to emitted events"
+      ],
+      "related_concepts": [
+        "ddia_concept_end_to_end_correctness_beats_local_guarantees_alone"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "12",
+        "chapter_title": "The Future of Data Systems",
+        "section_heading": "Aiming for Correctness",
+        "page_or_anchor": "MOBI_TEXT_CHAR_1126164",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Dual-write inconsistency."
+        ],
+        "inferred_claims": [
+          "The concrete modern symptom list is operationalized for engineering triage."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_failure_quorum_overclaim",
+      "failure_or_anomaly_name": "Quorum overclaim",
+      "plain_language_description": "A team assumes quorum formulas guarantee freshness in all operational cases.",
+      "technical_description": "Sloppy quorum, read repair timing, or concurrent writes complicate simple R+W>N reasoning.",
+      "where_it_appears": [
+        "Chapter 5: Replication",
+        "Leaderless Replication"
+      ],
+      "symptoms": [
+        "stale quorum read",
+        "conflicting versions",
+        "surprising conflict resolution"
+      ],
+      "root_cause_pattern": "implementation details differ from idealized quorum model",
+      "conditions_required": [
+        "leaderless replication",
+        "partial failures"
+      ],
+      "example_scenario": "A read quorum returns an old value after a hinted handoff scenario.",
+      "why_it_surprises_engineers": "Mathematical quorum language can hide operational caveats.",
+      "prevention_or_mitigation": [
+        "check product behavior",
+        "use stronger read mode where needed",
+        "track versions"
+      ],
+      "tests_or_observability": [
+        "vendor doc review",
+        "consistency test under node failure"
+      ],
+      "related_concepts": [
+        "ddia_concept_quorums_in_leaderless_replication"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "5",
+        "chapter_title": "Replication",
+        "section_heading": "Leaderless Replication",
+        "page_or_anchor": "MOBI_TEXT_CHAR_327812",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Quorum overclaim."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_last_write_wins_data_loss",
+      "failure_or_anomaly_name": "Last-write-wins data loss",
+      "plain_language_description": "Conflict resolution by timestamp discards one concurrent write.",
+      "technical_description": "A later timestamp chooses a winner even if both writes represent valid facts.",
+      "where_it_appears": [
+        "Chapter 5: Replication",
+        "Leaderless Replication"
+      ],
+      "symptoms": [
+        "user update disappears",
+        "conflict not surfaced"
+      ],
+      "root_cause_pattern": "LWW chosen for concurrent writes",
+      "conditions_required": [
+        "leaderless or multi-leader replication"
+      ],
+      "example_scenario": "Two clients update different fields; LWW keeps only one object version.",
+      "why_it_surprises_engineers": "It converges but convergence is not the same as preserving intent.",
+      "prevention_or_mitigation": [
+        "application conflict resolution",
+        "mergeable data types",
+        "expose conflicts"
+      ],
+      "tests_or_observability": [
+        "concurrent write test",
+        "version vector/audit check"
+      ],
+      "related_concepts": [
+        "ddia_concept_multi_leader_replication_conflicts"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "5",
+        "chapter_title": "Replication",
+        "section_heading": "Leaderless Replication",
+        "page_or_anchor": "MOBI_TEXT_CHAR_327812",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Last-write-wins data loss."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_rpc_local_call_fallacy",
+      "failure_or_anomaly_name": "RPC local-call fallacy",
+      "plain_language_description": "Remote calls are treated like local function calls.",
+      "technical_description": "Network, versioning, latency, and failure semantics are hidden by the API abstraction.",
+      "where_it_appears": [
+        "Chapter 4: Encoding and Evolution",
+        "Modes of Dataflow"
+      ],
+      "symptoms": [
+        "thread blocked",
+        "retry storm",
+        "partial side effect"
+      ],
+      "root_cause_pattern": "RPC abstraction hides distributed boundary",
+      "conditions_required": [
+        "service-to-service call or external API"
+      ],
+      "example_scenario": "A method call times out but the remote service completed the operation.",
+      "why_it_surprises_engineers": "The code syntax suggests local certainty where the system has remote ambiguity.",
+      "prevention_or_mitigation": [
+        "timeouts, idempotency, explicit error semantics, compatibility contracts"
+      ],
+      "tests_or_observability": [
+        "fault injection",
+        "tracing",
+        "API contract review"
+      ],
+      "related_concepts": [
+        "ddia_concept_service_api_compatibility"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "4",
+        "chapter_title": "Encoding and Evolution",
+        "section_heading": "Modes of Dataflow",
+        "page_or_anchor": "MOBI_TEXT_CHAR_282167",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for RPC local-call fallacy."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_cdc_schema_break",
+      "failure_or_anomaly_name": "CDC schema break",
+      "plain_language_description": "A database change stream carries a schema change downstream consumers cannot process.",
+      "technical_description": "The stream becomes an evolution boundary with independent consumers.",
+      "where_it_appears": [
+        "Chapter 11: Stream Processing",
+        "Databases and Streams"
+      ],
+      "symptoms": [
+        "stream consumer crashes after deploy",
+        "projection stops updating"
+      ],
+      "root_cause_pattern": "schema change not compatible with CDC consumers",
+      "conditions_required": [
+        "CDC pipeline",
+        "retained logs",
+        "rolling deploy"
+      ],
+      "example_scenario": "A column type changes and an older consumer cannot parse the change event.",
+      "why_it_surprises_engineers": "CDC makes database schema a public interface to downstream systems.",
+      "prevention_or_mitigation": [
+        "compatibility policy",
+        "schema registry",
+        "consumer replay test"
+      ],
+      "tests_or_observability": [
+        "old consumer replay of new change events",
+        "pipeline canary"
+      ],
+      "related_concepts": [
+        "ddia_concept_change_data_capture_links_databases_to_streams"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "11",
+        "chapter_title": "Stream Processing",
+        "section_heading": "Databases and Streams",
+        "page_or_anchor": "MOBI_TEXT_CHAR_997262",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for CDC schema break."
+        ],
+        "inferred_claims": [
+          "The concrete modern symptom list is operationalized for engineering triage."
+        ]
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ddia_failure_partial_batch_output_visible",
+      "failure_or_anomaly_name": "Partial batch output visible",
+      "plain_language_description": "Readers see a mixture of old and new batch results.",
+      "technical_description": "The job publishes intermediate or failed output as if complete.",
+      "where_it_appears": [
+        "Chapter 10: Batch Processing",
+        "Beyond MapReduce"
+      ],
+      "symptoms": [
+        "dashboard partly updated",
+        "output count inconsistent"
+      ],
+      "root_cause_pattern": "non-atomic output commit",
+      "conditions_required": [
+        "batch output consumed by users or jobs"
+      ],
+      "example_scenario": "A daily job overwrites files one by one and fails halfway.",
+      "why_it_surprises_engineers": "Batch retry is safe only if output publication is controlled.",
+      "prevention_or_mitigation": [
+        "write to temp location then atomic swap",
+        "replace partitions",
+        "validate manifest"
+      ],
+      "tests_or_observability": [
+        "kill job mid-output",
+        "check readers only see committed generation"
+      ],
+      "related_concepts": [
+        "ddia_concept_batch_outputs_should_be_atomic_or_replaceable"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "10",
+        "chapter_title": "Batch Processing",
+        "section_heading": "Beyond MapReduce",
+        "page_or_anchor": "MOBI_TEXT_CHAR_940512",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Partial batch output visible."
+        ],
+        "inferred_claims": [
+          "The concrete modern symptom list is operationalized for engineering triage."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_failure_unnecessary_distributed_complexity",
+      "failure_or_anomaly_name": "Unnecessary distributed complexity",
+      "plain_language_description": "A system adopts distributed machinery before the problem requires it.",
+      "technical_description": "Complex components add failure modes without a matching workload or correctness need.",
+      "where_it_appears": [
+        "Chapter 1: Reliable, Scalable, and Maintainable Applications",
+        "Maintainability"
+      ],
+      "symptoms": [
+        "more outages after migration",
+        "hard-to-debug pipeline",
+        "unnecessary coordination"
+      ],
+      "root_cause_pattern": "solution selected by fashion, not measured need",
+      "conditions_required": [
+        "unclear load, data model, or failure requirement"
+      ],
+      "example_scenario": "A single database workload is replaced by a multi-service stream architecture without evidence.",
+      "why_it_surprises_engineers": "The new architecture sounds scalable but reduces operability and simplicity.",
+      "prevention_or_mitigation": [
+        "start with simpler design",
+        "define load and correctness needs",
+        "introduce complexity incrementally"
+      ],
+      "tests_or_observability": [
+        "architecture review",
+        "incident comparison",
+        "load test against simpler baseline"
+      ],
+      "related_concepts": [
+        "ddia_concept_simplicity_against_accidental_complexity"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "1",
+        "chapter_title": "Reliable, Scalable, and Maintainable Applications",
+        "section_heading": "Maintainability",
+        "page_or_anchor": "MOBI_TEXT_CHAR_12314",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the underlying failure pattern for Unnecessary distributed complexity."
+        ],
+        "inferred_claims": [
+          "The concrete modern symptom list is operationalized for engineering triage."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The anomaly is either directly discussed by the source or translated from source-supported reliability/dataflow reasoning into incident-diagnosis form.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    }
+  ]
+}

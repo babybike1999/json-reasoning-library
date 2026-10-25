@@ -1,0 +1,2840 @@
+{
+  "package_id": "sql-cookbook-reasoning-os-v1",
+  "projection_type": "Compact retrieval and execution-gating context; not a full record collection.",
+  "source_identity": {
+    "book_title": "SQL Cookbook",
+    "authors": [
+      "Anthony Molinaro",
+      "Robert de Graaf"
+    ],
+    "edition_or_version": "Second Edition",
+    "publication_year": 2020,
+    "copyright_year": 2021,
+    "source_sha256": "d2885e44f649321e8fcb48214f64a75815c51d8c0488b60db17ee76a0b7d6197",
+    "source_era_database_versions": {
+      "DB2": "11.5",
+      "Oracle": "19c",
+      "PostgreSQL": "12",
+      "MySQL": "8.0",
+      "SQL Server": "2017"
+    }
+  },
+  "assistant_usage": {
+    "purpose": "Practical source-traceable SQL reasoning, not a copied SQL library or a current syntax reference.",
+    "authority_order": [
+      "Current schema, table definitions, columns, keys, and constraints",
+      "Current result samples and expected output",
+      "Actual database dialect and version",
+      "Current errors, plans, logs, and runtime evidence",
+      "Current metric definitions, SOPs, accounting rules, and reporting requirements",
+      "Current official database documentation",
+      "Source-supported SQL Cookbook concepts",
+      "Cross-recipe source synthesis",
+      "Marked analytics and restaurant applications",
+      "Marked AI-agent workflows",
+      "General advice"
+    ],
+    "reasoning_gate": [
+      "What exact business or data question is being answered?",
+      "What does one output row represent?",
+      "Which verified tables or input rowsets are involved?",
+      "What does one row in each input represent?",
+      "Which complete keys define the relationships?",
+      "Are the relevant keys unique on the sides assumed unique?",
+      "What database product and exact version will execute the query?",
+      "Which filters define the eligible population?",
+      "Which boundaries, calendar, and timestamp rules define the reporting period?",
+      "Which NULL comparisons, counts, replacements, and sorting choices matter?",
+      "Which reductions, partitions, orders, and frames are required?",
+      "Could any stage multiply or drop rows unexpectedly?",
+      "Which output columns, types, categories, and aggregation levels must be delivered?",
+      "Which concrete fixtures and expected results establish the intended behavior?",
+      "Which current schema or official documentation claims remain unverified?"
+    ],
+    "load_order": [
+      "SQL_COOKBOOK_ASSISTANT_START_HERE_v1.md",
+      "sql_cookbook_assistant_context_v1.json",
+      "Relevant topical modules",
+      "Source map and any linked source issues"
+    ],
+    "hard_stops": [
+      "Do not invent schema objects, relationships, metric definitions, or output samples.",
+      "Do not claim code correctness or performance without relevant execution evidence.",
+      "Do not execute writes or generated SQL on the strength of this package.",
+      "Do not treat current-verification flags as completed checks.",
+      "Do not infer causality from query output alone."
+    ],
+    "recommended_response_contract": [
+      "Question and intended result grain",
+      "Known schema and current dialect/version",
+      "Selected source pattern and derivation boundary",
+      "Proposed query or explicit unresolved design",
+      "NULL/key/date/aggregation checks",
+      "Validation evidence and unresolved limitations"
+    ],
+    "source_issue_action": "Inspect the source_issue_ids before applying a record. A flagged listing requires a separate, explicitly labeled repair and target-database validation."
+  },
+  "known_limitations": [
+    "Only the uploaded second edition was used. No external errata or current database documentation was consulted.",
+    "All 164 recipes are represented as reasoning patterns, not executable reproductions. They have not been run on DB2, Oracle, PostgreSQL, MySQL, or SQL Server.",
+    "Input/output grain, suggested tests, workflow controls, and applied uses include explicitly marked analytical annotations beyond direct source paraphrase.",
+    "The source contains internal statistical, string, dialect-label, date-fixture, and recursive-name inconsistencies. Flagged code must not be reused uncritically.",
+    "Source metadata contains distinct publication/release/copyright dates and two identifiers. Both are preserved rather than externally reconciled.",
+    "Completeness is relative to the contained EPUB manifest and navigation. No independent physical-edition comparison or printed-page mapping was possible.",
+    "Object reference candidates are lexically detected and not a complete verified schema. CTEs, views, helpers, and physical sample tables must be distinguished.",
+    "No company schema, platform integration, business metric formula, causal model, live query plan, or production result is supplied.",
+    "External modules named in cross-domain connections were not read. Connections are proposed interfaces only.",
+    "Current JSON/XML database extensions are outside the book’s declared scope; no unsupported JSON/XML recipe has been invented.",
+    "Automated exact-overlap checks complement paraphrase review but cannot certify semantic correctness or constitute legal assurance."
+  ],
+  "recipe_navigation": [
+    {
+      "record_id": "sql-recipe-01-01",
+      "name": "1.1 Retrieving All Rows and Columns from a Table",
+      "intent": "Inspect the contents of an unfamiliar table.",
+      "choose_pattern": "Select the whole rowset for exploration; replace the wildcard with an explicit projection when creating a stable interface.",
+      "output_grain": "One row per stored record.",
+      "validation_probe": "Compare returned column names and types with the consuming report contract.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-1",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_retrieving_records_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-01-02",
+      "name": "1.2 Retrieving a Subset of Rows from a Table",
+      "intent": "Keep records satisfying a single condition.",
+      "choose_pattern": "Apply the population condition in WHERE before returning the selected columns.",
+      "output_grain": "One row per qualifying source record.",
+      "validation_probe": "Test one included row, one excluded row, and a NULL predicate input.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-2",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_retrieving_records_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-01-03",
+      "name": "1.3 Finding Rows That Satisfy Multiple Conditions",
+      "intent": "Combine several inclusion and exclusion conditions.",
+      "choose_pattern": "Group AND and OR clauses with parentheses matching the intended alternatives.",
+      "output_grain": "One row per source record that passes the combined predicate.",
+      "validation_probe": "Construct a small truth table containing one case for each alternative and overlap.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-3",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_retrieving_records_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-01-04",
+      "name": "1.4 Retrieving a Subset of Columns from a Table",
+      "intent": "Return only fields needed by the next consumer.",
+      "choose_pattern": "List required columns in SELECT instead of relying on a wildcard.",
+      "output_grain": "One output row per input row retained by any filters.",
+      "validation_probe": "Verify required identifier columns were not removed and column order is documented.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-4",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_retrieving_records_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-01-05",
+      "name": "1.5 Providing Meaningful Names for Columns",
+      "intent": "Make query output labels understandable.",
+      "choose_pattern": "Alias selected expressions with meaningful result-column names.",
+      "output_grain": "Detail grain unchanged by renaming.",
+      "validation_probe": "Check aliases for uniqueness and agreement with downstream field references.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-5",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_retrieving_records_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-01-06",
+      "name": "1.6 Referencing an Aliased Column in the WHERE Clause",
+      "intent": "Filter a computed or renamed column that is not visible to the same SELECT-level WHERE.",
+      "choose_pattern": "Put the expression in an inline view and filter its output alias in an outer query.",
+      "output_grain": "Inner detail or computed row grain; outer query retains qualifying inner rows.",
+      "validation_probe": "Compare outer-alias filtering with the intended expression and test NULL results.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-6",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_retrieving_records_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-01-07",
+      "name": "1.7 Concatenating Column Values",
+      "intent": "Combine fields into a single display string.",
+      "choose_pattern": "Concatenate column expressions and separator literals using the selected database dialect.",
+      "output_grain": "One constructed string per source row.",
+      "validation_probe": "Test NULL components, numeric casts, empty strings, and the separator placement.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-7",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_retrieving_records_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-01-08",
+      "name": "1.8 Using Conditional Logic in a SELECT Statement",
+      "intent": "Assign an output value according to row-level conditions.",
+      "choose_pattern": "Use ordered CASE branches and an explicit ELSE when unmatched rows need a defined outcome.",
+      "output_grain": "One classification per source row.",
+      "validation_probe": "Test both sides of every threshold and a value that reaches ELSE.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_retrieving_records_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-01-09",
+      "name": "1.9 Limiting the Number of Rows Returned",
+      "intent": "Return a bounded sample where any rows are acceptable.",
+      "choose_pattern": "Apply the source-era row-limiting mechanism for the selected dialect.",
+      "output_grain": "At most n source rows.",
+      "validation_probe": "Check n=0, fewer than n available rows, and whether the real task needs ordered rather than arbitrary selection.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-9",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_retrieving_records_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-01-10",
+      "name": "1.10 Returning n Random Records from a Table",
+      "intent": "Take a randomly selected set of rows.",
+      "choose_pattern": "Order by a database random-value expression, then apply the row cap.",
+      "output_grain": "At most n randomly ordered source rows.",
+      "validation_probe": "Repeat the query and check the sample size, population filters, and whether reproducibility is required.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-10",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_retrieving_records_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-01-11",
+      "name": "1.11 Finding Null Values",
+      "intent": "Find missing values explicitly.",
+      "choose_pattern": "Use IS NULL rather than equality to NULL.",
+      "output_grain": "One row per source record with a NULL in the tested column.",
+      "validation_probe": "Test NULL, zero, and an empty string as distinct inputs subject to the target dialect.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-11",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_retrieving_records_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-01-12",
+      "name": "1.12 Transforming Nulls into Real Values",
+      "intent": "Show a replacement when a selected value is missing.",
+      "choose_pattern": "Use COALESCE to select the first non-NULL expression.",
+      "output_grain": "Detail grain retained.",
+      "validation_probe": "Verify that replacing missing with zero or text is justified and that types are compatible.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-12",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_retrieving_records_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-01-13",
+      "name": "1.13 Searching for Patterns",
+      "intent": "Search strings using a wildcard pattern.",
+      "choose_pattern": "Apply LIKE with percent for variable-length text and underscore for a single character.",
+      "output_grain": "One row per matching source record.",
+      "validation_probe": "Include positive, negative, literal-wildcard, and case-variant examples.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-13",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_retrieving_records_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-02-01",
+      "name": "2.1 Returning Query Results in a Specified Order",
+      "intent": "Display rows in a specified value order.",
+      "choose_pattern": "Use ORDER BY with an explicit direction for the selected sort expression.",
+      "output_grain": "Detail grain unchanged.",
+      "validation_probe": "Include ties and decide whether a unique final tie-breaker is needed.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch02.html#sqlckbk-CHP-2-SECT-1",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_sorting_filtering_searching_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-02-02",
+      "name": "2.2 Sorting by Multiple Fields",
+      "intent": "Sort by one criterion within another.",
+      "choose_pattern": "List sort keys in precedence order, with a direction on each key.",
+      "output_grain": "Detail grain unchanged.",
+      "validation_probe": "Test tied primary keys, mixed directions, and changes to the SELECT list.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch02.html#sqlckbk-CHP-2-SECT-2",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_sorting_filtering_searching_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-02-03",
+      "name": "2.3 Sorting by Substrings",
+      "intent": "Order records by part of a string.",
+      "choose_pattern": "Extract the relevant substring in the sorting expression.",
+      "output_grain": "Detail grain unchanged.",
+      "validation_probe": "Use short strings and boundary positions to catch off-by-one extraction errors.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch02.html#sqlckbk-CHP-2-SECT-3",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_sorting_filtering_searching_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-02-04",
+      "name": "2.4 Sorting Mixed Alphanumeric Data",
+      "intent": "Sort mixed text and digits by the desired component.",
+      "choose_pattern": "Isolate the relevant component with character translation and replacement, then sort on it.",
+      "output_grain": "One derived sorting component per input row.",
+      "validation_probe": "Test values containing 2 and 10, no digits, multiple numeric runs, and padding.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch02.html#sqlckbk-CHP-2-SECT-4",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_sorting_filtering_searching_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-02-05",
+      "name": "2.5 Dealing with Nulls When Sorting",
+      "intent": "Control where NULLs appear without reversing non-NULL values.",
+      "choose_pattern": "Sort first on a CASE-derived missingness flag and then on the actual value, or use a source-documented NULL placement clause.",
+      "output_grain": "Detail grain unchanged.",
+      "validation_probe": "Test both sort directions with NULL, zero, and tied non-NULL values.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch02.html#sqlckbk-CHP-2-SECT-5",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_sorting_filtering_searching_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-02-06",
+      "name": "2.6 Sorting on a Data-Dependent Key",
+      "intent": "Choose a sorting field according to each row’s type.",
+      "choose_pattern": "Return the appropriate sort value from CASE inside ORDER BY.",
+      "output_grain": "One chosen sort key per detail record.",
+      "validation_probe": "Check each CASE branch, compatible return types, and ties across branches.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch02.html#sqlckbk-CHP-2-SECT-6",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_sorting_filtering_searching_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-03-01",
+      "name": "3.1 Stacking One Rowset atop Another",
+      "intent": "Stack compatible rowsets without joining their entities.",
+      "choose_pattern": "Align projected columns and combine rowsets with UNION ALL; use UNION only when set-level duplicate removal is intended.",
+      "output_grain": "One output occurrence per contributing input occurrence with UNION ALL.",
+      "validation_probe": "Check projection order, compatible types, expected row-count sum, and duplicate policy.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-1",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_multiple_tables_joins_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-03-02",
+      "name": "3.2 Combining Related Rows",
+      "intent": "Attach attributes from a related entity.",
+      "choose_pattern": "Join using the established matching columns, separating relationship conditions from population filters.",
+      "output_grain": "Source example: employee rows related to their department.",
+      "validation_probe": "Check department-key uniqueness, employee match counts, and unmatched employees.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_multiple_tables_joins_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-03-03",
+      "name": "3.3 Finding Rows in Common Between Two Tables",
+      "intent": "Find rows shared across two sources using a complete comparison definition.",
+      "choose_pattern": "Join on every comparison column or use a compatible set intersection when only shared values are needed.",
+      "output_grain": "One comparison tuple or intended matched entity.",
+      "validation_probe": "Create rows equal on one field but different on another; also test duplicate tuples and NULLs.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-3",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_multiple_tables_joins_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-03-04",
+      "name": "3.4 Retrieving Values from One Table That Do Not Exist in Another",
+      "intent": "Find values present in the first source and absent from the second.",
+      "choose_pattern": "Use set difference or a NULL-reviewed anti-membership test.",
+      "output_grain": "One returned comparison value under set semantics, or retained source occurrences under a predicate.",
+      "validation_probe": "Test an empty target, a target NULL, duplicate source values, and a NULL source key.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-4",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_multiple_tables_joins_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-03-05",
+      "name": "3.5 Retrieving Rows from One Table That Do Not Correspond to Rows in Another",
+      "intent": "Return full source rows lacking a corresponding related row.",
+      "choose_pattern": "Preserve the source with a left join and keep rows where a reliable target match column is NULL.",
+      "output_grain": "One row per unmatched source entity.",
+      "validation_probe": "Verify the tested target column cannot be NULL on a genuine match; compare with a correlated absence test.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-5",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_multiple_tables_joins_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-03-06",
+      "name": "3.6 Adding Joins to a Query Without Interfering with Other Joins",
+      "intent": "Add optional information without losing previously returned records.",
+      "choose_pattern": "Use an outer join for optional related rows, or a scalar subquery only when at most one related value is guaranteed.",
+      "output_grain": "Original result grain unless multiple optional matches expand it.",
+      "validation_probe": "Compare source-key counts before and after, including zero, one, and two optional matches.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-6",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_multiple_tables_joins_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-03-07",
+      "name": "3.7 Determining Whether Two Tables Have the Same Data",
+      "intent": "Determine whether two rowsets contain the same data and multiplicities.",
+      "choose_pattern": "Compare both directions, including grouped occurrence counts where duplicates matter, and combine discrepancies.",
+      "output_grain": "Comparison tuple plus occurrence count when evaluating bags.",
+      "validation_probe": "Test equal counts with different values and equal distinct values with different repetition counts.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-7",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_multiple_tables_joins_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-03-08",
+      "name": "3.8 Identifying and Avoiding Cartesian Products",
+      "intent": "Diagnose a join that creates unrelated combinations.",
+      "choose_pattern": "Inspect the relationship graph and add the missing relationship predicates; retain a cross join only when every combination is intended.",
+      "output_grain": "Either a justified pair of input rows or the intended related entity.",
+      "validation_probe": "Predict the product size before joining and examine repeated keys afterward.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_multiple_tables_joins_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-03-09",
+      "name": "3.9 Performing Joins When Using Aggregates",
+      "intent": "Avoid counting a parent measure multiple times after a detail join.",
+      "choose_pattern": "Aggregate the parent measure at its own grain before joining; the book’s DISTINCT-aggregate shortcut is conditional on value uniqueness.",
+      "output_grain": "Employee salary grain versus employee-bonus row grain, then requested department summary.",
+      "validation_probe": "Add two employees with equal salaries and one employee with multiple bonuses; reconcile against independent source totals.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "primary_module": "sql_cookbook_multiple_tables_joins_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-03-10",
+      "name": "3.10 Performing Outer Joins When Using Aggregates",
+      "intent": "Include parents without detail while computing correct totals.",
+      "choose_pattern": "Preserve the required parent population with an outer join and protect parent-grain aggregates from detail duplication.",
+      "output_grain": "All qualifying employees, with bonus detail aggregated appropriately.",
+      "validation_probe": "Test a department with no bonuses, repeated bonuses, and two equal salaries.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10",
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "primary_module": "sql_cookbook_multiple_tables_joins_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-03-11",
+      "name": "3.11 Returning Missing Data from Multiple Tables",
+      "intent": "Show matched records and unmatched records from either side.",
+      "choose_pattern": "Use a supported full outer join or the source’s combination of opposite outer joins.",
+      "output_grain": "Matched pairs plus unmatched source entities.",
+      "validation_probe": "Test left-only, right-only, one-to-many, and duplicate-identical matched rows.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-11",
+      "source_issue_ids": [
+        "source-issue-full-join-heading"
+      ],
+      "primary_module": "sql_cookbook_multiple_tables_joins_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-03-12",
+      "name": "3.12 Using NULLs in Operations and Comparisons",
+      "intent": "Compare or calculate with missing values when an explicit replacement is intended.",
+      "choose_pattern": "Replace missing values with COALESCE before the comparison or expression only when that substitution matches the question.",
+      "output_grain": "One comparison or expression result per source row.",
+      "validation_probe": "Contrast results under missing-as-zero and missing-excluded interpretations.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-12",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_multiple_tables_joins_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-04-01",
+      "name": "4.1 Inserting a New Record",
+      "intent": "Insert a new row with a clear column-to-value mapping.",
+      "choose_pattern": "Provide an explicit target column list and compatible VALUES expressions.",
+      "output_grain": "One new target row per supplied values tuple.",
+      "validation_probe": "Preview each value against its target type and required constraints; verify affected-row count.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-1",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_insert_update_delete_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-04-02",
+      "name": "4.2 Inserting Default Values",
+      "intent": "Create rows using column defaults.",
+      "choose_pattern": "Omit defaulted columns or use the source-supported DEFAULT form for the dialect.",
+      "output_grain": "One inserted row per insertion operation or tuple.",
+      "validation_probe": "Inspect actual default expressions and test mixed defaulted/nondefaulted columns.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-2",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_insert_update_delete_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-04-03",
+      "name": "4.3 Overriding a Default Value with NULL",
+      "intent": "Store NULL instead of accepting a default.",
+      "choose_pattern": "Include the nullable target column and supply NULL explicitly.",
+      "output_grain": "One target row per insert tuple.",
+      "validation_probe": "Check that the column permits NULL and compare omitted-column versus explicit-NULL inserts in a safe test.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-3",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_insert_update_delete_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-04-04",
+      "name": "4.4 Copying Rows from One Table into Another",
+      "intent": "Copy qualifying rows into another table.",
+      "choose_pattern": "Use INSERT with a SELECT whose projected columns align with the target column list.",
+      "output_grain": "One target row per selected input row unless constraints reject the operation.",
+      "validation_probe": "Run the SELECT first; compare types, row count, duplicate keys, and restart behavior.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-4",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_insert_update_delete_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-04-05",
+      "name": "4.5 Copying a Table Definition",
+      "intent": "Create an empty table patterned on another row shape.",
+      "choose_pattern": "Use the source dialect’s LIKE, CTAS with a false predicate, or SELECT INTO form.",
+      "output_grain": "Schema operation; no source rows should be copied.",
+      "validation_probe": "Verify zero rows and inspect resulting types, defaults, indexes, and constraints instead of assuming a complete clone.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-5",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_insert_update_delete_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-04-06",
+      "name": "4.6 Inserting into Multiple Tables at Once",
+      "intent": "Route selected rows into multiple targets.",
+      "choose_pattern": "Use the source’s Oracle multitable insert or constrained DB2 union-view approach.",
+      "output_grain": "One selected row may map to one or multiple target rows according to routing semantics.",
+      "validation_probe": "Test overlapping routes, unmatched routes, and DB2 constraint exclusivity.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-6",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_insert_update_delete_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-04-07",
+      "name": "4.7 Blocking Inserts to Certain Columns",
+      "intent": "Limit which columns an insert interface exposes.",
+      "choose_pattern": "Expose permitted columns through an insertable view and restrict direct base-table insertion permissions.",
+      "output_grain": "One insertion through the approved view interface.",
+      "validation_probe": "Review privileges and view insertability; test omitted mandatory columns.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-7",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_insert_update_delete_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-04-08",
+      "name": "4.8 Modifying Records in a Table",
+      "intent": "Update a defined population using an expression.",
+      "choose_pattern": "Put the replacement expression in SET and the intended target population in the outer WHERE.",
+      "output_grain": "One modification per qualifying target row.",
+      "validation_probe": "Preview old and proposed values with SELECT and verify the intended affected keys.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-8",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_insert_update_delete_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-04-09",
+      "name": "4.9 Updating When Corresponding Rows Exist",
+      "intent": "Update only rows that have a qualifying related record.",
+      "choose_pattern": "Use a matching subquery with IN or EXISTS to constrain the target population.",
+      "output_grain": "One qualifying target row, independent of the number of existence matches.",
+      "validation_probe": "Test no match, one match, and multiple matches; ensure nonmatching rows remain unchanged.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-9",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_insert_update_delete_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-04-10",
+      "name": "4.10 Updating with Values from Another Table",
+      "intent": "Update values from a related source without overwriting unrelated targets.",
+      "choose_pattern": "Join to a unique source value or use a correlated value subquery plus an outer target-existence filter.",
+      "output_grain": "One source value per intended target row.",
+      "validation_probe": "Test an unmatched target and duplicate source matches; preview new values and affected keys.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-10",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_insert_update_delete_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-04-11",
+      "name": "4.11 Merging Records",
+      "intent": "Apply different changes to matched and unmatched target records.",
+      "choose_pattern": "Express matching, update/insert, and any deletion eligibility as separate branches of the intended merge operation.",
+      "output_grain": "One intended source-to-target match decision per entity.",
+      "validation_probe": "Test each action branch, multiple source matches, and idempotent reruns before any live write.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-11",
+      "source_issue_ids": [
+        "source-issue-merge-breadth"
+      ],
+      "primary_module": "sql_cookbook_insert_update_delete_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-04-12",
+      "name": "4.12 Deleting All Records from a Table",
+      "intent": "Remove every row from a table deliberately.",
+      "choose_pattern": "Use an unfiltered DELETE only for an explicitly approved all-row removal.",
+      "output_grain": "All rows of the chosen table.",
+      "validation_probe": "Confirm table identity, affected-row expectation, dependencies, and rollback capability before execution.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-12",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_insert_update_delete_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-04-13",
+      "name": "4.13 Deleting Specific Records",
+      "intent": "Delete a selected subset of records.",
+      "choose_pattern": "Use DELETE with the exact population predicate already reviewed as a SELECT.",
+      "output_grain": "One deletion per qualifying target row.",
+      "validation_probe": "Review selected identifiers and counts before the write; include near-miss rows in the test.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-13",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_insert_update_delete_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-04-14",
+      "name": "4.14 Deleting a Single Record",
+      "intent": "Delete a single known record.",
+      "choose_pattern": "Filter by an inspected primary or unique key rather than an ambiguous attribute.",
+      "output_grain": "One specifically identified target entity.",
+      "validation_probe": "Confirm exactly one previewed record and distinguish missing-key from multiple-match errors.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-14",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_multiple_tables_joins_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-04-15",
+      "name": "4.15 Deleting Referential Integrity Violations",
+      "intent": "Identify and remove orphaned child records after explicit review.",
+      "choose_pattern": "Find child rows whose parent cannot be found using a correlated absence predicate.",
+      "output_grain": "One candidate orphan child row.",
+      "validation_probe": "Validate parent completeness and NULL-key policy before deleting; do not equate a late parent export with an invalid child.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-15",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_insert_update_delete_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-04-16",
+      "name": "4.16 Deleting Duplicate Records",
+      "intent": "Remove redundant rows under a defined duplicate rule.",
+      "choose_pattern": "Group by the duplicate-defining fields, choose one retained unique identifier, and delete only the other identifiers.",
+      "output_grain": "One survivor per defined duplicate group.",
+      "validation_probe": "Preview groups and retained IDs, confirm tie-breaking policy, and reconcile kept plus deleted counts.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-16",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_insert_update_delete_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-04-17",
+      "name": "4.17 Deleting Records Referenced from Another Table",
+      "intent": "Delete rows based on grouped evidence in another source.",
+      "choose_pattern": "Aggregate related events, filter qualifying groups with HAVING, then constrain deletion to those group keys.",
+      "output_grain": "Event grain inside the subquery; target-record grain for deletion.",
+      "validation_probe": "Check threshold boundaries and duplicate events before previewing target deletions.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-17",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_insert_update_delete_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-05-01",
+      "name": "5.1 Listing Tables in a Schema",
+      "intent": "Discover tables visible within a schema.",
+      "choose_pattern": "Query the dialect’s table metadata with an explicit schema or owner filter.",
+      "output_grain": "One metadata row per discovered table according to catalog semantics.",
+      "validation_probe": "Compare known accessible objects with results; check schema casing and user permissions.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-1",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_metadata_queries_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-05-02",
+      "name": "5.2 Listing a Table’s Columns",
+      "intent": "Discover columns and their declared types.",
+      "choose_pattern": "Read the selected table’s column metadata from the dialect’s catalog.",
+      "output_grain": "One metadata row per table column.",
+      "validation_probe": "Verify schema qualification, ordinal order, nullability, and the meaning of reported type fields.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-2",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_metadata_queries_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-05-03",
+      "name": "5.3 Listing Indexed Columns for a Table",
+      "intent": "Inspect indexed columns before making performance hypotheses.",
+      "choose_pattern": "Join or inspect index metadata using the database-specific catalog relationships.",
+      "output_grain": "Index-column metadata, with index identity and column position retained.",
+      "validation_probe": "Check composite order, duplicate index names across schemas, and actual execution plans.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-3",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_metadata_queries_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-05-04",
+      "name": "5.4 Listing Constraints on a Table",
+      "intent": "Discover declared constraints and their participating columns.",
+      "choose_pattern": "Read constraint and key-column metadata with complete catalog identifiers.",
+      "output_grain": "One constraint-column association.",
+      "validation_probe": "Verify multi-column constraints and join catalog rows by full constraint identity.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-4",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_metadata_queries_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-05-05",
+      "name": "5.5 Listing Foreign Keys Without Corresponding Indexes",
+      "intent": "Find foreign-key columns lacking corresponding index evidence.",
+      "choose_pattern": "Compare foreign-key metadata with index-column metadata using an outer-join absence test.",
+      "output_grain": "Foreign-key column or full composite constraint, depending on the audit.",
+      "validation_probe": "Check full composite ordering, permissions, and the database’s definition of useful index coverage.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-5",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_metadata_queries_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-05-06",
+      "name": "5.6 Using SQL to Generate SQL",
+      "intent": "Generate maintenance statement text from metadata or data.",
+      "choose_pattern": "Build statement strings with properly formatted values and object names, then inspect them before any separate execution.",
+      "output_grain": "One proposed statement per selected object or row.",
+      "validation_probe": "Verify quoting, object identity, permissions, and a read-only preview of the affected population.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-6",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_metadata_queries_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-05-07",
+      "name": "5.7 Describing the Data Dictionary Views in an Oracle Database",
+      "intent": "Discover what Oracle dictionary views describe.",
+      "choose_pattern": "Query DICTIONARY for view purposes and DICT_COLUMNS for their columns.",
+      "output_grain": "One dictionary view or dictionary column.",
+      "validation_probe": "Check exact view names and privileges; distinguish descriptive comments from enforced constraints.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-7",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_metadata_queries_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-06-01",
+      "name": "6.1 Walking a String",
+      "intent": "Turn a string into ordered character rows.",
+      "choose_pattern": "Pair each source string with enough integer positions, restrict positions to its length, and extract one character per position.",
+      "output_grain": "One source-string identity and character position.",
+      "validation_probe": "Test a string longer than the helper rowset, a trailing space, an empty value, and repeated characters.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-1",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_strings_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-06-02",
+      "name": "6.2 Embedding Quotes Within String Literals",
+      "intent": "Represent quotation marks inside a SQL string literal.",
+      "choose_pattern": "Escape an embedded quote using the source’s doubled-quote literal pattern.",
+      "output_grain": "One constructed literal value.",
+      "validation_probe": "Test apostrophes, a quote-only value, an empty string, and NULL separately.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-2",
+      "source_issue_ids": [
+        "source-issue-empty-null"
+      ],
+      "primary_module": "sql_cookbook_strings_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-06-03",
+      "name": "6.3 Counting the Occurrences of a Character in a String",
+      "intent": "Count occurrences of a delimiter or substring.",
+      "choose_pattern": "Compare the original length with the length after replacement and divide by the search-token length when needed.",
+      "output_grain": "One count per source string.",
+      "validation_probe": "Test no matches, repeated tokens, multicharacter tokens, overlaps, and an empty search token.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-3",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_strings_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-06-04",
+      "name": "6.4 Removing Unwanted Characters from a String",
+      "intent": "Remove a defined set of unwanted characters.",
+      "choose_pattern": "Map a set of unwanted characters to a shared marker with TRANSLATE, then remove it with REPLACE, or use repeated REPLACE where shown.",
+      "output_grain": "One cleaned value per source row.",
+      "validation_probe": "Test a legitimate marker character, all-unwanted text, case variants, and preservation of allowed text.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-4",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_strings_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-06-05",
+      "name": "6.5 Separating Numeric and Character Data",
+      "intent": "Separate digit and nondigit portions of mixed text.",
+      "choose_pattern": "Use character translation and replacement to isolate the two classes independently.",
+      "output_grain": "One pair of extracted components per source string.",
+      "validation_probe": "Test interleaved numeric runs, signs, decimals, spaces, and values containing only one class.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-5",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_strings_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-06-06",
+      "name": "6.6 Determining Whether a String Is Alphanumeric",
+      "intent": "Identify strings consisting entirely of an allowed alphanumeric set.",
+      "choose_pattern": "Normalize allowed characters and detect anything remaining outside the permitted class, or use the source’s regex alternative.",
+      "output_grain": "One validity decision per source string.",
+      "validation_probe": "Include punctuation, padding, accented letters, digits only, and letters only.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-6",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_strings_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-06-07",
+      "name": "6.7 Extracting Initials from a Name",
+      "intent": "Extract initials under a limited name-format assumption.",
+      "choose_pattern": "Use the source’s delimiter and capitalization patterns to isolate initials from supported two- or three-part names.",
+      "output_grain": "One source name with documented component structure.",
+      "validation_probe": "Test middle initials, extra spaces, particles, lowercase names, and names outside the assumed format.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-7",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_strings_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-06-08",
+      "name": "6.8 Ordering by Parts of a String",
+      "intent": "Sort on a portion of a string without changing its display.",
+      "choose_pattern": "Place the substring expression in ORDER BY.",
+      "output_grain": "Source detail grain.",
+      "validation_probe": "Validate substring boundaries and provide a tie-breaker where order must be stable.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-8",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_strings_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-06-09",
+      "name": "6.9 Ordering by a Number in a String",
+      "intent": "Order mixed strings by an embedded numeric value.",
+      "choose_pattern": "Remove nondigits using the source’s character operations and use the extracted numeric portion as the sort criterion.",
+      "output_grain": "One extracted sort component per source row.",
+      "validation_probe": "Test numeric 2 versus 10, multiple numeric runs, no digits, and values outside the target numeric range.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-9",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_strings_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-06-10",
+      "name": "6.10 Creating a Delimited List from Table Rows",
+      "intent": "Build a delimited list from rows in each group.",
+      "choose_pattern": "Group the source values and concatenate them in a specified within-group order using a dialect-appropriate mechanism.",
+      "output_grain": "One list per group.",
+      "validation_probe": "Test duplicate values, NULL members, embedded delimiters, length limits, and repeatable ordering.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-10",
+      "source_issue_ids": [
+        "source-issue-list-aggregation"
+      ],
+      "primary_module": "sql_cookbook_strings_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-06-11",
+      "name": "6.11 Converting Delimited Data into a Multivalued IN-List",
+      "intent": "Use serialized values as a membership rowset.",
+      "choose_pattern": "Split the delimited input into typed value rows before using it in an IN predicate.",
+      "output_grain": "One parsed token, then qualifying source detail rows.",
+      "validation_probe": "Test spaces, empty tokens, duplicate tokens, invalid casts, quoted delimiters, and helper-position capacity.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-11",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_strings_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-06-12",
+      "name": "6.12 Alphabetizing a String",
+      "intent": "Alphabetize the characters within each string.",
+      "choose_pattern": "Expand to character rows, order characters within the original string identity, and reassemble.",
+      "output_grain": "Source-string identity plus character position, reduced back to one string.",
+      "validation_probe": "Check that output character counts and multiplicities equal input counts; test duplicate source strings separately.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-12",
+      "source_issue_ids": [
+        "source-issue-string-grouping"
+      ],
+      "primary_module": "sql_cookbook_strings_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-06-13",
+      "name": "6.13 Identifying Strings That Can Be Treated as Numbers",
+      "intent": "Find numeric content in mixed strings under the recipe’s extraction rule.",
+      "choose_pattern": "Identify digit-bearing strings, isolate their digits, and cast only the resulting component.",
+      "output_grain": "One digit-bearing source row and its extracted numeric component.",
+      "validation_probe": "Test letters around digits, multiple runs, signs, decimals, no digits, and overflow.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-13",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_strings_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-06-14",
+      "name": "6.14 Extracting the nth Delimited Substring",
+      "intent": "Retrieve a particular token from each delimited string.",
+      "choose_pattern": "Preserve original row identity and token ordinal during splitting, then select the requested position.",
+      "output_grain": "Original row identity plus token ordinal.",
+      "validation_probe": "Test repeated tokens, two separate source rows, missing nth tokens, and consecutive delimiters.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-14",
+      "source_issue_ids": [
+        "source-issue-token-order"
+      ],
+      "primary_module": "sql_cookbook_strings_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-06-15",
+      "name": "6.15 Parsing an IP Address",
+      "intent": "Break a dotted IP-style string into components.",
+      "choose_pattern": "Locate delimiter boundaries and extract each component, using split functions or recursive substring processing as shown.",
+      "output_grain": "One component position per original dotted string.",
+      "validation_probe": "Check exactly four intended components, empty pieces, extra delimiters, and numeric range separately.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-15",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_strings_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-06-16",
+      "name": "6.16 Comparing Strings by Sound",
+      "intent": "Find candidate text matches based on similar sound.",
+      "choose_pattern": "Compare SOUNDEX encodings, using a self-join when candidates come from the same source.",
+      "output_grain": "A candidate pair of source strings.",
+      "validation_probe": "Review false matches, language assumptions, self-pairs, and reversed duplicate pairs.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-16",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_strings_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-06-17",
+      "name": "6.17 Finding Text Not Matching a Pattern",
+      "intent": "Find apparent structured values whose formatting is invalid.",
+      "choose_pattern": "Define a broad candidate pattern, remove correctly formatted instances, and check whether candidate-like material remains.",
+      "output_grain": "One text row containing candidate structured values.",
+      "validation_probe": "Test no candidate, valid only, invalid only, and mixed valid/invalid instances in one comment.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-17",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_strings_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-07-01",
+      "name": "7.1 Computing an Average",
+      "intent": "Compute an average over the intended population.",
+      "choose_pattern": "Use AVG over the qualifying rowset, with GROUP BY when a separate result is required per group.",
+      "output_grain": "One overall or group-level aggregate.",
+      "validation_probe": "Compare sum and contributing count; include NULL and empty-group cases.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-1",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_numbers_statistics_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-07-02",
+      "name": "7.2 Finding the Min/Max Value in a Column",
+      "intent": "Find extreme values in a population.",
+      "choose_pattern": "Use MIN and MAX over the intended rowset or grouping.",
+      "output_grain": "One extreme-value pair per group or population.",
+      "validation_probe": "Test tied extrema, all-NULL groups, and a single-row group.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-2",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_numbers_statistics_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-07-03",
+      "name": "7.3 Summing the Values in a Column",
+      "intent": "Add the values belonging to a defined population.",
+      "choose_pattern": "Use SUM at the requested grouping grain.",
+      "output_grain": "One sum per defined group.",
+      "validation_probe": "Reconcile group totals to an independently computed population total; test duplicates introduced by joins.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_numbers_statistics_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-07-04",
+      "name": "7.4 Counting Rows in a Table",
+      "intent": "Count rows rather than values in one field.",
+      "choose_pattern": "Use COUNT(*) over the rowset or grouped rowset.",
+      "output_grain": "One count per group or whole input.",
+      "validation_probe": "Compare the count before and after every join and distinguish source rows from NULL-extended rows.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_numbers_statistics_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-07-05",
+      "name": "7.5 Counting Values in a Column",
+      "intent": "Count populated values in a particular column.",
+      "choose_pattern": "Use COUNT(column) when the question is how many rows have a non-NULL value in that expression.",
+      "output_grain": "One populated-value count per group.",
+      "validation_probe": "Compare COUNT(*) and COUNT(column); account for their difference using an explicit missingness count.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-5",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_numbers_statistics_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-07-06",
+      "name": "7.6 Generating a Running Total",
+      "intent": "Show a cumulative sum along an ordered sequence.",
+      "choose_pattern": "Apply SUM as an ordered window and establish a tie-breaker that matches the intended progression.",
+      "output_grain": "One original detail row with a cumulative measure.",
+      "validation_probe": "Hand-check tied values, the first row, the final total, and partition resets.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-6",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_numbers_statistics_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-07-07",
+      "name": "7.7 Generating a Running Product",
+      "intent": "Compute a cumulative product for positive values.",
+      "choose_pattern": "Sum logarithms in an ordered window and exponentiate the result.",
+      "output_grain": "One cumulative result per ordered input row.",
+      "validation_probe": "Compare against direct multiplication on a small fixture; test zero, negatives, NULL, and overflow.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-7",
+      "source_issue_ids": [
+        "source-issue-log-zero"
+      ],
+      "primary_module": "sql_cookbook_numbers_statistics_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-07-08",
+      "name": "7.8 Smoothing a Series of Values",
+      "intent": "Smooth a sequence using current and preceding observations.",
+      "choose_pattern": "Use LAG to align prior observations with the current row, then apply a stated moving-average expression.",
+      "output_grain": "One ordered observation with its selected predecessors.",
+      "validation_probe": "Hand-check the first two rows, duplicate dates, missing dates, and numeric division.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-8",
+      "source_issue_ids": [
+        "source-issue-moving-average"
+      ],
+      "primary_module": "sql_cookbook_numbers_statistics_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-07-09",
+      "name": "7.9 Calculating a Mode",
+      "intent": "Find the most frequently occurring value.",
+      "choose_pattern": "Count occurrences by value and rank those counts, retaining all top ties when all modes are requested.",
+      "output_grain": "One frequency row per candidate value, then the highest-frequency candidates.",
+      "validation_probe": "Test two equally frequent modes and a population where all frequencies tie.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-9",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_numbers_statistics_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-07-10",
+      "name": "7.10 Calculating a Median",
+      "intent": "Find the median of a defined numeric population.",
+      "choose_pattern": "Use the source-described middle-value/50th-percentile concept with a verified median or percentile implementation.",
+      "output_grain": "One median per population or group; some window forms repeat it on detail rows.",
+      "validation_probe": "Check [1,2,100], an even-sized set, tied values, all-equal values, and NULLs against hand-calculated medians.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-10",
+      "source_issue_ids": [
+        "source-issue-median"
+      ],
+      "primary_module": "sql_cookbook_numbers_statistics_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-07-11",
+      "name": "7.11 Determining the Percentage of a Total",
+      "intent": "Compute a subset’s share of a broader total.",
+      "choose_pattern": "Calculate numerator and denominator over their explicitly defined populations before division.",
+      "output_grain": "One percentage per selected subset or reporting group.",
+      "validation_probe": "Expose numerator and denominator separately; test a zero denominator and integer-typed inputs.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_numbers_statistics_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-07-12",
+      "name": "7.12 Aggregating Nullable Columns",
+      "intent": "Average a nullable measure under a deliberate missing-as-zero interpretation.",
+      "choose_pattern": "Apply COALESCE before AVG only when every population member should be represented in the denominator.",
+      "output_grain": "One average per defined population or group.",
+      "validation_probe": "Compute both raw and zero-filled averages and explain which denominator answers the question.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-12",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_numbers_statistics_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-07-13",
+      "name": "7.13 Computing Averages Without High and Low Values",
+      "intent": "Compute an average after excluding extremes.",
+      "choose_pattern": "Identify minimum and maximum values, then exclude them under the chosen all-ties or single-observation rule.",
+      "output_grain": "One trimmed population per requested group.",
+      "validation_probe": "Test repeated extrema, all-equal values, and fewer than three observations.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-13",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_numbers_statistics_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-07-14",
+      "name": "7.14 Converting Alphanumeric Strings into Numbers",
+      "intent": "Extract digits from alphanumeric text before numeric use.",
+      "choose_pattern": "Translate or remove nondigits, then convert the retained digit sequence under the source’s assumptions.",
+      "output_grain": "One extracted digit sequence per input row.",
+      "validation_probe": "Test two separated numeric runs, decimals, signs, and no digits before adopting the extraction policy.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-14",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_numbers_statistics_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-07-15",
+      "name": "7.15 Changing Values in a Running Total",
+      "intent": "Accumulate additions and deductions in one running balance.",
+      "choose_pattern": "Map transaction categories to signed contributions with CASE, then compute an ordered window sum.",
+      "output_grain": "One ordered transaction per balance stream.",
+      "validation_probe": "Test both transaction directions, unknown categories, same-time events, and the opening-balance convention.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-15",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_numbers_statistics_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-07-16",
+      "name": "7.16 Finding Outliers Using the Median Absolute Deviation",
+      "intent": "Measure deviations from a robust central value.",
+      "choose_pattern": "Follow the source prose: compute the median, each absolute deviation from it, and the median of those deviations in stages.",
+      "output_grain": "One center/spread per population, then optional row-level deviation diagnostics.",
+      "validation_probe": "Use [1,2,3] to distinguish centering on median from centering on MAD; also test zero MAD, ties, and missing values.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-16",
+      "source_issue_ids": [
+        "source-issue-mad"
+      ],
+      "primary_module": "sql_cookbook_numbers_statistics_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-07-17",
+      "name": "7.17 Finding Anomalies Using Benford’s Law",
+      "intent": "Compare observed first-digit frequencies with a reference distribution.",
+      "choose_pattern": "Build observed digit counts and an expected-digit rowset, then preserve expected digits even when observations are absent.",
+      "output_grain": "One first-digit category from 1 through 9.",
+      "validation_probe": "Check absent digits yield zero observed count, all shares use the eligible denominator, and excluded zero/negative/decimal inputs are accounted for.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-17",
+      "source_issue_ids": [
+        "source-issue-benford-count"
+      ],
+      "primary_module": "sql_cookbook_numbers_statistics_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-08-01",
+      "name": "8.1 Adding and Subtracting Days, Months, and Years",
+      "intent": "Shift a date by a named interval.",
+      "choose_pattern": "Add or subtract a specified number of days, months, or years using the dialect’s date or interval expressions.",
+      "output_grain": "One shifted date per source date and requested offset.",
+      "validation_probe": "Test month-end dates, leap day, negative offsets, and timestamp precision.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-1",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-08-02",
+      "name": "8.2 Determining the Number of Days Between Two Dates",
+      "intent": "Measure the day difference between two selected dates.",
+      "choose_pattern": "Resolve each endpoint to one row, then apply the dialect’s subtraction or day-difference function.",
+      "output_grain": "One endpoint pair.",
+      "validation_probe": "Swap endpoints to check sign, test equal dates, and verify each endpoint query returns one row.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-2",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-08-03",
+      "name": "8.3 Determining the Number of Business Days Between Two Dates",
+      "intent": "Count working days across an inclusive date interval.",
+      "choose_pattern": "Generate every date in the interval, remove the excluded weekdays, and count the remainder; a supplied holiday rowset may further exclude dates.",
+      "output_grain": "One generated calendar date between the two included endpoints.",
+      "validation_probe": "Test same-day intervals, weekend endpoints, holidays, reversed bounds, and generator capacity.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-3",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-08-04",
+      "name": "8.4 Determining the Number of Months or Years Between Two Dates",
+      "intent": "Express the separation of two dates in months or years.",
+      "choose_pattern": "Compute year/month component differences or a source-provided month-difference function, then use an explicitly chosen year-conversion rule.",
+      "output_grain": "One date pair.",
+      "validation_probe": "Test same-month dates, partial years, month ends, and the intended rounding behavior.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-4",
+      "source_issue_ids": [
+        "source-issue-date-fixtures"
+      ],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-08-05",
+      "name": "8.5 Determining the Number of Seconds, Minutes, or Hours Between Two Dates",
+      "intent": "Express a date difference in smaller time units.",
+      "choose_pattern": "Use a supported unit-aware difference or convert the source’s day difference to hours, minutes, or seconds.",
+      "output_grain": "One pair of temporal values.",
+      "validation_probe": "Test a sub-day interval, fractional seconds, overflow, and a zone-transition case when applicable.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-5",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-08-06",
+      "name": "8.6 Counting the Occurrences of Weekdays in a Year",
+      "intent": "Count each weekday within a year.",
+      "choose_pattern": "Generate all dates from the year’s start to the next year’s boundary, derive weekday values, and group them.",
+      "output_grain": "One date in the selected year, then one aggregate per weekday.",
+      "validation_probe": "Ensure counts sum to the year’s date count and test leap and non-leap years.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-6",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-08-07",
+      "name": "8.7 Determining the Date Difference Between the Current Record and the Next Record",
+      "intent": "Compare a date to the next relevant date in its sequence.",
+      "choose_pattern": "Find the following date with LEAD or the source’s correlated next-date query, then compute the interval.",
+      "output_grain": "One source row within its ordered population.",
+      "validation_probe": "Test tied dates, the final row, different partitions, and a stable secondary ordering key.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-7",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-09-01",
+      "name": "9.1 Determining Whether a Year Is a Leap Year",
+      "intent": "Determine whether a specified year contains leap day.",
+      "choose_pattern": "Use the source’s date construction and February-end logic to inspect the year’s calendar.",
+      "output_grain": "One selected calendar year.",
+      "validation_probe": "Test years divisible by 100 and 400 as well as ordinary leap and common years.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-1",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-09-02",
+      "name": "9.2 Determining the Number of Days in a Year",
+      "intent": "Count the days in a year.",
+      "choose_pattern": "Derive the year boundaries and calculate their separation, or use the source’s final-day-of-year method.",
+      "output_grain": "One calendar year.",
+      "validation_probe": "Check a leap year and a common year; compare with an enumerated calendar count.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-2",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-09-03",
+      "name": "9.3 Extracting Units of Time from a Date",
+      "intent": "Extract selected units from a date.",
+      "choose_pattern": "Use the dialect’s extraction or formatting functions for the needed date components.",
+      "output_grain": "One component tuple per source date.",
+      "validation_probe": "Confirm return types, weekday numbering, and whether year is needed to disambiguate a grouped month.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-3",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-09-04",
+      "name": "9.4 Determining the First and Last Days of a Month",
+      "intent": "Find the month boundaries containing a date.",
+      "choose_pattern": "Normalize to month start and derive month end using the next month or a supplied last-day function.",
+      "output_grain": "One calendar month associated with each input date.",
+      "validation_probe": "Test February, leap day, year-end, and source timestamps with a nonmidnight time.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-4",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-09-05",
+      "name": "9.5 Determining All Dates for a Particular Weekday Throughout a Year",
+      "intent": "List every occurrence of a given weekday in a year.",
+      "choose_pattern": "Generate the year’s dates and filter by the chosen weekday, or advance from an initial matching day as shown.",
+      "output_grain": "One matching calendar date.",
+      "validation_probe": "Verify every result has the required weekday and lies inside the requested year.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-5",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-09-06",
+      "name": "9.6 Determining the Date of the First and Last Occurrences of a Specific Weekday in a Month",
+      "intent": "Find the first and last occurrence of a weekday in a month.",
+      "choose_pattern": "Anchor the search on month boundaries and select the earliest/latest date matching the required weekday.",
+      "output_grain": "One chosen weekday within one calendar month.",
+      "validation_probe": "Test a month whose first or last day already matches the weekday.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-6",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-09-07",
+      "name": "9.7 Creating a Calendar",
+      "intent": "Display a calendar-shaped result from dates.",
+      "choose_pattern": "Generate dates, derive week and weekday positions, and pivot day numbers into weekday columns.",
+      "output_grain": "Calendar dates transformed into one output row per displayed week.",
+      "validation_probe": "Test a month spanning year-end, a month starting midweek, and blank cells outside the month.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-09-08",
+      "name": "9.8 Listing Quarter Start and End Dates for the Year",
+      "intent": "List the four quarter intervals of a calendar year.",
+      "choose_pattern": "Generate four quarter ordinals and convert them to three-month start/end boundaries.",
+      "output_grain": "One row per calendar quarter.",
+      "validation_probe": "Check contiguous coverage, quarter 4 crossing to the next year, and exactly four results.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-8",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-09-09",
+      "name": "9.9 Determining Quarter Start and End Dates for a Given Quarter",
+      "intent": "Decode a year-quarter identifier into boundaries.",
+      "choose_pattern": "Separate the year from the quarter component and construct its starting and ending months.",
+      "output_grain": "One validated year-quarter code.",
+      "validation_probe": "Reject quarter values outside 1–4, malformed years, and padded or NULL codes.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-9",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-09-10",
+      "name": "9.10 Filling in Missing Dates",
+      "intent": "Show periods even when no facts occurred.",
+      "choose_pattern": "Generate the complete period rowset, then outer join facts at matching period grain and aggregate matched records.",
+      "output_grain": "One generated period, with facts assigned to the same period key.",
+      "validation_probe": "Check generator endpoints, one period per key, and a known no-activity month; compare COUNT(*) with a fact-key count.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-10",
+      "source_issue_ids": [
+        "source-issue-date-fixtures"
+      ],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-09-11",
+      "name": "9.11 Searching on Specific Units of Time",
+      "intent": "Search by a date component rather than a complete date.",
+      "choose_pattern": "Extract the specific month, weekday, or other requested unit and apply the component predicate.",
+      "output_grain": "One source record whose date component qualifies.",
+      "validation_probe": "Test the same month across different years and localized day names.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-11",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-09-12",
+      "name": "9.12 Comparing Records Using Specific Parts of a Date",
+      "intent": "Compare records by selected parts of their dates.",
+      "choose_pattern": "Self-join candidate records and compare the extracted month/weekday components while excluding unwanted self-pairs.",
+      "output_grain": "A qualifying pair of distinct source records.",
+      "validation_probe": "Check self-pairs, reversed duplicates, different years, and multiple records sharing the same date.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-12",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-09-13",
+      "name": "9.13 Identifying Overlapping Date Ranges",
+      "intent": "Find overlapping project intervals for the same entity.",
+      "choose_pattern": "Self-join intervals within the entity and identify starts that fall inside another interval under the source’s inclusive boundary rule.",
+      "output_grain": "A pair of distinct intervals belonging to the same entity.",
+      "validation_probe": "Test disjoint, touching, nested, identical-start, reversed, and open-ended intervals; avoid duplicate pair counting.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-13",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-10-01",
+      "name": "10.1 Locating a Range of Consecutive Values",
+      "intent": "Find neighboring intervals that form a consecutive sequence.",
+      "choose_pattern": "Use LEAD to inspect the next interval’s boundary and compare it with the current interval’s end.",
+      "output_grain": "One interval and its immediate successor within the intended stream.",
+      "validation_probe": "Test one-row input, a gap, touching intervals, and order keys that do not follow chronology.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch10.html#sqlckbk-CHP-10-SECT-1",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-10-02",
+      "name": "10.2 Finding Differences Between Rows in the Same Group or Partition",
+      "intent": "Compare successive values within a group.",
+      "choose_pattern": "Use a partitioned LEAD or LAG in a staged query, then subtract the aligned values.",
+      "output_grain": "One employee row within a department’s hire sequence.",
+      "validation_probe": "Test tied hire dates, one-row departments, and the last row of each group.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch10.html#sqlckbk-CHP-10-SECT-2",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-10-03",
+      "name": "10.3 Locating the Beginning and End of a Range of Consecutive Values",
+      "intent": "Reduce consecutive interval runs to their beginning and end.",
+      "choose_pattern": "Mark breaks using the prior endpoint, accumulate the break flags into group identifiers, and aggregate each resulting run.",
+      "output_grain": "One ordered interval initially; one maximal consecutive run in the result.",
+      "validation_probe": "Test a singleton, several gaps, tied start times, and reconstruction of input intervals from run membership.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch10.html#sqlckbk-CHP-10-SECT-3",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-10-04",
+      "name": "10.4 Filling in Missing Values in a Range of Values",
+      "intent": "Include missing numeric or year categories in a report.",
+      "choose_pattern": "Supply the complete category range and outer join facts before counting matched observations.",
+      "output_grain": "One generated category with zero or more matched facts.",
+      "validation_probe": "Check range endpoints, category uniqueness, absent categories, and matching on the intended temporal key.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch10.html#sqlckbk-CHP-10-SECT-4",
+      "source_issue_ids": [
+        "source-issue-date-fixtures"
+      ],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-10-05",
+      "name": "10.5 Generating Consecutive Numeric Values",
+      "intent": "Generate an integer rowset for controlled expansion.",
+      "choose_pattern": "Use a bounded recursive query, the source’s Oracle MODEL construction, or PostgreSQL GENERATE_SERIES as documented.",
+      "output_grain": "One row per integer in the defined sequence.",
+      "validation_probe": "Verify row count, uniqueness, endpoints, termination, and the empty-range case.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch10.html#sqlckbk-CHP-10-SECT-5",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-11-01",
+      "name": "11.1 Paginating Through a Result Set",
+      "intent": "Return a selected page of an ordered rowset.",
+      "choose_pattern": "Assign ROW_NUMBER under a defined ordering, then filter the numbered rows to the requested interval.",
+      "output_grain": "One source row with a deterministic ordinal.",
+      "validation_probe": "Check adjacent pages for overlap/gaps, tied sort values, and changing source data between requests.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-1",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_sorting_filtering_searching_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-11-02",
+      "name": "11.2 Skipping n Rows from a Table",
+      "intent": "Keep every nth row of a defined sequence.",
+      "choose_pattern": "Number the ordered rows and use modulo on that ordinal to select the required positions.",
+      "output_grain": "One source row and ordinal.",
+      "validation_probe": "Test the first included position, n=1, invalid n, and tied sort values.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-2",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_sorting_filtering_searching_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-11-03",
+      "name": "11.3 Incorporating OR Logic When Using Outer Joins",
+      "intent": "Restrict optional matches while retaining the preserved outer population.",
+      "choose_pattern": "Move optional-side OR conditions into the join predicate or prefilter the optional rowset.",
+      "output_grain": "One preserved entity with qualifying optional matches.",
+      "validation_probe": "Test no match, a match failing the optional filter, and two eligible matches.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-3",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_sorting_filtering_searching_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-11-04",
+      "name": "11.4 Determining Which Rows Are Reciprocals",
+      "intent": "Find reversed pairs such as (a,b) and (b,a).",
+      "choose_pattern": "Self-join with the two comparison columns reversed and use a canonical pair ordering when only one representation is wanted.",
+      "output_grain": "One reciprocal value pair or source-row pair, as specified.",
+      "validation_probe": "Test equal values, duplicated source rows, missing reversed partners, and NULL components.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-4",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_sorting_filtering_searching_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-11-05",
+      "name": "11.5 Selecting the Top n Records",
+      "intent": "Select top-ranked rows under an explicit tie policy.",
+      "choose_pattern": "Use DENSE_RANK for the top n distinct values or ROW_NUMBER for exactly n ranked positions.",
+      "output_grain": "A ranked detail row within the relevant population.",
+      "validation_probe": "Test a tie at the cutoff and verify whether all tied records or exactly n rows are intended.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-5",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_sorting_filtering_searching_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-11-06",
+      "name": "11.6 Finding Records with the Highest and Lowest Values",
+      "intent": "Return detail records owning minimum or maximum values.",
+      "choose_pattern": "Expose group or population MIN/MAX through window expressions, then filter the original rows against them.",
+      "output_grain": "One detail record with reference extrema.",
+      "validation_probe": "Test ties at each extreme, a single-row population, and all-NULL measures.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-6",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_sorting_filtering_searching_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-11-07",
+      "name": "11.7 Investigating Future Rows",
+      "intent": "Identify records based on the next observation.",
+      "choose_pattern": "Define the sequence, expose the following value with LEAD, and compare it to the current value.",
+      "output_grain": "One current observation and its selected successor.",
+      "validation_probe": "Test tied timestamps, missing successors, and whether next means next row or next distinct time.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-7",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_sorting_filtering_searching_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-11-08",
+      "name": "11.8 Shifting Row Values",
+      "intent": "Attach preceding and following values, optionally wrapping at the ends.",
+      "choose_pattern": "Use LAG and LEAD under the chosen order and supply the source-described endpoint fallback for a circular result.",
+      "output_grain": "One ordered detail row with adjacent values.",
+      "validation_probe": "Test one-row input, tied values, and first/last rows; distinguish a NULL neighbor from no neighbor.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-8",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_sorting_filtering_searching_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-11-09",
+      "name": "11.9 Ranking Results",
+      "intent": "Assign rankings while deciding how ties should behave.",
+      "choose_pattern": "Choose DENSE_RANK, RANK, or ROW_NUMBER according to the requested tie and gap behavior.",
+      "output_grain": "One ranking result per detail row.",
+      "validation_probe": "Use values with a tie followed by a new value and compare the resulting rank sequences.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-9",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_sorting_filtering_searching_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-11-10",
+      "name": "11.10 Suppressing Duplicates",
+      "intent": "Return unique projected values deliberately.",
+      "choose_pattern": "Use DISTINCT or GROUP BY for a unique-value list, or partitioned ROW_NUMBER when selecting a defined representative row.",
+      "output_grain": "One row per desired distinct projection or representative group.",
+      "validation_probe": "Check which columns define uniqueness and whether dropping multiplicity is intentional.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-10",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_sorting_filtering_searching_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-11-11",
+      "name": "11.11 Finding Knight Values",
+      "intent": "Retrieve an attribute belonging to a row selected by a different ordering field.",
+      "choose_pattern": "Find the latest qualifying row per group and carry its associated attribute, using the source’s CASE/window or Oracle KEEP pattern.",
+      "output_grain": "One selected latest-row attribute per group, optionally repeated on details.",
+      "validation_probe": "Test tied latest dates, negative/zero attributes, and latest rows whose attribute is not the group maximum.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-11",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_sorting_filtering_searching_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-11-12",
+      "name": "11.12 Generating Simple Forecasts",
+      "intent": "Expand an order into a small schedule of predefined future actions.",
+      "choose_pattern": "Cross join each order to a bounded stage-number rowset and derive action labels and dates with CASE.",
+      "output_grain": "One order-stage pair.",
+      "validation_probe": "Verify the stage multiplier, action order, date offsets, and exactly one row per order-stage key.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-12",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_sorting_filtering_searching_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-12-01",
+      "name": "12.1 Pivoting a Result Set into One Row",
+      "intent": "Turn grouped categories into columns in a single summary row.",
+      "choose_pattern": "Use one conditional aggregate per chosen category.",
+      "output_grain": "One overall summary or explicit reporting group.",
+      "validation_probe": "Reconcile the wide columns to the original grouped totals; test absent and unexpected categories.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-1",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-12-02",
+      "name": "12.2 Pivoting a Result Set into Multiple Rows",
+      "intent": "Pivot multiple items per category without losing members.",
+      "choose_pattern": "Assign ROW_NUMBER within each category, then pivot while grouping by that within-category position.",
+      "output_grain": "One member per category and ordinal; one output row per ordinal.",
+      "validation_probe": "Test unequal category lengths, duplicate names, stable ordering, and total member preservation.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-2",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-12-03",
+      "name": "12.3 Reverse Pivoting a Result Set",
+      "intent": "Convert wide category columns into labeled rows.",
+      "choose_pattern": "Cross join to a bounded category selector and use CASE to emit the corresponding column value and category label.",
+      "output_grain": "Original row identity plus unpivoted category.",
+      "validation_probe": "Check expected expansion factor, labels, all category columns, and missing values.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-3",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-12-04",
+      "name": "12.4 Reverse Pivoting a Result Set into One Column",
+      "intent": "Display several fields as a single vertical column.",
+      "choose_pattern": "Expand each input row by a small selector rowset and map selector positions to field values.",
+      "output_grain": "Original entity plus display-field ordinal.",
+      "validation_probe": "Verify field sequence, casts, row-count multiplier, and separation between entities.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-4",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-12-05",
+      "name": "12.5 Suppressing Repeating Values from a Result Set",
+      "intent": "Hide repeated group labels in a human-facing report.",
+      "choose_pattern": "Compare the current label with the preceding label using LAG and suppress repeated display values.",
+      "output_grain": "Detail rows kept in a defined display sequence.",
+      "validation_probe": "Verify stable grouping order and retain an unsuppressed key for downstream processing.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-5",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-12-06",
+      "name": "12.6 Pivoting a Result Set to Facilitate Inter-Row Calculations",
+      "intent": "Place selected group totals side by side before comparing them.",
+      "choose_pattern": "Compute conditional aggregates in an inner stage, then calculate the cross-column differences in an outer stage.",
+      "output_grain": "One selected comparison group or complete summary.",
+      "validation_probe": "Reconcile each component independently and test missing categories before interpreting a difference.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-6",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-12-07",
+      "name": "12.7 Creating Buckets of Data, of a Fixed Size",
+      "intent": "Assign a fixed number of rows to each bucket.",
+      "choose_pattern": "Order and number rows, divide the ordinal by the requested bucket capacity, and take a ceiling with appropriate numeric types.",
+      "output_grain": "One row with a capacity-based bucket identifier.",
+      "validation_probe": "Test exact multiples, a final partial bucket, n=1, and integer-division behavior.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-7",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-12-08",
+      "name": "12.8 Creating a Predefined Number of Buckets",
+      "intent": "Distribute rows among a predefined number of buckets.",
+      "choose_pattern": "Apply NTILE to a deliberately ordered rowset.",
+      "output_grain": "One ranked source row with a bucket identifier.",
+      "validation_probe": "Test fewer rows than buckets, uneven division, and ties spanning bucket boundaries.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-8",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-12-09",
+      "name": "12.9 Creating Horizontal Histograms",
+      "intent": "Represent group counts as horizontal text bars.",
+      "choose_pattern": "Aggregate group counts, then repeat a display character according to each count.",
+      "output_grain": "One count and bar per group.",
+      "validation_probe": "Verify bar length against numeric count and decide how to handle very large groups.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-9",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-12-10",
+      "name": "12.10 Creating Vertical Histograms",
+      "intent": "Represent group counts as vertical text bars.",
+      "choose_pattern": "Assign within-group positions and pivot those positions into a character matrix.",
+      "output_grain": "One displayed height position across groups.",
+      "validation_probe": "Count displayed markers per category and verify top/bottom orientation and blank cells.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-10",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-12-11",
+      "name": "12.11 Returning Non-GROUP BY Columns",
+      "intent": "Retain detailed attributes while selecting rows using group aggregates.",
+      "choose_pattern": "Use window aggregates to expose reference values, then filter the detail rows by those values.",
+      "output_grain": "One detail row with its relevant group extrema.",
+      "validation_probe": "Test two rows tied at an extreme and columns that differ between those rows.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-11",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-12-12",
+      "name": "12.12 Calculating Simple Subtotals",
+      "intent": "Add a grand total to grouped summaries.",
+      "choose_pattern": "Use the source’s ROLLUP form or explicit aggregate branches, and label the aggregate level reliably.",
+      "output_grain": "One category subtotal plus a grand-total row.",
+      "validation_probe": "Verify grand total equals independently summed detail and distinguish source NULL categories from the generated total.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-12",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-12-13",
+      "name": "12.13 Calculating Subtotals for All Possible Expression Combinations",
+      "intent": "Produce subtotals for every requested combination of dimensions.",
+      "choose_pattern": "Use CUBE or separate aggregate branches matching each required grouping level.",
+      "output_grain": "One row per grouping combination and level.",
+      "validation_probe": "Validate every grouping level independently; do not sum the mixed-level output as one fact table.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-13",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-12-14",
+      "name": "12.14 Identifying Rows That Are Not Subtotals",
+      "intent": "Identify which output rows are generated subtotals.",
+      "choose_pattern": "Use GROUPING indicators to mark dimensions rolled out of the current aggregate level.",
+      "output_grain": "One aggregate output row with level indicators.",
+      "validation_probe": "Insert a genuine NULL dimension value and verify it is distinct from the all-dimensions total.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-14",
+      "source_issue_ids": [
+        "source-issue-grouping-era"
+      ],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-12-15",
+      "name": "12.15 Using Case Expressions to Flag Rows",
+      "intent": "Encode categories as separate indicator columns.",
+      "choose_pattern": "Use a CASE expression per category to emit the chosen true/false representation.",
+      "output_grain": "One source row with several category indicators.",
+      "validation_probe": "Test an unexpected category, a NULL category, and whether exactly one flag is expected per row.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-15",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-12-16",
+      "name": "12.16 Creating a Sparse Matrix",
+      "intent": "Create a sparse report matrix from categorical values.",
+      "choose_pattern": "Map categories to output columns with CASE while retaining the source rows; add a deliberate grouping key only when densification is wanted.",
+      "output_grain": "One original row or declared display group.",
+      "validation_probe": "Verify that densification does not merge distinct entities and that category counts remain reconcilable.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-16",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-12-17",
+      "name": "12.17 Grouping Rows by Units of Time",
+      "intent": "Summarize observations into short time intervals under the source’s sampling assumption.",
+      "choose_pattern": "The source groups consecutive transaction identifiers into five-row buckets and aggregates their times and counts.",
+      "output_grain": "A fixed row/identifier bucket in the source example.",
+      "validation_probe": "Test missing IDs, multiple rows per second, irregular timestamps, and whether five rows really represent five seconds.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-17",
+      "source_issue_ids": [
+        "source-issue-row-time"
+      ],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-12-18",
+      "name": "12.18 Performing Aggregations over Different Groups/Partitions Simultaneously",
+      "intent": "Attach several differently grouped aggregates to each detail row.",
+      "choose_pattern": "Use multiple window expressions with different PARTITION BY definitions.",
+      "output_grain": "One detail record with several reference scopes.",
+      "validation_probe": "Reconcile each partition’s value independently and verify the detail row count remains unchanged.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-18",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-12-19",
+      "name": "12.19 Performing Aggregations over a Moving Range of Values",
+      "intent": "Aggregate over a moving time/value range rather than a fixed row count.",
+      "choose_pattern": "Use a supported RANGE frame or a correlated range predicate matching the intended boundary interval.",
+      "output_grain": "One current observation with all contributing observations in its specified range.",
+      "validation_probe": "Test a value exactly on the lower boundary, tied dates, sparse dates, and an interval with no prior observations.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-19",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-12-20",
+      "name": "12.20 Pivoting a Result Set with Subtotals",
+      "intent": "Build a wide report while retaining reliable subtotal levels.",
+      "choose_pattern": "Generate the requested grouped totals first, retain GROUPING markers, and then pivot for presentation.",
+      "output_grain": "One declared subtotal level and reporting key before reshaping.",
+      "validation_probe": "Reconcile each level before and after pivoting; test NULL categories and row ordering.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-20",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-13-01",
+      "name": "13.1 Expressing a Parent-Child Relationship",
+      "intent": "Attach the immediate parent’s information to each child.",
+      "choose_pattern": "Self-join the child’s parent-reference column to the parent row’s identity column.",
+      "output_grain": "One child-to-parent relationship.",
+      "validation_probe": "Test a root, an orphan reference, duplicate parent identifiers, and a normal child.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-1",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_multiple_tables_joins_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-13-02",
+      "name": "13.2 Expressing a Child-Parent-Grandparent Relationship",
+      "intent": "Traverse from a child toward its ancestors.",
+      "choose_pattern": "Anchor on the chosen child and repeatedly follow its parent reference using the source’s recursive or CONNECT BY form.",
+      "output_grain": "One visited ancestor step per starting child and path.",
+      "validation_probe": "Test a two-level tree, a deeper tree, a missing parent, and a cycle; verify the displayed path direction.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-2",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_ctes_hierarchies_recursion_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-13-03",
+      "name": "13.3 Creating a Hierarchical View of a Table",
+      "intent": "Build a hierarchy from its root downward.",
+      "choose_pattern": "Anchor on the root and recursively match child parent-references to the current node’s identity, accumulating a path if required.",
+      "output_grain": "One visited node per traversal path.",
+      "validation_probe": "Test multiple roots, disconnected rows, repeated paths, deep chains, and cycles.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-3",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_ctes_hierarchies_recursion_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-13-04",
+      "name": "13.4 Finding All Child Rows for a Given Parent Row",
+      "intent": "Find all descendants of a selected parent.",
+      "choose_pattern": "Start at the chosen parent and repeatedly expand matching children, retaining the anchor only when the requested result includes it.",
+      "output_grain": "One visited descendant entity or path.",
+      "validation_probe": "Test a parent with no children, several levels, duplicate paths, and a cycle; confirm anchor inclusion.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-4",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_ctes_hierarchies_recursion_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-13-05",
+      "name": "13.5 Determining Which Rows Are Leaf, Branch, or Root Nodes",
+      "intent": "Classify hierarchy rows as roots, branches, or leaves.",
+      "choose_pattern": "Combine the presence of a parent reference with evidence that other rows reference the current node.",
+      "output_grain": "One classification per node under the stated tree model.",
+      "validation_probe": "Test a standalone node, a root with children, an ordinary branch, an orphan, and self-reference.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-5",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_ctes_hierarchies_recursion_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-14-01",
+      "name": "14.1 Creating Cross-Tab Reports Using SQL Server’s PIVOT Operator",
+      "intent": "Use SQL Server’s native operator for a cross-tab.",
+      "choose_pattern": "Provide the intended aggregate measure, pivot category, and fixed output-category list to PIVOT.",
+      "output_grain": "One row per remaining nonpivot grouping key.",
+      "validation_probe": "Inspect driver columns for unintended implicit grouping; reconcile totals to a nonpivot aggregate.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-1",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-14-02",
+      "name": "14.2 Unpivoting a Cross-Tab Report Using SQL Server’s UNPIVOT Operator",
+      "intent": "Use SQL Server’s native operator to turn columns into rows.",
+      "choose_pattern": "Select the intended wide columns and expose their names and values through UNPIVOT.",
+      "output_grain": "Original row identity plus unpivoted column label.",
+      "validation_probe": "Check all intended input columns, result types, expected expansion, and NULL-cell behavior.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-2",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-14-03",
+      "name": "14.3 Transposing a Result Set Using Oracle’s MODEL Clause",
+      "intent": "Express a transpose through Oracle’s MODEL clause.",
+      "choose_pattern": "Treat the rowset as model dimensions and measures and apply the source’s aggregate/CASE rules.",
+      "output_grain": "Declared model dimension tuple.",
+      "validation_probe": "Verify unique dimension coordinates, referenced cells, and totals against a simpler conditional aggregate.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-3",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-14-04",
+      "name": "14.4 Extracting Elements of a String from Unfixed Locations",
+      "intent": "Extract values enclosed by delimiters at variable positions.",
+      "choose_pattern": "Locate successive opening and closing brackets, then extract the text between each pair.",
+      "output_grain": "One source log string with the expected bracketed fields.",
+      "validation_probe": "Test missing/extra brackets, nested brackets, empty fields, and a changed number of components.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-4",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_strings_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-14-05",
+      "name": "14.5 Finding the Number of Days in a Year (an Alternate Solution for Oracle)",
+      "intent": "Compute year length with Oracle-specific date formatting.",
+      "choose_pattern": "Derive the last day of the year and read its day-of-year value.",
+      "output_grain": "One calendar year.",
+      "validation_probe": "Compare leap and common years and confirm the formatting result’s numeric conversion.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-5",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_date_time_ranges_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-14-06",
+      "name": "14.6 Searching for Mixed Alphanumeric Strings",
+      "intent": "Find strings containing both letters and digits.",
+      "choose_pattern": "Map letters and digits to distinguishable markers and require the presence of both classes.",
+      "output_grain": "One decision per input string.",
+      "validation_probe": "Test letters only, digits only, punctuation plus both classes, and non-ASCII text.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-6",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_sorting_filtering_searching_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-14-07",
+      "name": "14.7 Converting Whole Numbers to Binary Using Oracle",
+      "intent": "Explore procedural-style iteration within Oracle SQL.",
+      "choose_pattern": "Use the source’s MODEL iteration to generate a binary representation from a whole number.",
+      "output_grain": "One nonnegative whole-number input and its model iteration state.",
+      "validation_probe": "Test zero, one, a power of two, a nearby value, negatives, and iteration limits.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-7",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_numbers_statistics_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-14-08",
+      "name": "14.8 Pivoting a Ranked Result Set",
+      "intent": "Display ranked groups in separate report columns.",
+      "choose_pattern": "Rank values with DENSE_RANK, assign rank-band categories, number members within each band, then pivot by member position.",
+      "output_grain": "One entity per rank band and within-band ordinal.",
+      "validation_probe": "Test cutoff ties, unequal band sizes, repeated names, and complete entity preservation.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-8",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-14-09",
+      "name": "14.9 Adding a Column Header into a Double Pivoted Result Set",
+      "intent": "Add group header rows to a stacked and pivoted report.",
+      "choose_pattern": "Stack the component populations, add explicitly tagged header rows, and pivot using a controlled display sequence.",
+      "output_grain": "Either a source entity or a tagged display header.",
+      "validation_probe": "Reconcile real-entity counts after excluding headers and verify header placement for empty or short groups.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-9",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-14-10",
+      "name": "14.10 Converting a Scalar Subquery to a Composite Subquery in Oracle",
+      "intent": "Return a composite value through an Oracle scalar-subquery interface.",
+      "choose_pattern": "Construct a declared Oracle object containing several attributes so the subquery still returns one value.",
+      "output_grain": "One scalar object per outer row.",
+      "validation_probe": "Test zero, one, and multiple matched source rows and verify the object type definition.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-10",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_multiple_tables_joins_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-14-11",
+      "name": "14.11 Parsing Serialized Data into Rows",
+      "intent": "Parse serialized fields without collapsing empty positions.",
+      "choose_pattern": "Walk delimiter boundaries and extract each slot according to its original ordinal before arranging the output.",
+      "output_grain": "Original string identity plus field position.",
+      "validation_probe": "Test leading empties, consecutive delimiters, trailing empties, fewer than three fields, and extra delimiters.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-11",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_strings_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-14-12",
+      "name": "14.12 Calculating Percent Relative to Total",
+      "intent": "Show contributions as a share of their reporting total.",
+      "choose_pattern": "Use Oracle RATIO_TO_REPORT for the source example or the separately sourced numerator/denominator pattern from Recipe 7.11.",
+      "output_grain": "One contributing detail or grouped item within its denominator scope.",
+      "validation_probe": "Expose the denominator, reconcile shares where valid, and test zero totals and rounding.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-12",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_numbers_statistics_v1.json"
+    },
+    {
+      "record_id": "sql-recipe-14-13",
+      "name": "14.13 Testing for Existence of a Value Within a Group",
+      "intent": "Flag every row when any member of its group satisfies a condition.",
+      "choose_pattern": "Convert the condition to a clear indicator and use a partitioned MAX or equivalent group-existence aggregate.",
+      "output_grain": "One detail row within the full student/period-like grouping key.",
+      "validation_probe": "Test one passing row among failures, all failures, multiple periods, and missing indicators.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-13",
+      "source_issue_ids": [],
+      "primary_module": "sql_cookbook_reporting_reshaping_pivots_v1.json"
+    }
+  ],
+  "failure_mode_navigation": [
+    {
+      "record_id": "sql-risk-schema-invented",
+      "name": "Invented schema",
+      "question": "Which catalog or supplied schema proves each table and column exists?",
+      "mitigation": "Inspect qualified objects and column types; keep unknown mappings explicit.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-1"
+    },
+    {
+      "record_id": "sql-risk-wrong-grain",
+      "name": "Wrong row grain",
+      "question": "What is one input row and one output row supposed to represent?",
+      "mitigation": "Write both grains; aggregate or deduplicate by entity identity at the appropriate stage.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9"
+    },
+    {
+      "record_id": "sql-risk-missing-key",
+      "name": "Missing relationship key",
+      "question": "Which complete columns identify the relationship, and which side is unique?",
+      "mitigation": "Inspect declared keys and run duplicate-key checks before joining.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2"
+    },
+    {
+      "record_id": "sql-risk-many-to-many-join",
+      "name": "Unintended many-to-many match",
+      "question": "How many matches can each input row find on the opposite side?",
+      "mitigation": "Bring inputs to compatible grains or model the intended many-to-many relationship explicitly.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8"
+    },
+    {
+      "record_id": "sql-risk-cartesian-product",
+      "name": "Unbounded Cartesian product",
+      "question": "Is every combination intentional, and what bounds it?",
+      "mitigation": "Supply the missing predicate or explicitly limit the generated domain.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8"
+    },
+    {
+      "record_id": "sql-risk-outer-join-filtered-in-where",
+      "name": "Outer-join preservation defeated",
+      "question": "Should this condition restrict matching children or reject entire parent rows?",
+      "mitigation": "Place the condition at the stage matching its intent; do not mechanically relocate every filter.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-6"
+    },
+    {
+      "record_id": "sql-risk-aggregate-inflated-after-join",
+      "name": "Aggregate inflated by join multiplicity",
+      "question": "At what grain was each measure recorded?",
+      "mitigation": "Aggregate each measure at its natural grain before combining compatible summaries.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9"
+    },
+    {
+      "record_id": "sql-risk-count-star-vs-count-column",
+      "name": "Wrong count population",
+      "question": "Are we counting rows, matched children, or observed values?",
+      "mitigation": "Choose the count expression matching the intended population.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4"
+    },
+    {
+      "record_id": "sql-risk-null-comparison",
+      "name": "NULL treated as ordinary equality",
+      "question": "Is missingness itself the condition being tested?",
+      "mitigation": "Use explicit missingness predicates and decide NULL semantics before comparison.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-11"
+    },
+    {
+      "record_id": "sql-risk-not-in-null-trap",
+      "name": "NOT IN exclusion contaminated by NULL",
+      "question": "Can the exclusion expression or outer candidate be NULL?",
+      "mitigation": "Use a deliberately correlated absence test or a justified NULL-filtered exclusion set.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-4"
+    },
+    {
+      "record_id": "sql-risk-distinct-hides-problem",
+      "name": "DISTINCT masks the wrong relationship",
+      "question": "Which entity is duplicated, and which identifier distinguishes it?",
+      "mitigation": "Fix relationship or survivor logic before considering projection deduplication.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9"
+    },
+    {
+      "record_id": "sql-risk-unstable-order-by",
+      "name": "Tied ordering is under-specified",
+      "question": "What tie-breaker is meaningful and unique for this task?",
+      "mitigation": "Specify the intended tie policy and use verified identity when a unique order is required.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch02.html#sqlckbk-CHP-2-SECT-2"
+    },
+    {
+      "record_id": "sql-risk-limit-without-order",
+      "name": "A row cap is mistaken for a top-N rule",
+      "question": "Is any sample acceptable, or must the selected rows be the first under a defined ordering?",
+      "mitigation": "Use the source’s arbitrary cap only for arbitrary selection; order before selecting a ranked result.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-9"
+    },
+    {
+      "record_id": "sql-risk-window-frame-default",
+      "name": "Implicit frame changes the question",
+      "question": "Which rows belong in the frame for this exact current row?",
+      "mitigation": "Write the intended frame explicitly after checking dialect and data type support.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/app01.html#sqlckbk-APP-A-SECT-2"
+    },
+    {
+      "record_id": "sql-risk-running-total-order",
+      "name": "Running total lacks a defined sequence",
+      "question": "Which event order and partition boundary define accumulation?",
+      "mitigation": "Declare ordering and reset keys independently of presentation order.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-6"
+    },
+    {
+      "record_id": "sql-risk-date-boundary",
+      "name": "Period boundaries include or exclude the wrong rows",
+      "question": "Does each interval include its start and end, and are values dates or timestamps?",
+      "mitigation": "Specify boundary semantics before choosing date expressions.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-2"
+    },
+    {
+      "record_id": "sql-risk-week-definition",
+      "name": "Calendar week mistaken for fiscal or operational week",
+      "question": "What exact week start, week-year, and fiscal mapping does the report require?",
+      "mitigation": "Use an approved calendar mapping rather than guessing from a function name.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7"
+    },
+    {
+      "record_id": "sql-risk-timezone-ignored",
+      "name": "Timestamp zone or business-day cutoff omitted",
+      "question": "Which zone and business-day cutoff assign an event to a reporting day?",
+      "mitigation": "Obtain the timestamp and reporting-calendar definitions; the book does not supply them.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-1"
+    },
+    {
+      "record_id": "sql-risk-string-parsing-brittle",
+      "name": "Parser assumes a cleaner format than the data has",
+      "question": "Which delimiters, escaping rules, and missing-token cases are allowed?",
+      "mitigation": "Define a parser contract and quarantine cases it does not establish.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-14"
+    },
+    {
+      "record_id": "sql-risk-regex-overmatch",
+      "name": "Pattern matching admits unintended strings",
+      "question": "Is the task finding a substring or validating the entire candidate value?",
+      "mitigation": "Specify candidate boundaries and the exact allowed pattern under the target dialect.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-13"
+    },
+    {
+      "record_id": "sql-risk-dialect-confusion",
+      "name": "A source variant is used in another dialect",
+      "question": "Which database version must run this query?",
+      "mitigation": "Translate the conceptual operation, then verify syntax and semantics separately.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-7"
+    },
+    {
+      "record_id": "sql-risk-pivot-hides-missing-category",
+      "name": "Pivot silently omits expected categories",
+      "question": "Which categories must appear even when no observation exists?",
+      "mitigation": "Establish the category domain and missing-versus-zero policy before pivoting.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-2"
+    },
+    {
+      "record_id": "sql-risk-bucket-boundary",
+      "name": "Bucket edges or bucket meaning are ambiguous",
+      "question": "What quantity defines bucket width, and which side owns an endpoint?",
+      "mitigation": "Define bucket units, endpoints, and remainder policy explicitly.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-7"
+    },
+    {
+      "record_id": "sql-risk-subtotal-mixed-with-detail",
+      "name": "Subtotal rows are counted as detail",
+      "question": "How can the consumer identify the aggregation level of each row?",
+      "mitigation": "Retain grouping-level metadata and separate detail from subtotal consumption.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-12"
+    },
+    {
+      "record_id": "sql-risk-generated-sql-unsafe",
+      "name": "Generated statement text is executed without review",
+      "question": "Which values are parameters, which are identifiers, and who authorized execution?",
+      "mitigation": "Keep generation separate from execution; validate identifiers and use target-supported safe binding.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-6"
+    },
+    {
+      "record_id": "sql-risk-recursive-query-no-termination",
+      "name": "Recursive expansion is not safely bounded",
+      "question": "What decreases or advances each step, and how are cycles handled?",
+      "mitigation": "Verify anchor, recursive names, progress, cycle policy, and a finite bound.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/app02.html#sqlckbk-APP-B-SECT-2"
+    },
+    {
+      "record_id": "sql-risk-current-version-assumption",
+      "name": "Historical support is presented as current",
+      "question": "What official documentation and local result establish this version’s behavior?",
+      "mitigation": "Carry current-verification flags and record evidence before declaring current compatibility.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-1"
+    },
+    {
+      "record_id": "sql-risk-business-definition-invented",
+      "name": "The query invents a metric definition",
+      "question": "Who defined the population, amount, exclusions, and denominator?",
+      "mitigation": "Leave business definitions as unresolved inputs until authoritative evidence is provided.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11"
+    },
+    {
+      "record_id": "sql-risk-correlation-as-causation",
+      "name": "A SQL association is presented as a causal effect",
+      "question": "What evidence beyond these query outputs supports the causal claim?",
+      "mitigation": "Report descriptive association and its limitations; do not infer causation from the SQL alone.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11"
+    },
+    {
+      "record_id": "sql-risk-source-listing-defect",
+      "name": "A source listing contradicts its stated method",
+      "question": "Which source statement, expression, and expected result conflict?",
+      "mitigation": "Keep the issue visible, block unreviewed code reuse, and label any proposed repair separately.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-10"
+    },
+    {
+      "record_id": "sql-risk-destructive-write",
+      "name": "Unreviewed destructive or broad data change",
+      "question": "Which exact identifiers should change, and what approved recovery process exists?",
+      "mitigation": "Require a read-only affected-row preview, authorized write scope, and environment-appropriate recovery review.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-9"
+    },
+    {
+      "record_id": "sql-risk-percent-denominator",
+      "name": "Percentage uses an unclear or empty denominator",
+      "question": "Exactly which rows and values contribute to the denominator?",
+      "mitigation": "Compute numerator and denominator at compatible grains and define empty-denominator behavior.",
+      "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11"
+    }
+  ],
+  "decision_navigation": [
+    {
+      "record_id": "sql-decision-join-or-subquery",
+      "choice": "Join versus subquery",
+      "default": "Start from the required output shape: enrich rows with a join, or test existence without unnecessary row expansion.",
+      "check": "Check match counts and the need for right-side output columns."
+    },
+    {
+      "record_id": "sql-decision-exists-or-in",
+      "choice": "EXISTS versus IN",
+      "default": "Choose a membership expression matching the required correlation and NULL treatment; do not claim one is always faster.",
+      "check": "Test duplicates and NULLs and inspect a live plan before performance claims."
+    },
+    {
+      "record_id": "sql-decision-not-exists-or-not-in",
+      "choice": "NOT EXISTS versus NOT IN",
+      "default": "Prefer an explicit absence test when a nullable exclusion set would make NOT IN unsafe.",
+      "check": "Add a NULL exclusion value and check unmatched candidates."
+    },
+    {
+      "record_id": "sql-decision-group-or-window",
+      "choice": "GROUP BY versus window function",
+      "default": "Use grouping to reduce rows; use a window when detail rows must carry aggregate context.",
+      "check": "Compare input and output entity counts and verify each partition."
+    },
+    {
+      "record_id": "sql-decision-aggregate-or-detail",
+      "choice": "Aggregate query versus detail query",
+      "default": "Decide whether the consumer needs records to inspect or a measure at a summarized grain.",
+      "check": "Check functional identity and reconcile summary totals to detail."
+    },
+    {
+      "record_id": "sql-decision-cte-or-inline",
+      "choice": "CTE versus inline view",
+      "default": "Choose the form that makes stage boundaries and column visibility easiest to review; neither is an automatic optimization.",
+      "check": "Validate stage output and measure actual execution before asserting speed."
+    },
+    {
+      "record_id": "sql-decision-recursion-or-hierarchy-data",
+      "choice": "Recursive CTE versus an existing hierarchy relation",
+      "default": "Use verified existing hierarchy data when it already answers the path question; recurse over adjacency only when needed.",
+      "check": "Check roots, path identity, cycles, and mapping freshness."
+    },
+    {
+      "record_id": "sql-decision-case-or-mapping",
+      "choice": "CASE versus mapping-table join",
+      "default": "Use CASE for a small stated classification; use a verified mapping relation when classifications are maintained as data.",
+      "check": "Test branch boundaries and mapping-key uniqueness."
+    },
+    {
+      "record_id": "sql-decision-distinct-or-repair",
+      "choice": "DISTINCT versus fixing data or joins",
+      "default": "Explain duplicates by entity and relationship before removing projected values.",
+      "check": "Test legitimate equal-valued entities and reconcile event identities."
+    },
+    {
+      "record_id": "sql-decision-pivot-location",
+      "choice": "SQL pivot versus BI/Excel/Python reshape",
+      "default": "Choose the reshape layer using the required output contract and verified consumer capabilities, not the book alone.",
+      "check": "Reconcile long and wide totals, absent categories, and downstream field stability."
+    },
+    {
+      "record_id": "sql-decision-date-range-or-parts",
+      "choice": "Date range versus extracted date parts",
+      "default": "Use explicit interval boundaries for period membership; use components when the question genuinely compares components.",
+      "check": "Test exact endpoints and year changes; check plans before performance conclusions."
+    },
+    {
+      "record_id": "sql-decision-calendar-choice",
+      "choice": "Generated sequence versus existing date dimension",
+      "default": "Use an approved calendar relation when business periods are required; otherwise generate the required bounded date domain.",
+      "check": "Count required days and verify leap days, gaps, and calendar keys."
+    },
+    {
+      "record_id": "sql-decision-parse-location",
+      "choice": "SQL parsing versus upstream transformation",
+      "default": "Keep a simple, specified parser close to the query only when it can be tested; otherwise expose unresolved format handling to an upstream process.",
+      "check": "Run malformed-token and ordinal-preservation fixtures."
+    },
+    {
+      "record_id": "sql-decision-builtin-or-expression",
+      "choice": "Built-in function versus custom expression",
+      "default": "Prefer a verified built-in operation that implements the required semantics; retain a custom pattern when the source operation or target constraints require it.",
+      "check": "Check odd/even medians, empty inputs, and datatype boundaries."
+    },
+    {
+      "record_id": "sql-decision-portable-or-specific",
+      "choice": "Portable pattern versus vendor-specific function",
+      "default": "Separate the conceptual transformation from vendor syntax; prefer clarity within the actual deployment constraints.",
+      "check": "Apply one expected-output fixture across every required target."
+    },
+    {
+      "record_id": "sql-decision-single-or-staged",
+      "choice": "One query versus staged CTEs",
+      "default": "Expose important grain-changing stages so each can be checked independently.",
+      "check": "Check row counts, keys, and totals at every grain transition."
+    },
+    {
+      "record_id": "sql-decision-metadata-before-generation",
+      "choice": "Metadata before AI-generated SQL",
+      "default": "Require schema evidence before claiming executable query text.",
+      "check": "Resolve schema-qualified names, types, key columns, and permissions."
+    },
+    {
+      "record_id": "sql-decision-query-or-metric-definition",
+      "choice": "SQL logic versus metric definition",
+      "default": "Treat population, exclusions, and denominator rules as explicit business inputs to the query.",
+      "check": "Reconcile a signed-off example population and period."
+    },
+    {
+      "record_id": "sql-decision-correctness-before-optimization",
+      "choice": "Correctness before optimization",
+      "default": "Establish expected output and counterexamples before tuning runtime.",
+      "check": "Preserve result equivalence when testing an optimization."
+    }
+  ],
+  "workflow_navigation": [
+    {
+      "record_id": "sql-workflow-review-query",
+      "goal": "Review an unfamiliar SQL query",
+      "inspect": [
+        "Identify every source, alias, stage, and filter.",
+        "Describe each stage’s input/output grain and key.",
+        "Trace joins, NULL handling, dates, and output shape.",
+        "Compare sample output with the stated question."
+      ],
+      "risk_ids": [
+        "sql-risk-schema-invented",
+        "sql-risk-wrong-grain",
+        "sql-risk-dialect-confusion"
+      ]
+    },
+    {
+      "record_id": "sql-workflow-generate-query",
+      "goal": "Generate a query from a business question",
+      "inspect": [
+        "Obtain the business question and expected output shape.",
+        "Inspect schema, dialect, keys, and sample rows.",
+        "Select the smallest relevant recipe pattern.",
+        "Return proposed SQL only when schema names are established; otherwise return an explicit query design with unresolved inputs.",
+        "Pair the design with concrete expected-output tests."
+      ],
+      "risk_ids": [
+        "sql-risk-schema-invented",
+        "sql-risk-business-definition-invented"
+      ]
+    },
+    {
+      "record_id": "sql-workflow-grain-keys",
+      "goal": "Validate table grain and join keys",
+      "inspect": [
+        "State one-row meaning for each input.",
+        "Inspect complete candidate keys and declared constraints.",
+        "Measure duplicate keys and unmatched populations.",
+        "Predict and inspect join cardinality before introducing measures."
+      ],
+      "risk_ids": [
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ]
+    },
+    {
+      "record_id": "sql-workflow-inflated-aggregate",
+      "goal": "Diagnose inflated aggregates",
+      "inspect": [
+        "Record each measure’s original grain and total.",
+        "Inspect key multiplicity on both sides.",
+        "Locate the stage where measure-bearing rows repeat.",
+        "Compare preaggregated joins with the intended output; do not fix entity duplication with DISTINCT on a measure."
+      ],
+      "risk_ids": [
+        "sql-risk-aggregate-inflated-after-join",
+        "sql-risk-distinct-hides-problem"
+      ]
+    },
+    {
+      "record_id": "sql-workflow-outer-missing",
+      "goal": "Diagnose missing rows after an outer join",
+      "inspect": [
+        "Identify the preserved side and required unmatched population.",
+        "Separate matching predicates from final output filters.",
+        "Test a parent with no children and one with only nonqualifying children.",
+        "Move or retain predicates according to intent, then reconcile preserved identities."
+      ],
+      "risk_ids": [
+        "sql-risk-outer-join-filtered-in-where"
+      ]
+    },
+    {
+      "record_id": "sql-workflow-null-results",
+      "goal": "Diagnose NULL-related wrong results",
+      "inspect": [
+        "List nullable predicate, key, sort, and measure expressions.",
+        "Separate missingness from zero and empty text.",
+        "Inspect exclusion sets and count/average populations.",
+        "Run targeted NULL-bearing fixtures before proposing a rewrite."
+      ],
+      "risk_ids": [
+        "sql-risk-null-comparison",
+        "sql-risk-not-in-null-trap",
+        "sql-risk-count-star-vs-count-column"
+      ]
+    },
+    {
+      "record_id": "sql-workflow-group-window",
+      "goal": "Choose GROUP BY versus a window",
+      "inspect": [
+        "Define the required output identity.",
+        "Determine whether original rows must survive.",
+        "Choose grouped reduction or per-detail window context.",
+        "Check partitions, frames, and resulting row counts."
+      ],
+      "risk_ids": [
+        "sql-risk-wrong-grain",
+        "sql-risk-window-frame-default"
+      ]
+    },
+    {
+      "record_id": "sql-workflow-report",
+      "goal": "Build a reporting query",
+      "inspect": [
+        "Obtain measure definitions, periods, category domain, and output contract.",
+        "Build and validate the long analytical rowset.",
+        "Add subtotal or formatting layers without changing metric meaning.",
+        "Reconcile totals to a trusted sample and label aggregation levels."
+      ],
+      "risk_ids": [
+        "sql-risk-subtotal-mixed-with-detail",
+        "sql-risk-business-definition-invented"
+      ]
+    },
+    {
+      "record_id": "sql-workflow-pivot",
+      "goal": "Build a pivot or reshaped report",
+      "inspect": [
+        "Define cell grain, row keys, categories, and value aggregation.",
+        "Check duplicate cell inputs and required absent categories.",
+        "Choose a verified conditional-aggregate or vendor operator pattern.",
+        "Reconcile long and reshaped representations."
+      ],
+      "risk_ids": [
+        "sql-risk-pivot-hides-missing-category",
+        "sql-risk-wrong-grain"
+      ]
+    },
+    {
+      "record_id": "sql-workflow-date-range",
+      "goal": "Build a date-range query",
+      "inspect": [
+        "Obtain date/timestamp types, zone, period boundaries, and inclusion rules.",
+        "Translate the interval concept into verified dialect expressions.",
+        "Test both endpoints, adjacent periods, and NULL/open-ended inputs.",
+        "Confirm the output belongs to exactly the intended period."
+      ],
+      "risk_ids": [
+        "sql-risk-date-boundary",
+        "sql-risk-timezone-ignored"
+      ]
+    },
+    {
+      "record_id": "sql-workflow-fill-dates",
+      "goal": "Fill missing dates",
+      "inspect": [
+        "Define the full date domain and any required entity/date grid.",
+        "Validate generator bounds or the approved calendar.",
+        "Aggregate observations at the matching grain before joining.",
+        "Distinguish no observation from recorded zero using evidence."
+      ],
+      "risk_ids": [
+        "sql-risk-date-boundary",
+        "sql-risk-wrong-grain"
+      ]
+    },
+    {
+      "record_id": "sql-workflow-running-moving",
+      "goal": "Build a running total or moving aggregate",
+      "inspect": [
+        "Specify partition, ordering, ties, and whether the range is rows or values/time.",
+        "Choose explicit frame semantics supported by the target.",
+        "Hand-check first, middle, final, and tied rows.",
+        "Reconcile cumulative endpoints and partial-window behavior."
+      ],
+      "risk_ids": [
+        "sql-risk-running-total-order",
+        "sql-risk-window-frame-default",
+        "sql-risk-bucket-boundary"
+      ]
+    },
+    {
+      "record_id": "sql-workflow-translate",
+      "goal": "Translate SQL across dialects",
+      "inspect": [
+        "Record source and target products and exact versions.",
+        "Describe each dialect-sensitive operation without copying syntax.",
+        "Consult the corresponding dialect record and unresolved source issues.",
+        "Verify target syntax and compare one shared fixture’s complete outputs."
+      ],
+      "risk_ids": [
+        "sql-risk-dialect-confusion",
+        "sql-risk-current-version-assumption",
+        "sql-risk-source-listing-defect"
+      ]
+    },
+    {
+      "record_id": "sql-workflow-parse",
+      "goal": "Review string parsing SQL",
+      "inspect": [
+        "Define accepted formats, delimiters, ordinals, and rejected cases.",
+        "Trace original-row identity through expansion and reaggregation.",
+        "Test empty, malformed, long, and repeated inputs.",
+        "Flag cases outside the established grammar rather than guessing their meaning."
+      ],
+      "risk_ids": [
+        "sql-risk-string-parsing-brittle",
+        "sql-risk-regex-overmatch"
+      ]
+    },
+    {
+      "record_id": "sql-workflow-recursion",
+      "goal": "Review CTE and recursive query logic",
+      "inspect": [
+        "Resolve every stage and recursive reference by name.",
+        "Check anchor output and recursive column/type compatibility.",
+        "Trace progress, cycle handling, and stopping conditions.",
+        "Test a finite chain and a cycle; keep the source Fibonacci naming defect visible."
+      ],
+      "risk_ids": [
+        "sql-risk-recursive-query-no-termination",
+        "sql-risk-source-listing-defect"
+      ]
+    },
+    {
+      "record_id": "sql-workflow-metadata",
+      "goal": "Review metadata before generating SQL",
+      "inspect": [
+        "Identify the active schema and account visibility.",
+        "Inspect table and column identities with types.",
+        "Resolve composite keys, constraints, and indexes at complete catalog identities.",
+        "Return unresolved or permission-limited evidence explicitly."
+      ],
+      "risk_ids": [
+        "sql-risk-schema-invented",
+        "sql-risk-missing-key"
+      ]
+    },
+    {
+      "record_id": "sql-workflow-bi",
+      "goal": "Validate SQL for a BI dashboard",
+      "inspect": [
+        "Obtain the dashboard’s metric, filter, grain, and schema contracts.",
+        "Validate query results independently of visual formatting.",
+        "Check filter interactions, denominator changes, absent categories, and refresh boundaries.",
+        "Require current connector/security/refresh evidence before claiming deployability."
+      ],
+      "risk_ids": [
+        "sql-risk-business-definition-invented",
+        "sql-risk-pivot-hides-missing-category",
+        "sql-risk-percent-denominator"
+      ]
+    },
+    {
+      "record_id": "sql-workflow-restaurant",
+      "goal": "Review restaurant-operations SQL output",
+      "inspect": [
+        "Identify the supplied exports and verified location/entity keys.",
+        "Obtain business-day, fiscal-period, exclusion, and metric definitions.",
+        "Reconcile input completeness and duplicate transactions across sources.",
+        "Report descriptive results and unresolved operational definitions without inventing company facts."
+      ],
+      "risk_ids": [
+        "sql-risk-wrong-grain",
+        "sql-risk-week-definition",
+        "sql-risk-business-definition-invented"
+      ]
+    },
+    {
+      "record_id": "sql-workflow-causality",
+      "goal": "Detect unsupported causal claims",
+      "inspect": [
+        "Identify the proposed conclusion separately from the returned numbers.",
+        "Check aligned populations, periods, and denominators.",
+        "Determine which causal assumptions or study evidence are missing.",
+        "Report a descriptive association or anomaly and its limits, not causal impact."
+      ],
+      "risk_ids": [
+        "sql-risk-correlation-as-causation"
+      ]
+    },
+    {
+      "record_id": "sql-workflow-current-docs",
+      "goal": "Decide when current database documentation is required",
+      "inspect": [
+        "Record the actual product/version and the proposed features.",
+        "Find syntax, default-behavior, catalog, connector, or optimizer claims inherited from the source.",
+        "Route each to its current-verification flag.",
+        "Leave claims unverified until official evidence and relevant local tests are supplied."
+      ],
+      "risk_ids": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-dialect-confusion"
+      ]
+    }
+  ],
+  "verification_navigation": [
+    {
+      "record_id": "sql-verify-db2-version",
+      "category": "DB2 version baseline",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-oracle-version",
+      "category": "Oracle version baseline",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-postgresql-version",
+      "category": "PostgreSQL version baseline",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-mysql-version",
+      "category": "MySQL version baseline",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-sql-server-version",
+      "category": "SQL Server version baseline",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-window",
+      "category": "Window functions and frames",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-cte",
+      "category": "CTEs and recursion",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-dates",
+      "category": "Date/time functions",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-strings",
+      "category": "String functions",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-regex",
+      "category": "Regex and wildcard behavior",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-pivot",
+      "category": "PIVOT and UNPIVOT",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-series",
+      "category": "Generated numeric/date series",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-grouping",
+      "category": "GROUPING SETS / ROLLUP / CUBE",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-null-sort",
+      "category": "NULL ordering",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-collation",
+      "category": "Collation and case sensitivity",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-optimizer",
+      "category": "Optimizer and execution behavior",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-catalogs",
+      "category": "Metadata catalogs and visibility",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-generated-sql",
+      "category": "SQL-generated SQL",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-bi-connectors",
+      "category": "BI connector and refresh behavior",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-business-metrics",
+      "category": "Business definitions",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-business-exports",
+      "category": "Restaurant365 and business exports",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-guest-platforms",
+      "category": "SevenRooms / Uber Eats schemas",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-json-xml",
+      "category": "JSON/XML scope boundary",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-timezone",
+      "category": "Time zones and operating-day cutoffs",
+      "status": "not_verified"
+    },
+    {
+      "record_id": "sql-verify-merge",
+      "category": "MERGE and conditional writes",
+      "status": "not_verified"
+    }
+  ],
+  "source_issue_navigation": [
+    {
+      "issue_id": "source-issue-join-distinct",
+      "description": "Deduplicating salaries by value cannot preserve two different employees with the same salary. The discussion also describes aggregation before the join.",
+      "action": "Prefer the source-supported preaggregation alternative when salary values repeat; verify entity identity.",
+      "source_refs": [
+        "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+        "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10"
+      ]
+    },
+    {
+      "issue_id": "source-issue-full-join-heading",
+      "description": "The dialect heading includes MySQL while the body describes a UNION workaround rather than direct FULL OUTER JOIN.",
+      "action": "Treat heading coverage and runnable variant coverage separately.",
+      "source_refs": [
+        "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-11"
+      ]
+    },
+    {
+      "issue_id": "source-issue-merge-breadth",
+      "description": "The broad MERGE applicability statement does not establish a verified per-version syntax and branch contract.",
+      "action": "Review every target version and branch; do not import the source listing unchanged.",
+      "source_refs": [
+        "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-11"
+      ]
+    },
+    {
+      "issue_id": "source-issue-empty-null",
+      "description": "An unqualified empty-string/NULL equivalence statement is not scoped as a portable five-dialect rule.",
+      "action": "Test empty string and NULL separately for the target database.",
+      "source_refs": [
+        "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-2"
+      ]
+    },
+    {
+      "issue_id": "source-issue-list-aggregation",
+      "description": "Function names and argument/order syntax vary inconsistently between the prose and displayed dialect variants.",
+      "action": "Retain the ordered concatenation idea; verify the complete function syntax independently.",
+      "source_refs": [
+        "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-10"
+      ]
+    },
+    {
+      "issue_id": "source-issue-string-grouping",
+      "description": "Some displayed variants group by character rather than the original string identity while reconstructing the string.",
+      "action": "Verify grouping identity and repeated characters before using a variant.",
+      "source_refs": [
+        "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-12"
+      ]
+    },
+    {
+      "issue_id": "source-issue-token-order",
+      "description": "The SQL Server splitting/aggregation example does not establish a stable original-row and token-ordinal contract.",
+      "action": "Require a row identity and token position; do not assume nth-element semantics.",
+      "source_refs": [
+        "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-14"
+      ]
+    },
+    {
+      "issue_id": "source-issue-log-zero",
+      "description": "Adding one to a zero value before logarithmic multiplication changes the requested product.",
+      "action": "Keep the positivity precondition or design and validate an explicitly different zero/sign policy.",
+      "source_refs": [
+        "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-7"
+      ]
+    },
+    {
+      "issue_id": "source-issue-moving-average",
+      "description": "The prose mentions extra weight for recent observations, but the displayed three-term average uses equal weights.",
+      "action": "Label the displayed operation a simple three-observation average; do not silently supply weighted coefficients.",
+      "source_refs": [
+        "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-8"
+      ]
+    },
+    {
+      "issue_id": "source-issue-median",
+      "description": "The MySQL CUME_DIST selection combines the ranks on both sides of 0.5 and can average the whole distinct rank/value population instead of central values.",
+      "action": "Block unreviewed reuse of the listing; test odd/even counts and tied values against an explicit median.",
+      "source_refs": [
+        "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-10"
+      ]
+    },
+    {
+      "issue_id": "source-issue-mad",
+      "description": "The final displayed deviation ratio centers on MAD rather than the median, contradicting the preceding method description. Some variants inherit the median-selection issue.",
+      "action": "Preserve the method described in prose; require an independently validated implementation and MAD=0 policy.",
+      "source_refs": [
+        "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-16"
+      ]
+    },
+    {
+      "issue_id": "source-issue-benford-count",
+      "description": "Counting all joined rows after completing first-digit categories can count a NULL-extended missing category as one observation.",
+      "action": "Count observed matches, not category placeholder rows; test absent digit categories.",
+      "source_refs": [
+        "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-17"
+      ]
+    },
+    {
+      "issue_id": "source-issue-date-fixtures",
+      "description": "Example dates and expected outputs use multiple historical year ranges and contain inconsistent year labels.",
+      "action": "Keep fixtures recipe-local; do not merge outputs into one authoritative EMP dataset.",
+      "source_refs": [
+        "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-4",
+        "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-10",
+        "SQL Cookbook.epub/OEBPS/ch10.html#sqlckbk-CHP-10-SECT-4"
+      ]
+    },
+    {
+      "issue_id": "source-issue-row-time",
+      "description": "The demonstrated bucket expression uses consecutive transaction positions; fixed elapsed-time interpretation relies on the stated regular sampling assumptions.",
+      "action": "For irregular timestamps, specify and test actual time boundaries rather than treating row buckets as time buckets.",
+      "source_refs": [
+        "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-17"
+      ]
+    },
+    {
+      "issue_id": "source-issue-grouping-era",
+      "description": "The discussion makes historical database support statements for grouping metadata and cube operations.",
+      "action": "Verify the actual database release instead of interpreting omissions as present-day lack of support.",
+      "source_refs": [
+        "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-14"
+      ]
+    },
+    {
+      "issue_id": "source-issue-recursive-symbol",
+      "description": "The Fibonacci example declares workingTable but references anchor in the recursive member.",
+      "action": "Resolve recursive names and validate the first terms and termination before execution.",
+      "source_refs": [
+        "SQL Cookbook.epub/OEBPS/app02.html#sqlckbk-APP-B-SECT-2"
+      ]
+    },
+    {
+      "issue_id": "source-issue-recursive-keyword",
+      "description": "The prose makes a broad cross-vendor statement about the RECURSIVE keyword without a verified version-specific syntax matrix.",
+      "action": "Use the source for the recursion idea, not as current vendor syntax authority.",
+      "source_refs": [
+        "SQL Cookbook.epub/OEBPS/app02.html#sqlckbk-APP-B-SECT-2"
+      ]
+    },
+    {
+      "issue_id": "source-issue-group-count",
+      "description": "The appendix’s grouping axioms describe nonempty explicit groups and positive row counts; an unqualified reading could misapply them to COUNT(nullable_column) or a scalar aggregate on an empty input.",
+      "action": "Keep the argument scoped to explicit grouping and row counts; cross-check recipes 7.4, 7.5, and 7.12.",
+      "source_refs": [
+        "SQL Cookbook.epub/OEBPS/app01.html#sqlckbk-APP-A-SECT-1"
+      ]
+    }
+  ],
+  "load_policy": "Use navigation cards to choose a small set of full records from their modules. Do not claim execution, current support, or business definitions from a card.",
+  "canonical_record_count": 465,
+  "full_os_is_not_required_for_every_query": true
+}

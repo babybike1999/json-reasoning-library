@@ -1,0 +1,686 @@
+{
+  "file": "streamlit_application_architecture_os_v2.json",
+  "records": [
+    {
+      "id": "streamlit-arch-ui-layer",
+      "layer_or_boundary": "UI layer",
+      "responsibilities": [
+        "collect inputs",
+        "display state",
+        "show preview/dry-run/live result",
+        "call service functions",
+        "render business meaning",
+        "provide downloads",
+        "guide nontechnical users"
+      ],
+      "must_not_do": [
+        "own business rules",
+        "perform durable writes at render time",
+        "enforce permissions by hiding UI"
+      ],
+      "inputs": [
+        "widget values",
+        "uploaded files",
+        "service result contracts"
+      ],
+      "outputs": [
+        "rendered page",
+        "submit intents",
+        "download affordances"
+      ],
+      "failure_modes": [
+        "rerun triggers side effect",
+        "stale display",
+        "user confusion"
+      ],
+      "tests_or_checks": [
+        "widget edit rerun test",
+        "no top-level live write review"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-rerun-side-effect",
+        "streamlit-risk-ui-business-logic-coupling"
+      ],
+      "source_supported_elements": [
+        "Chapters 1-7 demonstrate UI collection/display primitives."
+      ],
+      "operational_extensions": [
+        "explicit service boundary"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          1,
+          2,
+          3,
+          4,
+          6
+        ],
+        "evidence": [
+          "Chapters 1-7 demonstrate UI collection/display primitives."
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Boundary model created to keep Streamlit UI separate from durable services and domain logic.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-arch-service-layer",
+      "layer_or_boundary": "service layer",
+      "responsibilities": [
+        "execute use cases",
+        "call domain logic/adapters",
+        "return result contracts"
+      ],
+      "must_not_do": [
+        "render Streamlit widgets",
+        "read widget state directly",
+        "hide authorization decisions in UI"
+      ],
+      "inputs": [
+        "validated request",
+        "actor",
+        "scope",
+        "idempotency key"
+      ],
+      "outputs": [
+        "result contract",
+        "errors",
+        "warnings"
+      ],
+      "failure_modes": [
+        "duplicate execution",
+        "unclear partial failure"
+      ],
+      "tests_or_checks": [
+        "service unit tests",
+        "idempotency tests"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-double-submit",
+        "streamlit-risk-streamlit-as-backend"
+      ],
+      "source_supported_elements": [],
+      "operational_extensions": [
+        "Python service functions outside app file"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "low",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [],
+        "evidence": [],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "low",
+        "method": "Boundary model created to keep Streamlit UI separate from durable services and domain logic.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-arch-domain-logic",
+      "layer_or_boundary": "domain logic",
+      "responsibilities": [
+        "business rules",
+        "financial/metric calculations",
+        "workflow invariants"
+      ],
+      "must_not_do": [
+        "import streamlit",
+        "read session_state",
+        "format UI copy"
+      ],
+      "inputs": [
+        "clean domain inputs"
+      ],
+      "outputs": [
+        "domain decisions",
+        "calculated outputs"
+      ],
+      "failure_modes": [
+        "rules change with UI patch",
+        "untestable formulas"
+      ],
+      "tests_or_checks": [
+        "pure function tests",
+        "golden-case tests"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-ui-business-logic-coupling"
+      ],
+      "source_supported_elements": [],
+      "operational_extensions": [
+        "domain module"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "low",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [],
+        "evidence": [],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "low",
+        "method": "Boundary model created to keep Streamlit UI separate from durable services and domain logic.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-arch-adapters",
+      "layer_or_boundary": "adapters",
+      "responsibilities": [
+        "API/database/file system calls",
+        "retry policy",
+        "timeouts",
+        "mapping external errors"
+      ],
+      "must_not_do": [
+        "render widgets",
+        "own business approval",
+        "leak credentials"
+      ],
+      "inputs": [
+        "service request",
+        "credentials from config",
+        "timeout policy"
+      ],
+      "outputs": [
+        "adapter response",
+        "normalized error"
+      ],
+      "failure_modes": [
+        "secret leakage",
+        "retry storm",
+        "partial write"
+      ],
+      "tests_or_checks": [
+        "adapter mocked tests",
+        "timeout tests"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-secret-leakage",
+        "streamlit-risk-streamlit-as-backend"
+      ],
+      "source_supported_elements": [],
+      "operational_extensions": [
+        "adapter modules"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "low",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [],
+        "evidence": [],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "low",
+        "method": "Boundary model created to keep Streamlit UI separate from durable services and domain logic.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-arch-result-contracts",
+      "layer_or_boundary": "result contracts",
+      "responsibilities": [
+        "standardize status/warnings/errors/artifacts",
+        "separate user-safe message from internal detail"
+      ],
+      "must_not_do": [
+        "return raw exception as user result",
+        "hide partial failures"
+      ],
+      "inputs": [
+        "operation outcome",
+        "counts",
+        "artifact refs"
+      ],
+      "outputs": [
+        "safe display object",
+        "audit fields"
+      ],
+      "failure_modes": [
+        "false green",
+        "unreadable failure"
+      ],
+      "tests_or_checks": [
+        "contract fixture tests",
+        "partial failure display tests"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-owner-dashboard-false-green",
+        "streamlit-risk-raw-exception-exposure"
+      ],
+      "source_supported_elements": [],
+      "operational_extensions": [
+        "typed dict/dataclass/Pydantic result"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "low",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [],
+        "evidence": [],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "low",
+        "method": "Boundary model created to keep Streamlit UI separate from durable services and domain logic.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-arch-run-ledger",
+      "layer_or_boundary": "run ledger",
+      "responsibilities": [
+        "durable run history",
+        "idempotency tracking",
+        "input digest",
+        "execution receipt"
+      ],
+      "must_not_do": [
+        "store only in session_state/cache",
+        "trust browser state"
+      ],
+      "inputs": [
+        "actor",
+        "plan id",
+        "input digest",
+        "status"
+      ],
+      "outputs": [
+        "run id",
+        "history rows",
+        "receipt"
+      ],
+      "failure_modes": [
+        "lost history",
+        "duplicate live action"
+      ],
+      "tests_or_checks": [
+        "new session history test",
+        "duplicate key test"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-session-state-as-storage",
+        "streamlit-risk-double-submit"
+      ],
+      "source_supported_elements": [],
+      "operational_extensions": [
+        "database or durable service"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "low",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [],
+        "evidence": [],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "low",
+        "method": "Boundary model created to keep Streamlit UI separate from durable services and domain logic.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-arch-audit-trail",
+      "layer_or_boundary": "audit trail",
+      "responsibilities": [
+        "record who did what and why",
+        "store approvals and denials"
+      ],
+      "must_not_do": [
+        "use UI text as proof",
+        "let users edit audit fields"
+      ],
+      "inputs": [
+        "actor",
+        "resource",
+        "decision",
+        "timestamp"
+      ],
+      "outputs": [
+        "append-only event"
+      ],
+      "failure_modes": [
+        "missing evidence",
+        "tampering"
+      ],
+      "tests_or_checks": [
+        "append-only test",
+        "denied action logged"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-streamlit-as-backend",
+        "streamlit-risk-hidden-widget-authz"
+      ],
+      "source_supported_elements": [],
+      "operational_extensions": [
+        "audit service"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "low",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [],
+        "evidence": [],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "low",
+        "method": "Boundary model created to keep Streamlit UI separate from durable services and domain logic.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-arch-validation-layer",
+      "layer_or_boundary": "validation layer",
+      "responsibilities": [
+        "file/schema/business validation",
+        "blockers vs warnings",
+        "human-review triggers"
+      ],
+      "must_not_do": [
+        "trust upload extension",
+        "parse and mutate before validate"
+      ],
+      "inputs": [
+        "uploaded file",
+        "form inputs",
+        "reference data"
+      ],
+      "outputs": [
+        "validation report",
+        "safe preview"
+      ],
+      "failure_modes": [
+        "bad file processed",
+        "warning ignored"
+      ],
+      "tests_or_checks": [
+        "malformed file tests",
+        "warning/blocker tests"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-file-upload-without-validation"
+      ],
+      "source_supported_elements": [
+        "Chapter 2 demonstrates upload and stop; validation depth is an extension."
+      ],
+      "operational_extensions": [
+        "validation module"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          2
+        ],
+        "evidence": [
+          "Chapter 2 demonstrates upload and stop; validation depth is an extension."
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Boundary model created to keep Streamlit UI separate from durable services and domain logic.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-arch-permissions-layer",
+      "layer_or_boundary": "permissions layer",
+      "responsibilities": [
+        "authentication claims",
+        "authorization decision",
+        "tenant/resource checks"
+      ],
+      "must_not_do": [
+        "hide pages as enforcement",
+        "store role in session_state"
+      ],
+      "inputs": [
+        "actor",
+        "operation",
+        "resource"
+      ],
+      "outputs": [
+        "allow/deny with reason"
+      ],
+      "failure_modes": [
+        "cross-tenant access",
+        "privilege escalation"
+      ],
+      "tests_or_checks": [
+        "permission denied tests",
+        "direct service tests"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-hidden-widget-authz",
+        "streamlit-risk-session-state-as-authz"
+      ],
+      "source_supported_elements": [],
+      "operational_extensions": [
+        "policy service"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "low",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [],
+        "evidence": [],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "low",
+        "method": "Boundary model created to keep Streamlit UI separate from durable services and domain logic.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-arch-configuration-layer",
+      "layer_or_boundary": "configuration layer",
+      "responsibilities": [
+        "runtime config",
+        "feature flags",
+        "secrets references",
+        "environment labels"
+      ],
+      "must_not_do": [
+        "print secrets",
+        "commit credentials",
+        "derive prod behavior from widgets"
+      ],
+      "inputs": [
+        "env",
+        "secrets manager",
+        "deployment config"
+      ],
+      "outputs": [
+        "safe config object",
+        "redacted status"
+      ],
+      "failure_modes": [
+        "secret leak",
+        "wrong environment action"
+      ],
+      "tests_or_checks": [
+        "repo secret scan",
+        "config redaction test"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-secret-leakage"
+      ],
+      "source_supported_elements": [
+        "Chapter 5 demonstrates st.secrets."
+      ],
+      "operational_extensions": [
+        "platform config"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          5
+        ],
+        "evidence": [
+          "Chapter 5 demonstrates st.secrets."
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Boundary model created to keep Streamlit UI separate from durable services and domain logic.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-arch-deployment-runtime-layer",
+      "layer_or_boundary": "deployment/runtime layer",
+      "responsibilities": [
+        "process hosting",
+        "dependency versions",
+        "network boundaries",
+        "resource limits"
+      ],
+      "must_not_do": [
+        "assume local and cloud match",
+        "own production job semantics"
+      ],
+      "inputs": [
+        "package",
+        "env vars",
+        "platform limits"
+      ],
+      "outputs": [
+        "running app",
+        "logs",
+        "metrics"
+      ],
+      "failure_modes": [
+        "version drift",
+        "upload limit mismatch",
+        "timeout"
+      ],
+      "tests_or_checks": [
+        "runtime smoke test",
+        "installed streamlit version capture"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-unverified-current-api",
+        "streamlit-risk-streamlit-as-backend"
+      ],
+      "source_supported_elements": [
+        "Chapter 5 covers Community Cloud deployment only; chapters 8+ are missing."
+      ],
+      "operational_extensions": [
+        "platform-specific verification"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          5
+        ],
+        "evidence": [
+          "Chapter 5 covers Community Cloud deployment only; chapters 8+ are missing."
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Boundary model created to keep Streamlit UI separate from durable services and domain logic.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    }
+  ],
+  "boundary_model_summary": "Streamlit collects/displays/calls services; services/domain/adapters/ledgers enforce durable behavior."
+}

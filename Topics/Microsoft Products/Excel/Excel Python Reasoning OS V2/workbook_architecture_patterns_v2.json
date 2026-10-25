@@ -1,0 +1,825 @@
+{
+  "system_metadata": {
+    "package": "workbook_architecture_patterns_v2",
+    "version": "v2",
+    "repair_type": "focused_v2_repair_not_full_rebuild",
+    "created_utc": "2026-06-19T22:19:55Z",
+    "source_files": [
+      "Excel Data Analysis For Dummies 5th Edition PDF",
+      "Python in Excel EPUB",
+      "existing v1 Excel/Python-in-Excel JSON package"
+    ],
+    "authority_order": [
+      "original_uploaded_books",
+      "v1_json_files",
+      "repair_prompt",
+      "general_operational_reasoning"
+    ],
+    "description": "Distinct workbook architecture patterns for safe business reporting."
+  },
+  "workbook_architecture_patterns": [
+    {
+      "id": "arch-raw-clean-analysis-output",
+      "pattern_name": "Raw data / clean data / analysis / output separation",
+      "when_needed": "Any workbook with imports, transformations, pivots, or upload outputs.",
+      "minimum_viable_version": "Four tabs or clearly marked zones: Raw, Clean, Analysis, Output.",
+      "larger_version": "Separate tables, refresh log, schema checks, and protected output formulas.",
+      "manual_edit_zones": "Raw paste/import zone only; no formulas overwritten.",
+      "protected_zones": "Clean formulas, analysis pivots, output template.",
+      "validation_rules": [
+        "raw row count captured",
+        "clean rules documented",
+        "outputs reconcile to clean data"
+      ],
+      "ai_agent_modification_rules": [
+        "never edit raw source except to replace whole extract",
+        "place transformations in clean layer",
+        "do not feed uploads from presentation-only output"
+      ],
+      "failure_modes": [
+        "raw overwritten without backup",
+        "clean/output mix causes circular dependencies",
+        "output hides excluded rows"
+      ],
+      "business_user_explanation": "Keeps original extract intact so problems can be traced and corrected.",
+      "related_risk_ids": [
+        "excel-risk-manual-overrides",
+        "excel-risk-merged-cells"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Workbook architecture pattern - Raw data / clean data / analysis / output separation",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports Tables, pivots, external data, Data Model, and analysis outputs; Python source supports workbook/Python boundaries and Power Query handoff."
+        ],
+        "inferred_claims": [
+          "Architecture pattern is an operational extension for safer workbooks."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "Pattern distinctively organizes workbook zones and agent rules for Raw data / clean data / analysis / output separation.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "workbook_design_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "arch-control-sheet",
+      "pattern_name": "Control sheet",
+      "when_needed": "Recurring reports, templates, or upload workbooks.",
+      "minimum_viable_version": "One sheet listing period, owner, source files, refresh timestamp, status.",
+      "larger_version": "Named control cells, parameter table, validation summary, signoff section.",
+      "manual_edit_zones": "Period selector, source path notes, comments/signoff.",
+      "protected_zones": "Formula-driven status checks and locked parameters once approved.",
+      "validation_rules": [
+        "required controls nonblank",
+        "period matches data",
+        "refresh timestamp current"
+      ],
+      "ai_agent_modification_rules": [
+        "read control sheet before analysis",
+        "do not infer period from file name alone",
+        "update status only after gates pass"
+      ],
+      "failure_modes": [
+        "wrong period published",
+        "missing owner/signoff",
+        "hidden assumptions in formulas"
+      ],
+      "business_user_explanation": "A cover page for workbook context and readiness.",
+      "related_risk_ids": [
+        "excel-risk-stale-refresh-timestamp"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Workbook architecture pattern - Control sheet",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports Tables, pivots, external data, Data Model, and analysis outputs; Python source supports workbook/Python boundaries and Power Query handoff."
+        ],
+        "inferred_claims": [
+          "Architecture pattern is an operational extension for safer workbooks."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "Pattern distinctively organizes workbook zones and agent rules for Control sheet.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "workbook_design_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "arch-assumption-sheet",
+      "pattern_name": "Assumption sheet",
+      "when_needed": "What-if, budget, forecast, Solver, Goal Seek, or scenario models.",
+      "minimum_viable_version": "Named table of assumptions with units, owner, and default value.",
+      "larger_version": "Versioned assumptions with scenario columns, approvals, and sensitivity notes.",
+      "manual_edit_zones": "Assumption values only in designated unlocked cells.",
+      "protected_zones": "Dependent formulas and scenario outputs.",
+      "validation_rules": [
+        "units documented",
+        "percent/currency conventions explicit",
+        "scenario values approved"
+      ],
+      "ai_agent_modification_rules": [
+        "do not change hard-coded assumptions inside formulas",
+        "trace every model driver to assumption table"
+      ],
+      "failure_modes": [
+        "hidden assumptions",
+        "old scenario values reused",
+        "percent convention errors"
+      ],
+      "business_user_explanation": "Keeps decision drivers visible instead of buried in formulas.",
+      "related_risk_ids": [
+        "excel-risk-percent-convention",
+        "excel-risk-formula-drift"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Workbook architecture pattern - Assumption sheet",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports Tables, pivots, external data, Data Model, and analysis outputs; Python source supports workbook/Python boundaries and Power Query handoff."
+        ],
+        "inferred_claims": [
+          "Architecture pattern is an operational extension for safer workbooks."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "Pattern distinctively organizes workbook zones and agent rules for Assumption sheet.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "workbook_design_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "arch-mapping-table",
+      "pattern_name": "Mapping table",
+      "when_needed": "Exports contain system codes that must map to reporting categories.",
+      "minimum_viable_version": "Two-column map with source code and reporting category.",
+      "larger_version": "Effective dates, owner, default/unmapped bucket, approval history.",
+      "manual_edit_zones": "New mapping rows with reason/owner.",
+      "protected_zones": "Lookup formulas, downstream pivots.",
+      "validation_rules": [
+        "source codes unique",
+        "no unmapped records",
+        "mapping effective dates valid"
+      ],
+      "ai_agent_modification_rules": [
+        "do not hard-code category labels in formulas",
+        "flag unmapped values instead of silently dropping"
+      ],
+      "failure_modes": [
+        "duplicate maps",
+        "unmapped codes grouped as blank",
+        "old categories persist"
+      ],
+      "business_user_explanation": "Separates business definitions from formulas.",
+      "related_risk_ids": [
+        "excel-risk-duplicate-keys"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Workbook architecture pattern - Mapping table",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports Tables, pivots, external data, Data Model, and analysis outputs; Python source supports workbook/Python boundaries and Power Query handoff."
+        ],
+        "inferred_claims": [
+          "Architecture pattern is an operational extension for safer workbooks."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "Pattern distinctively organizes workbook zones and agent rules for Mapping table.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "workbook_design_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "arch-report-output-sheet",
+      "pattern_name": "Report output sheet",
+      "when_needed": "Workbook distributes human-readable summary or upload preview.",
+      "minimum_viable_version": "Clean, protected output tab with refresh date and filters displayed.",
+      "larger_version": "Executive-ready layout with KPI cards, chart notes, source status, and signoff.",
+      "manual_edit_zones": "Comments only in designated notes area.",
+      "protected_zones": "KPI formulas, chart sources, layout cells.",
+      "validation_rules": [
+        "output formulas have no errors",
+        "source gates pass",
+        "filters visible"
+      ],
+      "ai_agent_modification_rules": [
+        "edit source/analysis layers, not output numbers",
+        "trace any changed output formula before save"
+      ],
+      "failure_modes": [
+        "pretty report hides stale source",
+        "manual KPI overrides",
+        "filters not visible"
+      ],
+      "business_user_explanation": "A controlled place for readers, not an input area.",
+      "related_risk_ids": [
+        "excel-risk-chart-without-data-validation",
+        "excel-risk-manual-overrides"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Workbook architecture pattern - Report output sheet",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports Tables, pivots, external data, Data Model, and analysis outputs; Python source supports workbook/Python boundaries and Power Query handoff."
+        ],
+        "inferred_claims": [
+          "Architecture pattern is an operational extension for safer workbooks."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "Pattern distinctively organizes workbook zones and agent rules for Report output sheet.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "workbook_design_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "arch-protected-formula-zone",
+      "pattern_name": "Protected formula zone",
+      "when_needed": "Templates used by nontechnical users or repeated periods.",
+      "minimum_viable_version": "Locked formula cells with visible input cells.",
+      "larger_version": "Formula map, change log, protection password governance, automated formula drift check.",
+      "manual_edit_zones": "None inside formula zone except approved override cells.",
+      "protected_zones": "All formulas, hidden helper calculations, output cells.",
+      "validation_rules": [
+        "formula pattern matches template",
+        "protection enabled",
+        "override log empty or approved"
+      ],
+      "ai_agent_modification_rules": [
+        "backup before unprotecting",
+        "never replace formulas with constants without override record"
+      ],
+      "failure_modes": [
+        "formula drift",
+        "accidental overwrite",
+        "manual override becomes permanent"
+      ],
+      "business_user_explanation": "Protects calculations while still allowing approved inputs.",
+      "related_risk_ids": [
+        "excel-risk-formula-drift",
+        "excel-risk-manual-overrides"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Workbook architecture pattern - Protected formula zone",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports Tables, pivots, external data, Data Model, and analysis outputs; Python source supports workbook/Python boundaries and Power Query handoff."
+        ],
+        "inferred_claims": [
+          "Architecture pattern is an operational extension for safer workbooks."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "Pattern distinctively organizes workbook zones and agent rules for Protected formula zone.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "workbook_design_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "arch-manual-input-zone",
+      "pattern_name": "Manual input zone",
+      "when_needed": "Users need to enter assumptions, comments, or small adjustments.",
+      "minimum_viable_version": "Clearly colored/labeled input cells with instructions.",
+      "larger_version": "Input table with data validation, comments, owner, timestamp, and reason codes.",
+      "manual_edit_zones": "Designated input cells/tables only.",
+      "protected_zones": "Formulas and source data outside input zone.",
+      "validation_rules": [
+        "required inputs complete",
+        "data type/allowed values checked",
+        "changes logged"
+      ],
+      "ai_agent_modification_rules": [
+        "do not create new ad hoc input cells",
+        "do not enter values in formula zone"
+      ],
+      "failure_modes": [
+        "inputs placed in wrong sheet",
+        "blank input treated as zero",
+        "undocumented adjustments"
+      ],
+      "business_user_explanation": "Shows exactly where humans are allowed to type.",
+      "related_risk_ids": [
+        "excel-risk-blank-vs-zero",
+        "excel-risk-manual-overrides"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Workbook architecture pattern - Manual input zone",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports Tables, pivots, external data, Data Model, and analysis outputs; Python source supports workbook/Python boundaries and Power Query handoff."
+        ],
+        "inferred_claims": [
+          "Architecture pattern is an operational extension for safer workbooks."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "Pattern distinctively organizes workbook zones and agent rules for Manual input zone.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "workbook_design_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "arch-error-check-sheet",
+      "pattern_name": "Error-check sheet",
+      "when_needed": "Workbook has many formulas, uploads, or reviewer handoff.",
+      "minimum_viable_version": "One tab listing pass/warn/fail gates and linked issue cells.",
+      "larger_version": "Automated gate table, severity, owner, fix status, and rerun timestamp.",
+      "manual_edit_zones": "Issue comments/status only.",
+      "protected_zones": "Gate formulas and links.",
+      "validation_rules": [
+        "all blocking checks pass before final",
+        "warnings reviewed"
+      ],
+      "ai_agent_modification_rules": [
+        "run after refresh and before final save",
+        "do not hide failing gates"
+      ],
+      "failure_modes": [
+        "errors remain on hidden sheets",
+        "reviewers miss gate failures"
+      ],
+      "business_user_explanation": "A single place to see if the workbook is safe to use.",
+      "related_risk_ids": [
+        "excel-risk-formula-drift"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Workbook architecture pattern - Error-check sheet",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports Tables, pivots, external data, Data Model, and analysis outputs; Python source supports workbook/Python boundaries and Power Query handoff."
+        ],
+        "inferred_claims": [
+          "Architecture pattern is an operational extension for safer workbooks."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "Pattern distinctively organizes workbook zones and agent rules for Error-check sheet.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "workbook_design_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "arch-refresh-log",
+      "pattern_name": "Refresh log",
+      "when_needed": "Any workbook pulling system exports, Power Query, pivots, or external links.",
+      "minimum_viable_version": "Table with source name, timestamp, row count, operator.",
+      "larger_version": "Automated query refresh metadata, pivot refresh status, hash/control totals.",
+      "manual_edit_zones": "Refresh notes and operator initials.",
+      "protected_zones": "Timestamp formulas/gate formulas.",
+      "validation_rules": [
+        "timestamp current",
+        "row counts reconcile",
+        "pivot refresh recorded"
+      ],
+      "ai_agent_modification_rules": [
+        "do not publish without refresh log",
+        "compare source rows to prior expected period"
+      ],
+      "failure_modes": [
+        "old extract reused",
+        "pivot not refreshed",
+        "unknown source version"
+      ],
+      "business_user_explanation": "Proves when and from what the workbook was updated.",
+      "related_risk_ids": [
+        "excel-risk-stale-refresh-timestamp",
+        "excel-risk-stale-pivot-cache"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Workbook architecture pattern - Refresh log",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports Tables, pivots, external data, Data Model, and analysis outputs; Python source supports workbook/Python boundaries and Power Query handoff."
+        ],
+        "inferred_claims": [
+          "Architecture pattern is an operational extension for safer workbooks."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "Pattern distinctively organizes workbook zones and agent rules for Refresh log.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "workbook_design_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "arch-data-dictionary",
+      "pattern_name": "Data dictionary",
+      "when_needed": "Templates, uploads, and multi-user workbooks with non-obvious fields.",
+      "minimum_viable_version": "Field name, meaning, type, required flag, source.",
+      "larger_version": "Allowed values, examples, owner, formula/source lineage, upload mapping.",
+      "manual_edit_zones": "Dictionary edits by owner only.",
+      "protected_zones": "Schema validations and named ranges.",
+      "validation_rules": [
+        "required fields documented",
+        "types match gates",
+        "definitions align to formulas"
+      ],
+      "ai_agent_modification_rules": [
+        "do not invent meanings for undocumented fields",
+        "ask owner when field purpose is unclear"
+      ],
+      "failure_modes": [
+        "wrong field selected",
+        "upload schema mismatch",
+        "ambiguous metric definitions"
+      ],
+      "business_user_explanation": "Explains what each column means and how it should be used.",
+      "related_risk_ids": [
+        "excel-risk-named-range-broken"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Workbook architecture pattern - Data dictionary",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports Tables, pivots, external data, Data Model, and analysis outputs; Python source supports workbook/Python boundaries and Power Query handoff."
+        ],
+        "inferred_claims": [
+          "Architecture pattern is an operational extension for safer workbooks."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "Pattern distinctively organizes workbook zones and agent rules for Data dictionary.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "workbook_design_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "arch-metric-definition-table",
+      "pattern_name": "Metric-definition table",
+      "when_needed": "Scorecards, executive dashboards, or KPI reports.",
+      "minimum_viable_version": "Metric ID, display name, formula/source, grain, owner.",
+      "larger_version": "Versioned definitions, effective dates, exclusions, thresholds, review notes.",
+      "manual_edit_zones": "Threshold/definition changes by owner only.",
+      "protected_zones": "KPI formulas and dashboard outputs.",
+      "validation_rules": [
+        "metric IDs unique",
+        "formula/source documented",
+        "thresholds not invented"
+      ],
+      "ai_agent_modification_rules": [
+        "do not change formula text without metric definition update",
+        "do not infer thresholds"
+      ],
+      "failure_modes": [
+        "duplicate KPI IDs",
+        "old definition used",
+        "AI invents formula"
+      ],
+      "business_user_explanation": "Makes KPIs governed instead of ad hoc.",
+      "related_risk_ids": [
+        "excel-risk-duplicate-keys",
+        "excel-risk-percent-convention"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Workbook architecture pattern - Metric-definition table",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports Tables, pivots, external data, Data Model, and analysis outputs; Python source supports workbook/Python boundaries and Power Query handoff."
+        ],
+        "inferred_claims": [
+          "Architecture pattern is an operational extension for safer workbooks."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "Pattern distinctively organizes workbook zones and agent rules for Metric-definition table.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "workbook_design_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "arch-executive-summary-tab",
+      "pattern_name": "Executive summary tab",
+      "when_needed": "Owners/executives need a concise readout.",
+      "minimum_viable_version": "One tab with period, refresh status, top KPIs, exceptions, and notes.",
+      "larger_version": "Drill links, chart footnotes, variance explanations, gate status, and signoff.",
+      "manual_edit_zones": "Narrative comments and approved explanations.",
+      "protected_zones": "KPI formulas, charts, gate status.",
+      "validation_rules": [
+        "refresh status visible",
+        "chart sources validated",
+        "period clear"
+      ],
+      "ai_agent_modification_rules": [
+        "do not overload with raw tables",
+        "surface caveats and active filters"
+      ],
+      "failure_modes": [
+        "beautiful stale dashboard",
+        "too many metrics",
+        "filter state hidden"
+      ],
+      "business_user_explanation": "A trusted first page for decision makers.",
+      "related_risk_ids": [
+        "excel-risk-chart-without-data-validation",
+        "excel-risk-stale-refresh-timestamp"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Workbook architecture pattern - Executive summary tab",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports Tables, pivots, external data, Data Model, and analysis outputs; Python source supports workbook/Python boundaries and Power Query handoff."
+        ],
+        "inferred_claims": [
+          "Architecture pattern is an operational extension for safer workbooks."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "Pattern distinctively organizes workbook zones and agent rules for Executive summary tab.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "workbook_design_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "arch-api-staging-sheet",
+      "pattern_name": "API staging sheet",
+      "when_needed": "Workbook prepares records for API/file upload.",
+      "minimum_viable_version": "Flat table matching schema with no merged cells and validated fields.",
+      "larger_version": "Schema version, validation status, row hash, export log, and rejected-record table.",
+      "manual_edit_zones": "Only allowed staging input columns when necessary.",
+      "protected_zones": "Schema formulas, validation status, export range.",
+      "validation_rules": [
+        "schema matches contract",
+        "no formula errors",
+        "no duplicate/blank keys",
+        "ready flag true only after gates pass"
+      ],
+      "ai_agent_modification_rules": [
+        "do not upload from raw or report sheets",
+        "do not include secrets or tokens"
+      ],
+      "failure_modes": [
+        "wrong columns uploaded",
+        "manual edits bypass validation",
+        "credentials exposed"
+      ],
+      "business_user_explanation": "A safe handoff table; not the API client itself.",
+      "related_risk_ids": [
+        "python-excel-risk-privacy-boundary",
+        "excel-risk-merged-cells"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Workbook architecture pattern - API staging sheet",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports Tables, pivots, external data, Data Model, and analysis outputs; Python source supports workbook/Python boundaries and Power Query handoff."
+        ],
+        "inferred_claims": [
+          "Architecture pattern is an operational extension for safer workbooks."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "Pattern distinctively organizes workbook zones and agent rules for API staging sheet.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "workbook_design_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "arch-audit-trail",
+      "pattern_name": "Audit trail sheet",
+      "when_needed": "Workbooks with manual overrides, financial outputs, or multi-user review.",
+      "minimum_viable_version": "Table of change date, user, area, reason.",
+      "larger_version": "Before/after value, related issue ID, approval, rollback reference.",
+      "manual_edit_zones": "Append-only changes by responsible user.",
+      "protected_zones": "History formulas and locked log structure.",
+      "validation_rules": [
+        "override entries complete",
+        "no deleted history",
+        "changes align to version log"
+      ],
+      "ai_agent_modification_rules": [
+        "never delete audit records",
+        "link overrides to affected cells"
+      ],
+      "failure_modes": [
+        "manual change cannot be explained",
+        "version rollback impossible"
+      ],
+      "business_user_explanation": "Records why important workbook changes happened.",
+      "related_risk_ids": [
+        "excel-risk-manual-overrides"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Workbook architecture pattern - Audit trail sheet",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports Tables, pivots, external data, Data Model, and analysis outputs; Python source supports workbook/Python boundaries and Power Query handoff."
+        ],
+        "inferred_claims": [
+          "Architecture pattern is an operational extension for safer workbooks."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "Pattern distinctively organizes workbook zones and agent rules for Audit trail sheet.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "workbook_design_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "arch-version-change-log",
+      "pattern_name": "Version/change log sheet",
+      "when_needed": "Repeated templates, dashboards, or workbook repairs.",
+      "minimum_viable_version": "Version, date, editor, summary, affected sheets.",
+      "larger_version": "Semantic version, test results, backup path, approvals, rollback notes.",
+      "manual_edit_zones": "Change summary and signoff cells.",
+      "protected_zones": "Validation formulas and protected log headers.",
+      "validation_rules": [
+        "version increments",
+        "tests passed noted",
+        "backup path recorded"
+      ],
+      "ai_agent_modification_rules": [
+        "create backup before structural edits",
+        "do not overwrite v1/v2 package files"
+      ],
+      "failure_modes": [
+        "users cannot identify current version",
+        "repair cannot be rolled back"
+      ],
+      "business_user_explanation": "Shows what changed and how to recover.",
+      "related_risk_ids": [
+        "excel-risk-formula-drift"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Workbook architecture pattern - Version/change log sheet",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports Tables, pivots, external data, Data Model, and analysis outputs; Python source supports workbook/Python boundaries and Power Query handoff."
+        ],
+        "inferred_claims": [
+          "Architecture pattern is an operational extension for safer workbooks."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "Pattern distinctively organizes workbook zones and agent rules for Version/change log sheet.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "workbook_design_dependent",
+      "current_verification_required": false
+    }
+  ]
+}

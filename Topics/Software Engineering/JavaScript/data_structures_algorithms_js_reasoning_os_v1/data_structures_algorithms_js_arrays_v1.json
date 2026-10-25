@@ -1,0 +1,1326 @@
+{
+  "file_metadata": {
+    "file_name": "data_structures_algorithms_js_arrays_v1.json",
+    "package_id": "data_structures_algorithms_js_reasoning_os_v1",
+    "package_version": "1.0",
+    "generated_at_utc": "2026-08-25T17:45:26.946739+00:00",
+    "purpose": "Source-supported array reasoning and guarded spreadsheet extensions.",
+    "record_count": 21,
+    "source_title": "Data Structures and Algorithms with JavaScript",
+    "source_author": "Michael McMillan",
+    "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+    "source_boundary": "Source-supported concepts are separated from low-confidence Apps Script, spreadsheet, internal-tool, and AI-agent extensions. Current platform behavior must be verified.",
+    "copyright_safety": "Concepts and implementation logic are paraphrased. No long source passages, long code listings, full algorithm implementations, or exercise solutions are reproduced."
+  },
+  "array_records": [
+    {
+      "id": "dsa-array-definition",
+      "record_type": "array_record",
+      "name": "JavaScript array as indexed specialized object",
+      "summary": "The source contrasts conventional contiguous-array definitions with JavaScript arrays, whose integer-like indices are object property names and whose length can grow dynamically.",
+      "source_concept": "JavaScript array as indexed specialized object",
+      "programming_problem_addressed": "Stores an ordered collection with positional access in JavaScript.",
+      "data_shape_assumption": "Elements are addressed by nonnegative integer-like positions.",
+      "algorithmic_role": "Default ordered collection.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Dynamic growth does not remove the cost of shifting many elements for front or middle edits.",
+      "use_when": [
+        "Index-based traversal",
+        "Ordered in-memory tables"
+      ],
+      "do_not_use_when": [
+        "Named-key lookup is dominant"
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Verify expected length and whether sparse positions are possible."
+      ],
+      "diagnostic_questions": [
+        "Is position meaningful, stable, and documented?"
+      ],
+      "related_record_ids": [
+        "dsa-ds-array",
+        "dsa-array-front-middle-shift-cost"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "JavaScript Arrays Defined",
+        "page_or_anchor": "OEBPS/ch02.html#idp13325696",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines arrays as linear collections and states that JavaScript arrays are specialized objects with index properties and dynamic length."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_data_structure",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "javascript",
+        "index"
+      ]
+    },
+    {
+      "id": "dsa-array-creation",
+      "record_type": "array_record",
+      "name": "Array creation choices",
+      "summary": "The source demonstrates array literals and constructor forms, including empty arrays, initialized elements, and specified length.",
+      "source_concept": "Array creation choices",
+      "programming_problem_addressed": "Initializes ordered collections with known or deferred content.",
+      "data_shape_assumption": "Element count and initial values may be known or unknown.",
+      "algorithmic_role": "Collection initialization.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Creating an empty or prepopulated collection"
+      ],
+      "do_not_use_when": [
+        "Constructor syntax obscures whether one numeric argument means length or an element"
+      ],
+      "common_failure_modes": [
+        "Ambiguous constructor usage",
+        "Assuming allocated length means initialized values"
+      ],
+      "tests_or_checks": [
+        "Check actual length and contents after initialization."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-array-definition"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Creating Arrays",
+        "page_or_anchor": "OEBPS/ch02.html#idp13336288",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source shows literal and constructor-based array creation and notes the special case of a numeric length argument."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "initialization"
+      ]
+    },
+    {
+      "id": "dsa-array-indexed-access-growth",
+      "record_type": "array_record",
+      "name": "Indexed access, writes, and dynamic growth",
+      "summary": "Elements are read and written through bracket indexing, and loops should use the array length rather than a hard-coded bound.",
+      "source_concept": "Indexed access, writes, and dynamic growth",
+      "programming_problem_addressed": "Reads, updates, and traverses array elements safely relative to current size.",
+      "data_shape_assumption": "Array positions run from zero through length minus one.",
+      "algorithmic_role": "Indexed traversal and mutation.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Processing every element in order"
+      ],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Off-by-one bounds",
+        "Hard-coded lengths",
+        "Writing beyond intended shape"
+      ],
+      "tests_or_checks": [
+        "Test empty, one-element, and maximum expected arrays."
+      ],
+      "diagnostic_questions": [
+        "Is the loop bound derived from actual data length?"
+      ],
+      "related_record_ids": [
+        "dsa-risk-row-shape-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Accessing and Writing Array Elements",
+        "page_or_anchor": "OEBPS/ch02.html#idp13336880",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source shows bracket-based assignment/access and recommends controlling traversal with the length property."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "index",
+        "loop"
+      ]
+    },
+    {
+      "id": "dsa-array-split-string",
+      "record_type": "array_record",
+      "name": "Create arrays by splitting strings",
+      "summary": "A string can be divided at a delimiter to create an array of parts.",
+      "source_concept": "Create arrays by splitting strings",
+      "programming_problem_addressed": "Tokenizes simple delimited text.",
+      "data_shape_assumption": "A reliable delimiter separates intended fields.",
+      "algorithmic_role": "Parsing into a positional collection.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Simple, controlled delimiter-separated strings"
+      ],
+      "do_not_use_when": [
+        "CSV quoting, escaped delimiters, or multiline fields require a real parser"
+      ],
+      "common_failure_modes": [
+        "Delimiter appears inside a value",
+        "Whitespace or punctuation remains attached"
+      ],
+      "tests_or_checks": [
+        "Test empty fields, repeated delimiters, and embedded delimiters."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-tool-csv-xlsx-upload-validation"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Creating Arrays from Strings",
+        "page_or_anchor": "OEBPS/ch02.html#idp14172080",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source demonstrates split as a way to create an array from delimited text."
+        ],
+        "inferred_claims": [
+          "Production CSV/XLSX parsing requires format-aware validation beyond simple split."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "parsing",
+        "string"
+      ]
+    },
+    {
+      "id": "dsa-array-reference-versus-copy",
+      "record_type": "array_record",
+      "name": "Array assignment and copy semantics",
+      "summary": "Assigning one array variable to another shares the same underlying elements in the source example; an independent copy requires explicitly copying elements.",
+      "source_concept": "Array assignment and copy semantics",
+      "programming_problem_addressed": "Avoids unintended shared mutation between source and working arrays.",
+      "data_shape_assumption": "The workflow distinguishes aliasing from independent snapshots.",
+      "algorithmic_role": "State isolation before transformation.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Creating a working copy before mutation"
+      ],
+      "do_not_use_when": [
+        "Shared state is intentionally required and documented"
+      ],
+      "common_failure_modes": [
+        "Calling a reference assignment a deep copy",
+        "Copying only the outer array when nested arrays/objects remain shared"
+      ],
+      "tests_or_checks": [
+        "Mutate a nested and top-level element in the copy and verify the source behaves as intended."
+      ],
+      "diagnostic_questions": [
+        "Does this operation duplicate values, or only create another reference?"
+      ],
+      "related_record_ids": [
+        "dsa-sheet-dry-run-preview",
+        "dsa-risk-mutation-during-iteration"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Aggregate Array Operations",
+        "page_or_anchor": "OEBPS/ch02.html#idp14277152",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source calls direct array assignment a shallow copy and demonstrates element-by-element copying for independent top-level values."
+        ],
+        "inferred_claims": [
+          "Nested arrays or objects require deeper copy analysis than the source example."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "copy",
+        "mutation"
+      ]
+    },
+    {
+      "id": "dsa-array-indexof-lastindexof",
+      "record_type": "array_record",
+      "name": "Array value search with index results",
+      "summary": "The source uses value-search accessor functions that return the first or last matching index and return -1 when no match exists.",
+      "source_concept": "Array value search with index results",
+      "programming_problem_addressed": "Locates a value in an array and distinguishes absence.",
+      "data_shape_assumption": "Equality semantics used by the source-era method fit the values.",
+      "algorithmic_role": "Built-in sequential-style value lookup.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "One-off search in a modest array"
+      ],
+      "do_not_use_when": [
+        "Repeated keyed lookup or complex normalization is required"
+      ],
+      "common_failure_modes": [
+        "Treating index 0 as false",
+        "Failing to handle -1"
+      ],
+      "tests_or_checks": [
+        "Test matches at index 0, last index, duplicates, and no match."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-search-sequential",
+        "dsa-decision-array-scan-versus-lookup"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Searching for a Value",
+        "page_or_anchor": "OEBPS/ch02.html#idp14711680",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source describes first- and last-occurrence index search behavior and the -1 absence sentinel."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "search",
+        "sentinel"
+      ]
+    },
+    {
+      "id": "dsa-array-string-representation",
+      "record_type": "array_record",
+      "name": "Array string representation",
+      "summary": "The source shows array-to-string operations that produce comma-delimited representations.",
+      "source_concept": "Array string representation",
+      "programming_problem_addressed": "Displays or serializes simple array contents for human-readable output.",
+      "data_shape_assumption": "Comma-delimited text is acceptable and values do not require escaping.",
+      "algorithmic_role": "Presentation conversion.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Debug display of simple arrays"
+      ],
+      "do_not_use_when": [
+        "Round-trip CSV or structured serialization is required"
+      ],
+      "common_failure_modes": [
+        "Mistaking display output for safe CSV",
+        "Losing nested or type information"
+      ],
+      "tests_or_checks": [
+        "Test commas, null-like values, nested arrays, and non-string elements."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-tool-email-report-generation"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "String Representations of Arrays",
+        "page_or_anchor": "OEBPS/ch02.html#idp14909440",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source describes join-like and default string representations with comma-delimited elements."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "serialization",
+        "display"
+      ]
+    },
+    {
+      "id": "dsa-array-concat-slice",
+      "record_type": "array_record",
+      "name": "Create arrays with concatenation and slicing",
+      "summary": "The source creates new arrays by joining existing arrays or selecting a contiguous subset.",
+      "source_concept": "Create arrays with concatenation and slicing",
+      "programming_problem_addressed": "Combines or extracts array segments without manually appending each top-level element.",
+      "data_shape_assumption": "The desired result is a concatenation or index range.",
+      "algorithmic_role": "Non-mutating top-level collection construction.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Building a derived array while retaining the source array"
+      ],
+      "do_not_use_when": [
+        "Nested object independence is assumed without testing"
+      ],
+      "common_failure_modes": [
+        "Confusing slice with splice",
+        "Assuming nested values are deeply copied"
+      ],
+      "tests_or_checks": [
+        "Verify boundaries and source-array immutability."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-array-splice-middle"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Creating New Arrays from Existing Arrays",
+        "page_or_anchor": "OEBPS/ch02.html#idp15069024",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source presents functions for concatenating arrays and creating a new array from a subset."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "concat",
+        "slice"
+      ]
+    },
+    {
+      "id": "dsa-array-push-unshift",
+      "record_type": "array_record",
+      "name": "Add elements at array end or beginning",
+      "summary": "The source contrasts efficient-looking end addition with beginning insertion that requires shifting existing elements, while presenting built-in mutators for both.",
+      "source_concept": "Add elements at array end or beginning",
+      "programming_problem_addressed": "Adds elements while preserving order.",
+      "data_shape_assumption": "Insertion position is either the end or beginning.",
+      "algorithmic_role": "Array mutation.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Beginning insertion has a shift cost that grows with collection size in the source explanation.",
+      "use_when": [
+        "End append is the natural operation"
+      ],
+      "do_not_use_when": [
+        "Repeated front insertion is a dominant large-scale operation"
+      ],
+      "common_failure_modes": [
+        "Building a queue with repeated expensive front shifts without scale review"
+      ],
+      "tests_or_checks": [
+        "Benchmark representative sizes if front insertion is frequent."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-array-front-middle-shift-cost",
+        "dsa-queue-array-backed"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Adding Elements to an Array",
+        "page_or_anchor": "OEBPS/ch02.html#idp15311440",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source explains end addition and shows why front insertion requires shifting elements."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "insert",
+        "performance"
+      ]
+    },
+    {
+      "id": "dsa-array-pop-shift",
+      "record_type": "array_record",
+      "name": "Remove elements at array end or beginning",
+      "summary": "The source presents end removal and beginning removal and explains that beginning removal collapses remaining elements toward the front.",
+      "source_concept": "Remove elements at array end or beginning",
+      "programming_problem_addressed": "Removes an element while maintaining array order.",
+      "data_shape_assumption": "Removal target is at one boundary.",
+      "algorithmic_role": "Array mutation.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Repeated beginning removal can incur shifting work.",
+      "use_when": [
+        "Stack-like end removal"
+      ],
+      "do_not_use_when": [
+        "Large FIFO workloads without reviewing implementation cost"
+      ],
+      "common_failure_modes": [
+        "Removing from an empty array without handling the result"
+      ],
+      "tests_or_checks": [
+        "Test empty, single-element, and repeated removal."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-stack-array-backed",
+        "dsa-queue-array-backed"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Removing Elements from an Array",
+        "page_or_anchor": "OEBPS/ch02.html#idp15312064",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source explains end and beginning removal and the shifting needed to collapse the array after front removal."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "remove",
+        "performance"
+      ]
+    },
+    {
+      "id": "dsa-array-splice-middle",
+      "record_type": "array_record",
+      "name": "Insert or remove in the middle with splice-like mutation",
+      "summary": "The source uses a mutator that accepts a starting position, removal count, and optional inserted values to change a middle segment.",
+      "source_concept": "Insert or remove in the middle with splice-like mutation",
+      "programming_problem_addressed": "Edits a contiguous middle segment of an array.",
+      "data_shape_assumption": "The target can be expressed as a starting index and count.",
+      "algorithmic_role": "In-place segment mutation.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Middle edits still imply shifting surrounding elements even when the built-in hides it.",
+      "use_when": [
+        "A small, clearly indexed segment must change"
+      ],
+      "do_not_use_when": [
+        "Indexes are unstable or records should be addressed by key"
+      ],
+      "common_failure_modes": [
+        "Confusing removal count with end index",
+        "Index drift after earlier mutations"
+      ],
+      "tests_or_checks": [
+        "Test start/end boundaries and zero removals."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-risk-mutation-during-iteration",
+        "dsa-array-front-middle-shift-cost"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Adding and Removing Elements from the Middle of an Array",
+        "page_or_anchor": "OEBPS/ch02.html#idp15643952",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source explains middle insertion/removal through a start index, removal count, and replacement values."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "splice",
+        "mutation"
+      ]
+    },
+    {
+      "id": "dsa-array-sort-comparator",
+      "record_type": "array_record",
+      "name": "Array ordering and comparator semantics",
+      "summary": "The source shows reversal and sorting, warns that default sorting treats values lexicographically, and supplies a comparison function for numeric order.",
+      "source_concept": "Array ordering and comparator semantics",
+      "programming_problem_addressed": "Orders array elements under the intended comparison rule.",
+      "data_shape_assumption": "A total or acceptable comparison order is defined.",
+      "algorithmic_role": "Preparation and presentation ordering.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Sorting strings or numbers with an explicit comparator"
+      ],
+      "do_not_use_when": [
+        "Default comparison semantics are assumed for mixed types, dates, or nulls"
+      ],
+      "common_failure_modes": [
+        "Lexicographic numeric order",
+        "Comparator inconsistent with equality",
+        "Assuming stability without verification"
+      ],
+      "tests_or_checks": [
+        "Test 2 versus 10, equal keys, null-like values, and original-order ties."
+      ],
+      "diagnostic_questions": [
+        "What comparator defines the business order, and is stability required?"
+      ],
+      "related_record_ids": [
+        "dsa-sort-built-in-boundary",
+        "dsa-risk-unstable-sort-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Putting Array Elements in Order",
+        "page_or_anchor": "OEBPS/ch02.html#idp16088928",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source demonstrates that default array sorting can order numbers lexicographically and uses a numeric comparator."
+        ],
+        "inferred_claims": [
+          "Current sort stability and Apps Script behavior require verification."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "sort",
+        "comparator"
+      ]
+    },
+    {
+      "id": "dsa-array-iterators-non-generating",
+      "record_type": "array_record",
+      "name": "Iterator functions that do not return a new array",
+      "summary": "The source groups iterator functions that apply logic to elements or reduce the collection to Boolean or scalar results.",
+      "source_concept": "Iterator functions that do not return a new array",
+      "programming_problem_addressed": "Applies a function across elements for side effects, predicates, or aggregation.",
+      "data_shape_assumption": "A callback can process each element under consistent semantics.",
+      "algorithmic_role": "Functional-style traversal and reduction.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Clear element-wise processing, all/any checks, or aggregation"
+      ],
+      "do_not_use_when": [
+        "Callbacks hide control flow, early exit, or error context needed by the workflow"
+      ],
+      "common_failure_modes": [
+        "Side effects inside callbacks",
+        "Losing original row index or structured errors"
+      ],
+      "tests_or_checks": [
+        "Test empty arrays and callback error behavior."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-array-iterators-generating",
+        "dsa-sheet-preserve-original-row-index"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Non–Array-Generating Iterator Functions",
+        "page_or_anchor": "OEBPS/ch02.html#idp16231712",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source presents iterator functions for applying operations, Boolean tests, and scalar reduction without producing a new array."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "iterator",
+        "reduce"
+      ]
+    },
+    {
+      "id": "dsa-array-iterators-generating",
+      "record_type": "array_record",
+      "name": "Iterator functions that return new arrays",
+      "summary": "The source uses one iterator to transform every element and another to retain only elements satisfying a predicate.",
+      "source_concept": "Iterator functions that return new arrays",
+      "programming_problem_addressed": "Creates transformed or filtered collections.",
+      "data_shape_assumption": "Each source element maps to a result or inclusion decision.",
+      "algorithmic_role": "Pure-style transformation and selection.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Building derived arrays without in-place mutation"
+      ],
+      "do_not_use_when": [
+        "The transformation needs shared mutable state or detailed partial-failure handling"
+      ],
+      "common_failure_modes": [
+        "Dropping row provenance",
+        "Returning inconsistent record shapes"
+      ],
+      "tests_or_checks": [
+        "Verify output length and shape for map; verify inclusion predicates for filter."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-sheet-row-array-to-object",
+        "dsa-sheet-accumulate-validation-errors"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Iterator Functions That Return a New Array",
+        "page_or_anchor": "OEBPS/ch02.html#idp17183344",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source distinguishes iterator functions that produce transformed or filtered arrays."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "map",
+        "filter"
+      ]
+    },
+    {
+      "id": "dsa-array-two-dimensional",
+      "record_type": "array_record",
+      "name": "Two-dimensional arrays as arrays of arrays",
+      "summary": "Because JavaScript arrays are one-dimensional, the source constructs row-column structures by placing an array in each outer-array position.",
+      "source_concept": "Two-dimensional arrays as arrays of arrays",
+      "programming_problem_addressed": "Represents grids, tables, and row-column data.",
+      "data_shape_assumption": "Every outer element is a row array; row widths may be fixed or jagged.",
+      "algorithmic_role": "Table representation.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Spreadsheet-like data",
+        "Dynamic-programming matrices"
+      ],
+      "do_not_use_when": [
+        "Named record fields are more important than numeric columns"
+      ],
+      "common_failure_modes": [
+        "Uninitialized rows",
+        "Assuming all rows have equal width"
+      ],
+      "tests_or_checks": [
+        "Validate each row is an array and has the expected width."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-ds-two-dimensional-array",
+        "dsa-risk-row-shape-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Two-Dimensional and Multidimensional Arrays",
+        "page_or_anchor": "OEBPS/ch02.html#idp17846512",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source explains two-dimensional arrays in JavaScript as arrays whose elements are arrays."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_data_structure",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "2d",
+        "matrix"
+      ]
+    },
+    {
+      "id": "dsa-array-two-dimensional-processing",
+      "record_type": "array_record",
+      "name": "Nested traversal of row-column arrays",
+      "summary": "The source processes two-dimensional values with an outer row loop and an inner column loop.",
+      "source_concept": "Nested traversal of row-column arrays",
+      "programming_problem_addressed": "Visits every cell of a table.",
+      "data_shape_assumption": "Rows and columns have known or discoverable bounds.",
+      "algorithmic_role": "Nested table traversal.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Work grows with total cells; in Apps Script, the critical extra risk is placing service calls inside either loop.",
+      "use_when": [
+        "In-memory table transformation"
+      ],
+      "do_not_use_when": [
+        "The same lookup can be indexed and avoided"
+      ],
+      "common_failure_modes": [
+        "Using first-row width for jagged rows",
+        "Repeated SpreadsheetApp calls per cell"
+      ],
+      "tests_or_checks": [
+        "Count visited cells and benchmark maximum dimensions."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-perf-nested-loop-growth",
+        "dsa-risk-repeated-sheet-service-call"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Processing Two-Dimensional Array Elements",
+        "page_or_anchor": "OEBPS/ch02.html#idp18183376",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source demonstrates nested row and column loops for two-dimensional arrays."
+        ],
+        "inferred_claims": [
+          "Apps Script service-call placement is an extension requiring current verification."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "nested-loop",
+        "table"
+      ]
+    },
+    {
+      "id": "dsa-array-jagged",
+      "record_type": "array_record",
+      "name": "Jagged arrays",
+      "summary": "The source allows inner arrays to have different lengths and processes each row according to its own length.",
+      "source_concept": "Jagged arrays",
+      "programming_problem_addressed": "Represents variable-length rows.",
+      "data_shape_assumption": "Row widths are intentionally nonuniform.",
+      "algorithmic_role": "Variable-width table storage.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Each row naturally has a different number of values"
+      ],
+      "do_not_use_when": [
+        "A rectangular export or Sheet write requires fixed width without normalization"
+      ],
+      "common_failure_modes": [
+        "Assuming one global column count",
+        "Writing jagged data to a rectangular API"
+      ],
+      "tests_or_checks": [
+        "Validate row width before rectangular export."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-risk-row-shape-assumption",
+        "dsa-sheet-object-to-export-row"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Jagged Arrays",
+        "page_or_anchor": "OEBPS/ch02.html#idp18528176",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines and demonstrates jagged arrays whose rows have different lengths."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_data_structure",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "jagged",
+        "shape"
+      ]
+    },
+    {
+      "id": "dsa-array-of-objects",
+      "record_type": "array_record",
+      "name": "Arrays of objects",
+      "summary": "The source stores object instances in arrays so ordered collection operations can be combined with named object properties.",
+      "source_concept": "Arrays of objects",
+      "programming_problem_addressed": "Represents ordered records with named fields.",
+      "data_shape_assumption": "Each element is an object of a known or validated shape.",
+      "algorithmic_role": "Record collection.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Rows become domain records after parsing"
+      ],
+      "do_not_use_when": [
+        "Object shapes vary silently"
+      ],
+      "common_failure_modes": [
+        "Missing properties",
+        "Mixed object types without a discriminator"
+      ],
+      "tests_or_checks": [
+        "Validate required fields for every object."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-sheet-row-array-to-object",
+        "dsa-decision-array-versus-object-record"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Arrays of Objects",
+        "page_or_anchor": "OEBPS/ch02.html#idp18891520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source demonstrates storing objects as array elements."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_data_structure",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "objects",
+        "records"
+      ]
+    },
+    {
+      "id": "dsa-array-in-object",
+      "record_type": "array_record",
+      "name": "Arrays as object properties",
+      "summary": "The source places arrays inside objects to group collection data with related behavior or metadata.",
+      "source_concept": "Arrays as object properties",
+      "programming_problem_addressed": "Encapsulates a collection as part of a larger domain object.",
+      "data_shape_assumption": "The containing object owns or coordinates the array.",
+      "algorithmic_role": "Composite data model.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "A record contains repeated child values or internal collection state"
+      ],
+      "do_not_use_when": [
+        "The relationship is many-to-many and a graph or join table is clearer"
+      ],
+      "common_failure_modes": [
+        "Exposing mutable internal arrays without invariant checks"
+      ],
+      "tests_or_checks": [
+        "Verify object invariants after array mutation."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-core-adt-separates-interface-storage"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Arrays in Objects",
+        "page_or_anchor": "OEBPS/ch02.html#idp19040720",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source demonstrates arrays stored as object properties."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_data_structure",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "object",
+        "composition"
+      ]
+    },
+    {
+      "id": "dsa-array-front-middle-shift-cost",
+      "record_type": "complexity_note",
+      "name": "Front and middle array edits require shifting",
+      "summary": "The source repeatedly explains that adding or removing near the beginning or middle requires moving surrounding elements.",
+      "source_concept": "Front and middle array edits require shifting",
+      "programming_problem_addressed": "Identifies a dominant cost of positional array mutation.",
+      "data_shape_assumption": "Order must be preserved after insertion or deletion.",
+      "algorithmic_role": "Performance-selection signal.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "The amount of shifting grows with the number of elements after the edit point.",
+      "use_when": [
+        "Evaluating queue or linked-list alternatives"
+      ],
+      "do_not_use_when": [
+        "Edits are rare and arrays remain clearer"
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-list-array-shortcomings",
+        "dsa-decision-list-versus-queue"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Adding and Removing Elements from the Middle of an Array",
+        "page_or_anchor": "OEBPS/ch02.html#idp15643952",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source states that beginning and middle insertions/removals require shifting array elements and become less efficient as size grows."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_complexity_claim",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "array",
+        "performance",
+        "shifting"
+      ]
+    },
+    {
+      "id": "dsa-array-spreadsheet-row-container",
+      "record_type": "spreadsheet_workflow_extension",
+      "name": "Arrays as spreadsheet row containers",
+      "summary": "In an Apps Script extension, a rectangular range can be treated as an array of row arrays, validated in memory, transformed, and written in one batch.",
+      "source_concept": "Arrays as spreadsheet row containers",
+      "programming_problem_addressed": "Moves spreadsheet data across the service boundary efficiently and predictably.",
+      "data_shape_assumption": "The range is rectangular, with a header row and uniform data rows.",
+      "algorithmic_role": "Batch table ingestion and export.",
+      "runtime_context": "Google Apps Script hosted runtime and Spreadsheet service; current behavior must be verified.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Verify current getValues/setValues behavior, quotas, dimensions, and value types. Keep service calls outside row loops.",
+      "complexity_or_scale_note": "In-memory cell traversal and remote service calls are different cost categories.",
+      "use_when": [
+        "Report processors and Sheets automations"
+      ],
+      "do_not_use_when": [
+        "Input shape or write range has not been validated"
+      ],
+      "common_failure_modes": [
+        "Header drift",
+        "Jagged output",
+        "Partial writes",
+        "Service calls inside loops"
+      ],
+      "tests_or_checks": [
+        "Validate headers, row widths, output dimensions, and dry-run results before writing."
+      ],
+      "diagnostic_questions": [
+        "Can the entire required range be read once and written once?"
+      ],
+      "related_record_ids": [
+        "dsa-sheet-read-once",
+        "dsa-sheet-batch-write-after-validation"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Two-Dimensional and Multidimensional Arrays",
+        "page_or_anchor": "OEBPS/ch02.html#idp17846512",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source describes two-dimensional arrays as spreadsheet-like row-column structures."
+        ],
+        "inferred_claims": [
+          "Apps Script range batching is an applied extension and requires current platform verification."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "apps-script",
+        "sheets",
+        "batch"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1219 @@
+{
+  "package_metadata": {
+    "package_name": "JavaScript Language, Runtime, and Code-Quality Reasoning OS V2",
+    "module_name": "decision_rules",
+    "repair_type": "focused_v2_repair_not_full_rebuild",
+    "generated_at": "2026-06-21T05:00:11.155979+00:00",
+    "primary_source": {
+      "title": "JavaScript: The Definitive Guide",
+      "edition": "Seventh Edition",
+      "author": "David Flanagan",
+      "publisher": "O'Reilly Media",
+      "release_year": 2020,
+      "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+      "source_sha256": "b511aca2b98ae4eec4966c87d5e6b6c1704cbafe7dd076b924db46cb8d20ae07"
+    },
+    "v1_package_reference": {
+      "source_zip": "Javascript Reasoning.zip",
+      "source_zip_sha256": "60242e2ad2cfcc9bdf79f2fc73b392b7f149339dc95d6234f00db683f368d98d",
+      "not_overwritten": true
+    },
+    "authority_order": [
+      "Original uploaded book source",
+      "Current generated JavaScript Reasoning OS package",
+      "User repair prompt",
+      "Current official documentation only if available",
+      "General engineering reasoning"
+    ],
+    "source_limitation_warning": "Current browser, Node, npm, bundler, tool, framework, and Google Apps Script behavior is not asserted unless explicitly verified. V2 flags such items for current documentation checks.",
+    "purpose": "JavaScript-specific decision rules repaired for concrete tradeoffs."
+  },
+  "decision_rules": [
+    {
+      "id": "js-decision-const-let-var",
+      "decision_name": "const versus let versus var",
+      "decision_context": "Choosing a declaration form for a binding in modern or legacy JavaScript.",
+      "default_low_complexity_choice": "Use const for bindings that are not reassigned; use let for reassignment; leave var only when maintaining legacy scope behavior deliberately.",
+      "choose_this_when": [
+        "const for stable binding identity",
+        "let for loop counters or reassigned accumulators",
+        "var only when a legacy function-scoped/hoisted binding is required and tested"
+      ],
+      "avoid_this_when": [
+        "Do not use const to imply object immutability",
+        "Do not convert var in old code without checking hoisting and closure behavior"
+      ],
+      "risk_of_wrong_choice": [
+        "Closure captures change",
+        "Block/function scope behavior changes",
+        "Mutation expectation remains unclear"
+      ],
+      "specific_checks": [
+        "Check reassignment separately from object mutation",
+        "Search for var hoisting dependence",
+        "Test loop callbacks"
+      ],
+      "code_examples_or_scenarios": [
+        "Refactor var loop callbacks to let only with tests for async callbacks",
+        "Keep const object mutation visible with naming/docs"
+      ],
+      "related_record_ids": [
+        "js-sem-variable-declarations"
+      ],
+      "related_risk_ids": [
+        "js-risk-closure-state",
+        "js-risk-shared-object-mutation"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.10 Variable Declaration and Assignment",
+          "5.7 Declarations"
+        ],
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-decision-strict-vs-loose-equality",
+      "decision_name": "strict equality versus loose equality",
+      "decision_context": "Comparing JavaScript values where type conversion may occur.",
+      "default_low_complexity_choice": "Use === and !==; use value == null only as an intentional null-or-undefined check when both are equivalent for that branch.",
+      "choose_this_when": [
+        "Operands are already normalized",
+        "You need to distinguish false/0/\"\"/null/undefined",
+        "NaN/Object.is edge cases are handled separately"
+      ],
+      "avoid_this_when": [
+        "Avoid == when operands can be strings/numbers/booleans/objects from boundaries",
+        "Avoid changing existing == without tests if legacy behavior accepted coerced inputs"
+      ],
+      "risk_of_wrong_choice": [
+        "Security/validation bypass",
+        "Rejected valid falsy value",
+        "Changed behavior for nullish legacy inputs"
+      ],
+      "specific_checks": [
+        "Search == and !=",
+        "Test null, undefined, 0, false, \"\", \"0\", NaN",
+        "Normalize types at input boundary"
+      ],
+      "code_examples_or_scenarios": [
+        "if (value == null) can intentionally catch null or undefined; if (id === Number(input)) requires parse/validate step"
+      ],
+      "related_record_ids": [
+        "js-sem-equality-comparison",
+        "js-sem-implicit-conversion"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion",
+        "js-risk-null-undefined-access"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 4,
+        "chapter_title": "Expressions and Operators",
+        "sections": [
+          "4.9 Relational Expressions",
+          "3.9 Type Conversions"
+        ],
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-decision-object-vs-map",
+      "decision_name": "object versus Map",
+      "decision_context": "Representing key/value associations.",
+      "default_low_complexity_choice": "Use plain objects for fixed-shape records with known property names; use Map for dynamic keys, non-string keys, or collection semantics.",
+      "choose_this_when": [
+        "Map when keys are objects/functions or arbitrary user strings",
+        "Object when JSON-like schema and property access are natural",
+        "Object.create(null) only for special dictionary cases with ownership care"
+      ],
+      "avoid_this_when": [
+        "Avoid plain object for untrusted arbitrary dictionary keys without own-property checks",
+        "Avoid Map when JSON serialization or literal syntax is primary"
+      ],
+      "risk_of_wrong_choice": [
+        "Prototype key collision",
+        "Lost data in JSON",
+        "Harder API shape for callers"
+      ],
+      "specific_checks": [
+        "Check key types and serialization needs",
+        "Check iteration order requirements",
+        "Test keys like \"constructor\""
+      ],
+      "code_examples_or_scenarios": [
+        "Configuration object: plain object; cache keyed by DOM nodes/objects: Map"
+      ],
+      "related_record_ids": [
+        "js-sem-map-set",
+        "js-sem-property-lookup-prototype"
+      ],
+      "related_risk_ids": [
+        "js-risk-prototype-shadowing",
+        "js-risk-json-serialization-loss"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.1 Sets and Maps",
+          "6 Objects"
+        ],
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-decision-array-vs-object",
+      "decision_name": "array versus object",
+      "decision_context": "Representing ordered data versus named fields.",
+      "default_low_complexity_choice": "Use arrays for ordered dense lists; use objects for named records.",
+      "choose_this_when": [
+        "Array when index/order/iteration over homogeneous items matters",
+        "Object when fields have domain names and missing/present distinction matters"
+      ],
+      "avoid_this_when": [
+        "Avoid arrays for sparse named data",
+        "Avoid objects for ordered sequences requiring array methods"
+      ],
+      "risk_of_wrong_choice": [
+        "Sparse-array bugs",
+        "Accidental numeric/string key confusion",
+        "JSON shape surprises"
+      ],
+      "specific_checks": [
+        "Check whether order or names drive access",
+        "Check sparse risks",
+        "Test empty and missing-field cases"
+      ],
+      "code_examples_or_scenarios": [
+        "Rows from CSV: array of row objects or arrays depending schema; user profile: object"
+      ],
+      "related_record_ids": [
+        "js-sem-arrays-length-sparse",
+        "js-sem-property-access"
+      ],
+      "related_risk_ids": [
+        "js-risk-sparse-array-assumption",
+        "js-risk-null-undefined-access"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 7,
+        "chapter_title": "Arrays",
+        "sections": [
+          "7 Arrays",
+          "6 Objects"
+        ],
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-decision-set-vs-array",
+      "decision_name": "Set versus array",
+      "decision_context": "Representing unique membership or ordered list with duplicates.",
+      "default_low_complexity_choice": "Use array for ordered lists where duplicates may matter; use Set for membership uniqueness and has/delete operations.",
+      "choose_this_when": [
+        "Set when uniqueness and membership checks dominate",
+        "Array when index order, duplicates, map/filter/reduce, or JSON list output dominate"
+      ],
+      "avoid_this_when": [
+        "Avoid Set when duplicate counts matter",
+        "Avoid array membership scans for large uniqueness-heavy logic without reason"
+      ],
+      "risk_of_wrong_choice": [
+        "Duplicate loss",
+        "Serialization mismatch",
+        "Performance/complexity issue"
+      ],
+      "specific_checks": [
+        "Check whether duplicates are meaningful",
+        "Check JSON/API output shape",
+        "Test insertion order and membership semantics"
+      ],
+      "code_examples_or_scenarios": [
+        "Selected unique IDs: Set internally, array at JSON boundary"
+      ],
+      "related_record_ids": [
+        "js-sem-map-set",
+        "js-sem-array-iteration-methods"
+      ],
+      "related_risk_ids": [
+        "js-risk-json-serialization-loss"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.1 Sets and Maps",
+          "7.8 Array Methods"
+        ],
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-decision-class-vs-function-closure",
+      "decision_name": "class versus function/closure",
+      "decision_context": "Choosing object-oriented class syntax or closure-based factory/private state.",
+      "default_low_complexity_choice": "Use the simplest representation: plain function for behavior, class for constructed objects with shared methods, closure for private state or specialization.",
+      "choose_this_when": [
+        "class when instances share prototype methods and constructor identity matters",
+        "closure when encapsulated state or partial application is central",
+        "plain object/function when no instance model is needed"
+      ],
+      "avoid_this_when": [
+        "Avoid class for a one-off namespace",
+        "Avoid closure state when reset/testing/lifetime is unclear",
+        "Avoid subclassing where composition suffices"
+      ],
+      "risk_of_wrong_choice": [
+        "this/prototype bugs",
+        "hidden state leakage",
+        "overbuilt abstraction"
+      ],
+      "specific_checks": [
+        "Check need for new/instanceof/prototype methods",
+        "Check captured variables and lifecycle",
+        "Test method extraction"
+      ],
+      "code_examples_or_scenarios": [
+        "Point-like objects with methods: class; memoized helper with private cache: closure"
+      ],
+      "related_record_ids": [
+        "js-sem-classes-prototypes",
+        "js-sem-closures",
+        "js-sem-functions-as-values"
+      ],
+      "related_risk_ids": [
+        "js-risk-this-binding",
+        "js-risk-closure-state",
+        "js-risk-prototype-shadowing"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 8,
+        "chapter_title": "Functions",
+        "sections": [
+          "8 Functions",
+          "9 Classes"
+        ],
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-decision-prototype-method-vs-instance-method",
+      "decision_name": "prototype method versus instance method",
+      "decision_context": "Placing methods on prototypes/classes or creating a function per instance.",
+      "default_low_complexity_choice": "Use prototype/class methods for shared behavior; use instance functions/arrow fields only when per-instance closure state or lexical this is required.",
+      "choose_this_when": [
+        "Prototype method when all instances can share one function",
+        "Instance method when it must capture constructor-local variables or be pre-bound"
+      ],
+      "avoid_this_when": [
+        "Avoid per-instance arrow methods by habit in many objects",
+        "Avoid prototype methods that require private closure variables unavailable on instance"
+      ],
+      "risk_of_wrong_choice": [
+        "Memory/identity changes",
+        "this binding changes",
+        "mocking/subclassing behavior changes"
+      ],
+      "specific_checks": [
+        "Inspect own keys versus prototype",
+        "Check this/captured variables",
+        "Benchmark only if scale matters"
+      ],
+      "code_examples_or_scenarios": [
+        "Event handler needing bound this may use instance arrow; ordinary domain method belongs on prototype"
+      ],
+      "related_record_ids": [
+        "js-sem-classes-prototypes",
+        "js-sem-this-binding"
+      ],
+      "related_risk_ids": [
+        "js-risk-this-binding",
+        "js-risk-prototype-shadowing"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 9,
+        "chapter_title": "Classes",
+        "sections": [
+          "9.1 Classes and Prototypes",
+          "9.3 Classes with class Keyword"
+        ],
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-decision-commonjs-vs-es-module",
+      "decision_name": "CommonJS versus ES module",
+      "decision_context": "Choosing or reviewing module format.",
+      "default_low_complexity_choice": "Use the module system already required by the runtime/build/test/package boundary; do not mix formats in one file without verified interop.",
+      "choose_this_when": [
+        "ES modules for browser module scripts or modern ESM project configuration",
+        "CommonJS for legacy Node package/codebase still configured for require",
+        "Adapters at interop boundaries"
+      ],
+      "avoid_this_when": [
+        "Avoid changing module format without checking package.json, file extensions, bundler, tests, and dependency export shape",
+        "Avoid assuming default/named interop"
+      ],
+      "risk_of_wrong_choice": [
+        "Syntax/runtime loader failure",
+        "Changed strict mode/global this",
+        "Partial/circular dependency surprises"
+      ],
+      "specific_checks": [
+        "Check runtime loader config",
+        "Check extension and package type",
+        "Smoke-test import/require in target runtime"
+      ],
+      "code_examples_or_scenarios": [
+        "Node script with package type commonjs: CommonJS; browser script type=module: ESM"
+      ],
+      "related_record_ids": [
+        "js-sem-es-modules",
+        "js-sem-commonjs-modules"
+      ],
+      "related_risk_ids": [
+        "js-risk-module-system-mismatch",
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 10,
+        "chapter_title": "Modules",
+        "sections": [
+          "10.2 Modules in Node",
+          "10.3 Modules in ES6"
+        ],
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-decision-callback-promise-async",
+      "decision_name": "callback versus Promise versus async/await",
+      "decision_context": "Choosing async abstraction or refactoring between them.",
+      "default_low_complexity_choice": "Use the abstraction exposed by the underlying API; use async/await for sequential Promise flows; wrap callbacks only with tested error and multiple-settle behavior.",
+      "choose_this_when": [
+        "Callback when API is event/callback-native and small",
+        "Promise when composing one eventual result",
+        "async/await when sequential readability improves Promise code"
+      ],
+      "avoid_this_when": [
+        "Avoid wrapping EventEmitter/streams as a single Promise unless lifecycle is well-defined",
+        "Avoid adding async to public sync API casually"
+      ],
+      "risk_of_wrong_choice": [
+        "Unhandled rejection",
+        "Lost callback error",
+        "Changed return type",
+        "False sequentiality hiding concurrency"
+      ],
+      "specific_checks": [
+        "Identify completion and error channels",
+        "Test success/error/cancel/timeout",
+        "Check caller API contract"
+      ],
+      "code_examples_or_scenarios": [
+        "fs callback wrapper must reject on error; network sequence can use async/await with try/catch"
+      ],
+      "related_record_ids": [
+        "js-async-callbacks",
+        "js-async-promises",
+        "js-sem-async-await"
+      ],
+      "related_risk_ids": [
+        "js-risk-callback-error-path",
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13 Asynchronous JavaScript"
+        ],
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-decision-iterator-generator-vs-array",
+      "decision_name": "iterator/generator versus materialized array",
+      "decision_context": "Choosing lazy sequence or fully realized list.",
+      "default_low_complexity_choice": "Use arrays for small reusable lists; use iterators/generators for lazy, potentially large, or custom traversal; use async iteration for values arriving over time.",
+      "choose_this_when": [
+        "Generator when sequence can be computed lazily",
+        "Array when callers need random access, reuse, JSON output, or array methods",
+        "Async iterable for chunk/page/stream-style async data"
+      ],
+      "avoid_this_when": [
+        "Avoid generator for simple fixed data",
+        "Avoid materializing unbounded streams",
+        "Avoid one-shot iterators where callers expect reusable data"
+      ],
+      "risk_of_wrong_choice": [
+        "Memory spike",
+        "Consumed iterator reused incorrectly",
+        "API harder to inspect/test"
+      ],
+      "specific_checks": [
+        "Check size/boundedness",
+        "Check reuse requirement",
+        "Test early break and errors"
+      ],
+      "code_examples_or_scenarios": [
+        "Processing file chunks: async iterable; UI list of selected items: array"
+      ],
+      "related_record_ids": [
+        "js-sem-iterables-iterators",
+        "js-sem-generators",
+        "js-sem-async-iteration"
+      ],
+      "related_risk_ids": [
+        "js-risk-stream-lifecycle",
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 12,
+        "chapter_title": "Iterators and Generators",
+        "sections": [
+          "12 Iterators and Generators",
+          "13.4 Asynchronous Iteration"
+        ],
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-decision-regex-vs-parser",
+      "decision_name": "regex versus parser/manual logic",
+      "decision_context": "Choosing text-matching approach.",
+      "default_low_complexity_choice": "Use regex for flat, regular, well-tested patterns; use a parser or manual scanner for nested, ambiguous, security-sensitive, or heavily escaped formats.",
+      "choose_this_when": [
+        "Regex for simple validation/extraction with anchors and negative tests",
+        "Parser/scanner for CSV-like quoting, nested parentheses, HTML/JS syntax, complex dates"
+      ],
+      "avoid_this_when": [
+        "Avoid regex when grammar requires nested structure or meaningful error recovery",
+        "Avoid manual parser when standard parser/API exists"
+      ],
+      "risk_of_wrong_choice": [
+        "Overmatching validation",
+        "ReDoS-like performance risk",
+        "Unreadable fragile pattern"
+      ],
+      "specific_checks": [
+        "List valid/invalid examples",
+        "Check anchors/flags/escaping",
+        "Test long/pathological input"
+      ],
+      "code_examples_or_scenarios": [
+        "Email-like quick filter may use regex; parsing JavaScript or HTML should not use one regex"
+      ],
+      "related_record_ids": [
+        "js-sem-regexp-patterns"
+      ],
+      "related_risk_ids": [
+        "js-risk-regex-overmatching"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.3 Pattern Matching with Regular Expressions"
+        ],
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-decision-json-vs-custom-serialization",
+      "decision_name": "JSON serialization versus custom serialization",
+      "decision_context": "Choosing data interchange/storage format for JavaScript values.",
+      "default_low_complexity_choice": "Use JSON for plain data; use custom serialization/schema when values include Date, Map, Set, Error, BigInt-like needs, cycles, classes, functions, symbols, or prototypes.",
+      "choose_this_when": [
+        "JSON for API payloads and plain configuration",
+        "Custom replacer/reviver or schema for non-plain values",
+        "Alternative format when binary/cycles/types are required"
+      ],
+      "avoid_this_when": [
+        "Avoid JSON.clone for arbitrary objects",
+        "Avoid custom format when interoperable plain JSON is enough"
+      ],
+      "risk_of_wrong_choice": [
+        "Data loss",
+        "Security validation gap",
+        "Incompatible API payload"
+      ],
+      "specific_checks": [
+        "List value types",
+        "Round-trip test",
+        "Validate parsed input schema"
+      ],
+      "code_examples_or_scenarios": [
+        "Date-heavy payload needs explicit ISO/reviver policy; Map internal cache should convert to entries if serialized"
+      ],
+      "related_record_ids": [
+        "js-sem-json-serialization",
+        "js-sem-date-time"
+      ],
+      "related_risk_ids": [
+        "js-risk-json-serialization-loss",
+        "js-risk-date-timezone"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.6 JSON Serialization and Parsing"
+        ],
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-decision-browser-storage-choice",
+      "decision_name": "browser storage choice",
+      "decision_context": "Choosing client-side browser persistence.",
+      "default_low_complexity_choice": "Use the smallest client storage mechanism that matches data sensitivity, size, lifetime, and current browser support after verification.",
+      "choose_this_when": [
+        "Use in-memory state for transient UI",
+        "Use verified browser storage for non-secret, client-owned persistence",
+        "Use server storage for authoritative or sensitive data"
+      ],
+      "avoid_this_when": [
+        "Avoid storing secrets in ordinary client storage",
+        "Avoid assuming quota/lifetime/private mode behavior"
+      ],
+      "risk_of_wrong_choice": [
+        "Data leak",
+        "Quota failure",
+        "State disappears",
+        "Cross-origin/deployment mismatch"
+      ],
+      "specific_checks": [
+        "Classify data sensitivity",
+        "Verify current docs for API/quota/privacy",
+        "Test error path"
+      ],
+      "code_examples_or_scenarios": [
+        "Theme preference may be client storage; auth secret should not be casually placed in localStorage"
+      ],
+      "related_record_ids": [
+        "js-boundary-browser-storage"
+      ],
+      "related_risk_ids": [
+        "js-risk-browser-node-api-confusion",
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.12 Storage"
+        ],
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "derivation_classification": "coding_practice_extension",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "coding_practice_extension",
+        "authority_order_position": 5,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-decision-worker-vs-main-thread",
+      "decision_name": "worker versus main thread",
+      "decision_context": "Choosing whether to move browser work off the main thread.",
+      "default_low_complexity_choice": "Keep simple UI work on main thread; use worker for CPU-heavy or blocking work that can be isolated behind messages.",
+      "choose_this_when": [
+        "CPU-heavy computation hurts responsiveness",
+        "Work can be expressed with serializable/transferable messages",
+        "Lifecycle/errors can be managed"
+      ],
+      "avoid_this_when": [
+        "Avoid worker for trivial code or code needing direct DOM access",
+        "Avoid worker when data transfer cost dominates"
+      ],
+      "risk_of_wrong_choice": [
+        "UI jank",
+        "Message schema bugs",
+        "Unsupported transfer/lifecycle issue"
+      ],
+      "specific_checks": [
+        "Measure work cost",
+        "Define message schema",
+        "Test worker error/termination and unsupported values"
+      ],
+      "code_examples_or_scenarios": [
+        "Mandelbrot-like CPU task: worker; simple DOM update: main thread"
+      ],
+      "related_record_ids": [
+        "js-boundary-workers",
+        "js-async-worker-messaging"
+      ],
+      "related_risk_ids": [
+        "js-risk-worker-message-boundary",
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.13 Worker Threads and Messaging"
+        ],
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-decision-stream-vs-buffered-read",
+      "decision_name": "stream versus buffered read",
+      "decision_context": "Choosing incremental processing or full buffering in Node.",
+      "default_low_complexity_choice": "Use buffered read for known-small data; use streams/async iteration for large, unbounded, or incremental data.",
+      "choose_this_when": [
+        "Streams when file/network data may be large",
+        "Buffered read when simplicity and bounded size are known",
+        "Pipeline helpers where current Node docs support them"
+      ],
+      "avoid_this_when": [
+        "Avoid streams for tiny one-shot config unless needed",
+        "Avoid buffering uploads/downloads of unknown size"
+      ],
+      "risk_of_wrong_choice": [
+        "Memory pressure",
+        "Truncated data",
+        "Backpressure ignored",
+        "Complexity without benefit"
+      ],
+      "specific_checks": [
+        "Estimate input size",
+        "Check error/completion/backpressure handling",
+        "Test large and failing input"
+      ],
+      "code_examples_or_scenarios": [
+        "Small JSON config: buffered; large CSV upload: stream"
+      ],
+      "related_record_ids": [
+        "js-boundary-node-streams",
+        "js-async-node-streams"
+      ],
+      "related_risk_ids": [
+        "js-risk-stream-lifecycle"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 16,
+        "chapter_title": "Server-Side JavaScript with Node",
+        "sections": [
+          "16.5 Streams",
+          "16.7 Working with Files"
+        ],
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-decision-child-process-vs-worker-thread",
+      "decision_name": "child process versus worker thread",
+      "decision_context": "Choosing parallel or external execution in Node.",
+      "default_low_complexity_choice": "Use worker threads for CPU-bound JavaScript that can communicate by messages; use child processes for trusted external commands or process isolation when deployment permits.",
+      "choose_this_when": [
+        "Worker thread for CPU-heavy JS",
+        "Child process for invoking external tool with controlled arguments",
+        "Separate process when isolation is required"
+      ],
+      "avoid_this_when": [
+        "Avoid shell execution with unsanitized input",
+        "Avoid workers when serialization overhead exceeds benefit",
+        "Avoid either without deployment support"
+      ],
+      "risk_of_wrong_choice": [
+        "Security vulnerability",
+        "Deployment failure",
+        "Message/lifecycle leak",
+        "Performance regression"
+      ],
+      "specific_checks": [
+        "Classify workload and trust boundary",
+        "Verify current Node/deployment docs",
+        "Test error/exit/timeout/large payload"
+      ],
+      "code_examples_or_scenarios": [
+        "ImageMagick CLI may need child process; pure JS CPU transform may use worker"
+      ],
+      "related_record_ids": [
+        "js-boundary-node-child-processes",
+        "js-boundary-node-worker-threads"
+      ],
+      "related_risk_ids": [
+        "js-risk-worker-message-boundary",
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 16,
+        "chapter_title": "Server-Side JavaScript with Node",
+        "sections": [
+          "16.10 Working with Child Processes",
+          "16.11 Worker Threads"
+        ],
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-decision-browser-vs-node-runtime",
+      "decision_name": "browser versus Node runtime",
+      "decision_context": "Choosing target runtime or reviewing file placement.",
+      "default_low_complexity_choice": "Run DOM/UI code in the browser; run filesystem/OS/server code in Node; keep shared logic free of host APIs.",
+      "choose_this_when": [
+        "Browser for user-facing DOM, events, browser storage/networking",
+        "Node for files, OS, server HTTP, streams, child processes",
+        "Shared core for pure language/data logic"
+      ],
+      "avoid_this_when": [
+        "Avoid importing Node modules into browser bundles accidentally",
+        "Avoid using DOM APIs in Node scripts/tests unless environment supplies them intentionally"
+      ],
+      "risk_of_wrong_choice": [
+        "ReferenceError",
+        "Bundle polyfill/security issue",
+        "Test/runtime divergence"
+      ],
+      "specific_checks": [
+        "Create runtime map",
+        "Search host globals/modules",
+        "Run file in target runtime"
+      ],
+      "code_examples_or_scenarios": [
+        "Form validation pure function can be shared; document.querySelector belongs in browser adapter; fs belongs in Node adapter"
+      ],
+      "related_record_ids": [
+        "js-boundary-browser-dom",
+        "js-boundary-node-files"
+      ],
+      "related_risk_ids": [
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 1,
+        "chapter_title": "Introduction to JavaScript",
+        "sections": [
+          "JavaScript host environments",
+          "15 Browser",
+          "16 Node"
+        ],
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-decision-apps-script-vs-browser-node",
+      "decision_name": "Apps Script versus browser/Node behavior",
+      "decision_context": "Reviewing Google Apps Script projects.",
+      "default_low_complexity_choice": "Treat Apps Script as its own operational host; classify server .gs, HtmlService client HTML, triggers, and generated/local tooling separately.",
+      "choose_this_when": [
+        "Use Apps Script services in server-side functions after current docs check",
+        "Use browser APIs only in client HTML",
+        "Use local Node tooling only as build-time support if project actually has it"
+      ],
+      "avoid_this_when": [
+        "Avoid assuming Node fs/npm/streams or browser DOM in server-side Apps Script",
+        "Avoid current quota/scope/service claims without docs"
+      ],
+      "risk_of_wrong_choice": [
+        "Runtime failure",
+        "Authorization/quota issue",
+        "Client/server data boundary bug"
+      ],
+      "specific_checks": [
+        "File-role map",
+        "Current Google docs for every service/trigger/quota/scope",
+        "Client/server request/response schema"
+      ],
+      "code_examples_or_scenarios": [
+        "HtmlService form upload needs client HTML handler plus server function; SpreadsheetApp writes belong server side"
+      ],
+      "related_record_ids": [
+        "js-apps-script-runtime-boundary",
+        "js-apps-script-htmlservice-browser-server-split"
+      ],
+      "related_risk_ids": [
+        "js-risk-apps-script-runtime-confusion",
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "google_apps_script_extension",
+        "authority_order_position": 4,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      },
+      "runtime_or_environment": "google_apps_script_extension",
+      "current_verification_required": true
+    },
+    {
+      "id": "js-decision-native-feature-vs-transpilation",
+      "decision_name": "native language feature versus transpilation",
+      "decision_context": "Deciding whether to use syntax/API that target runtimes may not support natively.",
+      "default_low_complexity_choice": "Use native features when all target runtimes support them; use transpilation/polyfill only when build/test/deploy path is verified.",
+      "choose_this_when": [
+        "Feature improves clarity and target support is confirmed",
+        "Transpilation is already part of project and production path matches tests"
+      ],
+      "avoid_this_when": [
+        "Avoid syntax that build supports but runtime path bypasses",
+        "Avoid polyfills that change security/performance assumptions"
+      ],
+      "risk_of_wrong_choice": [
+        "SyntaxError in production",
+        "Different semantics between transformed/native code",
+        "Bundle bloat"
+      ],
+      "specific_checks": [
+        "Verify target engine versions",
+        "Inspect Babel/bundler config and output",
+        "Run production-like smoke test"
+      ],
+      "code_examples_or_scenarios": [
+        "Optional chaining in old browser target requires transform; server-only Node version may support native feature after verification"
+      ],
+      "related_record_ids": [
+        "js-tooling-babel",
+        "js-tooling-bundling"
+      ],
+      "related_risk_ids": [
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 17,
+        "chapter_title": "JavaScript Tools and Extensions",
+        "sections": [
+          "17.6 Transpilation with Babel"
+        ],
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "derivation_classification": "coding_practice_extension",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "coding_practice_extension",
+        "authority_order_position": 5,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-decision-lint-format-test-baseline",
+      "decision_name": "linting formatting testing baseline",
+      "decision_context": "Choosing baseline quality tooling for JavaScript review.",
+      "default_low_complexity_choice": "Use formatting for consistency, linting for suspicious patterns/environment rules, and tests for behavior; do not let any one tool stand in for the others.",
+      "choose_this_when": [
+        "ESLint catches JavaScript pitfalls configured for the project",
+        "Prettier removes style debate",
+        "Jest or other runner exercises behavior and async paths"
+      ],
+      "avoid_this_when": [
+        "Avoid treating green tests as proof of runtime compatibility",
+        "Avoid lint rules not aligned with actual browser/Node/App Script environment"
+      ],
+      "risk_of_wrong_choice": [
+        "False confidence",
+        "Ignored async rejection",
+        "Tool/test environment mismatch"
+      ],
+      "specific_checks": [
+        "Inspect configs and CI scripts",
+        "Check test environment and transforms",
+        "Add tests for risks found in review"
+      ],
+      "code_examples_or_scenarios": [
+        "A Promise rejection bug needs an async test, not just formatting/linting"
+      ],
+      "related_record_ids": [
+        "js-tooling-eslint",
+        "js-tooling-prettier",
+        "js-tooling-jest"
+      ],
+      "related_risk_ids": [
+        "js-risk-tooling-version-drift",
+        "js-risk-unhandled-promise-rejection"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 17,
+        "chapter_title": "JavaScript Tools and Extensions",
+        "sections": [
+          "17.1 ESLint",
+          "17.2 Prettier",
+          "17.3 Jest"
+        ],
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "derivation_classification": "coding_practice_extension",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "coding_practice_extension",
+        "authority_order_position": 5,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-decision-avoid-proxy-metaprogramming",
+      "decision_name": "when not to use Proxy or metaprogramming",
+      "decision_context": "Deciding whether dynamic traps/descriptors/symbol hooks are worth the opacity.",
+      "default_low_complexity_choice": "Do not use Proxy/metaprogramming for ordinary data flow. Use it only for a clear library/boundary problem with tests for traps and invariants.",
+      "choose_this_when": [
+        "Proxy solves virtual object, validation membrane, logging, or compatibility boundary",
+        "Descriptors/symbols implement a documented protocol"
+      ],
+      "avoid_this_when": [
+        "Avoid for simple defaults, ordinary validation, or hiding API shape",
+        "Avoid if debugger/test coverage cannot observe traps"
+      ],
+      "risk_of_wrong_choice": [
+        "Hard-to-debug property access",
+        "Broken enumeration/serialization",
+        "Invariant TypeError"
+      ],
+      "specific_checks": [
+        "List exact operations intercepted",
+        "Test get/set/has/ownKeys/apply/construct",
+        "Check JSON/spread/enumeration behavior"
+      ],
+      "code_examples_or_scenarios": [
+        "Use plain function validate(obj) instead of Proxy when call sites can be explicit"
+      ],
+      "related_record_ids": [
+        "js-sem-proxy-reflect",
+        "js-sem-property-descriptors",
+        "js-sem-well-known-symbols"
+      ],
+      "related_risk_ids": [
+        "js-risk-metaprogramming-opacity"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 14,
+        "chapter_title": "Metaprogramming",
+        "sections": [
+          "14 Metaprogramming"
+        ],
+        "source_basis": "Decision rule rewritten as JavaScript-specific V2 guidance.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    }
+  ]
+}

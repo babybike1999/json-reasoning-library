@@ -1,0 +1,1194 @@
+{
+  "ai_agent_usage_guidance": [
+    {
+      "id": "aiwf_analyze_problem",
+      "workflow_name": "Analyze a statistical problem statement",
+      "goal": "Classify the task, identify variables/parameters, and list missing assumptions before solving.",
+      "preconditions": [
+        "user problem"
+      ],
+      "inspection_steps": [
+        "Extract data structure.",
+        "Name target.",
+        "Classify output as estimator/test/interval/model/prediction.",
+        "List assumptions explicitly.",
+        "Ask for missing evidence if needed."
+      ],
+      "source_records_to_consult": [],
+      "questions_to_ask": [
+        "What is random?",
+        "What is the target?"
+      ],
+      "safe_outputs": [
+        "Structured problem representation."
+      ],
+      "dangerous_outputs": [
+        "Method recommendation with invented data-generating process."
+      ],
+      "human_review_triggers": [
+        "unclear target",
+        "missing model",
+        "high-stakes use"
+      ],
+      "completion_criteria": [
+        "target and assumptions represented"
+      ],
+      "failure_modes": [
+        "invented assumptions"
+      ],
+      "related_record_ids": [
+        "concept_probability_model_first"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "1",
+        "chapter_title": "Probability Theory",
+        "section_heading": "1.1. Set Theory",
+        "page_or_anchor": "book p. 1; PDF p. 32; section 1.1",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Classify the task, identify variables/parameters, and list missing assumptions before solving."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "explanation": "This AI-agent workflow uses Analyze a statistical problem statement to prevent invented assumptions, unsupported method selection, and overconfident interpretation beyond the textbook source.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "domain": "ai_agent_workflow_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ],
+      "source_topics_to_consult": [
+        "major_concept_map",
+        "diagnostic_questions"
+      ]
+    },
+    {
+      "id": "aiwf_extract_assumptions",
+      "workflow_name": "Extract assumptions from user data/question",
+      "goal": "Separate stated assumptions from inferred or missing ones.",
+      "preconditions": [
+        "problem statement",
+        "data/code if any"
+      ],
+      "inspection_steps": [
+        "Quote/paraphrase stated assumptions.",
+        "Map to assumption registry.",
+        "Mark inferred assumptions as provisional.",
+        "List missing checks.",
+        "Do not silently fill gaps."
+      ],
+      "source_records_to_consult": [],
+      "questions_to_ask": [
+        "Is iid stated or only implied?",
+        "Is normality claimed?"
+      ],
+      "safe_outputs": [
+        "Assumption table with status."
+      ],
+      "dangerous_outputs": [
+        "Assumptions presented as facts without evidence."
+      ],
+      "human_review_triggers": [
+        "sampling design absent"
+      ],
+      "completion_criteria": [
+        "assumptions status-coded"
+      ],
+      "failure_modes": [
+        "invented iid/normality"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "5",
+        "chapter_title": "Properties of a Random Sample",
+        "section_heading": "5.1. Basic Concepts of Random Samples",
+        "page_or_anchor": "book p. 169; PDF p. 200; section 5.1",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Separate stated assumptions from inferred or missing ones."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "explanation": "This AI-agent workflow uses Extract assumptions from user data/question to prevent invented assumptions, unsupported method selection, and overconfident interpretation beyond the textbook source.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "domain": "ai_agent_workflow_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-ignored-iid-assumption",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ],
+      "source_topics_to_consult": [
+        "assumption_registry"
+      ],
+      "related_topics": [
+        "assump_iid"
+      ]
+    },
+    {
+      "id": "aiwf_map_question",
+      "workflow_name": "Map an applied question to model, estimator, test, or interval",
+      "goal": "Route vague prompts to the right inference object.",
+      "preconditions": [
+        "user question"
+      ],
+      "inspection_steps": [
+        "Identify action verb.",
+        "Map estimate/test/interval/predict/model.",
+        "Pick candidate source chapters.",
+        "Ask missing diagnostics.",
+        "Return safe next step."
+      ],
+      "source_records_to_consult": [],
+      "questions_to_ask": [
+        "Is the user asking whether, how much, or where?"
+      ],
+      "safe_outputs": [
+        "Correct inference category."
+      ],
+      "dangerous_outputs": [
+        "p-value for estimation task or CI for causal claim without model."
+      ],
+      "human_review_triggers": [
+        "ambiguous decision"
+      ],
+      "completion_criteria": [
+        "category chosen"
+      ],
+      "failure_modes": [
+        "wrong output type"
+      ],
+      "related_record_ids": [
+        "concept_construct_then_evaluate"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "7",
+        "chapter_title": "Point Estimation",
+        "section_heading": "7.1. Introduction",
+        "page_or_anchor": "book p. 252; PDF p. 283; section 7.1",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Route vague prompts to the right inference object."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "explanation": "This AI-agent workflow uses Map an applied question to model, estimator, test, or interval to prevent invented assumptions, unsupported method selection, and overconfident interpretation beyond the textbook source.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "domain": "ai_agent_workflow_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-pvalue-as-null-probability",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ],
+      "source_topics_to_consult": [
+        "decision_rules",
+        "applied_statistical_workflows"
+      ]
+    },
+    {
+      "id": "aiwf_review_code",
+      "workflow_name": "Review Python/R/Excel statistical code for assumption mismatches",
+      "goal": "Find mismatches between code, model assumptions, and interpretation.",
+      "preconditions": [
+        "code",
+        "data description",
+        "software versions"
+      ],
+      "inspection_steps": [
+        "Identify statistical function.",
+        "Map to source method.",
+        "Check assumptions and defaults needing current docs.",
+        "Flag p-value/CI interpretation.",
+        "Recommend verification sources."
+      ],
+      "source_records_to_consult": [],
+      "questions_to_ask": [
+        "Which function and version?",
+        "What model does it fit?"
+      ],
+      "safe_outputs": [
+        "Assumption mismatch report."
+      ],
+      "dangerous_outputs": [
+        "Claiming package default behavior without checking current docs."
+      ],
+      "human_review_triggers": [
+        "software defaults",
+        "high-stakes decision"
+      ],
+      "completion_criteria": [
+        "current verification flags applied"
+      ],
+      "failure_modes": [
+        "outdated defaults"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "Appendix",
+        "chapter_title": "Computer Algebra",
+        "section_heading": "Computer Algebra",
+        "page_or_anchor": "book pp. 497-502; PDF pp. 528-533",
+        "definition_theorem_example_table_or_exercise": "Computer Algebra",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Find mismatches between code, model assumptions, and interpretation."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "explanation": "This AI-agent workflow uses Review Python/R/Excel statistical code for assumption mismatches to prevent invented assumptions, unsupported method selection, and overconfident interpretation beyond the textbook source.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "domain": "ai_agent_workflow_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-pvalue-as-null-probability",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ],
+      "source_topics_to_consult": [
+        "current_verification_flags",
+        "method_records"
+      ],
+      "related_topics": [
+        "current_verification_flags"
+      ]
+    },
+    {
+      "id": "aiwf_review_test_interpretation",
+      "workflow_name": "Review a hypothesis test interpretation",
+      "goal": "Check p-value, size, power, null/alternative, and conclusion wording.",
+      "preconditions": [
+        "test output",
+        "hypotheses"
+      ],
+      "inspection_steps": [
+        "Name H0/H1.",
+        "Identify statistic and calibration.",
+        "Check size/level.",
+        "Review power/effect size.",
+        "Rewrite interpretation safely."
+      ],
+      "source_records_to_consult": [
+        "method_power_size_eval",
+        "method_pvalue_interpretation"
+      ],
+      "questions_to_ask": [
+        "Is p interpreted as P(H0)?"
+      ],
+      "safe_outputs": [
+        "Safe test interpretation."
+      ],
+      "dangerous_outputs": [
+        "Null probability or proof of no effect."
+      ],
+      "human_review_triggers": [
+        "p-value misuse"
+      ],
+      "completion_criteria": [
+        "misuse corrected"
+      ],
+      "failure_modes": [
+        "posterior probability wording"
+      ],
+      "related_record_ids": [
+        "misuse_pvalue_null_true"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "8",
+        "chapter_title": "Hypothesis Testing",
+        "section_heading": "8.3.4. p-Values",
+        "page_or_anchor": "book p. 322; PDF p. 353; section 8.3.4",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Check p-value, size, power, null/alternative, and conclusion wording."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "explanation": "This AI-agent workflow uses Review a hypothesis test interpretation to prevent invented assumptions, unsupported method selection, and overconfident interpretation beyond the textbook source.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "domain": "ai_agent_workflow_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-pvalue-as-null-probability",
+        "stat-risk-ignored-power",
+        "stat-risk-size-level-confusion",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ]
+    },
+    {
+      "id": "aiwf_review_ci",
+      "workflow_name": "Review a confidence interval interpretation",
+      "goal": "Ensure interval type and probability statement are correct.",
+      "preconditions": [
+        "interval output",
+        "method"
+      ],
+      "inspection_steps": [
+        "Identify confidence/credible/prediction interval.",
+        "Check construction assumptions.",
+        "Check coverage or posterior interpretation.",
+        "Flag asymptotic if applicable.",
+        "Rewrite conclusion."
+      ],
+      "source_records_to_consult": [
+        "method_coverage_evaluation",
+        "method_bayesian_interval"
+      ],
+      "questions_to_ask": [
+        "Coverage or posterior probability?"
+      ],
+      "safe_outputs": [
+        "Correct interval interpretation."
+      ],
+      "dangerous_outputs": [
+        "95% chance statement for frequentist CI."
+      ],
+      "human_review_triggers": [
+        "ambiguous interval type"
+      ],
+      "completion_criteria": [
+        "interpretation corrected"
+      ],
+      "failure_modes": [
+        "coverage omitted"
+      ],
+      "related_record_ids": [
+        "misuse_confidence_posterior"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "9",
+        "chapter_title": "Interval Estimation",
+        "section_heading": "9.3.1. Size and Coverage Probability",
+        "page_or_anchor": "book p. 356; PDF p. 387; section 9.3.1",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Ensure interval type and probability statement are correct."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "explanation": "This AI-agent workflow uses Review a confidence interval interpretation to prevent invented assumptions, unsupported method selection, and overconfident interpretation beyond the textbook source.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "domain": "ai_agent_workflow_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-size-level-confusion",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-asymptotic-overuse",
+        "stat-risk-software-defaults"
+      ]
+    },
+    {
+      "id": "aiwf_review_regression",
+      "workflow_name": "Review a regression analysis",
+      "goal": "Classify regression model and check assumptions, diagnostics, and interpretation scope.",
+      "preconditions": [
+        "regression output",
+        "data context"
+      ],
+      "inspection_steps": [
+        "Identify response type.",
+        "Check linear/logistic/EIV/robust appropriateness.",
+        "Review residuals/leverage/separation.",
+        "Check inference assumptions.",
+        "Flag extrapolation/causality."
+      ],
+      "source_records_to_consult": [
+        "method_simple_linear_regression",
+        "method_logistic_regression",
+        "method_errors_in_variables_mle"
+      ],
+      "questions_to_ask": [
+        "Are predictors measured with error?",
+        "Is x0 in support?"
+      ],
+      "safe_outputs": [
+        "Regression review."
+      ],
+      "dangerous_outputs": [
+        "Causal/extrapolated claims without design."
+      ],
+      "human_review_triggers": [
+        "binary response",
+        "outliers",
+        "measurement error"
+      ],
+      "completion_criteria": [
+        "risks identified"
+      ],
+      "failure_modes": [
+        "wrong model family"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "11",
+        "chapter_title": "Analysis of Variance and Regression",
+        "section_heading": "11.3. Simple Linear Regression",
+        "page_or_anchor": "book p. 435; PDF p. 466; section 11.3",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Classify regression model and check assumptions, diagnostics, and interpretation scope."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "explanation": "This AI-agent workflow uses Review a regression analysis to prevent invented assumptions, unsupported method selection, and overconfident interpretation beyond the textbook source.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "domain": "ai_agent_workflow_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-nonunique-mle",
+        "stat-risk-unbiasedness-as-best",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-regression-assumption-violation",
+        "stat-risk-software-defaults"
+      ],
+      "related_topics": [
+        "workflow_review_regression"
+      ]
+    },
+    {
+      "id": "aiwf_detect_pvalue_misuse",
+      "workflow_name": "Detect p-value misuse",
+      "goal": "Spot and repair common p-value errors.",
+      "preconditions": [
+        "user interpretation"
+      ],
+      "inspection_steps": [
+        "Search for probability-H0 wording.",
+        "Check null/statistic/tail.",
+        "Check multiplicity/power if relevant.",
+        "Rewrite in null-calibrated language."
+      ],
+      "source_records_to_consult": [
+        "misuse_pvalue_null_true",
+        "method_pvalue_interpretation"
+      ],
+      "questions_to_ask": [
+        "What is the null distribution?"
+      ],
+      "safe_outputs": [
+        "Corrected p-value wording."
+      ],
+      "dangerous_outputs": [
+        "Probability null true or effect absent."
+      ],
+      "human_review_triggers": [
+        "policy/reporting context"
+      ],
+      "completion_criteria": [
+        "misuse flagged"
+      ],
+      "failure_modes": [
+        "p-hacking ignored"
+      ],
+      "related_record_ids": [
+        "misuse_pvalue_null_true"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "8",
+        "chapter_title": "Hypothesis Testing",
+        "section_heading": "8.3.4. p-Values",
+        "page_or_anchor": "book p. 322; PDF p. 353; section 8.3.4",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Spot and repair common p-value errors."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "explanation": "This AI-agent workflow uses Detect p-value misuse to prevent invented assumptions, unsupported method selection, and overconfident interpretation beyond the textbook source.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "domain": "ai_agent_workflow_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-pvalue-as-null-probability",
+        "stat-risk-ignored-power",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ]
+    },
+    {
+      "id": "aiwf_detect_asymptotic_overuse",
+      "workflow_name": "Detect overreliance on asymptotics",
+      "goal": "Identify when large-sample approximations need caveats or simulation/exact alternatives.",
+      "preconditions": [
+        "method/output",
+        "n",
+        "model"
+      ],
+      "inspection_steps": [
+        "Identify limiting theorem.",
+        "Check n and regularity.",
+        "Look for boundaries/discreteness/separation/heavy tails.",
+        "Recommend simulation/exact comparison."
+      ],
+      "source_records_to_consult": [
+        "method_large_sample_lrt",
+        "method_approx_mle_intervals",
+        "misuse_asymptotics_small_sample"
+      ],
+      "questions_to_ask": [
+        "Why is n large enough?"
+      ],
+      "safe_outputs": [
+        "Approximation caveat or alternative."
+      ],
+      "dangerous_outputs": [
+        "Exact-sounding conclusion from limiting theorem."
+      ],
+      "human_review_triggers": [
+        "small n",
+        "boundary"
+      ],
+      "completion_criteria": [
+        "approximation status stated"
+      ],
+      "failure_modes": [
+        "chi-square assumed blindly"
+      ],
+      "related_record_ids": [
+        "dec_asymptotics"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "10",
+        "chapter_title": "Asymptotic Evaluations",
+        "section_heading": "10.1. Point Estimation",
+        "page_or_anchor": "book p. 377; PDF p. 408; section 10.1",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Identify when large-sample approximations need caveats or simulation/exact alternatives."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "explanation": "This AI-agent workflow uses Detect overreliance on asymptotics to prevent invented assumptions, unsupported method selection, and overconfident interpretation beyond the textbook source.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "domain": "ai_agent_workflow_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-invalid-differentiation-under-integral",
+        "stat-risk-nonunique-mle",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-asymptotic-overuse",
+        "stat-risk-software-defaults"
+      ]
+    },
+    {
+      "id": "aiwf_theorem_explanation",
+      "workflow_name": "Produce a theorem-grounded explanation",
+      "goal": "Explain a result with assumptions, conclusion, proof intuition, and limits.",
+      "preconditions": [
+        "theorem/result record"
+      ],
+      "inspection_steps": [
+        "Name theorem.",
+        "List assumptions.",
+        "State conclusion plainly.",
+        "Give short proof idea.",
+        "State what does not follow."
+      ],
+      "source_records_to_consult": [],
+      "questions_to_ask": [
+        "Which assumption is doing the work?"
+      ],
+      "safe_outputs": [
+        "Concise theorem explanation."
+      ],
+      "dangerous_outputs": [
+        "Long proof copy or assumption-free statement."
+      ],
+      "human_review_triggers": [
+        "formal proof requested",
+        "copyright risk"
+      ],
+      "completion_criteria": [
+        "assumptions and conclusion included"
+      ],
+      "failure_modes": [
+        "proof reproduced"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "1",
+        "chapter_title": "Probability Theory",
+        "section_heading": "1.2. Probability Theory",
+        "page_or_anchor": "book p. 4; PDF p. 35; section 1.2",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Explain a result with assumptions, conclusion, proof intuition, and limits."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "explanation": "This AI-agent workflow uses Produce a theorem-grounded explanation to prevent invented assumptions, unsupported method selection, and overconfident interpretation beyond the textbook source.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "domain": "ai_agent_workflow_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-unbiasedness-as-best",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ],
+      "source_topics_to_consult": [
+        "theorem_registry",
+        "proof_idea_records"
+      ],
+      "related_topics": [
+        "proof_idea_records"
+      ]
+    },
+    {
+      "id": "aiwf_study_guide",
+      "workflow_name": "Create a study guide from a chapter",
+      "goal": "Build a source-traceable study guide without copying text or exercises.",
+      "preconditions": [
+        "chapter number"
+      ],
+      "inspection_steps": [
+        "Use chapter map.",
+        "List core definitions/results.",
+        "Add example patterns.",
+        "Add diagnostic questions.",
+        "Avoid exercise solutions."
+      ],
+      "source_records_to_consult": [],
+      "questions_to_ask": [
+        "Which concepts are central?"
+      ],
+      "safe_outputs": [
+        "Paraphrased study guide with records."
+      ],
+      "dangerous_outputs": [
+        "Copied proof/exercise text."
+      ],
+      "human_review_triggers": [
+        "theorem-heavy chapter"
+      ],
+      "completion_criteria": [
+        "copyright-safe guide"
+      ],
+      "failure_modes": [
+        "exercise manual risk"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "Preface",
+        "chapter_title": "",
+        "section_heading": "Preface",
+        "page_or_anchor": "page anchor not isolated; see source_map",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Build a source-traceable study guide without copying text or exercises."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "explanation": "This AI-agent workflow uses Create a study guide from a chapter to prevent invented assumptions, unsupported method selection, and overconfident interpretation beyond the textbook source.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "domain": "ai_agent_workflow_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-unbiasedness-as-best",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ],
+      "source_topics_to_consult": [
+        "chapter_knowledge_records",
+        "definition_records",
+        "theorem_registry"
+      ],
+      "related_topics": [
+        "chapter_knowledge_records"
+      ]
+    },
+    {
+      "id": "aiwf_proof_intuition",
+      "workflow_name": "Create proof intuition without copying proof",
+      "goal": "Explain why a theorem works at a high level.",
+      "preconditions": [
+        "theorem id"
+      ],
+      "inspection_steps": [
+        "Identify proof strategy record.",
+        "Explain high-level move.",
+        "Avoid line-by-line proof.",
+        "Connect to examples."
+      ],
+      "source_records_to_consult": [],
+      "questions_to_ask": [
+        "What is the main trick?"
+      ],
+      "safe_outputs": [
+        "Paraphrased proof intuition."
+      ],
+      "dangerous_outputs": [
+        "Long proof reproduction."
+      ],
+      "human_review_triggers": [
+        "copyright-sensitive proof"
+      ],
+      "completion_criteria": [
+        "no long source text"
+      ],
+      "failure_modes": [
+        "verbatim proof"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "1",
+        "chapter_title": "Probability Theory",
+        "section_heading": "1.2. Probability Theory",
+        "page_or_anchor": "book p. 4; PDF p. 35; section 1.2",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Explain why a theorem works at a high level."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "explanation": "This AI-agent workflow uses Create proof intuition without copying proof to prevent invented assumptions, unsupported method selection, and overconfident interpretation beyond the textbook source.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "domain": "ai_agent_workflow_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-size-level-confusion",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ],
+      "source_topics_to_consult": [
+        "proof_idea_records",
+        "theorem_registry"
+      ],
+      "related_topics": [
+        "proof_idea_records"
+      ]
+    },
+    {
+      "id": "aiwf_evidence_needed",
+      "workflow_name": "Identify evidence needed before recommending a method",
+      "goal": "Ask targeted questions rather than inventing assumptions.",
+      "preconditions": [
+        "vague user request"
+      ],
+      "inspection_steps": [
+        "Classify method candidates.",
+        "Pull assumptions from records.",
+        "Ask only missing high-value questions.",
+        "Offer provisional options if helpful."
+      ],
+      "source_records_to_consult": [],
+      "questions_to_ask": [
+        "What data/model/design evidence is missing?"
+      ],
+      "safe_outputs": [
+        "Targeted clarification checklist."
+      ],
+      "dangerous_outputs": [
+        "Immediate recommendation with missing data."
+      ],
+      "human_review_triggers": [
+        "missing sampling design"
+      ],
+      "completion_criteria": [
+        "needed evidence listed"
+      ],
+      "failure_modes": [
+        "over-questioning or assumption invention"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "7",
+        "chapter_title": "Point Estimation",
+        "section_heading": "7.1. Introduction",
+        "page_or_anchor": "book p. 252; PDF p. 283; section 7.1",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Ask targeted questions rather than inventing assumptions."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "explanation": "This AI-agent workflow uses Identify evidence needed before recommending a method to prevent invented assumptions, unsupported method selection, and overconfident interpretation beyond the textbook source.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "domain": "ai_agent_workflow_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ],
+      "source_topics_to_consult": [
+        "diagnostic_questions",
+        "assumption_registry"
+      ],
+      "related_topics": [
+        "diagnostic_questions"
+      ]
+    },
+    {
+      "id": "aiwf_book_not_apply",
+      "workflow_name": "Decide when the book does not apply",
+      "goal": "Recognize when source theory is insufficient for current software, causal, design, or modern-method questions.",
+      "preconditions": [
+        "user request"
+      ],
+      "inspection_steps": [
+        "Check if question is about current software/API.",
+        "Check if model/data design is outside source scope.",
+        "Use source for principles only.",
+        "Flag current verification or ask for another source."
+      ],
+      "source_records_to_consult": [],
+      "questions_to_ask": [
+        "Is this a current package default or a theorem?"
+      ],
+      "safe_outputs": [
+        "Scope boundary statement."
+      ],
+      "dangerous_outputs": [
+        "Outdated or unsupported claim."
+      ],
+      "human_review_triggers": [
+        "software behavior",
+        "complex survey",
+        "causal inference"
+      ],
+      "completion_criteria": [
+        "scope limitation clear"
+      ],
+      "failure_modes": [
+        "book overextended"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "Appendix",
+        "chapter_title": "Computer Algebra",
+        "section_heading": "Computer Algebra",
+        "page_or_anchor": "book pp. 497-502; PDF pp. 528-533",
+        "definition_theorem_example_table_or_exercise": "Computer Algebra",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Recognize when source theory is insufficient for current software, causal, design, or modern-method questions."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "explanation": "This AI-agent workflow uses Decide when the book does not apply to prevent invented assumptions, unsupported method selection, and overconfident interpretation beyond the textbook source.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "domain": "ai_agent_workflow_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-sufficiency-overclaim",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ],
+      "source_topics_to_consult": [
+        "current_verification_flags",
+        "source_completeness"
+      ],
+      "related_topics": [
+        "current_verification_flags"
+      ]
+    },
+    {
+      "id": "aiwf_study_support_without_exercise_solution",
+      "workflow_name": "Provide study support without copying proofs or solving source exercises",
+      "goal": "Help the learner identify relevant definitions, assumptions, and theorem structure without reproducing long proof text or a solved-exercise manual.",
+      "preconditions": [
+        "user asks about textbook study, theorem understanding, or an exercise-like problem"
+      ],
+      "inspection_steps": [
+        "Classify the request as concept, proof sketch, derivation hint, or exercise solution.",
+        "Offer definitions, assumptions, and strategy before computation.",
+        "Avoid verbatim long proof reproduction and do not present a complete solved exercise from the source.",
+        "Ask the learner to supply their attempt when appropriate."
+      ],
+      "source_records_to_consult": [
+        "dq_ai_no_solved_exercises"
+      ],
+      "source_topics_to_consult": [
+        "relevant chapter theorem and assumption records",
+        "STATISTICAL_INFERENCE_ASSISTANT_START_HERE_v2.md"
+      ],
+      "questions_to_ask": [
+        "Which theorem or definition is the exercise practicing?",
+        "What step has the learner attempted?"
+      ],
+      "safe_outputs": [
+        "hints",
+        "assumption checklist",
+        "short proof strategy",
+        "parallel example not copied from source"
+      ],
+      "dangerous_outputs": [
+        "complete solution to a source exercise",
+        "long copied proof"
+      ],
+      "human_review_triggers": [
+        "exam or graded assignment context",
+        "request for verbatim textbook content"
+      ],
+      "completion_criteria": [
+        "learner receives enough structure to proceed without source substitution"
+      ],
+      "failure_modes": [
+        "solved-exercise leakage",
+        "overly compressed theorem misuse"
+      ],
+      "related_record_ids": [
+        "dq_ai_no_solved_exercises"
+      ],
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-unbiasedness-as-best",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "",
+        "chapter_title": "",
+        "section_heading": "Prefaces and exercise sections",
+        "page_or_anchor": "",
+        "definition_theorem_example_table_or_exercise": "V2 AI study-support workflow",
+        "support_role": "ai_agent_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The source includes extensive exercises and theorem/proof structure."
+        ],
+        "inferred_claims": [
+          "AI support should teach concepts without becoming a solved-exercises manual."
+        ]
+      },
+      "domain": "ai_agent_workflow_extension",
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "explanation": "This AI-agent workflow uses Provide study support without copying proofs or solving source exercises to prevent invented assumptions, unsupported method selection, and overconfident interpretation beyond the textbook source.",
+        "confidence": "low",
+        "human_review_recommended": true
+      }
+    }
+  ]
+}

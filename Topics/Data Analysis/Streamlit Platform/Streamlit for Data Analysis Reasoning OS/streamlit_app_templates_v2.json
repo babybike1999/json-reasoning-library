@@ -1,0 +1,966 @@
+{
+  "file": "streamlit_application_templates_v2.json",
+  "records": [
+    {
+      "id": "streamlit-template-data-upload-validation",
+      "template_name": "data upload validation app",
+      "primary_user": "analyst or operations user",
+      "business_problem": "Safely accept business files, validate structure, and produce a validation report.",
+      "recommended_pages": [
+        "Upload",
+        "Validation report",
+        "Preview",
+        "Download results"
+      ],
+      "required_inputs": [
+        "file",
+        "expected schema",
+        "business date/context"
+      ],
+      "service_dependencies": [
+        "parser service",
+        "validation layer",
+        "artifact store"
+      ],
+      "state_machine": [
+        "idle",
+        "file_selected",
+        "validated",
+        "previewed",
+        "reported"
+      ],
+      "safe_actions": [
+        "validate file",
+        "download issue report",
+        "process only valid rows"
+      ],
+      "dangerous_actions": [
+        "parse before validation",
+        "overwrite source data"
+      ],
+      "result_states": [
+        "valid",
+        "invalid",
+        "partial",
+        "blocked"
+      ],
+      "required_tests": [
+        "parser fixtures",
+        "bad schema tests",
+        "download redaction tests"
+      ],
+      "security_requirements": [
+        "file type/size limits",
+        "tenant-scoped downloads"
+      ],
+      "observability_requirements": [
+        "run id",
+        "file hash",
+        "validation counts"
+      ],
+      "human_review_triggers": [
+        "schema mismatch",
+        "large file",
+        "sensitive columns"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-file-upload-without-validation",
+        "streamlit-risk-secret-leakage"
+      ],
+      "source_supported_elements": [
+        "st.file_uploader",
+        "st.stop",
+        "dataframe preview",
+        "download behavior"
+      ],
+      "operational_extensions": [
+        "durable artifacts",
+        "schema contracts"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          2
+        ],
+        "evidence": [
+          "st.file_uploader",
+          "st.stop",
+          "dataframe preview",
+          "download behavior"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Template reduced to a distinct practical app archetype for AI-agent design.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-template-csv-xlsx-cleaning-preview",
+      "template_name": "CSV/XLSX cleaning preview app",
+      "primary_user": "nontechnical data preparer",
+      "business_problem": "Preview cleaning effects before exporting clean files.",
+      "recommended_pages": [
+        "Upload",
+        "Mapping",
+        "Preview diff",
+        "Export"
+      ],
+      "required_inputs": [
+        "file",
+        "column mapping",
+        "cleaning options"
+      ],
+      "service_dependencies": [
+        "file parser",
+        "cleaning service",
+        "report generator"
+      ],
+      "state_machine": [
+        "uploaded",
+        "mapped",
+        "dry_run_clean",
+        "reviewed",
+        "exported"
+      ],
+      "safe_actions": [
+        "preview transformations",
+        "export clean copy"
+      ],
+      "dangerous_actions": [
+        "modify original without preview",
+        "hide dropped rows"
+      ],
+      "result_states": [
+        "clean_preview",
+        "warnings",
+        "export_ready"
+      ],
+      "required_tests": [
+        "golden file tests",
+        "row-count preservation tests"
+      ],
+      "security_requirements": [
+        "download redaction",
+        "permissions for source data"
+      ],
+      "observability_requirements": [
+        "row counts",
+        "warning counts",
+        "export hash"
+      ],
+      "human_review_triggers": [
+        "dropped rows",
+        "type coercion warnings"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-file-upload-without-validation",
+        "streamlit-risk-owner-dashboard-false-green"
+      ],
+      "source_supported_elements": [
+        "Chapter 2 file workflows",
+        "Chapter 3 visual previews"
+      ],
+      "operational_extensions": [
+        "XLSX parser validation"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          2,
+          3
+        ],
+        "evidence": [
+          "Chapter 2 file workflows",
+          "Chapter 3 visual previews"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Template reduced to a distinct practical app archetype for AI-agent design.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-template-executive-dashboard",
+      "template_name": "executive dashboard",
+      "primary_user": "owner/executive",
+      "business_problem": "Show trustworthy KPIs with freshness, scope, and exceptions.",
+      "recommended_pages": [
+        "Overview",
+        "Trends",
+        "Exceptions",
+        "Definitions"
+      ],
+      "required_inputs": [
+        "date range",
+        "business unit",
+        "metric filters"
+      ],
+      "service_dependencies": [
+        "metrics service",
+        "warehouse adapter",
+        "definition registry"
+      ],
+      "state_machine": [
+        "loaded",
+        "filtered",
+        "stale_checked",
+        "exception_review"
+      ],
+      "safe_actions": [
+        "filter dashboard",
+        "download summary"
+      ],
+      "dangerous_actions": [
+        "show green KPIs without freshness/source markers"
+      ],
+      "result_states": [
+        "fresh",
+        "stale",
+        "partial",
+        "error"
+      ],
+      "required_tests": [
+        "metric definition tests",
+        "stale data tests"
+      ],
+      "security_requirements": [
+        "role-based metric access",
+        "redacted exports"
+      ],
+      "observability_requirements": [
+        "last refresh",
+        "data completeness",
+        "metric version"
+      ],
+      "human_review_triggers": [
+        "stale data",
+        "partial source failure"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-owner-dashboard-false-green",
+        "streamlit-risk-cache-stale-data"
+      ],
+      "source_supported_elements": [
+        "Chapter 3 visualization",
+        "Chapter 6 layout"
+      ],
+      "operational_extensions": [
+        "metric registry and observability"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          3,
+          6
+        ],
+        "evidence": [
+          "Chapter 3 visualization",
+          "Chapter 6 layout"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Template reduced to a distinct practical app archetype for AI-agent design.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-template-owner-operations-console",
+      "template_name": "owner-facing operations console",
+      "primary_user": "business owner or manager",
+      "business_problem": "Review operational issues and approve safe actions.",
+      "recommended_pages": [
+        "Today",
+        "Issues",
+        "Dry-run plans",
+        "Run history"
+      ],
+      "required_inputs": [
+        "location/team/date",
+        "action parameters"
+      ],
+      "service_dependencies": [
+        "permissions service",
+        "job service",
+        "run ledger"
+      ],
+      "state_machine": [
+        "review",
+        "dry_run",
+        "confirm",
+        "execute",
+        "history"
+      ],
+      "safe_actions": [
+        "approve linked dry-run",
+        "download run report"
+      ],
+      "dangerous_actions": [
+        "perform live write from top-level render"
+      ],
+      "result_states": [
+        "ready",
+        "warning",
+        "blocked",
+        "executed",
+        "partial"
+      ],
+      "required_tests": [
+        "permission-denied tests",
+        "double-submit tests"
+      ],
+      "security_requirements": [
+        "backend authorization",
+        "audit trail"
+      ],
+      "observability_requirements": [
+        "decision id",
+        "actor",
+        "run id"
+      ],
+      "human_review_triggers": [
+        "false success",
+        "unauthorized action"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-live-write-without-dry-run",
+        "streamlit-risk-hidden-widget-authz"
+      ],
+      "source_supported_elements": [
+        "forms/widgets/status display"
+      ],
+      "operational_extensions": [
+        "backend authorization and run ledger"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          1,
+          4
+        ],
+        "evidence": [
+          "forms/widgets/status display"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Template reduced to a distinct practical app archetype for AI-agent design.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-template-api-control-console",
+      "template_name": "API control console",
+      "primary_user": "technical operator or trusted admin",
+      "business_problem": "Control external API actions with preview, scoping, and idempotency.",
+      "recommended_pages": [
+        "Scope",
+        "Dry run",
+        "Confirm",
+        "Execution receipt",
+        "Logs"
+      ],
+      "required_inputs": [
+        "actor scope",
+        "target ids",
+        "operation"
+      ],
+      "service_dependencies": [
+        "API adapter",
+        "authz service",
+        "idempotency store"
+      ],
+      "state_machine": [
+        "scoped",
+        "dry_run_ready",
+        "confirmed",
+        "executed",
+        "receipt_shown"
+      ],
+      "safe_actions": [
+        "dry-run API call",
+        "execute approved idempotent action"
+      ],
+      "dangerous_actions": [
+        "retry mutation on every rerun",
+        "show token in error"
+      ],
+      "result_states": [
+        "accepted",
+        "success",
+        "failed",
+        "timeout",
+        "partial"
+      ],
+      "required_tests": [
+        "mocked API tests",
+        "timeout tests",
+        "redaction tests"
+      ],
+      "security_requirements": [
+        "least privilege tokens",
+        "backend authz"
+      ],
+      "observability_requirements": [
+        "request id",
+        "idempotency key",
+        "status"
+      ],
+      "human_review_triggers": [
+        "timeout",
+        "rate limit",
+        "partial external failure"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-double-submit",
+        "streamlit-risk-secret-leakage"
+      ],
+      "source_supported_elements": [
+        "forms/status/progress elements"
+      ],
+      "operational_extensions": [
+        "API adapter contracts"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          4
+        ],
+        "evidence": [
+          "forms/status/progress elements"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Template reduced to a distinct practical app archetype for AI-agent design.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-template-dryrun-live-job-launcher",
+      "template_name": "dry-run/live job launcher",
+      "primary_user": "operations analyst",
+      "business_problem": "Launch jobs only after preview and linked confirmation.",
+      "recommended_pages": [
+        "Inputs",
+        "Dry run",
+        "Confirm",
+        "Live run",
+        "Result"
+      ],
+      "required_inputs": [
+        "job parameters",
+        "file/context",
+        "confirmation text"
+      ],
+      "service_dependencies": [
+        "job planner",
+        "job runner",
+        "run ledger"
+      ],
+      "state_machine": [
+        "editing",
+        "planned",
+        "confirmed",
+        "running",
+        "terminal"
+      ],
+      "safe_actions": [
+        "create plan",
+        "execute plan id",
+        "download report"
+      ],
+      "dangerous_actions": [
+        "run job from widget edit",
+        "store job state only in session"
+      ],
+      "result_states": [
+        "queued",
+        "running",
+        "success",
+        "failed",
+        "cancelled"
+      ],
+      "required_tests": [
+        "plan mismatch test",
+        "duplicate-submit test"
+      ],
+      "security_requirements": [
+        "backend authz",
+        "idempotency",
+        "audit ledger"
+      ],
+      "observability_requirements": [
+        "plan id",
+        "job id",
+        "terminal state"
+      ],
+      "human_review_triggers": [
+        "expired plan",
+        "long run",
+        "partial failure"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-live-write-without-dry-run",
+        "streamlit-risk-session-state-as-storage"
+      ],
+      "source_supported_elements": [
+        "st.form",
+        "status/progress"
+      ],
+      "operational_extensions": [
+        "external job runner"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          4
+        ],
+        "evidence": [
+          "st.form",
+          "status/progress"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Template reduced to a distinct practical app archetype for AI-agent design.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-template-run-history-issue-review",
+      "template_name": "run history and issue review app",
+      "primary_user": "manager, QA reviewer, or support",
+      "business_problem": "Review past runs, failures, and downloadable evidence.",
+      "recommended_pages": [
+        "History",
+        "Run detail",
+        "Issue report",
+        "Exports"
+      ],
+      "required_inputs": [
+        "filters",
+        "run id",
+        "status"
+      ],
+      "service_dependencies": [
+        "run ledger",
+        "artifact store",
+        "issue service"
+      ],
+      "state_machine": [
+        "history_loaded",
+        "run_selected",
+        "issues_filtered",
+        "artifact_downloaded"
+      ],
+      "safe_actions": [
+        "filter history",
+        "review issue",
+        "download redacted report"
+      ],
+      "dangerous_actions": [
+        "trust session state as durable history"
+      ],
+      "result_states": [
+        "empty",
+        "loaded",
+        "partial",
+        "restricted"
+      ],
+      "required_tests": [
+        "history persistence tests",
+        "permission filters"
+      ],
+      "security_requirements": [
+        "tenant/resource restrictions",
+        "redacted artifacts"
+      ],
+      "observability_requirements": [
+        "run counts",
+        "issue counts",
+        "artifact ids"
+      ],
+      "human_review_triggers": [
+        "missing runs",
+        "unauthorized history"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-session-state-as-storage",
+        "streamlit-risk-hidden-widget-authz"
+      ],
+      "source_supported_elements": [
+        "dataframe/table display"
+      ],
+      "operational_extensions": [
+        "durable ledger"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "low",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [],
+        "evidence": [
+          "dataframe/table display"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "low",
+        "method": "Template reduced to a distinct practical app archetype for AI-agent design.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-template-nontechnical-report-processor",
+      "template_name": "nontechnical-user report processor",
+      "primary_user": "frontline or accounting user",
+      "business_problem": "Turn a user-uploaded file into a business-ready report with plain guidance.",
+      "recommended_pages": [
+        "Start",
+        "Upload",
+        "Fix issues",
+        "Preview",
+        "Download"
+      ],
+      "required_inputs": [
+        "file",
+        "business period",
+        "optional notes"
+      ],
+      "service_dependencies": [
+        "parser",
+        "validation",
+        "report service"
+      ],
+      "state_machine": [
+        "guided_upload",
+        "validated",
+        "needs_fix",
+        "report_ready"
+      ],
+      "safe_actions": [
+        "show plain blockers",
+        "download report"
+      ],
+      "dangerous_actions": [
+        "show stack traces or technical-only errors"
+      ],
+      "result_states": [
+        "ready",
+        "needs_fix",
+        "partial",
+        "complete"
+      ],
+      "required_tests": [
+        "copy review tests",
+        "bad file fixtures"
+      ],
+      "security_requirements": [
+        "safe downloads",
+        "PII redaction"
+      ],
+      "observability_requirements": [
+        "plain status",
+        "issue categories",
+        "report id"
+      ],
+      "human_review_triggers": [
+        "confusing error",
+        "partial success"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-raw-exception-exposure",
+        "streamlit-risk-file-upload-without-validation"
+      ],
+      "source_supported_elements": [
+        "file upload/download/status"
+      ],
+      "operational_extensions": [
+        "plain-language workflow design"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          2
+        ],
+        "evidence": [
+          "file upload/download/status"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Template reduced to a distinct practical app archetype for AI-agent design.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-template-admin-config-review",
+      "template_name": "admin-only configuration review app",
+      "primary_user": "administrator",
+      "business_problem": "Review runtime configuration without leaking secrets or granting permissions in UI only.",
+      "recommended_pages": [
+        "Environment",
+        "Config summary",
+        "Health checks",
+        "Audit"
+      ],
+      "required_inputs": [
+        "environment",
+        "feature flag filters"
+      ],
+      "service_dependencies": [
+        "config service",
+        "permissions service",
+        "secret status checker"
+      ],
+      "state_machine": [
+        "auth_checked",
+        "config_loaded",
+        "health_checked",
+        "audit_visible"
+      ],
+      "safe_actions": [
+        "view redacted config",
+        "run health check"
+      ],
+      "dangerous_actions": [
+        "print secrets",
+        "let dropdown grant admin role"
+      ],
+      "result_states": [
+        "loaded",
+        "restricted",
+        "warning",
+        "error"
+      ],
+      "required_tests": [
+        "secret redaction tests",
+        "permission-denied tests"
+      ],
+      "security_requirements": [
+        "admin authz",
+        "redacted secrets"
+      ],
+      "observability_requirements": [
+        "env label",
+        "config version",
+        "health status"
+      ],
+      "human_review_triggers": [
+        "wrong environment",
+        "secret leak"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-secret-leakage",
+        "streamlit-risk-session-state-as-authz"
+      ],
+      "source_supported_elements": [
+        "Chapter 5 secrets/deployment"
+      ],
+      "operational_extensions": [
+        "admin permission service"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          5
+        ],
+        "evidence": [
+          "Chapter 5 secrets/deployment"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Template reduced to a distinct practical app archetype for AI-agent design.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-template-existing-python-services-frontend",
+      "template_name": "Streamlit front end over existing Python services",
+      "primary_user": "team building an internal tool",
+      "business_problem": "Expose existing tested services through safe Streamlit UI.",
+      "recommended_pages": [
+        "Task selector",
+        "Inputs",
+        "Preview",
+        "Run",
+        "History"
+      ],
+      "required_inputs": [
+        "service request fields",
+        "actor/scope"
+      ],
+      "service_dependencies": [
+        "existing Python service",
+        "adapter layer",
+        "run ledger"
+      ],
+      "state_machine": [
+        "inputs_ready",
+        "service_preview",
+        "confirmed",
+        "service_called",
+        "result_rendered"
+      ],
+      "safe_actions": [
+        "call service functions",
+        "render result contract"
+      ],
+      "dangerous_actions": [
+        "move service logic into app.py",
+        "call service on every rerun"
+      ],
+      "result_states": [
+        "preview",
+        "success",
+        "failed",
+        "partial"
+      ],
+      "required_tests": [
+        "service contract tests",
+        "rerun safety tests"
+      ],
+      "security_requirements": [
+        "service-level authz",
+        "audit ledger"
+      ],
+      "observability_requirements": [
+        "service version",
+        "run id",
+        "contract version"
+      ],
+      "human_review_triggers": [
+        "contract mismatch",
+        "duplicate call"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-ui-business-logic-coupling",
+        "streamlit-risk-rerun-side-effect"
+      ],
+      "source_supported_elements": [
+        "Chapters 1-7 demonstrate UI layer primitives"
+      ],
+      "operational_extensions": [
+        "service-oriented architecture"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          1,
+          2,
+          4,
+          6
+        ],
+        "evidence": [
+          "Chapters 1-7 demonstrate UI layer primitives"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": []
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "medium",
+        "method": "Template reduced to a distinct practical app archetype for AI-agent design.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    }
+  ]
+}

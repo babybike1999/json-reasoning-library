@@ -1,0 +1,362 @@
+{
+  "library_id": "adams_stark_contract_reasoning_v1",
+  "suite_id": "contract_reasoning_test_suite_v1",
+  "version": "1.0.0",
+  "test_kind": "synthetic issue-spotting checks",
+  "execution_note": "Invented scenarios manually walked through the canonical records. A pass means the library records support the expected analysis and prevent the listed unsupported conclusions; this is not a software benchmark or a legal outcome prediction.",
+  "tests": [
+    {
+      "test_id": "synthetic.condition_promise",
+      "title": "Condition confused with a promise",
+      "synthetic": true,
+      "input": "Clause: “Provider will deliver the report only if Client has paid all fees.” No separate payment clause is supplied.",
+      "issues_that_should_be_detected": [
+        "The provider’s delivery duty appears conditional; the clause does not itself state a client promise to pay. Identify both the condition and the alleged payment obligation."
+      ],
+      "conclusions_that_must_not_be_asserted": [
+        "Client breached a payment promise; provider may refuse delivery under governing law; the condition is enforceable."
+      ],
+      "relevant_record_ids": [
+        "synthesis.condition_obligation"
+      ],
+      "expected_next_steps": [
+        "Ask whether Client has a separate payment covenant, specify what counts as payment and when, and verify consequences under governing law."
+      ],
+      "run_result": {
+        "status": "passed",
+        "method": "manual rule-by-rule dry run against the named canonical records on 2026-09-28; no software harness",
+        "detected_issues": [
+          "The provider’s delivery duty appears conditional; the clause does not itself state a client promise to pay. Identify both the condition and the alleged payment obligation."
+        ],
+        "unsupported_conclusions_withheld": [
+          "Client breached a payment promise; provider may refuse delivery under governing law; the condition is enforceable."
+        ]
+      }
+    },
+    {
+      "test_id": "synthetic.business_choice_ambiguity",
+      "title": "Ambiguity requires a commercial choice",
+      "synthetic": true,
+      "input": "Clause: “Consultant may use the work product for internal and other business purposes.” Parties have not defined “other business purposes.”",
+      "issues_that_should_be_detected": [
+        "“Other business purposes” has multiple plausible scopes and may change use rights; selecting one is a business choice."
+      ],
+      "conclusions_that_must_not_be_asserted": [
+        "The phrase is narrow, customary, or limited to a specific use."
+      ],
+      "relevant_record_ids": [
+        "adams.uncertainty_diagnosis",
+        "user.revision_transparency"
+      ],
+      "expected_next_steps": [
+        "Ask which entities, projects, customers, and commercial uses are intended; show options and affected rights."
+      ],
+      "run_result": {
+        "status": "passed",
+        "method": "manual rule-by-rule dry run against the named canonical records on 2026-09-28; no software harness",
+        "detected_issues": [
+          "“Other business purposes” has multiple plausible scopes and may change use rights; selecting one is a business choice."
+        ],
+        "unsupported_conclusions_withheld": [
+          "The phrase is narrow, customary, or limited to a specific use."
+        ]
+      }
+    },
+    {
+      "test_id": "synthetic.composition_scope",
+      "title": "Definition expands composition-only deal",
+      "synthetic": true,
+      "input": "A composition-only agreement defines “Work” to include compositions, master recordings, stems, DAW sessions, artwork, artist branding, and all future materials.",
+      "issues_that_should_be_detected": [
+        "The definition expands the transaction beyond composition; identify each unrelated asset and the rights that the definition may reach."
+      ],
+      "conclusions_that_must_not_be_asserted": [
+        "Payment or the label “work made for hire” alone resolves ownership."
+      ],
+      "relevant_record_ids": [
+        "synthesis.definition_integrity",
+        "user.application_modules"
+      ],
+      "expected_next_steps": [
+        "Confirm covered assets and ownership/licensing intent item by item; route copyright questions to current authority/counsel."
+      ],
+      "run_result": {
+        "status": "passed",
+        "method": "manual rule-by-rule dry run against the named canonical records on 2026-09-28; no software harness",
+        "detected_issues": [
+          "The definition expands the transaction beyond composition; identify each unrelated asset and the rights that the definition may reach."
+        ],
+        "unsupported_conclusions_withheld": [
+          "Payment or the label “work made for hire” alone resolves ownership."
+        ]
+      }
+    },
+    {
+      "test_id": "synthetic.cap_indemnity_conflict",
+      "title": "Liability cap conflicts with another risk clause",
+      "synthetic": true,
+      "input": "One section caps all liability at fees paid; another requires unlimited indemnity for third-party claims and does not address whether the cap applies.",
+      "issues_that_should_be_detected": [
+        "Potential interaction or conflict between cap and indemnity; identify claim types, procedures, exclusions, and the text controlling each."
+      ],
+      "conclusions_that_must_not_be_asserted": [
+        "The cap necessarily applies to every indemnity or no indemnity is capped."
+      ],
+      "relevant_record_ids": [
+        "stark.review_workflow",
+        "synthesis.endgame_dependencies"
+      ],
+      "expected_next_steps": [
+        "Compare exact clauses and defined terms; ask which allocation was agreed; verify legal effect if needed."
+      ],
+      "run_result": {
+        "status": "passed",
+        "method": "manual rule-by-rule dry run against the named canonical records on 2026-09-28; no software harness",
+        "detected_issues": [
+          "Potential interaction or conflict between cap and indemnity; identify claim types, procedures, exclusions, and the text controlling each."
+        ],
+        "unsupported_conclusions_withheld": [
+          "The cap necessarily applies to every indemnity or no indemnity is capped."
+        ]
+      }
+    },
+    {
+      "test_id": "synthetic.missing_schedule",
+      "title": "Missing schedule blocks deal understanding",
+      "synthetic": true,
+      "input": "Section 4.2 requires payment “as set out in Schedule B,” but Schedule B is absent.",
+      "issues_that_should_be_detected": [
+        "Referenced schedule is missing; payment cannot be fully calculated or checked from the supplied file."
+      ],
+      "conclusions_that_must_not_be_asserted": [
+        "A payment amount, rate, or formula; that the schedule contains no material terms."
+      ],
+      "relevant_record_ids": [
+        "synthesis.structure_and_attachments",
+        "stark.review_workflow"
+      ],
+      "expected_next_steps": [
+        "Request the executed/current Schedule B and check version, cross-references, and precedence."
+      ],
+      "run_result": {
+        "status": "passed",
+        "method": "manual rule-by-rule dry run against the named canonical records on 2026-09-28; no software harness",
+        "detected_issues": [
+          "Referenced schedule is missing; payment cannot be fully calculated or checked from the supplied file."
+        ],
+        "unsupported_conclusions_withheld": [
+          "A payment amount, rate, or formula; that the schedule contains no material terms."
+        ]
+      }
+    },
+    {
+      "test_id": "synthetic.preserve_exception",
+      "title": "Plain-language rewrite must preserve an exception",
+      "synthetic": true,
+      "input": "Original: “Supplier will not disclose the data, except to a regulator when required by law.” Proposed rewrite: “Supplier will keep the data private.”",
+      "issues_that_should_be_detected": [
+        "The proposed rewrite deletes the regulator/legal-requirement exception and changes scope."
+      ],
+      "conclusions_that_must_not_be_asserted": [
+        "The rewrite is neutral or equivalent."
+      ],
+      "relevant_record_ids": [
+        "adams.precision_profile",
+        "user.revision_transparency"
+      ],
+      "expected_next_steps": [
+        "Restore the exception or obtain an explicit business/legal instruction to change it."
+      ],
+      "run_result": {
+        "status": "passed",
+        "method": "manual rule-by-rule dry run against the named canonical records on 2026-09-28; no software harness",
+        "detected_issues": [
+          "The proposed rewrite deletes the regulator/legal-requirement exception and changes scope."
+        ],
+        "unsupported_conclusions_withheld": [
+          "The rewrite is neutral or equivalent."
+        ]
+      }
+    },
+    {
+      "test_id": "synthetic.payment_approval_ownership_timing",
+      "title": "Payment, approval, and ownership timing conflict",
+      "synthetic": true,
+      "input": "Section 2 transfers ownership on delivery; Section 6 says transfer occurs after full payment; Section 4 requires approval but does not state whether approval delays invoicing.",
+      "issues_that_should_be_detected": [
+        "Ownership timing conflicts; approval and invoice/payment triggers are incomplete or inconsistent."
+      ],
+      "conclusions_that_must_not_be_asserted": [
+        "A single intended sequence or deemed approval period."
+      ],
+      "relevant_record_ids": [
+        "synthesis.condition_obligation",
+        "synthesis.endgame_dependencies",
+        "user.deal_intake"
+      ],
+      "expected_next_steps": [
+        "Build a dated event map; ask who bears risk before/after delivery, when approval occurs, and what payment is due."
+      ],
+      "run_result": {
+        "status": "passed",
+        "method": "manual rule-by-rule dry run against the named canonical records on 2026-09-28; no software harness",
+        "detected_issues": [
+          "Ownership timing conflicts; approval and invoice/payment triggers are incomplete or inconsistent."
+        ],
+        "unsupported_conclusions_withheld": [
+          "A single intended sequence or deemed approval period."
+        ]
+      }
+    },
+    {
+      "test_id": "synthetic.nda_use_not_ownership",
+      "title": "NDA use restriction mistaken for ownership grant",
+      "synthetic": true,
+      "input": "NDA permits use of disclosed information only to evaluate a proposed deal; a separate sentence says “all ideas derived from information belong to Discloser.”",
+      "issues_that_should_be_detected": [
+        "Use restriction and ownership sentence perform different functions; ownership sentence may change IP rights and needs separate review."
+      ],
+      "conclusions_that_must_not_be_asserted": [
+        "The NDA’s permitted-use purpose automatically transfers ownership of all derived work."
+      ],
+      "relevant_record_ids": [
+        "user.application_modules",
+        "synthesis.definition_integrity"
+      ],
+      "expected_next_steps": [
+        "Identify covered ideas, pre-existing materials, independently developed work, intended ownership, and current law/counsel needs."
+      ],
+      "run_result": {
+        "status": "passed",
+        "method": "manual rule-by-rule dry run against the named canonical records on 2026-09-28; no software harness",
+        "detected_issues": [
+          "Use restriction and ownership sentence perform different functions; ownership sentence may change IP rights and needs separate review."
+        ],
+        "unsupported_conclusions_withheld": [
+          "The NDA’s permitted-use purpose automatically transfers ownership of all derived work."
+        ]
+      }
+    },
+    {
+      "test_id": "synthetic.entire_agreement",
+      "title": "Entire-agreement clause overread",
+      "synthetic": true,
+      "input": "Clause says the signed agreement is the parties’ entire agreement and supersedes prior discussions. User asks whether an earlier email can matter.",
+      "issues_that_should_be_detected": [
+        "Explain the clause’s stated integration function and identify the email’s purpose and contract context as missing."
+      ],
+      "conclusions_that_must_not_be_asserted": [
+        "All earlier communications are irrelevant for every purpose; the clause resolves admissibility or legal effect in all contexts."
+      ],
+      "relevant_record_ids": [
+        "user.current_law_boundary",
+        "stark.review_workflow"
+      ],
+      "expected_next_steps": [
+        "Inspect exact integration clause and related provisions; identify jurisdiction, timing, and purpose; route legal consequences to counsel."
+      ],
+      "run_result": {
+        "status": "passed",
+        "method": "manual rule-by-rule dry run against the named canonical records on 2026-09-28; no software harness",
+        "detected_issues": [
+          "Explain the clause’s stated integration function and identify the email’s purpose and contract context as missing."
+        ],
+        "unsupported_conclusions_withheld": [
+          "All earlier communications are irrelevant for every purpose; the clause resolves admissibility or legal effect in all contexts."
+        ]
+      }
+    },
+    {
+      "test_id": "synthetic.source_tension",
+      "title": "Material source disagreement preserved",
+      "synthetic": true,
+      "input": "Library editor compares Stark’s remedy-related representation/warranty framework with Adams’s critique of relying on those labels and recommendation to state facts and remedies directly.",
+      "issues_that_should_be_detected": [
+        "Record the disagreement, source locators, practical effect on drafting profile, and current-law verification need."
+      ],
+      "conclusions_that_must_not_be_asserted": [
+        "One author is correct as current law; both books use the terms identically."
+      ],
+      "relevant_record_ids": [
+        "synthesis.fact_statement_and_remedy"
+      ],
+      "expected_next_steps": [
+        "Present both options and ask what terminology/remedy position the parties intend; verify law for the transaction."
+      ],
+      "run_result": {
+        "status": "passed",
+        "method": "manual rule-by-rule dry run against the named canonical records on 2026-09-28; no software harness",
+        "detected_issues": [
+          "Record the disagreement, source locators, practical effect on drafting profile, and current-law verification need."
+        ],
+        "unsupported_conclusions_withheld": [
+          "One author is correct as current law; both books use the terms identically."
+        ]
+      }
+    },
+    {
+      "test_id": "synthetic.unreadable_negation",
+      "title": "Unreadable negation blocks a conclusion",
+      "synthetic": true,
+      "input": "Scanned clause reads “Licensee may [illegible] distribute files outside the project.” The scan could contain “not.”",
+      "issues_that_should_be_detected": [
+        "The unreadable negation reverses the grant/restriction; preserve both possible readings and withhold a conclusion."
+      ],
+      "conclusions_that_must_not_be_asserted": [
+        "Licensee may distribute, or may not distribute, the files."
+      ],
+      "relevant_record_ids": [
+        "adams.uncertainty_diagnosis",
+        "stark.review_workflow"
+      ],
+      "expected_next_steps": [
+        "Request a legible scan or source document; do not redline based on a guessed word."
+      ],
+      "run_result": {
+        "status": "passed",
+        "method": "manual rule-by-rule dry run against the named canonical records on 2026-09-28; no software harness",
+        "detected_issues": [
+          "The unreadable negation reverses the grant/restriction; preserve both possible readings and withhold a conclusion."
+        ],
+        "unsupported_conclusions_withheld": [
+          "Licensee may distribute, or may not distribute, the files."
+        ]
+      }
+    },
+    {
+      "test_id": "synthetic.clear_unfavorable",
+      "title": "Unfavorable but clear term",
+      "synthetic": true,
+      "input": "Clause gives Vendor a unilateral right to terminate for convenience on five days’ notice; Customer has no matching right.",
+      "issues_that_should_be_detected": [
+        "The term is clear and asymmetric; explain Vendor’s exit right and Customer’s lack of a matching right as a commercial allocation."
+      ],
+      "conclusions_that_must_not_be_asserted": [
+        "The clause is invalid, abusive, unenforceable, or standard without jurisdiction-specific support."
+      ],
+      "relevant_record_ids": [
+        "stark.risk_control_standards",
+        "user.explanation_negotiation"
+      ],
+      "expected_next_steps": [
+        "Ask whether Customer needs a notice period, reciprocal right, transition help, or refund; verify law only if requested."
+      ],
+      "run_result": {
+        "status": "passed",
+        "method": "manual rule-by-rule dry run against the named canonical records on 2026-09-28; no software harness",
+        "detected_issues": [
+          "The term is clear and asymmetric; explain Vendor’s exit right and Customer’s lack of a matching right as a commercial allocation."
+        ],
+        "unsupported_conclusions_withheld": [
+          "The clause is invalid, abusive, unenforceable, or standard without jurisdiction-specific support."
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "total": 12,
+    "passed": 12,
+    "failed": 0,
+    "not_run": 0
+  }
+}

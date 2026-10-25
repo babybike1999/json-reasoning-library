@@ -1,0 +1,2239 @@
+{
+  "file_metadata": {
+    "file_name": "data_structures_algorithms_js_decision_rules_v1.json",
+    "package_id": "data_structures_algorithms_js_reasoning_os_v1",
+    "package_version": "1.0",
+    "generated_at_utc": "2026-08-25T17:45:26.946739+00:00",
+    "purpose": "The required 22 practical data-structure, algorithm, runtime, validation, retry, and idempotency decisions.",
+    "record_count": 22,
+    "source_title": "Data Structures and Algorithms with JavaScript",
+    "source_author": "Michael McMillan",
+    "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+    "source_boundary": "Source-supported concepts are separated from low-confidence Apps Script, spreadsheet, internal-tool, and AI-agent extensions. Current platform behavior must be verified.",
+    "copyright_safety": "Concepts and implementation logic are paraphrased. No long source passages, long code listings, full algorithm implementations, or exercise solutions are reproduced."
+  },
+  "decision_rules": [
+    {
+      "id": "dsa-decision-array-versus-object-record",
+      "record_type": "decision_rule",
+      "name": "Array row versus object record",
+      "summary": "Default: Keep raw input as an array for transport, then convert to a named object record for nontrivial validation or transformation.",
+      "source_concept": "Array row versus object record",
+      "programming_problem_addressed": "Choose how to represent one tabular record after reading positional cells.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Current Apps Script/project boundary requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Use arrays at the Spreadsheet service boundary and named records within validation/transformation; verify current value types and serialization behavior.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Choose array when positional iteration and rectangular batch output are the only needs.",
+        "Choose object when fields are addressed repeatedly by meaning, rules are complex, or provenance must be attached."
+      ],
+      "do_not_use_when": [
+        "Avoid object conversion that merely renames two obvious indexes without improving safety.",
+        "Avoid positional magic indexes deep in business logic."
+      ],
+      "common_failure_modes": [
+        "Index drift",
+        "Object property order mistaken for export schema",
+        "Extra memory/copying",
+        "Raw values lost"
+      ],
+      "tests_or_checks": [
+        "Count meaningful field accesses",
+        "Test column reorder",
+        "Define export schema separately",
+        "Preserve source row/raw values as needed"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Choose how to represent one tabular record after reading positional cells.?"
+      ],
+      "related_record_ids": [
+        "dsa-array-of-objects",
+        "dsa-sheet-row-array-to-object",
+        "dsa-sheet-object-to-export-row"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Arrays of Objects",
+        "page_or_anchor": "OEBPS/ch02.html#idp18891520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source demonstrates arrays of objects and arrays stored in objects as alternative representations."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch02.html",
+            "chapter_number": "2",
+            "chapter_title": "Arrays",
+            "section_heading": "Arrays in Objects",
+            "page_or_anchor": "OEBPS/ch02.html#idp19040720"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Array row versus object record",
+      "decision_context": "Choose how to represent one tabular record after reading positional cells.",
+      "default_choice": "Keep raw input as an array for transport, then convert to a named object record for nontrivial validation or transformation.",
+      "choose_this_when": [
+        "Choose array when positional iteration and rectangular batch output are the only needs.",
+        "Choose object when fields are addressed repeatedly by meaning, rules are complex, or provenance must be attached."
+      ],
+      "avoid_this_when": [
+        "Avoid object conversion that merely renames two obvious indexes without improving safety.",
+        "Avoid positional magic indexes deep in business logic."
+      ],
+      "risk_of_wrong_choice": [
+        "Index drift",
+        "Object property order mistaken for export schema",
+        "Extra memory/copying",
+        "Raw values lost"
+      ],
+      "specific_checks": [
+        "Count meaningful field accesses",
+        "Test column reorder",
+        "Define export schema separately",
+        "Preserve source row/raw values as needed"
+      ],
+      "apps_script_translation": "Use arrays at the Spreadsheet service boundary and named records within validation/transformation; verify current value types and serialization behavior."
+    },
+    {
+      "id": "dsa-decision-array-scan-versus-lookup",
+      "record_type": "decision_rule",
+      "name": "Array scan versus dictionary lookup",
+      "summary": "Default: Use a sequential scan for a small one-off search; build a validated lookup index for repeated key retrieval.",
+      "source_concept": "Array scan versus dictionary lookup",
+      "programming_problem_addressed": "Find values by key in a collection once or repeatedly.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Source-supported conceptual comparison.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "A lookup can reduce in-memory comparisons, but current object/Map behavior and all Sheet service costs must be verified separately.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Choose scan when data is small, unsorted, queried once, and preserving all occurrences matters.",
+        "Choose lookup when the same reference collection is queried many times by a stable key."
+      ],
+      "do_not_use_when": [
+        "Avoid lookup if keys are not defined or duplicates must remain distinct without grouping.",
+        "Avoid repeated scans in joins over large inputs."
+      ],
+      "common_failure_modes": [
+        "Upfront index cost without reuse",
+        "Duplicate overwrite",
+        "Nested-loop growth",
+        "Normalization mismatch"
+      ],
+      "tests_or_checks": [
+        "Count queries per load",
+        "Define duplicate policy",
+        "Benchmark total build-plus-query time",
+        "Test missing and duplicate keys"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Find values by key in a collection once or repeatedly.?"
+      ],
+      "related_record_ids": [
+        "dsa-search-sequential",
+        "dsa-dict-key-value",
+        "dsa-perf-repeated-search"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Searching for a Value",
+        "page_or_anchor": "OEBPS/ch02.html#idp14711680",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source presents sequential array search and dictionary/hash-based key access as different retrieval approaches."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch07.html",
+            "chapter_number": "7",
+            "chapter_title": "Dictionaries",
+            "section_heading": "The Dictionary Class",
+            "page_or_anchor": "OEBPS/ch07.html#idp29229184"
+          },
+          {
+            "source_file": "ch08.html",
+            "chapter_number": "8",
+            "chapter_title": "Hashing",
+            "section_heading": "An Overview of Hashing",
+            "page_or_anchor": "OEBPS/ch08.html#idp30907488"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Array scan versus dictionary lookup",
+      "decision_context": "Find values by key in a collection once or repeatedly.",
+      "default_choice": "Use a sequential scan for a small one-off search; build a validated lookup index for repeated key retrieval.",
+      "choose_this_when": [
+        "Choose scan when data is small, unsorted, queried once, and preserving all occurrences matters.",
+        "Choose lookup when the same reference collection is queried many times by a stable key."
+      ],
+      "avoid_this_when": [
+        "Avoid lookup if keys are not defined or duplicates must remain distinct without grouping.",
+        "Avoid repeated scans in joins over large inputs."
+      ],
+      "risk_of_wrong_choice": [
+        "Upfront index cost without reuse",
+        "Duplicate overwrite",
+        "Nested-loop growth",
+        "Normalization mismatch"
+      ],
+      "specific_checks": [
+        "Count queries per load",
+        "Define duplicate policy",
+        "Benchmark total build-plus-query time",
+        "Test missing and duplicate keys"
+      ],
+      "apps_script_translation": "A lookup can reduce in-memory comparisons, but current object/Map behavior and all Sheet service costs must be verified separately."
+    },
+    {
+      "id": "dsa-decision-list-versus-queue",
+      "record_type": "decision_rule",
+      "name": "List versus queue",
+      "summary": "Default: Use a simple list/array for general ordered storage; use a queue when oldest-first processing is an invariant.",
+      "source_concept": "List versus queue",
+      "programming_problem_addressed": "Represent ordered items that may be navigated or processed.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Source-supported conceptual comparison.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Use arrays with clear queue operations when sufficient; persistence and trigger behavior require current verification.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Choose list for arbitrary traversal, insertion, removal, or user-visible ordered issues.",
+        "Choose queue for FIFO work consumption and staged processing."
+      ],
+      "do_not_use_when": [
+        "Avoid list operations that allow arbitrary reordering when FIFO fairness is required.",
+        "Avoid queue if dependency or priority determines next work."
+      ],
+      "common_failure_modes": [
+        "Processing order drift",
+        "Queue never drains",
+        "Custom abstraction without benefit"
+      ],
+      "tests_or_checks": [
+        "Enqueue A/B/C and assert next-item order",
+        "State whether arbitrary navigation is needed",
+        "Check dependency/priority exceptions"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Represent ordered items that may be navigated or processed.?"
+      ],
+      "related_record_ids": [
+        "dsa-list-adt",
+        "dsa-queue-fifo",
+        "dsa-risk-stack-queue-order-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "A List ADT",
+        "page_or_anchor": "OEBPS/ch03.html#idp19348032",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines lists as ordered ADTs and queues as FIFO collections."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch05.html",
+            "chapter_number": "5",
+            "chapter_title": "Queues",
+            "section_heading": "Queue Operations",
+            "page_or_anchor": "OEBPS/ch05.html#idp23142720"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "List versus queue",
+      "decision_context": "Represent ordered items that may be navigated or processed.",
+      "default_choice": "Use a simple list/array for general ordered storage; use a queue when oldest-first processing is an invariant.",
+      "choose_this_when": [
+        "Choose list for arbitrary traversal, insertion, removal, or user-visible ordered issues.",
+        "Choose queue for FIFO work consumption and staged processing."
+      ],
+      "avoid_this_when": [
+        "Avoid list operations that allow arbitrary reordering when FIFO fairness is required.",
+        "Avoid queue if dependency or priority determines next work."
+      ],
+      "risk_of_wrong_choice": [
+        "Processing order drift",
+        "Queue never drains",
+        "Custom abstraction without benefit"
+      ],
+      "specific_checks": [
+        "Enqueue A/B/C and assert next-item order",
+        "State whether arbitrary navigation is needed",
+        "Check dependency/priority exceptions"
+      ],
+      "apps_script_translation": "Use arrays with clear queue operations when sufficient; persistence and trigger behavior require current verification."
+    },
+    {
+      "id": "dsa-decision-stack-versus-queue",
+      "record_type": "decision_rule",
+      "name": "Stack versus queue",
+      "summary": "Default: Use a queue for oldest-first work and a stack for newest-first reversal, nested state, or undo history.",
+      "source_concept": "Stack versus queue",
+      "programming_problem_addressed": "Choose whether newest or oldest inserted item is handled next.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Source-supported conceptual comparison.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "The ordering semantics transfer directly; persistence, concurrency, and client/server lifecycle do not and must be verified.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Choose stack for LIFO nesting/reversal/history.",
+        "Choose queue for FIFO requests/tasks."
+      ],
+      "do_not_use_when": [
+        "Avoid stack when fairness or arrival order matters.",
+        "Avoid queue for matching nested open/close operations."
+      ],
+      "common_failure_modes": [
+        "Reversed processing order",
+        "Incorrect undo",
+        "Nested parse failure"
+      ],
+      "tests_or_checks": [
+        "Run A/B/C ordering test",
+        "State newest-first versus oldest-first invariant",
+        "Test mixed add/remove sequence"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Choose whether newest or oldest inserted item is handled next.?"
+      ],
+      "related_record_ids": [
+        "dsa-stack-lifo",
+        "dsa-queue-fifo",
+        "dsa-risk-stack-queue-order-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "4",
+        "chapter_title": "Stacks",
+        "section_heading": "Stack Operations",
+        "page_or_anchor": "OEBPS/ch04.html#idp21554816",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines stacks as LIFO and queues as FIFO."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch05.html",
+            "chapter_number": "5",
+            "chapter_title": "Queues",
+            "section_heading": "Queue Operations",
+            "page_or_anchor": "OEBPS/ch05.html#idp23142720"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "source_direct_definition",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Stack versus queue",
+      "decision_context": "Choose whether newest or oldest inserted item is handled next.",
+      "default_choice": "Use a queue for oldest-first work and a stack for newest-first reversal, nested state, or undo history.",
+      "choose_this_when": [
+        "Choose stack for LIFO nesting/reversal/history.",
+        "Choose queue for FIFO requests/tasks."
+      ],
+      "avoid_this_when": [
+        "Avoid stack when fairness or arrival order matters.",
+        "Avoid queue for matching nested open/close operations."
+      ],
+      "risk_of_wrong_choice": [
+        "Reversed processing order",
+        "Incorrect undo",
+        "Nested parse failure"
+      ],
+      "specific_checks": [
+        "Run A/B/C ordering test",
+        "State newest-first versus oldest-first invariant",
+        "Test mixed add/remove sequence"
+      ],
+      "apps_script_translation": "The ordering semantics transfer directly; persistence, concurrency, and client/server lifecycle do not and must be verified."
+    },
+    {
+      "id": "dsa-decision-set-versus-list",
+      "record_type": "decision_rule",
+      "name": "Set versus list",
+      "summary": "Default: Use a set for uniqueness and membership; use a list/array for ordered occurrences; combine with a map when counts or provenance are needed.",
+      "source_concept": "Set versus list",
+      "programming_problem_addressed": "Choose whether uniqueness/membership or ordered occurrences are primary.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Source-supported conceptual comparison.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Verify current native Set behavior and serialization boundaries; source custom Set code is not automatically current best practice.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Choose set for expected/actual coverage or duplicate membership.",
+        "Choose list for repeated values, order, and user-facing issue sequence."
+      ],
+      "do_not_use_when": [
+        "Avoid set when duplicate counts or original order must be preserved alone.",
+        "Avoid repeated list scans when membership dominates."
+      ],
+      "common_failure_modes": [
+        "Duplicate evidence lost",
+        "Order assumption violated",
+        "Slow membership checks"
+      ],
+      "tests_or_checks": [
+        "Test repeated values",
+        "State whether order/counts matter",
+        "Preserve occurrence map if duplicates must be explained"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Choose whether uniqueness/membership or ordered occurrences are primary.?"
+      ],
+      "related_record_ids": [
+        "dsa-set-uniqueness",
+        "dsa-list-adt",
+        "dsa-risk-native-map-set-verification"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "9",
+        "chapter_title": "Sets",
+        "section_heading": "Fundamental Set Definitions, Operations, and Properties",
+        "page_or_anchor": "OEBPS/ch09.html#idp34336432",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source distinguishes lists from sets and defines set membership and uniqueness."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch03.html",
+            "chapter_number": "3",
+            "chapter_title": "Lists",
+            "section_heading": "A List ADT",
+            "page_or_anchor": "OEBPS/ch03.html#idp19348032"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Set versus list",
+      "decision_context": "Choose whether uniqueness/membership or ordered occurrences are primary.",
+      "default_choice": "Use a set for uniqueness and membership; use a list/array for ordered occurrences; combine with a map when counts or provenance are needed.",
+      "choose_this_when": [
+        "Choose set for expected/actual coverage or duplicate membership.",
+        "Choose list for repeated values, order, and user-facing issue sequence."
+      ],
+      "avoid_this_when": [
+        "Avoid set when duplicate counts or original order must be preserved alone.",
+        "Avoid repeated list scans when membership dominates."
+      ],
+      "risk_of_wrong_choice": [
+        "Duplicate evidence lost",
+        "Order assumption violated",
+        "Slow membership checks"
+      ],
+      "specific_checks": [
+        "Test repeated values",
+        "State whether order/counts matter",
+        "Preserve occurrence map if duplicates must be explained"
+      ],
+      "apps_script_translation": "Verify current native Set behavior and serialization boundaries; source custom Set code is not automatically current best practice."
+    },
+    {
+      "id": "dsa-decision-object-versus-map",
+      "record_type": "decision_rule",
+      "name": "Plain object/dictionary versus native Map",
+      "summary": "Default: Use a plain object for simple string-keyed JSON-like records; consider Map only when its verified current semantics materially improve the design.",
+      "source_concept": "Plain object/dictionary versus native Map",
+      "programming_problem_addressed": "Choose a current key-value representation for lookups, configuration, or keyed records.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Current Apps Script/project boundary requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This is current-runtime dependent; consult current Apps Script and JavaScript documentation and run project-level probes.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Choose object for named record fields and straightforward serialization.",
+        "Consider Map for nonstring keys, explicit map operations, or iteration semantics—only after verification."
+      ],
+      "do_not_use_when": [
+        "Avoid object when prototype/inherited keys or key coercion create ambiguity.",
+        "Avoid Map when it must cross JSON/service boundaries without explicit conversion."
+      ],
+      "common_failure_modes": [
+        "Prototype/key coercion",
+        "Serialization loss",
+        "Unsupported/unverified runtime behavior",
+        "Duplicate overwrite"
+      ],
+      "tests_or_checks": [
+        "Verify current Apps Script support",
+        "Test key types and serialization round trip",
+        "Define duplicate/missing behavior"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Choose a current key-value representation for lookups, configuration, or keyed records.?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-hash-lookup-map",
+        "dsa-risk-native-map-set-verification",
+        "dsa-verify-map-set-runtime"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "7",
+        "chapter_title": "Dictionaries",
+        "section_heading": "The Dictionary Class",
+        "page_or_anchor": "OEBPS/ch07.html#idp29229184",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source implements dictionary/hash abstractions but does not establish current Apps Script native Map behavior."
+        ],
+        "inferred_claims": [
+          "The object-versus-Map default is a current translation rule requiring verification."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch08.html",
+            "chapter_number": "8",
+            "chapter_title": "Hashing",
+            "section_heading": "An Overview of Hashing",
+            "page_or_anchor": "OEBPS/ch08.html#idp30907488"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "current_verification_flag",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Plain object/dictionary versus native Map",
+      "decision_context": "Choose a current key-value representation for lookups, configuration, or keyed records.",
+      "default_choice": "Use a plain object for simple string-keyed JSON-like records; consider Map only when its verified current semantics materially improve the design.",
+      "choose_this_when": [
+        "Choose object for named record fields and straightforward serialization.",
+        "Consider Map for nonstring keys, explicit map operations, or iteration semantics—only after verification."
+      ],
+      "avoid_this_when": [
+        "Avoid object when prototype/inherited keys or key coercion create ambiguity.",
+        "Avoid Map when it must cross JSON/service boundaries without explicit conversion."
+      ],
+      "risk_of_wrong_choice": [
+        "Prototype/key coercion",
+        "Serialization loss",
+        "Unsupported/unverified runtime behavior",
+        "Duplicate overwrite"
+      ],
+      "specific_checks": [
+        "Verify current Apps Script support",
+        "Test key types and serialization round trip",
+        "Define duplicate/missing behavior"
+      ],
+      "apps_script_translation": "This is current-runtime dependent; consult current Apps Script and JavaScript documentation and run project-level probes."
+    },
+    {
+      "id": "dsa-decision-set-versus-object-keys",
+      "record_type": "decision_rule",
+      "name": "Native Set versus object keys for membership",
+      "summary": "Default: Prefer the representation whose equality, iteration, serialization, and boundary behavior are verified for the project; do not choose solely by generic modern JavaScript advice.",
+      "source_concept": "Native Set versus object keys for membership",
+      "programming_problem_addressed": "Represent a uniqueness or membership collection in current Apps Script.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Current Apps Script/project boundary requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Current runtime and persistence behavior are authoritative; convert explicitly at service/JSON boundaries.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Choose Set when native set semantics are verified and no incompatible boundary is crossed.",
+        "Choose object-key membership when string-key normalization and JSON-like persistence are explicit and safe."
+      ],
+      "do_not_use_when": [
+        "Avoid object keys for values whose string coercion can collide.",
+        "Avoid Set when persistence/serialization silently discards it."
+      ],
+      "common_failure_modes": [
+        "Key coercion collision",
+        "Serialization loss",
+        "Prototype pitfalls",
+        "Different equality semantics"
+      ],
+      "tests_or_checks": [
+        "Verify runtime support",
+        "Test normalization and serialization",
+        "Test special keys and duplicates",
+        "Document order/count requirements"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Represent a uniqueness or membership collection in current Apps Script.?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-sets-duplicate-coverage",
+        "dsa-risk-native-map-set-verification",
+        "dsa-verify-map-set-runtime"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "9",
+        "chapter_title": "Sets",
+        "section_heading": "The Set Class Implementation",
+        "page_or_anchor": "OEBPS/ch09.html#idp34357584",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source implements a custom Set and does not determine current native Set versus object-key trade-offs."
+        ],
+        "inferred_claims": [
+          "The production choice requires current runtime and boundary verification."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "current_verification_flag",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Native Set versus object keys for membership",
+      "decision_context": "Represent a uniqueness or membership collection in current Apps Script.",
+      "default_choice": "Prefer the representation whose equality, iteration, serialization, and boundary behavior are verified for the project; do not choose solely by generic modern JavaScript advice.",
+      "choose_this_when": [
+        "Choose Set when native set semantics are verified and no incompatible boundary is crossed.",
+        "Choose object-key membership when string-key normalization and JSON-like persistence are explicit and safe."
+      ],
+      "avoid_this_when": [
+        "Avoid object keys for values whose string coercion can collide.",
+        "Avoid Set when persistence/serialization silently discards it."
+      ],
+      "risk_of_wrong_choice": [
+        "Key coercion collision",
+        "Serialization loss",
+        "Prototype pitfalls",
+        "Different equality semantics"
+      ],
+      "specific_checks": [
+        "Verify runtime support",
+        "Test normalization and serialization",
+        "Test special keys and duplicates",
+        "Document order/count requirements"
+      ],
+      "apps_script_translation": "Current runtime and persistence behavior are authoritative; convert explicitly at service/JSON boundaries."
+    },
+    {
+      "id": "dsa-decision-sorted-array-versus-tree",
+      "record_type": "decision_rule",
+      "name": "Sorted array versus tree",
+      "summary": "Default: Use a sorted array or lookup map for typical small/medium Apps Script datasets; implement a tree only when repeated dynamic tree operations justify its complexity.",
+      "source_concept": "Sorted array versus tree",
+      "programming_problem_addressed": "Maintain ordered data for search, traversal, minimum/maximum, insertion, or deletion.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Source-supported conceptual comparison.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Trees transfer conceptually; current native structures, memory, and execution behavior require verification.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Choose sorted array when data is loaded/batched and searched or presented in order.",
+        "Choose tree when dynamic ordered insertion/search/traversal semantics are truly central and measured."
+      ],
+      "do_not_use_when": [
+        "Avoid naive BST when balance/worst-case behavior matters.",
+        "Avoid tree for simple one-time sorting or key lookup."
+      ],
+      "common_failure_modes": [
+        "Tree overengineering",
+        "Degenerate BST",
+        "Repeated array resorting",
+        "Serialization complexity"
+      ],
+      "tests_or_checks": [
+        "Count inserts versus searches",
+        "Measure data size and mutation frequency",
+        "Compare map/sorted-array solution",
+        "Test sorted and pathological insertion orders"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Maintain ordered data for search, traversal, minimum/maximum, insertion, or deletion.?"
+      ],
+      "related_record_ids": [
+        "dsa-tree-bst-ordering",
+        "dsa-risk-tree-overengineering",
+        "dsa-gas-trees-hierarchy-caution"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Binary Trees and Binary Search Trees",
+        "page_or_anchor": "OEBPS/ch10.html#idp36001824",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines BST ordered operations and separately covers array sorting/searching; it does not prescribe trees for Apps Script."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch13.html",
+            "chapter_number": "13",
+            "chapter_title": "Searching Algorithms",
+            "section_heading": "Binary Search",
+            "page_or_anchor": "OEBPS/ch13.html#idp50459344"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Sorted array versus tree",
+      "decision_context": "Maintain ordered data for search, traversal, minimum/maximum, insertion, or deletion.",
+      "default_choice": "Use a sorted array or lookup map for typical small/medium Apps Script datasets; implement a tree only when repeated dynamic tree operations justify its complexity.",
+      "choose_this_when": [
+        "Choose sorted array when data is loaded/batched and searched or presented in order.",
+        "Choose tree when dynamic ordered insertion/search/traversal semantics are truly central and measured."
+      ],
+      "avoid_this_when": [
+        "Avoid naive BST when balance/worst-case behavior matters.",
+        "Avoid tree for simple one-time sorting or key lookup."
+      ],
+      "risk_of_wrong_choice": [
+        "Tree overengineering",
+        "Degenerate BST",
+        "Repeated array resorting",
+        "Serialization complexity"
+      ],
+      "specific_checks": [
+        "Count inserts versus searches",
+        "Measure data size and mutation frequency",
+        "Compare map/sorted-array solution",
+        "Test sorted and pathological insertion orders"
+      ],
+      "apps_script_translation": "Trees transfer conceptually; current native structures, memory, and execution behavior require verification."
+    },
+    {
+      "id": "dsa-decision-graph-versus-table",
+      "record_type": "decision_rule",
+      "name": "Graph versus table",
+      "summary": "Default: Start with an edge table or mapping; build graph indexes/algorithms only when a path, reachability, dependency, cycle, or ordering question is explicit.",
+      "source_concept": "Graph versus table",
+      "programming_problem_addressed": "Represent relationships, dependencies, routes, approvals, or supplier/location networks.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Current Apps Script/project boundary requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Use edge rows plus adjacency map if needed; current runtime structures and data volume require verification.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Choose graph model for traversal, shortest-path under appropriate assumptions, cycle/reachability, or topological-order questions.",
+        "Choose table for reporting direct relationships without traversal."
+      ],
+      "do_not_use_when": [
+        "Avoid graph when nodes/edges/question are undefined.",
+        "Avoid BFS shortest-path for weighted costs not covered by the source treatment."
+      ],
+      "common_failure_modes": [
+        "Overengineering",
+        "Direction/weight ambiguity",
+        "Cycles break ordering",
+        "Missing/disconnected nodes"
+      ],
+      "tests_or_checks": [
+        "Define nodes/edges/direction/weight",
+        "State exact query",
+        "Validate cycles and missing nodes",
+        "Compare flat-table answer"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Represent relationships, dependencies, routes, approvals, or supplier/location networks.?"
+      ],
+      "related_record_ids": [
+        "dsa-graph-definition",
+        "dsa-risk-graph-overengineering",
+        "dsa-workflow-review-dependency-graph"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "11",
+        "chapter_title": "Graphs and Graph Algorithms",
+        "section_heading": "Graph Definitions",
+        "page_or_anchor": "OEBPS/ch11.html#idp38726848",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source models networks as graphs and provides traversal/path/order algorithms; operational selection is an extension."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch11.html",
+            "chapter_number": "11",
+            "chapter_title": "Graphs and Graph Algorithms",
+            "section_heading": "Searching a Graph",
+            "page_or_anchor": "OEBPS/ch11.html#idp39626432"
+          },
+          {
+            "source_file": "ch11.html",
+            "chapter_number": "11",
+            "chapter_title": "Graphs and Graph Algorithms",
+            "section_heading": "Topological Sorting",
+            "page_or_anchor": "OEBPS/ch11.html#idp40990000"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Graph versus table",
+      "decision_context": "Represent relationships, dependencies, routes, approvals, or supplier/location networks.",
+      "default_choice": "Start with an edge table or mapping; build graph indexes/algorithms only when a path, reachability, dependency, cycle, or ordering question is explicit.",
+      "choose_this_when": [
+        "Choose graph model for traversal, shortest-path under appropriate assumptions, cycle/reachability, or topological-order questions.",
+        "Choose table for reporting direct relationships without traversal."
+      ],
+      "avoid_this_when": [
+        "Avoid graph when nodes/edges/question are undefined.",
+        "Avoid BFS shortest-path for weighted costs not covered by the source treatment."
+      ],
+      "risk_of_wrong_choice": [
+        "Overengineering",
+        "Direction/weight ambiguity",
+        "Cycles break ordering",
+        "Missing/disconnected nodes"
+      ],
+      "specific_checks": [
+        "Define nodes/edges/direction/weight",
+        "State exact query",
+        "Validate cycles and missing nodes",
+        "Compare flat-table answer"
+      ],
+      "apps_script_translation": "Use edge rows plus adjacency map if needed; current runtime structures and data volume require verification."
+    },
+    {
+      "id": "dsa-decision-built-in-versus-custom-sort",
+      "record_type": "decision_rule",
+      "name": "Built-in sort versus custom sort algorithm",
+      "summary": "Default: Use the current verified built-in sort with an explicit comparator; use custom source algorithms mainly for learning or a justified requirement.",
+      "source_concept": "Built-in sort versus custom sort algorithm",
+      "programming_problem_addressed": "Order report or intermediate records in production code.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Current Apps Script/project boundary requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Current Array.sort and service sort behavior must be verified; the source-era implementations are educational references.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Choose built-in for ordinary typed ordering with verified behavior.",
+        "Choose custom only for a specific algorithmic property, teaching need, or measured constraint not met by built-in behavior."
+      ],
+      "do_not_use_when": [
+        "Avoid hand-written bubble/selection/insertion sort for large production data.",
+        "Avoid built-in without comparator/type/stability verification."
+      ],
+      "common_failure_modes": [
+        "Incorrect comparator",
+        "Stability assumption",
+        "Poor custom performance",
+        "Edge-case bugs"
+      ],
+      "tests_or_checks": [
+        "Verify current sort semantics",
+        "Test ties/nulls/types",
+        "Benchmark realistic data if material",
+        "Review custom algorithm proof/tests"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Order report or intermediate records in production code.?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-sorting-built-in-boundary",
+        "dsa-risk-unstable-sort-assumption",
+        "dsa-verify-array-sort-runtime"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "12",
+        "chapter_title": "Sorting Algorithms",
+        "section_heading": "Basic Sorting Algorithms",
+        "page_or_anchor": "OEBPS/ch12.html#idp42067616",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source teaches simple and advanced sorting algorithms and compares their performance; it does not define current Apps Script built-in sort behavior."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch12.html",
+            "chapter_number": "12",
+            "chapter_title": "Sorting Algorithms",
+            "section_heading": "Timing Comparisons of the Basic Sorting Algorithms",
+            "page_or_anchor": "OEBPS/ch12.html#idp44057744"
+          },
+          {
+            "source_file": "ch12.html",
+            "chapter_number": "12",
+            "chapter_title": "Sorting Algorithms",
+            "section_heading": "Advanced Sorting Algorithms",
+            "page_or_anchor": "OEBPS/ch12.html#idp44058656"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "current_verification_flag",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Built-in sort versus custom sort algorithm",
+      "decision_context": "Order report or intermediate records in production code.",
+      "default_choice": "Use the current verified built-in sort with an explicit comparator; use custom source algorithms mainly for learning or a justified requirement.",
+      "choose_this_when": [
+        "Choose built-in for ordinary typed ordering with verified behavior.",
+        "Choose custom only for a specific algorithmic property, teaching need, or measured constraint not met by built-in behavior."
+      ],
+      "avoid_this_when": [
+        "Avoid hand-written bubble/selection/insertion sort for large production data.",
+        "Avoid built-in without comparator/type/stability verification."
+      ],
+      "risk_of_wrong_choice": [
+        "Incorrect comparator",
+        "Stability assumption",
+        "Poor custom performance",
+        "Edge-case bugs"
+      ],
+      "specific_checks": [
+        "Verify current sort semantics",
+        "Test ties/nulls/types",
+        "Benchmark realistic data if material",
+        "Review custom algorithm proof/tests"
+      ],
+      "apps_script_translation": "Current Array.sort and service sort behavior must be verified; the source-era implementations are educational references."
+    },
+    {
+      "id": "dsa-decision-sequential-versus-binary",
+      "record_type": "decision_rule",
+      "name": "Sequential search versus binary search",
+      "summary": "Default: Use sequential search for unsorted/small/one-off data; use binary search only when data is already or economically made sorted and remains consistent with the search comparator.",
+      "source_concept": "Sequential search versus binary search",
+      "programming_problem_addressed": "Search an array once or repeatedly when order may or may not exist.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Source-supported conceptual comparison.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Both algorithms transfer conceptually; current array methods and data types require verification.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Choose sequential for one pass or unsorted data.",
+        "Choose binary for many searches over stable sorted data when a map is not more appropriate."
+      ],
+      "do_not_use_when": [
+        "Avoid binary on unsorted data.",
+        "Avoid sorting solely for one search without comparing total cost."
+      ],
+      "common_failure_modes": [
+        "False misses",
+        "Repeated sort overhead",
+        "Comparator mismatch"
+      ],
+      "tests_or_checks": [
+        "Assert sortedness",
+        "Count queries",
+        "Compare sort-plus-search with scan",
+        "Test first/last/missing/duplicates"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Search an array once or repeatedly when order may or may not exist.?"
+      ],
+      "related_record_ids": [
+        "dsa-search-sequential",
+        "dsa-search-binary",
+        "dsa-risk-binary-search-unsorted-data"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "13",
+        "chapter_title": "Searching Algorithms",
+        "section_heading": "Binary Search",
+        "page_or_anchor": "OEBPS/ch13.html#idp50459344",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source presents sequential and binary search and requires sorted data for binary search."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch02.html",
+            "chapter_number": "2",
+            "chapter_title": "Arrays",
+            "section_heading": "Searching for a Value",
+            "page_or_anchor": "OEBPS/ch02.html#idp14711680"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Sequential search versus binary search",
+      "decision_context": "Search an array once or repeatedly when order may or may not exist.",
+      "default_choice": "Use sequential search for unsorted/small/one-off data; use binary search only when data is already or economically made sorted and remains consistent with the search comparator.",
+      "choose_this_when": [
+        "Choose sequential for one pass or unsorted data.",
+        "Choose binary for many searches over stable sorted data when a map is not more appropriate."
+      ],
+      "avoid_this_when": [
+        "Avoid binary on unsorted data.",
+        "Avoid sorting solely for one search without comparing total cost."
+      ],
+      "risk_of_wrong_choice": [
+        "False misses",
+        "Repeated sort overhead",
+        "Comparator mismatch"
+      ],
+      "specific_checks": [
+        "Assert sortedness",
+        "Count queries",
+        "Compare sort-plus-search with scan",
+        "Test first/last/missing/duplicates"
+      ],
+      "apps_script_translation": "Both algorithms transfer conceptually; current array methods and data types require verification."
+    },
+    {
+      "id": "dsa-decision-binary-versus-map",
+      "record_type": "decision_rule",
+      "name": "Binary search versus lookup map",
+      "summary": "Default: Use a validated lookup map for repeated unique-key retrieval; use binary search when sorted order is already valuable, memory/index constraints favor it, or range/ordered behavior matters.",
+      "source_concept": "Binary search versus lookup map",
+      "programming_problem_addressed": "Perform repeated exact-key search over a loaded dataset.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Source-supported conceptual comparison.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Verify current object/Map behavior; preserve ordered rows separately if output order matters.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Choose map for direct repeated exact-key retrieval.",
+        "Choose binary search for stable ordered array and comparator-based search without duplicate overwrite."
+      ],
+      "do_not_use_when": [
+        "Avoid map when one key maps to many records unless values are grouped.",
+        "Avoid binary search when data mutates unsorted or is re-sorted repeatedly."
+      ],
+      "common_failure_modes": [
+        "Duplicate overwrite",
+        "Unsorted binary search",
+        "Index build/serialization overhead",
+        "Loss of occurrence order"
+      ],
+      "tests_or_checks": [
+        "Define key cardinality",
+        "Count queries/mutations",
+        "Measure build-plus-query",
+        "Test duplicates and missing keys"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Perform repeated exact-key search over a loaded dataset.?"
+      ],
+      "related_record_ids": [
+        "dsa-search-binary",
+        "dsa-hash-overview",
+        "dsa-perf-hash-lookup-tradeoff"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "13",
+        "chapter_title": "Searching Algorithms",
+        "section_heading": "Binary Search",
+        "page_or_anchor": "OEBPS/ch13.html#idp50459344",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source presents binary search and hash/dictionary key retrieval as different approaches."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch08.html",
+            "chapter_number": "8",
+            "chapter_title": "Hashing",
+            "section_heading": "An Overview of Hashing",
+            "page_or_anchor": "OEBPS/ch08.html#idp30907488"
+          },
+          {
+            "source_file": "ch07.html",
+            "chapter_number": "7",
+            "chapter_title": "Dictionaries",
+            "section_heading": "The Dictionary Class",
+            "page_or_anchor": "OEBPS/ch07.html#idp29229184"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Binary search versus lookup map",
+      "decision_context": "Perform repeated exact-key search over a loaded dataset.",
+      "default_choice": "Use a validated lookup map for repeated unique-key retrieval; use binary search when sorted order is already valuable, memory/index constraints favor it, or range/ordered behavior matters.",
+      "choose_this_when": [
+        "Choose map for direct repeated exact-key retrieval.",
+        "Choose binary search for stable ordered array and comparator-based search without duplicate overwrite."
+      ],
+      "avoid_this_when": [
+        "Avoid map when one key maps to many records unless values are grouped.",
+        "Avoid binary search when data mutates unsorted or is re-sorted repeatedly."
+      ],
+      "risk_of_wrong_choice": [
+        "Duplicate overwrite",
+        "Unsorted binary search",
+        "Index build/serialization overhead",
+        "Loss of occurrence order"
+      ],
+      "specific_checks": [
+        "Define key cardinality",
+        "Count queries/mutations",
+        "Measure build-plus-query",
+        "Test duplicates and missing keys"
+      ],
+      "apps_script_translation": "Verify current object/Map behavior; preserve ordered rows separately if output order matters."
+    },
+    {
+      "id": "dsa-decision-greedy-versus-exact",
+      "record_type": "decision_rule",
+      "name": "Greedy heuristic versus exact algorithm",
+      "summary": "Default: Use the simplest method that satisfies required correctness; use greedy only with a known property or acceptable approximation, and exact methods when optimality or feasibility requires them.",
+      "source_concept": "Greedy heuristic versus exact algorithm",
+      "programming_problem_addressed": "Choose a fast local-priority method or an exact optimization method.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Source-supported conceptual comparison.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Operational heuristics and exact optimization require business-owner review and realistic runtime tests; current limits must be verified.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Choose greedy when local choices are proven safe or suboptimality is acceptable and monitored.",
+        "Choose exact search/DP when the state is bounded and optimality materially matters."
+      ],
+      "do_not_use_when": [
+        "Avoid claiming greedy optimum without proof.",
+        "Avoid exact state explosion for low-value precision."
+      ],
+      "common_failure_modes": [
+        "Local optimum",
+        "State explosion",
+        "Hidden constraints",
+        "No reconstructable solution"
+      ],
+      "tests_or_checks": [
+        "Define objective/constraints",
+        "Test greedy against exact small cases",
+        "Estimate exact state/search size",
+        "Document acceptable loss"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Choose a fast local-priority method or an exact optimization method.?"
+      ],
+      "related_record_ids": [
+        "dsa-greedy-local-choice",
+        "dsa-risk-greedy-local-optimum",
+        "dsa-risk-dp-overengineering"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "14",
+        "chapter_title": "Advanced Algorithms",
+        "section_heading": "Greedy Algorithms",
+        "page_or_anchor": "OEBPS/ch14.html#idp56742640",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source distinguishes greedy local-choice methods, their possible suboptimality, and dynamic-programming exact solutions for examples such as knapsack."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch14.html",
+            "chapter_number": "14",
+            "chapter_title": "Advanced Algorithms",
+            "section_heading": "The Knapsack Problem: A Dynamic Programming Solution",
+            "page_or_anchor": "OEBPS/ch14.html#idp56550304"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Greedy heuristic versus exact algorithm",
+      "decision_context": "Choose a fast local-priority method or an exact optimization method.",
+      "default_choice": "Use the simplest method that satisfies required correctness; use greedy only with a known property or acceptable approximation, and exact methods when optimality or feasibility requires them.",
+      "choose_this_when": [
+        "Choose greedy when local choices are proven safe or suboptimality is acceptable and monitored.",
+        "Choose exact search/DP when the state is bounded and optimality materially matters."
+      ],
+      "avoid_this_when": [
+        "Avoid claiming greedy optimum without proof.",
+        "Avoid exact state explosion for low-value precision."
+      ],
+      "risk_of_wrong_choice": [
+        "Local optimum",
+        "State explosion",
+        "Hidden constraints",
+        "No reconstructable solution"
+      ],
+      "specific_checks": [
+        "Define objective/constraints",
+        "Test greedy against exact small cases",
+        "Estimate exact state/search size",
+        "Document acceptable loss"
+      ],
+      "apps_script_translation": "Operational heuristics and exact optimization require business-owner review and realistic runtime tests; current limits must be verified."
+    },
+    {
+      "id": "dsa-decision-dp-versus-cached-lookup",
+      "record_type": "decision_rule",
+      "name": "Dynamic programming versus simpler cached lookup or rolling state",
+      "summary": "Default: Start with the smallest cache/state that eliminates demonstrated repeated work; use a full DP table only when recurrence, state dimensions, and reconstruction require it.",
+      "source_concept": "Dynamic programming versus simpler cached lookup or rolling state",
+      "programming_problem_addressed": "Repeated computation suggests caching, but full state-table optimization may be unnecessary.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Source-supported conceptual comparison.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Current memory, cache/persistence APIs, and execution limits require verification; source Fibonacci simplification is conceptual evidence for reducing state.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Choose simple cache/memoization for repeated pure lookups.",
+        "Choose rolling state when only recent values are needed.",
+        "Choose full DP table for bounded multi-state optimization/reconstruction."
+      ],
+      "do_not_use_when": [
+        "Avoid full table when one pass or fixed recent state suffices.",
+        "Avoid cache without deterministic keys and invalidation rules."
+      ],
+      "common_failure_modes": [
+        "State explosion",
+        "Stale cache",
+        "Unnecessary complexity",
+        "Cannot reconstruct decision"
+      ],
+      "tests_or_checks": [
+        "Identify repeated subproblem/key",
+        "Calculate state count",
+        "Define cache invalidation",
+        "State output/reconstruction needs"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Repeated computation suggests caching, but full state-table optimization may be unnecessary.?"
+      ],
+      "related_record_ids": [
+        "dsa-dp-fibonacci-constant-state",
+        "dsa-risk-dp-overengineering",
+        "dsa-verify-state-services"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "14",
+        "chapter_title": "Advanced Algorithms",
+        "section_heading": "A Dynamic Programming Example: Computing Fibonacci Numbers",
+        "page_or_anchor": "OEBPS/ch14.html#idp54527024",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source first stores Fibonacci values in an array and then shows that only recent values are needed for the final result."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch14.html",
+            "chapter_number": "14",
+            "chapter_title": "Advanced Algorithms",
+            "section_heading": "Dynamic Programming",
+            "page_or_anchor": "OEBPS/ch14.html#idp54524000"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Dynamic programming versus simpler cached lookup or rolling state",
+      "decision_context": "Repeated computation suggests caching, but full state-table optimization may be unnecessary.",
+      "default_choice": "Start with the smallest cache/state that eliminates demonstrated repeated work; use a full DP table only when recurrence, state dimensions, and reconstruction require it.",
+      "choose_this_when": [
+        "Choose simple cache/memoization for repeated pure lookups.",
+        "Choose rolling state when only recent values are needed.",
+        "Choose full DP table for bounded multi-state optimization/reconstruction."
+      ],
+      "avoid_this_when": [
+        "Avoid full table when one pass or fixed recent state suffices.",
+        "Avoid cache without deterministic keys and invalidation rules."
+      ],
+      "risk_of_wrong_choice": [
+        "State explosion",
+        "Stale cache",
+        "Unnecessary complexity",
+        "Cannot reconstruct decision"
+      ],
+      "specific_checks": [
+        "Identify repeated subproblem/key",
+        "Calculate state count",
+        "Define cache invalidation",
+        "State output/reconstruction needs"
+      ],
+      "apps_script_translation": "Current memory, cache/persistence APIs, and execution limits require verification; source Fibonacci simplification is conceptual evidence for reducing state."
+    },
+    {
+      "id": "dsa-decision-custom-versus-native",
+      "record_type": "decision_rule",
+      "name": "Custom data structure versus native JavaScript structure",
+      "summary": "Default: Use the simplest current verified native structure that expresses the invariant; implement a custom class only when it adds domain safety or capabilities not otherwise clear.",
+      "source_concept": "Custom data structure versus native JavaScript structure",
+      "programming_problem_addressed": "Decide whether to reproduce a book-era class or use current native arrays, objects, Map, Set, and methods.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Current Apps Script/project boundary requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Algorithmic concepts transfer more reliably than source-era implementations; current Apps Script behavior is authoritative.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Choose native for ordinary list/map/set/queue-like needs with verified behavior.",
+        "Choose custom for meaningful invariant, interface, testing, or domain semantics."
+      ],
+      "do_not_use_when": [
+        "Avoid copying source-era classes solely because they appear in the book.",
+        "Avoid native structure when its boundary behavior is unverified."
+      ],
+      "common_failure_modes": [
+        "Outdated code",
+        "Unnecessary maintenance",
+        "Runtime incompatibility",
+        "Native semantics misassumed"
+      ],
+      "tests_or_checks": [
+        "List capability gap",
+        "Verify current runtime",
+        "Compare code/test complexity",
+        "Test serialization/persistence"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Decide whether to reproduce a book-era class or use current native arrays, objects, Map, Set, and methods.?"
+      ],
+      "related_record_ids": [
+        "dsa-risk-source-era-js-runtime-assumption",
+        "dsa-risk-native-map-set-verification",
+        "dsa-workflow-verify-source-era-runtime"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "Preface",
+        "chapter_title": "Preface",
+        "section_heading": "What You Need for This Book",
+        "page_or_anchor": "OEBPS/preface01.html#idp84784",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source uses a SpiderMonkey shell and implements classic structures under source-era JavaScript constraints."
+        ],
+        "inferred_claims": [
+          "The native-first guarded default is a current translation rule."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "current_verification_flag",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Custom data structure versus native JavaScript structure",
+      "decision_context": "Decide whether to reproduce a book-era class or use current native arrays, objects, Map, Set, and methods.",
+      "default_choice": "Use the simplest current verified native structure that expresses the invariant; implement a custom class only when it adds domain safety or capabilities not otherwise clear.",
+      "choose_this_when": [
+        "Choose native for ordinary list/map/set/queue-like needs with verified behavior.",
+        "Choose custom for meaningful invariant, interface, testing, or domain semantics."
+      ],
+      "avoid_this_when": [
+        "Avoid copying source-era classes solely because they appear in the book.",
+        "Avoid native structure when its boundary behavior is unverified."
+      ],
+      "risk_of_wrong_choice": [
+        "Outdated code",
+        "Unnecessary maintenance",
+        "Runtime incompatibility",
+        "Native semantics misassumed"
+      ],
+      "specific_checks": [
+        "List capability gap",
+        "Verify current runtime",
+        "Compare code/test complexity",
+        "Test serialization/persistence"
+      ],
+      "apps_script_translation": "Algorithmic concepts transfer more reliably than source-era implementations; current Apps Script behavior is authoritative."
+    },
+    {
+      "id": "dsa-decision-clarity-versus-sophistication",
+      "record_type": "decision_rule",
+      "name": "Code clarity versus theoretical sophistication",
+      "summary": "Default: Choose the simplest design that makes the invariant, scale, and failure behavior explicit and meets measured performance requirements.",
+      "source_concept": "Code clarity versus theoretical sophistication",
+      "programming_problem_addressed": "Choose between a straightforward structure/algorithm and a more advanced one.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Source-supported conceptual comparison.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Hosted constraints and service boundaries can make a simple batched design superior to a theoretically elaborate in-memory structure; verify with actual logs.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Choose advanced structure when it materially improves correctness or measured dominant cost.",
+        "Choose simple array/object/map pipeline for ordinary bounded spreadsheet workflows."
+      ],
+      "do_not_use_when": [
+        "Avoid sophistication used as status rather than need.",
+        "Avoid simplicity that causes repeated scans, hidden invariants, or unsafe writes."
+      ],
+      "common_failure_modes": [
+        "Overengineering",
+        "Underengineering",
+        "Maintenance burden",
+        "Unmeasured performance claim"
+      ],
+      "tests_or_checks": [
+        "Explain invariant in one sentence",
+        "Compare operation counts",
+        "Benchmark realistic data",
+        "Review failure/recovery behavior"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Choose between a straightforward structure/algorithm and a more advanced one.?"
+      ],
+      "related_record_ids": [
+        "dsa-core-appropriate-over-familiar",
+        "dsa-risk-wrong-data-structure",
+        "dsa-workflow-decide-not-overengineer"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "Preface",
+        "chapter_title": "Preface",
+        "section_heading": "Why Study Data Structures and Algorithms",
+        "page_or_anchor": "OEBPS/preface01.html#idp7339520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source emphasizes appropriateness, efficiency, and trade-offs rather than one universally best structure or algorithm."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Code clarity versus theoretical sophistication",
+      "decision_context": "Choose between a straightforward structure/algorithm and a more advanced one.",
+      "default_choice": "Choose the simplest design that makes the invariant, scale, and failure behavior explicit and meets measured performance requirements.",
+      "choose_this_when": [
+        "Choose advanced structure when it materially improves correctness or measured dominant cost.",
+        "Choose simple array/object/map pipeline for ordinary bounded spreadsheet workflows."
+      ],
+      "avoid_this_when": [
+        "Avoid sophistication used as status rather than need.",
+        "Avoid simplicity that causes repeated scans, hidden invariants, or unsafe writes."
+      ],
+      "risk_of_wrong_choice": [
+        "Overengineering",
+        "Underengineering",
+        "Maintenance burden",
+        "Unmeasured performance claim"
+      ],
+      "specific_checks": [
+        "Explain invariant in one sentence",
+        "Compare operation counts",
+        "Benchmark realistic data",
+        "Review failure/recovery behavior"
+      ],
+      "apps_script_translation": "Hosted constraints and service boundaries can make a simple batched design superior to a theoretically elaborate in-memory structure; verify with actual logs."
+    },
+    {
+      "id": "dsa-decision-source-era-versus-modern",
+      "record_type": "decision_rule",
+      "name": "Source-era implementation versus modern/runtime-native implementation",
+      "summary": "Default: Preserve the source algorithm and invariant, but re-evaluate syntax, APIs, native structures, modules, I/O, and host behavior against the actual current runtime.",
+      "source_concept": "Source-era implementation versus modern/runtime-native implementation",
+      "programming_problem_addressed": "Translate a concept or code pattern from the 2014/2015 source into a current project.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Current Apps Script/project boundary requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Apps Script is neither the book’s SpiderMonkey shell nor automatically equivalent to Node.js; current project behavior wins.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Use source implementation as educational pseudocode or compatibility baseline.",
+        "Use current native implementation after verification and tests."
+      ],
+      "do_not_use_when": [
+        "Avoid silent modernization that misattributes current behavior to the source.",
+        "Avoid literal copying into Apps Script."
+      ],
+      "common_failure_modes": [
+        "Runtime error",
+        "Misleading source trace",
+        "Outdated style",
+        "Incorrect host boundary"
+      ],
+      "tests_or_checks": [
+        "Label source-direct versus translation claim",
+        "Verify current docs/runtime",
+        "Test minimal compatibility",
+        "Preserve source title/version mismatch"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Translate a concept or code pattern from the 2014/2015 source into a current project.?"
+      ],
+      "related_record_ids": [
+        "dsa-risk-source-era-js-runtime-assumption",
+        "dsa-risk-node-spidermonkey-appsscript-confusion",
+        "dsa-verify-spidermonkey-node"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "Preface",
+        "chapter_title": "Preface",
+        "section_heading": "What You Need for This Book",
+        "page_or_anchor": "OEBPS/preface01.html#idp84784",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source identifies a SpiderMonkey-based shell and states that Node.js requires translations."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "current_verification_flag",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Source-era implementation versus modern/runtime-native implementation",
+      "decision_context": "Translate a concept or code pattern from the 2014/2015 source into a current project.",
+      "default_choice": "Preserve the source algorithm and invariant, but re-evaluate syntax, APIs, native structures, modules, I/O, and host behavior against the actual current runtime.",
+      "choose_this_when": [
+        "Use source implementation as educational pseudocode or compatibility baseline.",
+        "Use current native implementation after verification and tests."
+      ],
+      "avoid_this_when": [
+        "Avoid silent modernization that misattributes current behavior to the source.",
+        "Avoid literal copying into Apps Script."
+      ],
+      "risk_of_wrong_choice": [
+        "Runtime error",
+        "Misleading source trace",
+        "Outdated style",
+        "Incorrect host boundary"
+      ],
+      "specific_checks": [
+        "Label source-direct versus translation claim",
+        "Verify current docs/runtime",
+        "Test minimal compatibility",
+        "Preserve source title/version mismatch"
+      ],
+      "apps_script_translation": "Apps Script is neither the book’s SpiderMonkey shell nor automatically equivalent to Node.js; current project behavior wins."
+    },
+    {
+      "id": "dsa-decision-batch-versus-service-calls",
+      "record_type": "decision_rule",
+      "name": "Batch read/write versus repeated service calls",
+      "summary": "Default: Use bounded batch reads and writes with in-memory transformation unless current API semantics or memory constraints justify another strategy.",
+      "source_concept": "Batch read/write versus repeated service calls",
+      "programming_problem_addressed": "Process many spreadsheet cells or rows through Apps Script.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Current Apps Script/project boundary requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "This is a platform extension; consult current Apps Script documentation and execution logs before setting batch/chunk sizes.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Choose batch for rectangular ranges and bulk transformations.",
+        "Use chunking only with verified limits, idempotency, checkpoints, and recovery."
+      ],
+      "do_not_use_when": [
+        "Avoid per-cell calls inside row loops.",
+        "Avoid unbounded whole-sheet loads."
+      ],
+      "common_failure_modes": [
+        "Latency/quota failure",
+        "Memory pressure",
+        "Partial writes",
+        "Wrong range dimensions"
+      ],
+      "tests_or_checks": [
+        "Count service calls",
+        "Measure range size",
+        "Validate output rectangle",
+        "Test interruption/retry",
+        "Verify current limits"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Process many spreadsheet cells or rows through Apps Script.?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-batch-operations",
+        "dsa-risk-repeated-sheet-service-call",
+        "dsa-sheet-read-once"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Processing Two-Dimensional Array Elements",
+        "page_or_anchor": "OEBPS/ch02.html#idp18183376",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source demonstrates in-memory multidimensional array processing; service batching is not source content."
+        ],
+        "inferred_claims": [
+          "The batch-first default depends on current Apps Script behavior and project scale."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Batch read/write versus repeated service calls",
+      "decision_context": "Process many spreadsheet cells or rows through Apps Script.",
+      "default_choice": "Use bounded batch reads and writes with in-memory transformation unless current API semantics or memory constraints justify another strategy.",
+      "choose_this_when": [
+        "Choose batch for rectangular ranges and bulk transformations.",
+        "Use chunking only with verified limits, idempotency, checkpoints, and recovery."
+      ],
+      "avoid_this_when": [
+        "Avoid per-cell calls inside row loops.",
+        "Avoid unbounded whole-sheet loads."
+      ],
+      "risk_of_wrong_choice": [
+        "Latency/quota failure",
+        "Memory pressure",
+        "Partial writes",
+        "Wrong range dimensions"
+      ],
+      "specific_checks": [
+        "Count service calls",
+        "Measure range size",
+        "Validate output rectangle",
+        "Test interruption/retry",
+        "Verify current limits"
+      ],
+      "apps_script_translation": "This is a platform extension; consult current Apps Script documentation and execution logs before setting batch/chunk sizes."
+    },
+    {
+      "id": "dsa-decision-validate-all-versus-write-as-you-go",
+      "record_type": "decision_rule",
+      "name": "Validate all rows before live write versus write-as-you-go",
+      "summary": "Default: Validate the complete proposed output before live side effects; use chunked writes only with explicit batch-level validation, idempotency, checkpoint, and recovery semantics.",
+      "source_concept": "Validate all rows before live write versus write-as-you-go",
+      "programming_problem_addressed": "Choose when side effects occur in a batch transformation.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Current Apps Script/project boundary requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Current API transaction/atomicity and limits require verification; use idempotent keys and audit evidence for chunked commits.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Choose validate-all for files/reports that must be consistent as a batch.",
+        "Use controlled chunks when data/resource size requires it and partial completion is an accepted contract."
+      ],
+      "do_not_use_when": [
+        "Avoid interleaving row validation and irreversible write.",
+        "Avoid claiming all-or-nothing behavior if the API is not transactional."
+      ],
+      "common_failure_modes": [
+        "Partial output",
+        "Duplicate retry",
+        "Late error after earlier writes",
+        "Misleading dry-run"
+      ],
+      "tests_or_checks": [
+        "Classify fatal versus row-level errors",
+        "Build exact action list",
+        "Verify destination preconditions",
+        "Force interruption test"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Choose when side effects occur in a batch transformation.?"
+      ],
+      "related_record_ids": [
+        "dsa-risk-live-write-before-validation",
+        "dsa-sheet-dry-run-preview",
+        "dsa-sheet-batch-write-after-validation"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "Preface",
+        "chapter_title": "Preface",
+        "section_heading": "Why Study Data Structures and Algorithms",
+        "page_or_anchor": "OEBPS/preface01.html#idp7339520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source supports deliberate data representation and transformation; side-effect staging is an applied safety rule."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Validate all rows before live write versus write-as-you-go",
+      "decision_context": "Choose when side effects occur in a batch transformation.",
+      "default_choice": "Validate the complete proposed output before live side effects; use chunked writes only with explicit batch-level validation, idempotency, checkpoint, and recovery semantics.",
+      "choose_this_when": [
+        "Choose validate-all for files/reports that must be consistent as a batch.",
+        "Use controlled chunks when data/resource size requires it and partial completion is an accepted contract."
+      ],
+      "avoid_this_when": [
+        "Avoid interleaving row validation and irreversible write.",
+        "Avoid claiming all-or-nothing behavior if the API is not transactional."
+      ],
+      "risk_of_wrong_choice": [
+        "Partial output",
+        "Duplicate retry",
+        "Late error after earlier writes",
+        "Misleading dry-run"
+      ],
+      "specific_checks": [
+        "Classify fatal versus row-level errors",
+        "Build exact action list",
+        "Verify destination preconditions",
+        "Force interruption test"
+      ],
+      "apps_script_translation": "Current API transaction/atomicity and limits require verification; use idempotent keys and audit evidence for chunked commits."
+    },
+    {
+      "id": "dsa-decision-structured-errors-versus-throw",
+      "record_type": "decision_rule",
+      "name": "Structured error collection versus throwing immediately",
+      "summary": "Default: Collect independently detectable row/field issues with provenance; throw or stop immediately only when the structure cannot be interpreted safely or invariants are corrupted.",
+      "source_concept": "Structured error collection versus throwing immediately",
+      "programming_problem_addressed": "Report validation and processing failures in multirow transformations.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Current Apps Script/project boundary requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Return structured run/item results while preserving real exceptions and logs for developer diagnosis; current logging behavior requires verification.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Collect for repairable row-level validation.",
+        "Throw for programmer errors, unavailable required system dependency, or fatal schema ambiguity."
+      ],
+      "do_not_use_when": [
+        "Avoid swallowing exceptions into warnings.",
+        "Avoid first-error-only behavior that forces repeated repair cycles."
+      ],
+      "common_failure_modes": [
+        "Misclassified fatal error",
+        "Too many misleading cascading issues",
+        "No stack/context for programming fault",
+        "User sees only first issue"
+      ],
+      "tests_or_checks": [
+        "Define error taxonomy/severity",
+        "Gate dependent validations",
+        "Require row/field/code/evidence",
+        "Reconcile all input statuses"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Report validation and processing failures in multirow transformations.?"
+      ],
+      "related_record_ids": [
+        "dsa-sheet-accumulate-validation-errors",
+        "dsa-risk-partial-failure-unstructured",
+        "dsa-workflow-review-partial-failure"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "A List ADT",
+        "page_or_anchor": "OEBPS/ch03.html#idp19348032",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source supplies list/object abstractions; error taxonomy and batch reporting are applied extensions."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch01.html",
+            "chapter_number": "1",
+            "chapter_title": "The JavaScript Programming Environment and Model",
+            "section_heading": "Objects and Object-Oriented Programming",
+            "page_or_anchor": "OEBPS/ch01.html#idp12945408"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Structured error collection versus throwing immediately",
+      "decision_context": "Report validation and processing failures in multirow transformations.",
+      "default_choice": "Collect independently detectable row/field issues with provenance; throw or stop immediately only when the structure cannot be interpreted safely or invariants are corrupted.",
+      "choose_this_when": [
+        "Collect for repairable row-level validation.",
+        "Throw for programmer errors, unavailable required system dependency, or fatal schema ambiguity."
+      ],
+      "avoid_this_when": [
+        "Avoid swallowing exceptions into warnings.",
+        "Avoid first-error-only behavior that forces repeated repair cycles."
+      ],
+      "risk_of_wrong_choice": [
+        "Misclassified fatal error",
+        "Too many misleading cascading issues",
+        "No stack/context for programming fault",
+        "User sees only first issue"
+      ],
+      "specific_checks": [
+        "Define error taxonomy/severity",
+        "Gate dependent validations",
+        "Require row/field/code/evidence",
+        "Reconcile all input statuses"
+      ],
+      "apps_script_translation": "Return structured run/item results while preserving real exceptions and logs for developer diagnosis; current logging behavior requires verification."
+    },
+    {
+      "id": "dsa-decision-retry-queue-versus-immediate",
+      "record_type": "decision_rule",
+      "name": "Retry queue versus immediate retry",
+      "summary": "Default: Queue a bounded, classified retry with stable identity rather than immediately looping, unless the operation is proven idempotent and a very short controlled retry is justified.",
+      "source_concept": "Retry queue versus immediate retry",
+      "programming_problem_addressed": "Handle transient-looking failures during batch or API processing.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Current Apps Script/project boundary requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Trigger, persistence, lock, and destination behavior require current verification.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Choose queue for deferred/backoff retries, workload smoothing, or execution-window boundaries.",
+        "Use immediate bounded retry only for a verified transient condition and idempotent operation."
+      ],
+      "do_not_use_when": [
+        "Avoid unbounded immediate retry.",
+        "Avoid queueing permanent validation errors.",
+        "Avoid retry without commit reconciliation."
+      ],
+      "common_failure_modes": [
+        "Duplicate side effect",
+        "Retry storm",
+        "Poison item",
+        "Stale payload"
+      ],
+      "tests_or_checks": [
+        "Classify retryability",
+        "Stable key",
+        "Attempt limit",
+        "Backoff/next-time policy",
+        "Concurrency-safe claim",
+        "Already-committed check"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Handle transient-looking failures during batch or API processing.?"
+      ],
+      "related_record_ids": [
+        "dsa-tool-retry-idempotency",
+        "dsa-risk-queue-retry-duplication",
+        "dsa-gas-queues-staged-processing"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "5",
+        "chapter_title": "Queues",
+        "section_heading": "Queue Operations",
+        "page_or_anchor": "OEBPS/ch05.html#idp23142720",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines queues and FIFO order; retry policy is an applied extension."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Retry queue versus immediate retry",
+      "decision_context": "Handle transient-looking failures during batch or API processing.",
+      "default_choice": "Queue a bounded, classified retry with stable identity rather than immediately looping, unless the operation is proven idempotent and a very short controlled retry is justified.",
+      "choose_this_when": [
+        "Choose queue for deferred/backoff retries, workload smoothing, or execution-window boundaries.",
+        "Use immediate bounded retry only for a verified transient condition and idempotent operation."
+      ],
+      "avoid_this_when": [
+        "Avoid unbounded immediate retry.",
+        "Avoid queueing permanent validation errors.",
+        "Avoid retry without commit reconciliation."
+      ],
+      "risk_of_wrong_choice": [
+        "Duplicate side effect",
+        "Retry storm",
+        "Poison item",
+        "Stale payload"
+      ],
+      "specific_checks": [
+        "Classify retryability",
+        "Stable key",
+        "Attempt limit",
+        "Backoff/next-time policy",
+        "Concurrency-safe claim",
+        "Already-committed check"
+      ],
+      "apps_script_translation": "Trigger, persistence, lock, and destination behavior require current verification."
+    },
+    {
+      "id": "dsa-decision-idempotency-key-versus-after-detection",
+      "record_type": "decision_rule",
+      "name": "Idempotency key versus duplicate detection after the fact",
+      "summary": "Default: Prevent duplication with a stable pre-side-effect idempotency key and commit-state check; retain after-the-fact duplicate reconciliation as a backup, not the primary control.",
+      "source_concept": "Idempotency key versus duplicate detection after the fact",
+      "programming_problem_addressed": "Prevent duplicate live side effects across reruns, retries, and concurrent executions.",
+      "data_shape_assumption": "The input shape, dominant operations, ordering/uniqueness requirements, scale, and side effects are known or inspected.",
+      "algorithmic_role": "Selects a representation or algorithm under explicit conditions.",
+      "runtime_context": "Current Apps Script/project boundary requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Current persistence, LockService, trigger concurrency, and destination idempotency semantics require verification.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Use idempotency key for repeatable writes/emails/API calls.",
+        "Use post-hoc duplicate analysis for legacy data, uncertain external behavior, or recovery."
+      ],
+      "do_not_use_when": [
+        "Avoid random run-specific key for a logical action.",
+        "Avoid relying only on cleanup after duplicates occur."
+      ],
+      "common_failure_modes": [
+        "Duplicate side effects",
+        "Check/write race",
+        "False key collision",
+        "Uncertain commit"
+      ],
+      "tests_or_checks": [
+        "Define logical identity",
+        "Verify durable store/destination support",
+        "Test rerun/concurrency/lost response",
+        "Version key schema"
+      ],
+      "diagnostic_questions": [
+        "Which evidence makes the default inappropriate for this case: Prevent duplicate live side effects across reruns, retries, and concurrent executions.?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-idempotency",
+        "dsa-risk-idempotency-missing",
+        "dsa-sheet-idempotent-export-keys"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "9",
+        "chapter_title": "Sets",
+        "section_heading": "Fundamental Set Definitions, Operations, and Properties",
+        "page_or_anchor": "OEBPS/ch09.html#idp34336432",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines set uniqueness and membership; durable pre-side-effect idempotency is an applied extension."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "decision-rule"
+      ],
+      "decision_name": "Idempotency key versus duplicate detection after the fact",
+      "decision_context": "Prevent duplicate live side effects across reruns, retries, and concurrent executions.",
+      "default_choice": "Prevent duplication with a stable pre-side-effect idempotency key and commit-state check; retain after-the-fact duplicate reconciliation as a backup, not the primary control.",
+      "choose_this_when": [
+        "Use idempotency key for repeatable writes/emails/API calls.",
+        "Use post-hoc duplicate analysis for legacy data, uncertain external behavior, or recovery."
+      ],
+      "avoid_this_when": [
+        "Avoid random run-specific key for a logical action.",
+        "Avoid relying only on cleanup after duplicates occur."
+      ],
+      "risk_of_wrong_choice": [
+        "Duplicate side effects",
+        "Check/write race",
+        "False key collision",
+        "Uncertain commit"
+      ],
+      "specific_checks": [
+        "Define logical identity",
+        "Verify durable store/destination support",
+        "Test rerun/concurrency/lost response",
+        "Version key schema"
+      ],
+      "apps_script_translation": "Current persistence, LockService, trigger concurrency, and destination idempotency semantics require verification."
+    }
+  ]
+}

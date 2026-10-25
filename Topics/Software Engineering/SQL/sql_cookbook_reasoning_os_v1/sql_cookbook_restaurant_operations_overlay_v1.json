@@ -1,0 +1,2038 @@
+{
+  "package_id": "sql-cookbook-reasoning-os-v1",
+  "section_key": "restaurant_operations_extensions",
+  "record_count": 15,
+  "unique_record_count": 15,
+  "source_boundary": "Uploaded second edition only. Derivation and source anchors are carried on every substantive record.",
+  "usage_note": "These are canonical records reused across topical modules. Count distinct IDs across the package, not module totals.",
+  "records": [
+    {
+      "id": "sql-restaurant-sales-location",
+      "record_type": "restaurant_operations",
+      "name": "Sales trend by location",
+      "summary": "Compare descriptive trends without attributing causes.",
+      "source_recipe_or_concept": "7.3 Summing the Values in a Column; supporting source units: 7.3, 9.10",
+      "sql_problem_addressed": "Compare descriptive trends without attributing causes.",
+      "query_intent": "Sales trend by location",
+      "input_tables_or_rowsets": [
+        "Supplied sales observations and verified location mapping; these are possible supplied sources, not claimed integrations."
+      ],
+      "required_grain": "Location/business-date and sales-observation identity; verify the actual input and output contract.",
+      "key_columns_or_join_conditions": [
+        "Location/business-date and sales-observation identity"
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A descriptive, reconciled sales trend by location result with unresolved definitions and coverage explicitly identified.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Sales trend by location is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Reconcile each location and the group; separate missing exports from zero sales."
+      ],
+      "diagnostic_questions": [
+        "What do the supplied records establish for sales trend by location under the approved operational definitions?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-03",
+        "sql-recipe-09-10"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.3 Summing the Values in a Column",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3.3",
+          "See Also": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3.4"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked recipes support the SQL operations only."
+        ],
+        "inferred_claims": [
+          "Compare descriptive trends without attributing causes.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What do the supplied records establish for sales trend by location under the approved operational definitions?",
+          "Compare descriptive trends without attributing causes.",
+          "No OMAKAI, Restaurant365, SevenRooms, or Uber Eats records or schemas were accessed."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.3 Summing the Values in a Column",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "9.10 Filling in Missing Dates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-10",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_restaurant_operations_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL patterns to restaurant operations. It is not a direct claim from the book."
+      },
+      "tags": [
+        "restaurant_operations"
+      ],
+      "restaurant_use_case": "Sales trend by location",
+      "operational_question": "What do the supplied records establish for sales trend by location under the approved operational definitions?",
+      "sql_patterns_applied": [
+        "Use SUM at the requested grouping grain.",
+        "Generate the complete period rowset, then outer join facts at matching period grain and aggregate matched records."
+      ],
+      "possible_data_sources": [
+        "Supplied sales observations and verified location mapping"
+      ],
+      "critical_keys": [
+        "Location/business-date and sales-observation identity"
+      ],
+      "time_period_logic": "Business day, active-location dates, comparable periods",
+      "quality_checks": [
+        "Reconcile each location and the group; separate missing exports from zero sales."
+      ],
+      "common_query_traps": [
+        "Assuming a platform/export schema, company rule, or relationship not supplied by the user."
+      ],
+      "decision_supported": "Compare descriptive trends without attributing causes.",
+      "what_not_to_claim_without_evidence": [
+        "Current platform schemas, connector behavior, or API access.",
+        "Company-specific formulas, facts, staffing judgments, or causal effects.",
+        "Verified correctness without supplied samples and expected output."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-07-03",
+        "sql-recipe-09-10"
+      ],
+      "source_issue_ids": [
+        "source-issue-date-fixtures"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-business-exports",
+        "sql-verify-business-metrics",
+        "sql-verify-timezone"
+      ]
+    },
+    {
+      "id": "sql-restaurant-daypart",
+      "record_type": "restaurant_operations",
+      "name": "Order volume by daypart",
+      "summary": "Understand the distribution of eligible order volume.",
+      "source_recipe_or_concept": "1.8 Using Conditional Logic in a SELECT Statement; supporting source units: 1.8, 9.3, 12.7",
+      "sql_problem_addressed": "Understand the distribution of eligible order volume.",
+      "query_intent": "Order volume by daypart",
+      "input_tables_or_rowsets": [
+        "Supplied order timestamps and approved daypart definitions; these are possible supplied sources, not claimed integrations."
+      ],
+      "required_grain": "Order identity, location, daypart; verify the actual input and output contract.",
+      "key_columns_or_join_conditions": [
+        "Order identity, location, daypart"
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A descriptive, reconciled order volume by daypart result with unresolved definitions and coverage explicitly identified.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Order volume by daypart is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Test exact daypart boundaries, midnight, and duplicate order lines."
+      ],
+      "diagnostic_questions": [
+        "What do the supplied records establish for order volume by daypart under the approved operational definitions?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-08",
+        "sql-recipe-09-03",
+        "sql-recipe-12-07"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.8 Using Conditional Logic in a SELECT Statement",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked recipes support the SQL operations only."
+        ],
+        "inferred_claims": [
+          "Understand the distribution of eligible order volume.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What do the supplied records establish for order volume by daypart under the approved operational definitions?",
+          "Understand the distribution of eligible order volume.",
+          "No OMAKAI, Restaurant365, SevenRooms, or Uber Eats records or schemas were accessed."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.8 Using Conditional Logic in a SELECT Statement",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "9.3 Extracting Units of Time from a Date",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-3",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "12.7 Creating Buckets of Data, of a Fixed Size",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-7",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_restaurant_operations_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL patterns to restaurant operations. It is not a direct claim from the book."
+      },
+      "tags": [
+        "restaurant_operations"
+      ],
+      "restaurant_use_case": "Order volume by daypart",
+      "operational_question": "What do the supplied records establish for order volume by daypart under the approved operational definitions?",
+      "sql_patterns_applied": [
+        "Use ordered CASE branches and an explicit ELSE when unmatched rows need a defined outcome.",
+        "Use the dialect’s extraction or formatting functions for the needed date components.",
+        "Order and number rows, divide the ordinal by the requested bucket capacity, and take a ceiling with appropriate numeric types."
+      ],
+      "possible_data_sources": [
+        "Supplied order timestamps and approved daypart definitions"
+      ],
+      "critical_keys": [
+        "Order identity, location, daypart"
+      ],
+      "time_period_logic": "Timestamp zone, operating-day cutoff, daypart edges",
+      "quality_checks": [
+        "Test exact daypart boundaries, midnight, and duplicate order lines."
+      ],
+      "common_query_traps": [
+        "Assuming a platform/export schema, company rule, or relationship not supplied by the user."
+      ],
+      "decision_supported": "Understand the distribution of eligible order volume.",
+      "what_not_to_claim_without_evidence": [
+        "Current platform schemas, connector behavior, or API access.",
+        "Company-specific formulas, facts, staffing judgments, or causal effects.",
+        "Verified correctness without supplied samples and expected output."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-01-08",
+        "sql-recipe-09-03",
+        "sql-recipe-12-07"
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-business-exports",
+        "sql-verify-business-metrics",
+        "sql-verify-dates",
+        "sql-verify-timezone"
+      ]
+    },
+    {
+      "id": "sql-restaurant-guest-location",
+      "record_type": "restaurant_operations",
+      "name": "Guest satisfaction by location",
+      "summary": "Review descriptive satisfaction patterns rather than ranking unsupported causal performance.",
+      "source_recipe_or_concept": "7.1 Computing an Average; supporting source units: 7.1, 7.12",
+      "sql_problem_addressed": "Review descriptive satisfaction patterns rather than ranking unsupported causal performance.",
+      "query_intent": "Guest satisfaction by location",
+      "input_tables_or_rowsets": [
+        "Supplied feedback observations and location mapping; these are possible supplied sources, not claimed integrations."
+      ],
+      "required_grain": "Response identity, location, period; verify the actual input and output contract.",
+      "key_columns_or_join_conditions": [
+        "Response identity, location, period"
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A descriptive, reconciled guest satisfaction by location result with unresolved definitions and coverage explicitly identified.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Guest satisfaction by location is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Keep rating scale and response counts; inspect missing scores and location mismatches."
+      ],
+      "diagnostic_questions": [
+        "What do the supplied records establish for guest satisfaction by location under the approved operational definitions?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-01",
+        "sql-recipe-07-12"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.1 Computing an Average",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-1",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-1.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-1.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-1.3",
+          "See Also": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-1.4"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked recipes support the SQL operations only."
+        ],
+        "inferred_claims": [
+          "Review descriptive satisfaction patterns rather than ranking unsupported causal performance.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What do the supplied records establish for guest satisfaction by location under the approved operational definitions?",
+          "Review descriptive satisfaction patterns rather than ranking unsupported causal performance.",
+          "No OMAKAI, Restaurant365, SevenRooms, or Uber Eats records or schemas were accessed."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.1 Computing an Average",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-1",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.12 Aggregating Nullable Columns",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-12",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_restaurant_operations_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL patterns to restaurant operations. It is not a direct claim from the book."
+      },
+      "tags": [
+        "restaurant_operations"
+      ],
+      "restaurant_use_case": "Guest satisfaction by location",
+      "operational_question": "What do the supplied records establish for guest satisfaction by location under the approved operational definitions?",
+      "sql_patterns_applied": [
+        "Use AVG over the qualifying rowset, with GROUP BY when a separate result is required per group.",
+        "Apply COALESCE before AVG only when every population member should be represented in the denominator."
+      ],
+      "possible_data_sources": [
+        "Supplied feedback observations and location mapping"
+      ],
+      "critical_keys": [
+        "Response identity, location, period"
+      ],
+      "time_period_logic": "Response-date basis and comparable collection windows",
+      "quality_checks": [
+        "Keep rating scale and response counts; inspect missing scores and location mismatches."
+      ],
+      "common_query_traps": [
+        "Assuming a platform/export schema, company rule, or relationship not supplied by the user."
+      ],
+      "decision_supported": "Review descriptive satisfaction patterns rather than ranking unsupported causal performance.",
+      "what_not_to_claim_without_evidence": [
+        "Current platform schemas, connector behavior, or API access.",
+        "Company-specific formulas, facts, staffing judgments, or causal effects.",
+        "Verified correctness without supplied samples and expected output."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-07-01",
+        "sql-recipe-07-12"
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-business-exports",
+        "sql-verify-business-metrics",
+        "sql-verify-timezone"
+      ]
+    },
+    {
+      "id": "sql-restaurant-uber-issues",
+      "record_type": "restaurant_operations",
+      "name": "Uber Eats reviews by issue type",
+      "summary": "Identify issue categories for review; no API or export schema is assumed.",
+      "source_recipe_or_concept": "1.8 Using Conditional Logic in a SELECT Statement; supporting source units: 1.8, 3.9, 12.2",
+      "sql_problem_addressed": "Identify issue categories for review; no API or export schema is assumed.",
+      "query_intent": "Uber Eats reviews by issue type",
+      "input_tables_or_rowsets": [
+        "User-supplied Uber Eats review export and approved issue assignments; these are possible supplied sources, not claimed integrations."
+      ],
+      "required_grain": "Platform/review identity and issue-assignment identity; verify the actual input and output contract.",
+      "key_columns_or_join_conditions": [
+        "Platform/review identity and issue-assignment identity"
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A descriptive, reconciled uber eats reviews by issue type result with unresolved definitions and coverage explicitly identified.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Uber Eats reviews by issue type is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Test edited reviews, multiple issue labels, unmatched orders, and duplicate IDs."
+      ],
+      "diagnostic_questions": [
+        "What do the supplied records establish for uber eats reviews by issue type under the approved operational definitions?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-08",
+        "sql-recipe-03-09",
+        "sql-recipe-12-02"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.8 Using Conditional Logic in a SELECT Statement",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked recipes support the SQL operations only."
+        ],
+        "inferred_claims": [
+          "Identify issue categories for review; no API or export schema is assumed.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What do the supplied records establish for uber eats reviews by issue type under the approved operational definitions?",
+          "Identify issue categories for review; no API or export schema is assumed.",
+          "No OMAKAI, Restaurant365, SevenRooms, or Uber Eats records or schemas were accessed."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.8 Using Conditional Logic in a SELECT Statement",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "3.9 Performing Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "12.2 Pivoting a Result Set into Multiple Rows",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_restaurant_operations_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL patterns to restaurant operations. It is not a direct claim from the book."
+      },
+      "tags": [
+        "restaurant_operations"
+      ],
+      "restaurant_use_case": "Uber Eats reviews by issue type",
+      "operational_question": "What do the supplied records establish for uber eats reviews by issue type under the approved operational definitions?",
+      "sql_patterns_applied": [
+        "Use ordered CASE branches and an explicit ELSE when unmatched rows need a defined outcome.",
+        "Aggregate the parent measure at its own grain before joining; the book’s DISTINCT-aggregate shortcut is conditional on value uniqueness.",
+        "Assign ROW_NUMBER within each category, then pivot while grouping by that within-category position."
+      ],
+      "possible_data_sources": [
+        "User-supplied Uber Eats review export and approved issue assignments"
+      ],
+      "critical_keys": [
+        "Platform/review identity and issue-assignment identity"
+      ],
+      "time_period_logic": "Review date versus order date and any revision policy",
+      "quality_checks": [
+        "Test edited reviews, multiple issue labels, unmatched orders, and duplicate IDs."
+      ],
+      "common_query_traps": [
+        "Assuming a platform/export schema, company rule, or relationship not supplied by the user."
+      ],
+      "decision_supported": "Identify issue categories for review; no API or export schema is assumed.",
+      "what_not_to_claim_without_evidence": [
+        "Current platform schemas, connector behavior, or API access.",
+        "Company-specific formulas, facts, staffing judgments, or causal effects.",
+        "Verified correctness without supplied samples and expected output."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-01-08",
+        "sql-recipe-03-09",
+        "sql-recipe-12-02"
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-business-exports",
+        "sql-verify-business-metrics",
+        "sql-verify-timezone"
+      ]
+    },
+    {
+      "id": "sql-restaurant-sevenrooms",
+      "record_type": "restaurant_operations",
+      "name": "SevenRooms feedback analysis",
+      "summary": "Summarize supplied feedback without inventing attribution to employees.",
+      "source_recipe_or_concept": "3.2 Combining Related Rows; supporting source units: 3.2, 7.12, 9.10",
+      "sql_problem_addressed": "Summarize supplied feedback without inventing attribution to employees.",
+      "query_intent": "SevenRooms feedback analysis",
+      "input_tables_or_rowsets": [
+        "User-supplied SevenRooms feedback/reservation exports and verified mappings; these are possible supplied sources, not claimed integrations."
+      ],
+      "required_grain": "Feedback/reservation identity; server mapping only if supplied; verify the actual input and output contract.",
+      "key_columns_or_join_conditions": [
+        "Feedback/reservation identity; server mapping only if supplied"
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A descriptive, reconciled sevenrooms feedback analysis result with unresolved definitions and coverage explicitly identified.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "SevenRooms feedback analysis is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Check feedback/reservation cardinality and review unmapped server names rather than guessing."
+      ],
+      "diagnostic_questions": [
+        "What do the supplied records establish for sevenrooms feedback analysis under the approved operational definitions?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-02",
+        "sql-recipe-07-12",
+        "sql-recipe-09-10"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.2 Combining Related Rows",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked recipes support the SQL operations only."
+        ],
+        "inferred_claims": [
+          "Summarize supplied feedback without inventing attribution to employees.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What do the supplied records establish for sevenrooms feedback analysis under the approved operational definitions?",
+          "Summarize supplied feedback without inventing attribution to employees.",
+          "No OMAKAI, Restaurant365, SevenRooms, or Uber Eats records or schemas were accessed."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.2 Combining Related Rows",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.12 Aggregating Nullable Columns",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-12",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "9.10 Filling in Missing Dates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-10",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_restaurant_operations_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL patterns to restaurant operations. It is not a direct claim from the book."
+      },
+      "tags": [
+        "restaurant_operations"
+      ],
+      "restaurant_use_case": "SevenRooms feedback analysis",
+      "operational_question": "What do the supplied records establish for sevenrooms feedback analysis under the approved operational definitions?",
+      "sql_patterns_applied": [
+        "Join using the established matching columns, separating relationship conditions from population filters.",
+        "Apply COALESCE before AVG only when every population member should be represented in the denominator.",
+        "Generate the complete period rowset, then outer join facts at matching period grain and aggregate matched records."
+      ],
+      "possible_data_sources": [
+        "User-supplied SevenRooms feedback/reservation exports and verified mappings"
+      ],
+      "critical_keys": [
+        "Feedback/reservation identity; server mapping only if supplied"
+      ],
+      "time_period_logic": "Visit date versus submission date and business-week definition",
+      "quality_checks": [
+        "Check feedback/reservation cardinality and review unmapped server names rather than guessing."
+      ],
+      "common_query_traps": [
+        "Assuming a platform/export schema, company rule, or relationship not supplied by the user."
+      ],
+      "decision_supported": "Summarize supplied feedback without inventing attribution to employees.",
+      "what_not_to_claim_without_evidence": [
+        "Current platform schemas, connector behavior, or API access.",
+        "Company-specific formulas, facts, staffing judgments, or causal effects.",
+        "Verified correctness without supplied samples and expected output."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-03-02",
+        "sql-recipe-07-12",
+        "sql-recipe-09-10"
+      ],
+      "source_issue_ids": [
+        "source-issue-date-fixtures"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-business-exports",
+        "sql-verify-business-metrics",
+        "sql-verify-timezone"
+      ]
+    },
+    {
+      "id": "sql-restaurant-labor-hours",
+      "record_type": "restaurant_operations",
+      "name": "Labor-hour trend",
+      "summary": "Track approved labor-hour measures over time.",
+      "source_recipe_or_concept": "3.9 Performing Joins When Using Aggregates; supporting source units: 3.9, 7.3, 9.13",
+      "sql_problem_addressed": "Track approved labor-hour measures over time.",
+      "query_intent": "Labor-hour trend",
+      "input_tables_or_rowsets": [
+        "Supplied timeclock or approved labor-hour export; these are possible supplied sources, not claimed integrations."
+      ],
+      "required_grain": "Employee/shift/segment identity and location; verify the actual input and output contract.",
+      "key_columns_or_join_conditions": [
+        "Employee/shift/segment identity and location"
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A descriptive, reconciled labor-hour trend result with unresolved definitions and coverage explicitly identified.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Labor-hour trend is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Avoid joining each shift to multiple pay lines; reconcile hours to the approved control."
+      ],
+      "diagnostic_questions": [
+        "What do the supplied records establish for labor-hour trend under the approved operational definitions?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-09",
+        "sql-recipe-07-03",
+        "sql-recipe-09-13"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.9 Performing Joins When Using Aggregates",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked recipes support the SQL operations only."
+        ],
+        "inferred_claims": [
+          "Track approved labor-hour measures over time.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What do the supplied records establish for labor-hour trend under the approved operational definitions?",
+          "Track approved labor-hour measures over time.",
+          "No OMAKAI, Restaurant365, SevenRooms, or Uber Eats records or schemas were accessed."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.9 Performing Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.3 Summing the Values in a Column",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "9.13 Identifying Overlapping Date Ranges",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-13",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_restaurant_operations_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL patterns to restaurant operations. It is not a direct claim from the book."
+      },
+      "tags": [
+        "restaurant_operations"
+      ],
+      "restaurant_use_case": "Labor-hour trend",
+      "operational_question": "What do the supplied records establish for labor-hour trend under the approved operational definitions?",
+      "sql_patterns_applied": [
+        "Aggregate the parent measure at its own grain before joining; the book’s DISTINCT-aggregate shortcut is conditional on value uniqueness.",
+        "Use SUM at the requested grouping grain.",
+        "Self-join intervals within the entity and identify starts that fall inside another interval under the source’s inclusive boundary rule."
+      ],
+      "possible_data_sources": [
+        "Supplied timeclock or approved labor-hour export"
+      ],
+      "critical_keys": [
+        "Employee/shift/segment identity and location"
+      ],
+      "time_period_logic": "Overnight shifts, period overlap, paid/unpaid rules",
+      "quality_checks": [
+        "Avoid joining each shift to multiple pay lines; reconcile hours to the approved control."
+      ],
+      "common_query_traps": [
+        "Assuming a platform/export schema, company rule, or relationship not supplied by the user."
+      ],
+      "decision_supported": "Track approved labor-hour measures over time.",
+      "what_not_to_claim_without_evidence": [
+        "Current platform schemas, connector behavior, or API access.",
+        "Company-specific formulas, facts, staffing judgments, or causal effects.",
+        "Verified correctness without supplied samples and expected output."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-03-09",
+        "sql-recipe-07-03",
+        "sql-recipe-09-13"
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-business-exports",
+        "sql-verify-business-metrics",
+        "sql-verify-timezone"
+      ]
+    },
+    {
+      "id": "sql-restaurant-food-variance",
+      "record_type": "restaurant_operations",
+      "name": "Food-cost variance",
+      "summary": "Show variance under the approved definition, not an invented cost formula.",
+      "source_recipe_or_concept": "3.9 Performing Joins When Using Aggregates; supporting source units: 3.9, 7.11",
+      "sql_problem_addressed": "Show variance under the approved definition, not an invented cost formula.",
+      "query_intent": "Food-cost variance",
+      "input_tables_or_rowsets": [
+        "Supplied actual food-cost inputs and approved standard/budget; these are possible supplied sources, not claimed integrations."
+      ],
+      "required_grain": "Item/location/period plus unit and version; verify the actual input and output contract.",
+      "key_columns_or_join_conditions": [
+        "Item/location/period plus unit and version"
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A descriptive, reconciled food-cost variance result with unresolved definitions and coverage explicitly identified.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Food-cost variance is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Reconcile units and separate transfers, spoilage, and adjustments only under supplied rules."
+      ],
+      "diagnostic_questions": [
+        "What do the supplied records establish for food-cost variance under the approved operational definitions?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-09",
+        "sql-recipe-07-11"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.9 Performing Joins When Using Aggregates",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked recipes support the SQL operations only."
+        ],
+        "inferred_claims": [
+          "Show variance under the approved definition, not an invented cost formula.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What do the supplied records establish for food-cost variance under the approved operational definitions?",
+          "Show variance under the approved definition, not an invented cost formula.",
+          "No OMAKAI, Restaurant365, SevenRooms, or Uber Eats records or schemas were accessed."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.9 Performing Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.11 Determining the Percentage of a Total",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_restaurant_operations_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL patterns to restaurant operations. It is not a direct claim from the book."
+      },
+      "tags": [
+        "restaurant_operations"
+      ],
+      "restaurant_use_case": "Food-cost variance",
+      "operational_question": "What do the supplied records establish for food-cost variance under the approved operational definitions?",
+      "sql_patterns_applied": [
+        "Aggregate the parent measure at its own grain before joining; the book’s DISTINCT-aggregate shortcut is conditional on value uniqueness.",
+        "Calculate numerator and denominator over their explicitly defined populations before division."
+      ],
+      "possible_data_sources": [
+        "Supplied actual food-cost inputs and approved standard/budget"
+      ],
+      "critical_keys": [
+        "Item/location/period plus unit and version"
+      ],
+      "time_period_logic": "Inventory count timing, receipt periods, and approved cost period",
+      "quality_checks": [
+        "Reconcile units and separate transfers, spoilage, and adjustments only under supplied rules."
+      ],
+      "common_query_traps": [
+        "Assuming a platform/export schema, company rule, or relationship not supplied by the user."
+      ],
+      "decision_supported": "Show variance under the approved definition, not an invented cost formula.",
+      "what_not_to_claim_without_evidence": [
+        "Current platform schemas, connector behavior, or API access.",
+        "Company-specific formulas, facts, staffing judgments, or causal effects.",
+        "Verified correctness without supplied samples and expected output."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-03-09",
+        "sql-recipe-07-11"
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-business-exports",
+        "sql-verify-business-metrics",
+        "sql-verify-timezone"
+      ]
+    },
+    {
+      "id": "sql-restaurant-warehouse",
+      "record_type": "restaurant_operations",
+      "name": "Warehouse inventory movement",
+      "summary": "Review recorded movement completeness and reconciliation exceptions.",
+      "source_recipe_or_concept": "3.11 Returning Missing Data from Multiple Tables; supporting source units: 3.11, 7.3",
+      "sql_problem_addressed": "Review recorded movement completeness and reconciliation exceptions.",
+      "query_intent": "Warehouse inventory movement",
+      "input_tables_or_rowsets": [
+        "Supplied receipt, transfer, issue, and count observations; these are possible supplied sources, not claimed integrations."
+      ],
+      "required_grain": "Movement/line identity, item, unit, origin/destination; verify the actual input and output contract.",
+      "key_columns_or_join_conditions": [
+        "Movement/line identity, item, unit, origin/destination"
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A descriptive, reconciled warehouse inventory movement result with unresolved definitions and coverage explicitly identified.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Warehouse inventory movement is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Check transfer pairs, unit conversions, duplicates, and opening/closing controls if supplied."
+      ],
+      "diagnostic_questions": [
+        "What do the supplied records establish for warehouse inventory movement under the approved operational definitions?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-11",
+        "sql-recipe-07-03"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.11 Returning Missing Data from Multiple Tables",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-11",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-11.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-11.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-11.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked recipes support the SQL operations only."
+        ],
+        "inferred_claims": [
+          "Review recorded movement completeness and reconciliation exceptions.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What do the supplied records establish for warehouse inventory movement under the approved operational definitions?",
+          "Review recorded movement completeness and reconciliation exceptions.",
+          "No OMAKAI, Restaurant365, SevenRooms, or Uber Eats records or schemas were accessed."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.11 Returning Missing Data from Multiple Tables",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-11",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.3 Summing the Values in a Column",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_restaurant_operations_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL patterns to restaurant operations. It is not a direct claim from the book."
+      },
+      "tags": [
+        "restaurant_operations"
+      ],
+      "restaurant_use_case": "Warehouse inventory movement",
+      "operational_question": "What do the supplied records establish for warehouse inventory movement under the approved operational definitions?",
+      "sql_patterns_applied": [
+        "Use a supported full outer join or the source’s combination of opposite outer joins.",
+        "Use SUM at the requested grouping grain."
+      ],
+      "possible_data_sources": [
+        "Supplied receipt, transfer, issue, and count observations"
+      ],
+      "critical_keys": [
+        "Movement/line identity, item, unit, origin/destination"
+      ],
+      "time_period_logic": "Movement/posting date and as-of cutoff",
+      "quality_checks": [
+        "Check transfer pairs, unit conversions, duplicates, and opening/closing controls if supplied."
+      ],
+      "common_query_traps": [
+        "Assuming a platform/export schema, company rule, or relationship not supplied by the user."
+      ],
+      "decision_supported": "Review recorded movement completeness and reconciliation exceptions.",
+      "what_not_to_claim_without_evidence": [
+        "Current platform schemas, connector behavior, or API access.",
+        "Company-specific formulas, facts, staffing judgments, or causal effects.",
+        "Verified correctness without supplied samples and expected output."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-03-11",
+        "sql-recipe-07-03"
+      ],
+      "source_issue_ids": [
+        "source-issue-full-join-heading"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-business-exports",
+        "sql-verify-business-metrics",
+        "sql-verify-timezone"
+      ]
+    },
+    {
+      "id": "sql-restaurant-spoilage",
+      "record_type": "restaurant_operations",
+      "name": "Spoilage and expiration reporting",
+      "summary": "Identify recorded losses and potentially expiring lots as separate outputs.",
+      "source_recipe_or_concept": "1.2 Retrieving a Subset of Rows from a Table; supporting source units: 1.2, 8.2, 9.13",
+      "sql_problem_addressed": "Identify recorded losses and potentially expiring lots as separate outputs.",
+      "query_intent": "Spoilage and expiration reporting",
+      "input_tables_or_rowsets": [
+        "Supplied spoilage events and lot/expiry records; these are possible supplied sources, not claimed integrations."
+      ],
+      "required_grain": "Lot/item/location and event identity; verify the actual input and output contract.",
+      "key_columns_or_join_conditions": [
+        "Lot/item/location and event identity"
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A descriptive, reconciled spoilage and expiration reporting result with unresolved definitions and coverage explicitly identified.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Spoilage and expiration reporting is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Do not equate expired inventory with recorded spoilage; inspect missing expiry values."
+      ],
+      "diagnostic_questions": [
+        "What do the supplied records establish for spoilage and expiration reporting under the approved operational definitions?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-02",
+        "sql-recipe-08-02",
+        "sql-recipe-09-13"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.2 Retrieving a Subset of Rows from a Table",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-2",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-2.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-2.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-2.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked recipes support the SQL operations only."
+        ],
+        "inferred_claims": [
+          "Identify recorded losses and potentially expiring lots as separate outputs.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What do the supplied records establish for spoilage and expiration reporting under the approved operational definitions?",
+          "Identify recorded losses and potentially expiring lots as separate outputs.",
+          "No OMAKAI, Restaurant365, SevenRooms, or Uber Eats records or schemas were accessed."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.2 Retrieving a Subset of Rows from a Table",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "8.2 Determining the Number of Days Between Two Dates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "9.13 Identifying Overlapping Date Ranges",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-13",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_restaurant_operations_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL patterns to restaurant operations. It is not a direct claim from the book."
+      },
+      "tags": [
+        "restaurant_operations"
+      ],
+      "restaurant_use_case": "Spoilage and expiration reporting",
+      "operational_question": "What do the supplied records establish for spoilage and expiration reporting under the approved operational definitions?",
+      "sql_patterns_applied": [
+        "Apply the population condition in WHERE before returning the selected columns.",
+        "Resolve each endpoint to one row, then apply the dialect’s subtraction or day-difference function.",
+        "Self-join intervals within the entity and identify starts that fall inside another interval under the source’s inclusive boundary rule."
+      ],
+      "possible_data_sources": [
+        "Supplied spoilage events and lot/expiry records"
+      ],
+      "critical_keys": [
+        "Lot/item/location and event identity"
+      ],
+      "time_period_logic": "Expiry date meaning, as-of date, and retention window",
+      "quality_checks": [
+        "Do not equate expired inventory with recorded spoilage; inspect missing expiry values."
+      ],
+      "common_query_traps": [
+        "Assuming a platform/export schema, company rule, or relationship not supplied by the user."
+      ],
+      "decision_supported": "Identify recorded losses and potentially expiring lots as separate outputs.",
+      "what_not_to_claim_without_evidence": [
+        "Current platform schemas, connector behavior, or API access.",
+        "Company-specific formulas, facts, staffing judgments, or causal effects.",
+        "Verified correctness without supplied samples and expected output."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-01-02",
+        "sql-recipe-08-02",
+        "sql-recipe-09-13"
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-business-exports",
+        "sql-verify-business-metrics",
+        "sql-verify-timezone"
+      ]
+    },
+    {
+      "id": "sql-restaurant-supplier-delay",
+      "record_type": "restaurant_operations",
+      "name": "Supplier-delay reporting",
+      "summary": "Prioritize delivery exceptions without asserting the cause of delay.",
+      "source_recipe_or_concept": "8.2 Determining the Number of Days Between Two Dates; supporting source units: 8.2, 3.9",
+      "sql_problem_addressed": "Prioritize delivery exceptions without asserting the cause of delay.",
+      "query_intent": "Supplier-delay reporting",
+      "input_tables_or_rowsets": [
+        "Supplied commitments and receipt events; these are possible supplied sources, not claimed integrations."
+      ],
+      "required_grain": "Purchase-order line and receipt-event identity; verify the actual input and output contract.",
+      "key_columns_or_join_conditions": [
+        "Purchase-order line and receipt-event identity"
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A descriptive, reconciled supplier-delay reporting result with unresolved definitions and coverage explicitly identified.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Supplier-delay reporting is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Evaluate partial deliveries and open lines at the approved grain."
+      ],
+      "diagnostic_questions": [
+        "What do the supplied records establish for supplier-delay reporting under the approved operational definitions?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-08-02",
+        "sql-recipe-03-09"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "8",
+        "chapter_title": "Chapter 8. Date Arithmetic",
+        "section_heading": "8.2 Determining the Number of Days Between Two Dates",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-2",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-2.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-2.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-2.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked recipes support the SQL operations only."
+        ],
+        "inferred_claims": [
+          "Prioritize delivery exceptions without asserting the cause of delay.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What do the supplied records establish for supplier-delay reporting under the approved operational definitions?",
+          "Prioritize delivery exceptions without asserting the cause of delay.",
+          "No OMAKAI, Restaurant365, SevenRooms, or Uber Eats records or schemas were accessed."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "8.2 Determining the Number of Days Between Two Dates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "3.9 Performing Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_restaurant_operations_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL patterns to restaurant operations. It is not a direct claim from the book."
+      },
+      "tags": [
+        "restaurant_operations"
+      ],
+      "restaurant_use_case": "Supplier-delay reporting",
+      "operational_question": "What do the supplied records establish for supplier-delay reporting under the approved operational definitions?",
+      "sql_patterns_applied": [
+        "Resolve each endpoint to one row, then apply the dialect’s subtraction or day-difference function.",
+        "Aggregate the parent measure at its own grain before joining; the book’s DISTINCT-aggregate shortcut is conditional on value uniqueness."
+      ],
+      "possible_data_sources": [
+        "Supplied commitments and receipt events"
+      ],
+      "critical_keys": [
+        "Purchase-order line and receipt-event identity"
+      ],
+      "time_period_logic": "Promised versus actual dates, revised promises, and business-day definition",
+      "quality_checks": [
+        "Evaluate partial deliveries and open lines at the approved grain."
+      ],
+      "common_query_traps": [
+        "Assuming a platform/export schema, company rule, or relationship not supplied by the user."
+      ],
+      "decision_supported": "Prioritize delivery exceptions without asserting the cause of delay.",
+      "what_not_to_claim_without_evidence": [
+        "Current platform schemas, connector behavior, or API access.",
+        "Company-specific formulas, facts, staffing judgments, or causal effects.",
+        "Verified correctness without supplied samples and expected output."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-08-02",
+        "sql-recipe-03-09"
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-business-exports",
+        "sql-verify-business-metrics",
+        "sql-verify-timezone"
+      ]
+    },
+    {
+      "id": "sql-restaurant-location-missing",
+      "record_type": "restaurant_operations",
+      "name": "Missing data by location",
+      "summary": "Highlight coverage exceptions before publishing group trends.",
+      "source_recipe_or_concept": "9.10 Filling in Missing Dates; supporting source units: 9.10, 10.4",
+      "sql_problem_addressed": "Highlight coverage exceptions before publishing group trends.",
+      "query_intent": "Missing data by location",
+      "input_tables_or_rowsets": [
+        "Supplied expected location/date coverage and received extracts; these are possible supplied sources, not claimed integrations."
+      ],
+      "required_grain": "Location/reporting-date/source identity; verify the actual input and output contract.",
+      "key_columns_or_join_conditions": [
+        "Location/reporting-date/source identity"
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A descriptive, reconciled missing data by location result with unresolved definitions and coverage explicitly identified.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Missing data by location is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Distinguish closed locations, zero activity, late data, and missing extraction."
+      ],
+      "diagnostic_questions": [
+        "What do the supplied records establish for missing data by location under the approved operational definitions?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-09-10",
+        "sql-recipe-10-04"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "9",
+        "chapter_title": "Chapter 9. Date Manipulation",
+        "section_heading": "9.10 Filling in Missing Dates",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-10",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-10.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-10.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-10.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked recipes support the SQL operations only."
+        ],
+        "inferred_claims": [
+          "Highlight coverage exceptions before publishing group trends.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What do the supplied records establish for missing data by location under the approved operational definitions?",
+          "Highlight coverage exceptions before publishing group trends.",
+          "No OMAKAI, Restaurant365, SevenRooms, or Uber Eats records or schemas were accessed."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "9.10 Filling in Missing Dates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-10",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "10.4 Filling in Missing Values in a Range of Values",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch10.html#sqlckbk-CHP-10-SECT-4",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_restaurant_operations_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL patterns to restaurant operations. It is not a direct claim from the book."
+      },
+      "tags": [
+        "restaurant_operations"
+      ],
+      "restaurant_use_case": "Missing data by location",
+      "operational_question": "What do the supplied records establish for missing data by location under the approved operational definitions?",
+      "sql_patterns_applied": [
+        "Generate the complete period rowset, then outer join facts at matching period grain and aggregate matched records.",
+        "Supply the complete category range and outer join facts before counting matched observations."
+      ],
+      "possible_data_sources": [
+        "Supplied expected location/date coverage and received extracts"
+      ],
+      "critical_keys": [
+        "Location/reporting-date/source identity"
+      ],
+      "time_period_logic": "Active-location dates, reporting cutoff, and late-file policy",
+      "quality_checks": [
+        "Distinguish closed locations, zero activity, late data, and missing extraction."
+      ],
+      "common_query_traps": [
+        "Assuming a platform/export schema, company rule, or relationship not supplied by the user."
+      ],
+      "decision_supported": "Highlight coverage exceptions before publishing group trends.",
+      "what_not_to_claim_without_evidence": [
+        "Current platform schemas, connector behavior, or API access.",
+        "Company-specific formulas, facts, staffing judgments, or causal effects.",
+        "Verified correctness without supplied samples and expected output."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-09-10",
+        "sql-recipe-10-04"
+      ],
+      "source_issue_ids": [
+        "source-issue-date-fixtures"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-business-exports",
+        "sql-verify-business-metrics",
+        "sql-verify-timezone"
+      ]
+    },
+    {
+      "id": "sql-restaurant-order-duplicates",
+      "record_type": "restaurant_operations",
+      "name": "Duplicate orders or transactions",
+      "summary": "Find duplicate candidates without automatically deleting operational records.",
+      "source_recipe_or_concept": "4.16 Deleting Duplicate Records; supporting source units: 4.16, 11.10",
+      "sql_problem_addressed": "Find duplicate candidates without automatically deleting operational records.",
+      "query_intent": "Duplicate orders or transactions",
+      "input_tables_or_rowsets": [
+        "Supplied orders, transaction lines, and revision identifiers; these are possible supplied sources, not claimed integrations."
+      ],
+      "required_grain": "Complete source/order/line identity; verify the actual input and output contract.",
+      "key_columns_or_join_conditions": [
+        "Complete source/order/line identity"
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A descriptive, reconciled duplicate orders or transactions result with unresolved definitions and coverage explicitly identified.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Duplicate orders or transactions is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Distinguish multiple lines from duplicate orders; retain candidates for review."
+      ],
+      "diagnostic_questions": [
+        "What do the supplied records establish for duplicate orders or transactions under the approved operational definitions?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-16",
+        "sql-recipe-11-10"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.16 Deleting Duplicate Records",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-16",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-16.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-16.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-16.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked recipes support the SQL operations only."
+        ],
+        "inferred_claims": [
+          "Find duplicate candidates without automatically deleting operational records.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What do the supplied records establish for duplicate orders or transactions under the approved operational definitions?",
+          "Find duplicate candidates without automatically deleting operational records.",
+          "No OMAKAI, Restaurant365, SevenRooms, or Uber Eats records or schemas were accessed."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.16 Deleting Duplicate Records",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-16",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "11.10 Suppressing Duplicates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-10",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_restaurant_operations_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL patterns to restaurant operations. It is not a direct claim from the book."
+      },
+      "tags": [
+        "restaurant_operations"
+      ],
+      "restaurant_use_case": "Duplicate orders or transactions",
+      "operational_question": "What do the supplied records establish for duplicate orders or transactions under the approved operational definitions?",
+      "sql_patterns_applied": [
+        "Group by the duplicate-defining fields, choose one retained unique identifier, and delete only the other identifiers.",
+        "Use DISTINCT or GROUP BY for a unique-value list, or partitioned ROW_NUMBER when selecting a defined representative row."
+      ],
+      "possible_data_sources": [
+        "Supplied orders, transaction lines, and revision identifiers"
+      ],
+      "critical_keys": [
+        "Complete source/order/line identity"
+      ],
+      "time_period_logic": "Original events, edits, reversals, and ingestion times",
+      "quality_checks": [
+        "Distinguish multiple lines from duplicate orders; retain candidates for review."
+      ],
+      "common_query_traps": [
+        "Assuming a platform/export schema, company rule, or relationship not supplied by the user."
+      ],
+      "decision_supported": "Find duplicate candidates without automatically deleting operational records.",
+      "what_not_to_claim_without_evidence": [
+        "Current platform schemas, connector behavior, or API access.",
+        "Company-specific formulas, facts, staffing judgments, or causal effects.",
+        "Verified correctness without supplied samples and expected output."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-04-16",
+        "sql-recipe-11-10"
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-business-exports",
+        "sql-verify-business-metrics",
+        "sql-verify-timezone"
+      ]
+    },
+    {
+      "id": "sql-restaurant-marketing-correlation",
+      "record_type": "restaurant_operations",
+      "name": "Marketing spend and sales association",
+      "summary": "Identify questions for further evaluation rather than prove marketing impact.",
+      "source_recipe_or_concept": "7.11 Determining the Percentage of a Total; supporting source units: 7.11, 7.13",
+      "sql_problem_addressed": "Identify questions for further evaluation rather than prove marketing impact.",
+      "query_intent": "Marketing spend and sales association",
+      "input_tables_or_rowsets": [
+        "Supplied comparable marketing-spend and sales series; these are possible supplied sources, not claimed integrations."
+      ],
+      "required_grain": "Channel/location/period mappings only where verified; verify the actual input and output contract.",
+      "key_columns_or_join_conditions": [
+        "Channel/location/period mappings only where verified"
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A descriptive, reconciled marketing spend and sales association result with unresolved definitions and coverage explicitly identified.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Marketing spend and sales association is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Report descriptive association; do not infer incremental sales or campaign causation."
+      ],
+      "diagnostic_questions": [
+        "What do the supplied records establish for marketing spend and sales association under the approved operational definitions?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-11",
+        "sql-recipe-07-13"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.11 Determining the Percentage of a Total",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked recipes support the SQL operations only."
+        ],
+        "inferred_claims": [
+          "Identify questions for further evaluation rather than prove marketing impact.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What do the supplied records establish for marketing spend and sales association under the approved operational definitions?",
+          "Identify questions for further evaluation rather than prove marketing impact.",
+          "No OMAKAI, Restaurant365, SevenRooms, or Uber Eats records or schemas were accessed."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.11 Determining the Percentage of a Total",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.13 Computing Averages Without High and Low Values",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-13",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_restaurant_operations_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL patterns to restaurant operations. It is not a direct claim from the book."
+      },
+      "tags": [
+        "restaurant_operations"
+      ],
+      "restaurant_use_case": "Marketing spend and sales association",
+      "operational_question": "What do the supplied records establish for marketing spend and sales association under the approved operational definitions?",
+      "sql_patterns_applied": [
+        "Calculate numerator and denominator over their explicitly defined populations before division.",
+        "Identify minimum and maximum values, then exclude them under the chosen all-ties or single-observation rule."
+      ],
+      "possible_data_sources": [
+        "Supplied comparable marketing-spend and sales series"
+      ],
+      "critical_keys": [
+        "Channel/location/period mappings only where verified"
+      ],
+      "time_period_logic": "Spend posting versus sales date, aligned windows and coverage",
+      "quality_checks": [
+        "Report descriptive association; do not infer incremental sales or campaign causation."
+      ],
+      "common_query_traps": [
+        "Assuming a platform/export schema, company rule, or relationship not supplied by the user."
+      ],
+      "decision_supported": "Identify questions for further evaluation rather than prove marketing impact.",
+      "what_not_to_claim_without_evidence": [
+        "Current platform schemas, connector behavior, or API access.",
+        "Company-specific formulas, facts, staffing judgments, or causal effects.",
+        "Verified correctness without supplied samples and expected output."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-07-11",
+        "sql-recipe-07-13"
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-business-exports",
+        "sql-verify-business-metrics",
+        "sql-verify-timezone"
+      ]
+    },
+    {
+      "id": "sql-restaurant-weekly-scorecard",
+      "record_type": "restaurant_operations",
+      "name": "Weekly scorecard source query",
+      "summary": "Publish verified source values for the scorecard, not invented goals or thresholds.",
+      "source_recipe_or_concept": "7.3 Summing the Values in a Column; supporting source units: 7.3, 7.11, 12.18",
+      "sql_problem_addressed": "Publish verified source values for the scorecard, not invented goals or thresholds.",
+      "query_intent": "Weekly scorecard source query",
+      "input_tables_or_rowsets": [
+        "Supplied approved metric definitions and required source exports; these are possible supplied sources, not claimed integrations."
+      ],
+      "required_grain": "Metric/location/fiscal-week identity; verify the actual input and output contract.",
+      "key_columns_or_join_conditions": [
+        "Metric/location/fiscal-week identity"
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A descriptive, reconciled weekly scorecard source query result with unresolved definitions and coverage explicitly identified.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Weekly scorecard source query is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Validate each metric independently and retain units; reconcile approved examples."
+      ],
+      "diagnostic_questions": [
+        "What do the supplied records establish for weekly scorecard source query under the approved operational definitions?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-03",
+        "sql-recipe-07-11",
+        "sql-recipe-12-18"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.3 Summing the Values in a Column",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3.3",
+          "See Also": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3.4"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked recipes support the SQL operations only."
+        ],
+        "inferred_claims": [
+          "Publish verified source values for the scorecard, not invented goals or thresholds.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What do the supplied records establish for weekly scorecard source query under the approved operational definitions?",
+          "Publish verified source values for the scorecard, not invented goals or thresholds.",
+          "No OMAKAI, Restaurant365, SevenRooms, or Uber Eats records or schemas were accessed."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.3 Summing the Values in a Column",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.11 Determining the Percentage of a Total",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "12.18 Performing Aggregations over Different Groups/Partitions Simultaneously",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-18",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_restaurant_operations_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL patterns to restaurant operations. It is not a direct claim from the book."
+      },
+      "tags": [
+        "restaurant_operations"
+      ],
+      "restaurant_use_case": "Weekly scorecard source query",
+      "operational_question": "What do the supplied records establish for weekly scorecard source query under the approved operational definitions?",
+      "sql_patterns_applied": [
+        "Use SUM at the requested grouping grain.",
+        "Calculate numerator and denominator over their explicitly defined populations before division.",
+        "Use multiple window expressions with different PARTITION BY definitions."
+      ],
+      "possible_data_sources": [
+        "Supplied approved metric definitions and required source exports"
+      ],
+      "critical_keys": [
+        "Metric/location/fiscal-week identity"
+      ],
+      "time_period_logic": "Approved fiscal week, cutoffs, revisions, and metric version",
+      "quality_checks": [
+        "Validate each metric independently and retain units; reconcile approved examples."
+      ],
+      "common_query_traps": [
+        "Assuming a platform/export schema, company rule, or relationship not supplied by the user."
+      ],
+      "decision_supported": "Publish verified source values for the scorecard, not invented goals or thresholds.",
+      "what_not_to_claim_without_evidence": [
+        "Current platform schemas, connector behavior, or API access.",
+        "Company-specific formulas, facts, staffing judgments, or causal effects.",
+        "Verified correctness without supplied samples and expected output."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-07-03",
+        "sql-recipe-07-11",
+        "sql-recipe-12-18"
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-business-exports",
+        "sql-verify-business-metrics",
+        "sql-verify-dates",
+        "sql-verify-timezone"
+      ]
+    },
+    {
+      "id": "sql-restaurant-fiscal-week",
+      "record_type": "restaurant_operations",
+      "name": "Fiscal-week and date-range validation",
+      "summary": "Ensure reports use the same approved operating periods.",
+      "source_recipe_or_concept": "9.7 Creating a Calendar; supporting source units: 9.7, 9.12, 9.13",
+      "sql_problem_addressed": "Ensure reports use the same approved operating periods.",
+      "query_intent": "Fiscal-week and date-range validation",
+      "input_tables_or_rowsets": [
+        "Supplied approved calendar and timestamped observations; these are possible supplied sources, not claimed integrations."
+      ],
+      "required_grain": "Calendar-date/fiscal-week mapping and observation identity; verify the actual input and output contract.",
+      "key_columns_or_join_conditions": [
+        "Calendar-date/fiscal-week mapping and observation identity"
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A descriptive, reconciled fiscal-week and date-range validation result with unresolved definitions and coverage explicitly identified.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Fiscal-week and date-range validation is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Test adjacent weeks, year transitions, leap days, and every exact boundary."
+      ],
+      "diagnostic_questions": [
+        "What do the supplied records establish for fiscal-week and date-range validation under the approved operational definitions?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-09-07",
+        "sql-recipe-09-12",
+        "sql-recipe-09-13"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "9",
+        "chapter_title": "Chapter 9. Date Manipulation",
+        "section_heading": "9.7 Creating a Calendar",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked recipes support the SQL operations only."
+        ],
+        "inferred_claims": [
+          "Ensure reports use the same approved operating periods.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What do the supplied records establish for fiscal-week and date-range validation under the approved operational definitions?",
+          "Ensure reports use the same approved operating periods.",
+          "No OMAKAI, Restaurant365, SevenRooms, or Uber Eats records or schemas were accessed."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "9.7 Creating a Calendar",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "9.12 Comparing Records Using Specific Parts of a Date",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-12",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "9.13 Identifying Overlapping Date Ranges",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-13",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_restaurant_operations_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL patterns to restaurant operations. It is not a direct claim from the book."
+      },
+      "tags": [
+        "restaurant_operations"
+      ],
+      "restaurant_use_case": "Fiscal-week and date-range validation",
+      "operational_question": "What do the supplied records establish for fiscal-week and date-range validation under the approved operational definitions?",
+      "sql_patterns_applied": [
+        "Generate dates, derive week and weekday positions, and pivot day numbers into weekday columns.",
+        "Self-join candidate records and compare the extracted month/weekday components while excluding unwanted self-pairs.",
+        "Self-join intervals within the entity and identify starts that fall inside another interval under the source’s inclusive boundary rule."
+      ],
+      "possible_data_sources": [
+        "Supplied approved calendar and timestamped observations"
+      ],
+      "critical_keys": [
+        "Calendar-date/fiscal-week mapping and observation identity"
+      ],
+      "time_period_logic": "Week start, week-year, operating-day cutoff, and zone",
+      "quality_checks": [
+        "Test adjacent weeks, year transitions, leap days, and every exact boundary."
+      ],
+      "common_query_traps": [
+        "Assuming a platform/export schema, company rule, or relationship not supplied by the user."
+      ],
+      "decision_supported": "Ensure reports use the same approved operating periods.",
+      "what_not_to_claim_without_evidence": [
+        "Current platform schemas, connector behavior, or API access.",
+        "Company-specific formulas, facts, staffing judgments, or causal effects.",
+        "Verified correctness without supplied samples and expected output."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-09-07",
+        "sql-recipe-09-12",
+        "sql-recipe-09-13"
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-business-exports",
+        "sql-verify-business-metrics",
+        "sql-verify-dates",
+        "sql-verify-timezone"
+      ]
+    }
+  ]
+}

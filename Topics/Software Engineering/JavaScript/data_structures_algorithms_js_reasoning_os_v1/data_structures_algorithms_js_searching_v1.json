@@ -1,0 +1,912 @@
+{
+  "file_metadata": {
+    "file_name": "data_structures_algorithms_js_searching_v1.json",
+    "package_id": "data_structures_algorithms_js_reasoning_os_v1",
+    "package_version": "1.0",
+    "generated_at_utc": "2026-08-25T17:45:26.946739+00:00",
+    "purpose": "Sequential, binary, self-organizing, occurrence, text, and lookup-map search reasoning.",
+    "record_count": 14,
+    "source_title": "Data Structures and Algorithms with JavaScript",
+    "source_author": "Michael McMillan",
+    "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+    "source_boundary": "Source-supported concepts are separated from low-confidence Apps Script, spreadsheet, internal-tool, and AI-agent extensions. Current platform behavior must be verified.",
+    "copyright_safety": "Concepts and implementation logic are paraphrased. No long source passages, long code listings, full algorithm implementations, or exercise solutions are reproduced."
+  },
+  "searching_records": [
+    {
+      "id": "dsa-search-selection-frame",
+      "record_type": "searching_record",
+      "name": "Sequential versus binary search selection",
+      "summary": "The source uses sequential search for randomly ordered lists and binary search for sorted lists, while noting that sorting preparation has a cost.",
+      "source_concept": "Sequential versus binary search selection",
+      "programming_problem_addressed": "Chooses a search strategy based on ordering and repeated-use economics.",
+      "data_shape_assumption": "The collection’s order state is known.",
+      "algorithmic_role": "Search selection gate.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Choosing a list search method"
+      ],
+      "do_not_use_when": [
+        "A direct lookup map better matches repeated keyed access"
+      ],
+      "common_failure_modes": [
+        "Ignoring sort cost",
+        "Assuming data remains sorted"
+      ],
+      "tests_or_checks": [
+        "State ordering invariant and number of expected searches."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-search-sequential",
+        "dsa-search-binary-sorted-precondition",
+        "dsa-decision-sequential-versus-binary"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "13",
+        "chapter_title": "Searching Algorithms",
+        "section_heading": "Chapter 13. Searching Algorithms",
+        "page_or_anchor": "OEBPS/ch13.html#searching",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source contrasts sequential search for random order with binary search for sorted data and notes sorting overhead."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_definition",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "search",
+        "selection",
+        "precondition"
+      ]
+    },
+    {
+      "id": "dsa-search-sequential",
+      "record_type": "searching_record",
+      "name": "Sequential search through a list",
+      "summary": "Sequential search starts at the first element and compares each value until a match is found or the end is reached.",
+      "source_concept": "Sequential search through a list",
+      "programming_problem_addressed": "Finds a value without requiring sorted input.",
+      "data_shape_assumption": "Elements can be compared to the target.",
+      "algorithmic_role": "Linear scan.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "May visit every element; repeated use over large collections multiplies that cost.",
+      "use_when": [
+        "Small or one-off unsorted search"
+      ],
+      "do_not_use_when": [
+        "Repeated key lookups justify indexing"
+      ],
+      "common_failure_modes": [
+        "Not returning immediately on match when first match is intended"
+      ],
+      "tests_or_checks": [
+        "Test first, last, absent, and duplicate targets."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-alg-sequential-search",
+        "dsa-dict-repeated-scan-to-index"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "13",
+        "chapter_title": "Searching Algorithms",
+        "section_heading": "Commonly Used Functions in Examples",
+        "page_or_anchor": "OEBPS/ch13.html#idp48654944",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines sequential search as a brute-force scan from the beginning."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "search",
+        "sequential",
+        "linear"
+      ]
+    },
+    {
+      "id": "dsa-search-boolean-versus-index",
+      "record_type": "searching_record",
+      "name": "Search result contract: Boolean versus position",
+      "summary": "The source presents a search that first reports success/failure and then a version that returns the found position or -1.",
+      "source_concept": "Search result contract: Boolean versus position",
+      "programming_problem_addressed": "Defines what callers receive from a search.",
+      "data_shape_assumption": "The caller may need either membership or location.",
+      "algorithmic_role": "Search API contract.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Designing explicit search return types"
+      ],
+      "do_not_use_when": [
+        "Returning ambiguous truthy/falsy positions"
+      ],
+      "common_failure_modes": [
+        "Index 0 treated as false",
+        "Sentinel -1 ignored"
+      ],
+      "tests_or_checks": [
+        "Test a match at index 0 and an absent value."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-array-indexof-lastindexof",
+        "dsa-decision-structured-errors-versus-throw"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "13",
+        "chapter_title": "Searching Algorithms",
+        "section_heading": "Commonly Used Functions in Examples",
+        "page_or_anchor": "OEBPS/ch13.html#idp48654944",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source shows both Boolean and position-returning sequential search forms and uses -1 for absence."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "search",
+        "api-contract",
+        "sentinel"
+      ]
+    },
+    {
+      "id": "dsa-search-min-max-scan",
+      "record_type": "searching_record",
+      "name": "Minimum and maximum scan",
+      "summary": "The source initializes the current extreme from the first element and scans the remaining elements, replacing the extreme when a smaller or larger value appears.",
+      "source_concept": "Minimum and maximum scan",
+      "programming_problem_addressed": "Finds an extreme in unsorted data.",
+      "data_shape_assumption": "The collection is nonempty or empty handling is separately defined and values are comparable.",
+      "algorithmic_role": "Single-pass reduction.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Unsorted numeric or comparable data"
+      ],
+      "do_not_use_when": [
+        "Empty input is not handled"
+      ],
+      "common_failure_modes": [
+        "Initializing to an arbitrary constant",
+        "Starting at wrong index"
+      ],
+      "tests_or_checks": [
+        "Test all-negative, one-element, duplicates, and empty input."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-array-iterators-non-generating",
+        "dsa-tree-min-max"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "13",
+        "chapter_title": "Searching Algorithms",
+        "section_heading": "Searching for Minimum and Maximum Values",
+        "page_or_anchor": "OEBPS/ch13.html#idp49721152",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source gives stepwise algorithms for minimum and maximum using the first element as initial value and scanning the rest."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "search",
+        "min",
+        "max",
+        "scan"
+      ]
+    },
+    {
+      "id": "dsa-search-self-organizing",
+      "record_type": "searching_record",
+      "name": "Self-organizing sequential search",
+      "summary": "The source moves frequently found items toward the front so future successful sequential searches for those items require fewer comparisons.",
+      "source_concept": "Self-organizing sequential search",
+      "programming_problem_addressed": "Adapts unordered data order to observed access frequency.",
+      "data_shape_assumption": "Repeated searches are skewed and reordering does not violate user-visible semantics.",
+      "algorithmic_role": "Adaptive search optimization.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Search frequency is highly skewed and collection order is otherwise free"
+      ],
+      "do_not_use_when": [
+        "Original order must be preserved or concurrency makes mutation unsafe"
+      ],
+      "common_failure_modes": [
+        "Search mutates user-visible order",
+        "Rare items starve toward end"
+      ],
+      "tests_or_checks": [
+        "Track comparison counts and verify order changes are acceptable."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-search-pareto-threshold",
+        "dsa-risk-mutation-during-iteration"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "13",
+        "chapter_title": "Searching Algorithms",
+        "section_heading": "Using Self-Organizing Data",
+        "page_or_anchor": "OEBPS/ch13.html#idp49721744",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source explains moving found items toward the beginning to speed future sequential searches."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "search",
+        "self-organizing",
+        "adaptive"
+      ]
+    },
+    {
+      "id": "dsa-search-pareto-threshold",
+      "record_type": "searching_record",
+      "name": "80/20-inspired relocation threshold",
+      "summary": "The source uses an 80/20 access-skew idea and proposes moving a found item to the beginning only when it lies outside the first fifth of the data.",
+      "source_concept": "80/20-inspired relocation threshold",
+      "programming_problem_addressed": "Avoids unnecessary reordering for items already near the front.",
+      "data_shape_assumption": "The workload plausibly has concentrated repeated access.",
+      "algorithmic_role": "Adaptive heuristic.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Teaching self-organizing data"
+      ],
+      "do_not_use_when": [
+        "Treating 20% as a universal validated threshold"
+      ],
+      "common_failure_modes": [
+        "Unverified workload skew",
+        "Reordering violates semantics"
+      ],
+      "tests_or_checks": [
+        "Measure actual access distribution before adopting a threshold."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-search-self-organizing",
+        "dsa-risk-greedy-local-optimum"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "13",
+        "chapter_title": "Searching Algorithms",
+        "section_heading": "Using Self-Organizing Data",
+        "page_or_anchor": "OEBPS/ch13.html#idp49721744",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source invokes an 80/20 pattern and uses a first-20%-position threshold in an example."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_example",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "search",
+        "pareto",
+        "heuristic"
+      ]
+    },
+    {
+      "id": "dsa-search-binary",
+      "record_type": "searching_record",
+      "name": "Binary search midpoint narrowing",
+      "summary": "Binary search maintains lower and upper bounds, compares the midpoint, and moves one bound inward until it finds the target or exhausts the range.",
+      "source_concept": "Binary search midpoint narrowing",
+      "programming_problem_addressed": "Finds a target in sorted data by discarding half ranges.",
+      "data_shape_assumption": "Data is sorted under the same comparator as the target comparison.",
+      "algorithmic_role": "Divide-and-conquer search.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "The source emphasizes elimination of half the remaining search space each iteration.",
+      "use_when": [
+        "Sorted, stable data and repeated searches"
+      ],
+      "do_not_use_when": [
+        "Unsorted or frequently reordered data"
+      ],
+      "common_failure_modes": [
+        "Incorrect bound update",
+        "Infinite loop",
+        "Comparator mismatch"
+      ],
+      "tests_or_checks": [
+        "Test first, last, middle, absent below, absent above, and duplicates."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-alg-binary-search",
+        "dsa-search-binary-sorted-precondition"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "13",
+        "chapter_title": "Searching Algorithms",
+        "section_heading": "Binary Search",
+        "page_or_anchor": "OEBPS/ch13.html#idp50459344",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source gives lower-bound, upper-bound, midpoint, and bound-update steps and states the search halves the search space."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "search",
+        "binary",
+        "bounds"
+      ]
+    },
+    {
+      "id": "dsa-search-binary-sorted-precondition",
+      "record_type": "searching_record",
+      "name": "Binary search requires verified sorted data",
+      "summary": "The source states that binary search works only when the data is sorted; the comparison rule used to sort must match the search rule.",
+      "source_concept": "Binary search requires verified sorted data",
+      "programming_problem_addressed": "Protects binary search correctness.",
+      "data_shape_assumption": "Sorted order is an invariant, not an assumption based on appearance.",
+      "algorithmic_role": "Search precondition.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "A sorted invariant is maintained and tested"
+      ],
+      "do_not_use_when": [
+        "Rows are merely usually sorted"
+      ],
+      "common_failure_modes": [
+        "Unsorted input returns false negatives",
+        "Different normalization at sort and search"
+      ],
+      "tests_or_checks": [
+        "Assert monotonic order before search in tests."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-risk-binary-search-unsorted-data",
+        "dsa-decision-sequential-versus-binary"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "13",
+        "chapter_title": "Searching Algorithms",
+        "section_heading": "Binary Search",
+        "page_or_anchor": "OEBPS/ch13.html#idp50459344",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source explicitly says binary search only works on a sorted data set."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_definition",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "search",
+        "binary",
+        "precondition"
+      ]
+    },
+    {
+      "id": "dsa-search-binary-trace",
+      "record_type": "searching_record",
+      "name": "Trace midpoint changes to debug binary search",
+      "summary": "The source instruments midpoint values so the narrowing search path can be observed and checked.",
+      "source_concept": "Trace midpoint changes to debug binary search",
+      "programming_problem_addressed": "Diagnoses bound-update and comparison errors.",
+      "data_shape_assumption": "Logging does not materially alter the example.",
+      "algorithmic_role": "Algorithm trace.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Debugging search bounds"
+      ],
+      "do_not_use_when": [
+        "Verbose logs expose sensitive data or exceed current logging constraints"
+      ],
+      "common_failure_modes": [
+        "Logging only final result hides wrong path"
+      ],
+      "tests_or_checks": [
+        "Compare midpoint trace with hand calculation."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-search-binary"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "13",
+        "chapter_title": "Searching Algorithms",
+        "section_heading": "Binary Search",
+        "page_or_anchor": "OEBPS/ch13.html#idp50459344",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source adds midpoint display to observe binary search progress."
+        ],
+        "inferred_claims": [
+          "Current Apps Script logging behavior requires verification."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_example",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "search",
+        "debugging",
+        "trace"
+      ]
+    },
+    {
+      "id": "dsa-search-count-occurrences",
+      "record_type": "searching_record",
+      "name": "Count adjacent duplicates around a binary-search hit",
+      "summary": "After binary search finds one occurrence in sorted data, the source scans left and right while adjacent values match to count the full run.",
+      "source_concept": "Count adjacent duplicates around a binary-search hit",
+      "programming_problem_addressed": "Counts duplicate occurrences in sorted data.",
+      "data_shape_assumption": "Equal values are contiguous because the data is sorted.",
+      "algorithmic_role": "Binary locate plus local expansion.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Sorted data and one target count are needed"
+      ],
+      "do_not_use_when": [
+        "Many target counts justify a frequency map"
+      ],
+      "common_failure_modes": [
+        "Boundary overrun",
+        "Assuming contiguity without sorting"
+      ],
+      "tests_or_checks": [
+        "Test hit at boundaries, single occurrence, long run, and absent value."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-dict-counting-pattern",
+        "dsa-search-binary-sorted-precondition"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "13",
+        "chapter_title": "Searching Algorithms",
+        "section_heading": "Counting Occurrences",
+        "page_or_anchor": "OEBPS/ch13.html#idp51894320",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source counts matching values to the left and right of one binary-search result."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "search",
+        "duplicates",
+        "count"
+      ]
+    },
+    {
+      "id": "dsa-search-textual-data",
+      "record_type": "searching_record",
+      "name": "Sequential and binary search over tokenized text",
+      "summary": "The source reads text, splits it into words, and compares sequential and binary searching after sorting, while acknowledging simplistic punctuation handling.",
+      "source_concept": "Sequential and binary search over tokenized text",
+      "programming_problem_addressed": "Applies search algorithms to textual tokens.",
+      "data_shape_assumption": "Tokenization and case/punctuation policy are sufficient for the question.",
+      "algorithmic_role": "Text search example.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Teaching search over strings"
+      ],
+      "do_not_use_when": [
+        "Production text parsing or natural-language tokenization is required"
+      ],
+      "common_failure_modes": [
+        "Punctuation attached to words",
+        "Case mismatch",
+        "Shell-specific file read"
+      ],
+      "tests_or_checks": [
+        "Test punctuation, case, whitespace, and missing words."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-search-shell-file-boundary",
+        "dsa-array-split-string"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "13",
+        "chapter_title": "Searching Algorithms",
+        "section_heading": "Searching Textual Data",
+        "page_or_anchor": "OEBPS/ch13.html#idp51489200",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source tokenizes a text file with split and applies sequential and binary searches, noting punctuation remains."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_example",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "search",
+        "text",
+        "tokenization"
+      ]
+    },
+    {
+      "id": "dsa-search-shell-file-boundary",
+      "record_type": "current_verification_flag",
+      "name": "Text-search file I/O is shell-specific",
+      "summary": "The textual-search example reads a local file through the source JavaScript interpreter; that input mechanism does not transfer directly to Apps Script.",
+      "source_concept": "Text-search file I/O is shell-specific",
+      "programming_problem_addressed": "Separates search logic from environment-specific ingestion.",
+      "data_shape_assumption": "Input text is acquired through some verified adapter.",
+      "algorithmic_role": "Runtime boundary.",
+      "runtime_context": "SpiderMonkey shell local file access.",
+      "transfers_to_google_apps_script": "node_or_shell_specific",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Porting the example"
+      ],
+      "do_not_use_when": [
+        "Claiming source support for Drive or upload APIs"
+      ],
+      "common_failure_modes": [
+        "Undefined read function in Apps Script"
+      ],
+      "tests_or_checks": [
+        "Replace and test ingestion independently of search."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-workflow-verify-source-era-runtime",
+        "dsa-risk-node-spidermonkey-appsscript-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "13",
+        "chapter_title": "Searching Algorithms",
+        "section_heading": "Searching Textual Data",
+        "page_or_anchor": "OEBPS/ch13.html#idp51489200",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source reads a local text file with its JavaScript interpreter environment."
+        ],
+        "inferred_claims": [
+          "Apps Script requires a different current API."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "current_verification_flag",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": false,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "search",
+        "file-io",
+        "runtime-boundary"
+      ]
+    },
+    {
+      "id": "dsa-search-map-for-repeated-keys",
+      "record_type": "source_synthesis",
+      "name": "Lookup map often beats repeated search for keys",
+      "summary": "For repeated searches by stable key, dictionary-style indexing usually expresses the problem more directly than repeatedly applying sequential or binary search.",
+      "source_concept": "Lookup map often beats repeated search for keys",
+      "programming_problem_addressed": "Avoids repeated search work in joins and validation.",
+      "data_shape_assumption": "A stable unique or grouped key can index records.",
+      "algorithmic_role": "Search-to-index redesign.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Many repeated lookups over the same data set"
+      ],
+      "do_not_use_when": [
+        "One small search or no stable key exists"
+      ],
+      "common_failure_modes": [
+        "Duplicate-key overwrite",
+        "Stale index after mutation"
+      ],
+      "tests_or_checks": [
+        "Build index once, validate duplicates, and compare results with a reference scan."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-dict-repeated-scan-to-index",
+        "dsa-decision-binary-versus-map"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "13",
+        "chapter_title": "Searching Algorithms",
+        "section_heading": "Chapter 13. Searching Algorithms",
+        "page_or_anchor": "OEBPS/ch13.html#searching",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source contrasts sequential and binary search and separately presents dictionaries and hashing for keyed retrieval."
+        ],
+        "inferred_claims": [
+          "Choosing a lookup map for repeated stable-key search is cross-chapter synthesis."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch07.html",
+            "chapter_number": "7",
+            "chapter_title": "Dictionaries",
+            "section_heading": "The Dictionary Class",
+            "page_or_anchor": "OEBPS/ch07.html#idp29229184"
+          },
+          {
+            "source_file": "ch08.html",
+            "chapter_number": "8",
+            "chapter_title": "Hashing",
+            "section_heading": "An Overview of Hashing",
+            "page_or_anchor": "OEBPS/ch08.html#idp30907488"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "search",
+        "lookup-map",
+        "performance"
+      ]
+    },
+    {
+      "id": "dsa-search-header-index-extension",
+      "record_type": "spreadsheet_workflow_extension",
+      "name": "Find spreadsheet columns through a header index map",
+      "summary": "Read the header row once, normalize each header, and build a name-to-column-index map rather than searching the header array for every row or report field.",
+      "source_concept": "Find spreadsheet columns through a header index map",
+      "programming_problem_addressed": "Makes column access explicit and resilient to column reordering.",
+      "data_shape_assumption": "Headers are unique after normalization and required names are known.",
+      "algorithmic_role": "One-time index construction and repeated lookup.",
+      "runtime_context": "Apps Script spreadsheet workflow; current value types and APIs require verification.",
+      "transfers_to_google_apps_script": "direct_language_transfer_if_current_runtime_supports",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "CSV/XLSX/Sheet transformations by header name"
+      ],
+      "do_not_use_when": [
+        "Duplicate headers are silently accepted"
+      ],
+      "common_failure_modes": [
+        "Header normalization collision",
+        "Missing required header",
+        "Hard-coded indexes remain elsewhere"
+      ],
+      "tests_or_checks": [
+        "Reject duplicate normalized headers and report missing/extra headers."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-sheet-header-index-map",
+        "dsa-risk-header-index-drift"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "7",
+        "chapter_title": "Dictionaries",
+        "section_heading": "The Dictionary Class",
+        "page_or_anchor": "OEBPS/ch07.html#idp29229184",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source presents dictionary lookup by key."
+        ],
+        "inferred_claims": [
+          "A header-to-index dictionary is a spreadsheet extension."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "search",
+        "headers",
+        "lookup-map",
+        "sheets"
+      ]
+    }
+  ]
+}

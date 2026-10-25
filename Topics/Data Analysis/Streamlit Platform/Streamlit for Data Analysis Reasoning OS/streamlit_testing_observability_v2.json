@@ -1,0 +1,777 @@
+{
+  "file": "streamlit_testing_debugging_and_performance_os_v2.json",
+  "records": [
+    {
+      "id": "streamlit-test-service-functions",
+      "test_or_review_pattern": "service function tests",
+      "risk_addressed": "UI/business logic coupling and untestable live behavior",
+      "what_to_test": [
+        "service inputs/outputs",
+        "authorization passed through",
+        "idempotency keys"
+      ],
+      "how_to_test_without_live_side_effects": [
+        "mock adapters",
+        "fake actor/scope",
+        "no Streamlit import"
+      ],
+      "evidence_of_pass": [
+        "contract matches expected result",
+        "no live write"
+      ],
+      "evidence_of_failure": [
+        "raw exception or widget dependency"
+      ],
+      "human_review_triggers": [
+        "new live operation",
+        "financial/API mutation"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-ui-business-logic-coupling",
+        "streamlit-risk-streamlit-as-backend"
+      ],
+      "current_verification_required": false,
+      "source_supported_elements": [
+        "source demonstrates UI; service tests are extension"
+      ],
+      "operational_extensions": [
+        "service-layer testing"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "low",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [],
+        "evidence": [
+          "source demonstrates UI; service tests are extension"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": [
+          "service-layer testing"
+        ]
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "low",
+        "method": "Concrete test/review pattern for AI-agent code review and safe Streamlit changes.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-test-pure-validation",
+      "test_or_review_pattern": "pure validation tests",
+      "risk_addressed": "Bad inputs reaching processing or live actions",
+      "what_to_test": [
+        "schema blockers",
+        "warnings",
+        "edge values",
+        "business dates"
+      ],
+      "how_to_test_without_live_side_effects": [
+        "call validation function directly with fixtures"
+      ],
+      "evidence_of_pass": [
+        "blocker/warning taxonomy correct"
+      ],
+      "evidence_of_failure": [
+        "invalid file accepted"
+      ],
+      "human_review_triggers": [
+        "new validation rule"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-file-upload-without-validation"
+      ],
+      "current_verification_required": false,
+      "source_supported_elements": [
+        "Chapter 2 uses upload/stop"
+      ],
+      "operational_extensions": [
+        "validation module tests"
+      ],
+      "source_traceability": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          2
+        ],
+        "evidence": [
+          "Chapter 2 uses upload/stop"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": [
+          "validation module tests"
+        ]
+      },
+      "derivation": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "method": "Concrete test/review pattern for AI-agent code review and safe Streamlit changes.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-test-file-parser",
+      "test_or_review_pattern": "file parser tests",
+      "risk_addressed": "Parser errors, unsafe file assumptions, and bad previews",
+      "what_to_test": [
+        "CSV/XLSX fixtures",
+        "encoding",
+        "empty file",
+        "large file",
+        "malformed rows"
+      ],
+      "how_to_test_without_live_side_effects": [
+        "fixture files and in-memory buffers"
+      ],
+      "evidence_of_pass": [
+        "safe error contract and row counts"
+      ],
+      "evidence_of_failure": [
+        "traceback or silent truncation"
+      ],
+      "human_review_triggers": [
+        "new parser/column mapping"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-file-upload-without-validation",
+        "streamlit-risk-raw-exception-exposure"
+      ],
+      "current_verification_required": false,
+      "source_supported_elements": [
+        "Chapter 2 uses pandas CSV"
+      ],
+      "operational_extensions": [
+        "parser fixtures"
+      ],
+      "source_traceability": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          2
+        ],
+        "evidence": [
+          "Chapter 2 uses pandas CSV"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": [
+          "parser fixtures"
+        ]
+      },
+      "derivation": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "method": "Concrete test/review pattern for AI-agent code review and safe Streamlit changes.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-test-dryrun-live-equivalence",
+      "test_or_review_pattern": "dry-run/live equivalence tests",
+      "risk_addressed": "Live execution differs from reviewed plan",
+      "what_to_test": [
+        "plan digest",
+        "input mutation",
+        "expired plan",
+        "matching execution"
+      ],
+      "how_to_test_without_live_side_effects": [
+        "mock backend and immutable plan store"
+      ],
+      "evidence_of_pass": [
+        "live requires exact plan id/digest"
+      ],
+      "evidence_of_failure": [
+        "live recomputes from widgets"
+      ],
+      "human_review_triggers": [
+        "destructive operation"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-live-write-without-dry-run",
+        "streamlit-risk-double-submit"
+      ],
+      "current_verification_required": false,
+      "source_supported_elements": [
+        "Chapter 4 forms"
+      ],
+      "operational_extensions": [
+        "plan id contract"
+      ],
+      "source_traceability": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          4
+        ],
+        "evidence": [
+          "Chapter 4 forms"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": [
+          "plan id contract"
+        ]
+      },
+      "derivation": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "method": "Concrete test/review pattern for AI-agent code review and safe Streamlit changes.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-test-rerun-safety",
+      "test_or_review_pattern": "rerun safety tests",
+      "risk_addressed": "Top-level reruns trigger duplicate work",
+      "what_to_test": [
+        "page import/render",
+        "widget edit",
+        "refresh after completion"
+      ],
+      "how_to_test_without_live_side_effects": [
+        "mock side-effect functions and assert call count zero until submit"
+      ],
+      "evidence_of_pass": [
+        "no live calls before submit/confirm"
+      ],
+      "evidence_of_failure": [
+        "live call on render"
+      ],
+      "human_review_triggers": [
+        "new top-level service call"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-rerun-side-effect"
+      ],
+      "current_verification_required": false,
+      "source_supported_elements": [
+        "Chapter 1 execution behavior"
+      ],
+      "operational_extensions": [
+        "mocked service layer"
+      ],
+      "source_traceability": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          1
+        ],
+        "evidence": [
+          "Chapter 1 execution behavior"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": [
+          "mocked service layer"
+        ]
+      },
+      "derivation": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "method": "Concrete test/review pattern for AI-agent code review and safe Streamlit changes.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-test-duplicate-submit",
+      "test_or_review_pattern": "duplicate-submit tests",
+      "risk_addressed": "Repeated click or refresh causes duplicate live action",
+      "what_to_test": [
+        "double click",
+        "retry after timeout",
+        "browser refresh",
+        "same idempotency key"
+      ],
+      "how_to_test_without_live_side_effects": [
+        "mock idempotent backend returns same receipt"
+      ],
+      "evidence_of_pass": [
+        "one live effect per plan/key"
+      ],
+      "evidence_of_failure": [
+        "two different writes"
+      ],
+      "human_review_triggers": [
+        "live action added"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-double-submit"
+      ],
+      "current_verification_required": false,
+      "source_supported_elements": [
+        "buttons/forms in source"
+      ],
+      "operational_extensions": [
+        "idempotency store"
+      ],
+      "source_traceability": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          1,
+          4
+        ],
+        "evidence": [
+          "buttons/forms in source"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": [
+          "idempotency store"
+        ]
+      },
+      "derivation": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "method": "Concrete test/review pattern for AI-agent code review and safe Streamlit changes.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-test-permission-denied",
+      "test_or_review_pattern": "permission-denied tests",
+      "risk_addressed": "UI hiding mistaken for authorization",
+      "what_to_test": [
+        "unauthorized actor",
+        "wrong tenant",
+        "wrong role",
+        "direct service call"
+      ],
+      "how_to_test_without_live_side_effects": [
+        "service tests bypass Streamlit UI"
+      ],
+      "evidence_of_pass": [
+        "denied with safe message and no data leak"
+      ],
+      "evidence_of_failure": [
+        "unauthorized data/action succeeds"
+      ],
+      "human_review_triggers": [
+        "new page/download/action"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-hidden-widget-authz",
+        "streamlit-risk-session-state-as-authz"
+      ],
+      "current_verification_required": false,
+      "source_supported_elements": [],
+      "operational_extensions": [
+        "permission service tests"
+      ],
+      "source_traceability": {
+        "domain": "application_architecture_extension",
+        "confidence": "low",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [],
+        "evidence": [],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": [
+          "permission service tests"
+        ]
+      },
+      "derivation": {
+        "domain": "application_architecture_extension",
+        "confidence": "low",
+        "method": "Concrete test/review pattern for AI-agent code review and safe Streamlit changes.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-test-partial-failure-display",
+      "test_or_review_pattern": "partial-failure display tests",
+      "risk_addressed": "Batch partial failures shown as success or raw errors",
+      "what_to_test": [
+        "mixed row outcomes",
+        "warnings",
+        "failed API items"
+      ],
+      "how_to_test_without_live_side_effects": [
+        "mock service result contract"
+      ],
+      "evidence_of_pass": [
+        "partial state, counts, issue download"
+      ],
+      "evidence_of_failure": [
+        "green success only"
+      ],
+      "human_review_triggers": [
+        "batch workflow added"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-owner-dashboard-false-green"
+      ],
+      "current_verification_required": false,
+      "source_supported_elements": [
+        "dataframe/status examples"
+      ],
+      "operational_extensions": [
+        "result contract fixtures"
+      ],
+      "source_traceability": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          1,
+          2,
+          3
+        ],
+        "evidence": [
+          "dataframe/status examples"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": [
+          "result contract fixtures"
+        ]
+      },
+      "derivation": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "method": "Concrete test/review pattern for AI-agent code review and safe Streamlit changes.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-test-timeout",
+      "test_or_review_pattern": "timeout tests",
+      "risk_addressed": "Long operations hang or rerun indefinitely",
+      "what_to_test": [
+        "slow adapter",
+        "timeout exception",
+        "cancel unsupported"
+      ],
+      "how_to_test_without_live_side_effects": [
+        "mock sleeps/timeouts, no live dependency"
+      ],
+      "evidence_of_pass": [
+        "timeout state and next step shown"
+      ],
+      "evidence_of_failure": [
+        "spinner forever or retry storm"
+      ],
+      "human_review_triggers": [
+        "long-running operation"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-long-operation-on-rerun"
+      ],
+      "current_verification_required": false,
+      "source_supported_elements": [
+        "progress/status examples"
+      ],
+      "operational_extensions": [
+        "adapter timeout policy"
+      ],
+      "source_traceability": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          1
+        ],
+        "evidence": [
+          "progress/status examples"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": [
+          "adapter timeout policy"
+        ]
+      },
+      "derivation": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "method": "Concrete test/review pattern for AI-agent code review and safe Streamlit changes.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-test-stale-data-display",
+      "test_or_review_pattern": "stale-data display tests",
+      "risk_addressed": "Cached/stale data appears current",
+      "what_to_test": [
+        "cache key changes",
+        "source timestamp",
+        "manual refresh"
+      ],
+      "how_to_test_without_live_side_effects": [
+        "fake clock/source versions"
+      ],
+      "evidence_of_pass": [
+        "freshness label updates and stale warning shown"
+      ],
+      "evidence_of_failure": [
+        "no timestamp or stale marker"
+      ],
+      "human_review_triggers": [
+        "dashboard/cache added"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-cache-stale-data",
+        "streamlit-risk-owner-dashboard-false-green"
+      ],
+      "current_verification_required": false,
+      "source_supported_elements": [
+        "st.cache_data and charts"
+      ],
+      "operational_extensions": [
+        "freshness metadata"
+      ],
+      "source_traceability": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          2,
+          3
+        ],
+        "evidence": [
+          "st.cache_data and charts"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": [
+          "freshness metadata"
+        ]
+      },
+      "derivation": {
+        "domain": "source_synthesis",
+        "confidence": "medium",
+        "method": "Concrete test/review pattern for AI-agent code review and safe Streamlit changes.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-test-cache-invalidation",
+      "test_or_review_pattern": "cache invalidation tests",
+      "risk_addressed": "Wrong cache reuse across files/users/scopes",
+      "what_to_test": [
+        "file hash",
+        "tenant",
+        "source version",
+        "resource lifecycle"
+      ],
+      "how_to_test_without_live_side_effects": [
+        "call cached function with controlled keys and fixtures"
+      ],
+      "evidence_of_pass": [
+        "new input yields new value or explicit stale label"
+      ],
+      "evidence_of_failure": [
+        "cross-user/scope reuse"
+      ],
+      "human_review_triggers": [
+        "cache use changed"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-cache-stale-data",
+        "streamlit-risk-cache-sensitive-data",
+        "streamlit-risk-mutated-cached-object"
+      ],
+      "current_verification_required": true,
+      "source_supported_elements": [
+        "Chapter 2/4 caching"
+      ],
+      "operational_extensions": [
+        "current cache semantics"
+      ],
+      "source_traceability": {
+        "domain": "modern_streamlit_extension",
+        "confidence": "low",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          2,
+          4
+        ],
+        "evidence": [
+          "Chapter 2/4 caching"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": [
+          "current cache semantics"
+        ]
+      },
+      "derivation": {
+        "domain": "modern_streamlit_extension",
+        "confidence": "low",
+        "method": "Concrete test/review pattern for AI-agent code review and safe Streamlit changes.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-test-secrets-redaction",
+      "test_or_review_pattern": "secrets redaction tests",
+      "risk_addressed": "Secrets leak in UI, logs, downloads, cache, or exceptions",
+      "what_to_test": [
+        "known token canary",
+        "exception paths",
+        "download artifacts",
+        "logs"
+      ],
+      "how_to_test_without_live_side_effects": [
+        "inject fake secret and scan outputs/log strings"
+      ],
+      "evidence_of_pass": [
+        "secret absent; redacted placeholder only"
+      ],
+      "evidence_of_failure": [
+        "secret appears anywhere user can see"
+      ],
+      "human_review_triggers": [
+        "new secret/config display"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-secret-leakage",
+        "streamlit-risk-raw-exception-exposure"
+      ],
+      "current_verification_required": true,
+      "source_supported_elements": [
+        "Chapter 5 secrets"
+      ],
+      "operational_extensions": [
+        "current security recommendations"
+      ],
+      "source_traceability": {
+        "domain": "modern_streamlit_extension",
+        "confidence": "low",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [
+          5
+        ],
+        "evidence": [
+          "Chapter 5 secrets"
+        ],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": [
+          "current security recommendations"
+        ]
+      },
+      "derivation": {
+        "domain": "modern_streamlit_extension",
+        "confidence": "low",
+        "method": "Concrete test/review pattern for AI-agent code review and safe Streamlit changes.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    },
+    {
+      "id": "streamlit-test-current-app-testing-tools",
+      "test_or_review_pattern": "current Streamlit app testing tools",
+      "risk_addressed": "Assuming unavailable or changed Streamlit test APIs",
+      "what_to_test": [
+        "installed Streamlit version",
+        "AppTest import path",
+        "widget simulation",
+        "element assertions"
+      ],
+      "how_to_test_without_live_side_effects": [
+        "use current official docs and installed package in project runtime"
+      ],
+      "evidence_of_pass": [
+        "tests run under pinned version"
+      ],
+      "evidence_of_failure": [
+        "docs claim copied without runtime verification"
+      ],
+      "human_review_triggers": [
+        "test harness introduced"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-unverified-current-api"
+      ],
+      "current_verification_required": true,
+      "source_supported_elements": [],
+      "operational_extensions": [
+        "st.testing/AppTest current verification"
+      ],
+      "source_traceability": {
+        "domain": "modern_streamlit_extension",
+        "confidence": "low",
+        "book_title": "Streamlit for Data Science",
+        "book_authors": [
+          "Tyler Richards"
+        ],
+        "source_era": "early-access source dated 2023-08-14; accessible chapters 1-7 only",
+        "accessible_chapters_referenced": [],
+        "evidence": [],
+        "missing_chapter_guardrail": "No content from listed chapters 8-13 is summarized or treated as processed.",
+        "current_docs_consulted": [
+          "st.testing/AppTest current verification"
+        ]
+      },
+      "derivation": {
+        "domain": "modern_streamlit_extension",
+        "confidence": "low",
+        "method": "Concrete test/review pattern for AI-agent code review and safe Streamlit changes.",
+        "status": "repaired_v2_record",
+        "v2_repair_note": "Repeated cautions were replaced by related_risk_ids where possible."
+      }
+    }
+  ],
+  "performance_review": [
+    "use submit boundaries for long work",
+    "cache only reviewed pure data/resources",
+    "show progress/status tied to actual result states",
+    "verify runtime limits"
+  ]
+}

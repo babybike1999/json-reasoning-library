@@ -1,0 +1,2819 @@
+{
+  "source_domain": "cross_book_synthesis",
+  "generated_at": "2026-06-16T06:13:43+00:00",
+  "purpose": "Reusable mappings between source-separated Robust Python and Architecture Patterns records.",
+  "source_separation_policy": "Integration records reference robust_python_record_ids and architecture_record_ids separately; they do not claim both books use identical terminology.",
+  "records": [
+    {
+      "id": "cb-001",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-008",
+        "ap-009",
+        "ap-012"
+      ],
+      "robust_python_record_ids": [
+        "rp-041",
+        "rp-073"
+      ],
+      "integration_name": "Repository port as Protocol",
+      "combined_problem_addressed": "Persistence seams need an interface that communicates behavior without forcing inheritance.",
+      "combined_guidance": [
+        "Define the repository contract as the smallest behavior the service layer needs.",
+        "Use Protocol when structural compatibility and test fakes matter; use ABC if nominal registration or shared base behavior is required."
+      ],
+      "failure_modes_prevented": [
+        "Service code importing concrete ORM/session details.",
+        "Fakes that accidentally miss required methods."
+      ],
+      "tradeoffs": [
+        "Protocols are less explicit at runtime; ABCs add inheritance coupling."
+      ],
+      "use_when": [
+        "A repository is justified by testability or persistence coupling."
+      ],
+      "do_not_use_when": [
+        "The ORM/framework is already the appropriate simple abstraction."
+      ],
+      "small_project_version": "Use a two-method Protocol beside the service.",
+      "larger_project_version": "Use a package-level port with fake and real adapter contract tests.",
+      "code_review_questions": [
+        "Is every repository method required by a use case?",
+        "Would a fake satisfy the same protocol?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Repository port as Protocol",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-008, ap-009, ap-012",
+          "Robust Python sources: rp-041, rp-073"
+        ],
+        "inferred_claims": [
+          "Persistence seams need an interface that communicates behavior without forcing inheritance."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-002",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-004"
+      ],
+      "robust_python_record_ids": [
+        "rp-031",
+        "rp-032",
+        "rp-033"
+      ],
+      "integration_name": "Value object as frozen validated dataclass",
+      "combined_problem_addressed": "Domain values need names, equality, and invariants without identity mutation.",
+      "combined_guidance": [
+        "Use frozen dataclasses for immutable value objects.",
+        "Validate multi-field invariants in __post_init__ or a factory."
+      ],
+      "failure_modes_prevented": [
+        "Swapped primitive bundles.",
+        "Validated values mutated into invalid states."
+      ],
+      "tradeoffs": [
+        "Frozen dataclasses do not deep-freeze nested mutables.",
+        "Validation code adds construction cost."
+      ],
+      "use_when": [
+        "A concept has no lifecycle identity and travels through APIs."
+      ],
+      "do_not_use_when": [
+        "The object has identity, persistence lifecycle, or controlled mutation."
+      ],
+      "small_project_version": "One frozen dataclass with a small invariant.",
+      "larger_project_version": "A value-object module with factories, parsing, and tests for invalid construction.",
+      "code_review_questions": [
+        "Can an invalid value object be constructed?",
+        "Does equality match value semantics?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Value object as frozen validated dataclass",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-004",
+          "Robust Python sources: rp-031, rp-032, rp-033"
+        ],
+        "inferred_claims": [
+          "Domain values need names, equality, and invariants without identity mutation."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-003",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-005"
+      ],
+      "robust_python_record_ids": [
+        "rp-035",
+        "rp-036",
+        "rp-071"
+      ],
+      "integration_name": "Entity with explicit identity and invariant methods",
+      "combined_problem_addressed": "Mutable domain objects need identity and controlled state transitions.",
+      "combined_guidance": [
+        "Represent identity explicitly and protect mutations through intention-revealing methods.",
+        "Avoid public setters that bypass invariants."
+      ],
+      "failure_modes_prevented": [
+        "State transitions that skip business rules.",
+        "Confusing value equality with entity identity."
+      ],
+      "tradeoffs": [
+        "Classes add lifecycle design overhead.",
+        "Over-encapsulation can obscure simple data."
+      ],
+      "use_when": [
+        "The concept persists across changes."
+      ],
+      "do_not_use_when": [
+        "The concept is a small immutable measurement or descriptor."
+      ],
+      "small_project_version": "Use a class with id and one validated method.",
+      "larger_project_version": "Place entity inside an aggregate root with persistence through repository/UoW.",
+      "code_review_questions": [
+        "What invariant does each mutating method preserve?",
+        "Is equality by identity or value?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Entity with explicit identity and invariant methods",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-005",
+          "Robust Python sources: rp-035, rp-036, rp-071"
+        ],
+        "inferred_claims": [
+          "Mutable domain objects need identity and controlled state transitions."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-004",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-027",
+        "ap-028",
+        "ap-029"
+      ],
+      "robust_python_record_ids": [
+        "rp-035",
+        "rp-036",
+        "rp-088"
+      ],
+      "integration_name": "Aggregate as controlled mutation boundary",
+      "combined_problem_addressed": "Correlated state across objects must stay valid after commands.",
+      "combined_guidance": [
+        "Let invariants choose the aggregate boundary.",
+        "Use classes/methods that make impossible combinations unreachable."
+      ],
+      "failure_modes_prevented": [
+        "External mutation of child entities.",
+        "Flag combinations that violate business rules."
+      ],
+      "tradeoffs": [
+        "Aggregate boundaries can hurt performance if too broad.",
+        "Too many small types may increase navigation cost."
+      ],
+      "use_when": [
+        "A command must update related objects consistently."
+      ],
+      "do_not_use_when": [
+        "Objects are independent CRUD records."
+      ],
+      "small_project_version": "Use one root object protecting one invariant.",
+      "larger_project_version": "Use aggregate root, repository, UoW, versioning, and events for cross-boundary follow-up.",
+      "code_review_questions": [
+        "Which invariant is protected?",
+        "Can callers mutate internals directly?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Aggregate as controlled mutation boundary",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-027, ap-028, ap-029",
+          "Robust Python sources: rp-035, rp-036, rp-088"
+        ],
+        "inferred_claims": [
+          "Correlated state across objects must stay valid after commands."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-005",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-023",
+        "ap-024",
+        "ap-075",
+        "ap-076"
+      ],
+      "robust_python_record_ids": [
+        "rp-118",
+        "rp-119"
+      ],
+      "integration_name": "Unit of Work as context manager",
+      "combined_problem_addressed": "Transactions need a visible lifetime, commit policy, and cleanup behavior.",
+      "combined_guidance": [
+        "Represent transaction scope with a context manager.",
+        "Make explicit commit the success signal and rollback the default."
+      ],
+      "failure_modes_prevented": [
+        "Partial commits after exceptions.",
+        "Hidden resource lifetime or swallowed failures."
+      ],
+      "tradeoffs": [
+        "Context managers can hide semantics if poorly named.",
+        "UoW is unnecessary for simple reads."
+      ],
+      "use_when": [
+        "Multiple writes must succeed or fail together."
+      ],
+      "do_not_use_when": [
+        "The use case is read-only or one trivial framework-managed write."
+      ],
+      "small_project_version": "Use a with-block around the one write use case.",
+      "larger_project_version": "Use a UoW abstraction supplying repositories and publishing events after commit if justified.",
+      "code_review_questions": [
+        "Is commit explicit?",
+        "Does __exit__ suppress exceptions?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Unit of Work as context manager",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-023, ap-024, ap-075, ap-076",
+          "Robust Python sources: rp-118, rp-119"
+        ],
+        "inferred_claims": [
+          "Transactions need a visible lifetime, commit policy, and cleanup behavior."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-006",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-038",
+        "ap-039"
+      ],
+      "robust_python_record_ids": [
+        "rp-031",
+        "rp-032",
+        "rp-012"
+      ],
+      "integration_name": "Command as immutable typed message",
+      "combined_problem_addressed": "Use-case requests need explicit inputs and caller-visible failure semantics.",
+      "combined_guidance": [
+        "Model commands as small immutable dataclasses or typed DTOs.",
+        "Validate syntax at edges and semantic rules in services/domain."
+      ],
+      "failure_modes_prevented": [
+        "Missing command fields.",
+        "Command/event naming confusion."
+      ],
+      "tradeoffs": [
+        "Message classes add ceremony for trivial direct calls."
+      ],
+      "use_when": [
+        "A bus/handler architecture or cross-entrypoint use case exists."
+      ],
+      "do_not_use_when": [
+        "One direct function call is clearer."
+      ],
+      "small_project_version": "Use a typed function parameter or small dataclass.",
+      "larger_project_version": "Use command dataclasses, handler registry, and DI bootstrap.",
+      "code_review_questions": [
+        "Is this a request or a fact?",
+        "Where are command failures reported?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Command as immutable typed message",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-038, ap-039",
+          "Robust Python sources: rp-031, rp-032, rp-012"
+        ],
+        "inferred_claims": [
+          "Use-case requests need explicit inputs and caller-visible failure semantics."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-007",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-032",
+        "ap-033",
+        "ap-079"
+      ],
+      "robust_python_record_ids": [
+        "rp-031",
+        "rp-032",
+        "rp-050"
+      ],
+      "integration_name": "Event as immutable structured fact",
+      "combined_problem_addressed": "Secondary reactions need stable facts without mutating the initiating workflow.",
+      "combined_guidance": [
+        "Model domain events as immutable structured messages named in past tense.",
+        "Dispatch after deciding commit/failure policy."
+      ],
+      "failure_modes_prevented": [
+        "Stringly event names.",
+        "Handlers depending on mutable event state."
+      ],
+      "tradeoffs": [
+        "Events make flow less direct and require observability."
+      ],
+      "use_when": [
+        "Multiple independent handlers react to one domain fact."
+      ],
+      "do_not_use_when": [
+        "One synchronous reaction is simpler as a direct call."
+      ],
+      "small_project_version": "Use one frozen dataclass event and direct handler call.",
+      "larger_project_version": "Use aggregate event collection, message bus, and external integration mapping if needed.",
+      "code_review_questions": [
+        "Is the event a fact that happened?",
+        "Who owns handler failure?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Event as immutable structured fact",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-032, ap-033, ap-079",
+          "Robust Python sources: rp-031, rp-032, rp-050"
+        ],
+        "inferred_claims": [
+          "Secondary reactions need stable facts without mutating the initiating workflow."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-008",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-017",
+        "ap-018",
+        "ap-072"
+      ],
+      "robust_python_record_ids": [
+        "rp-007",
+        "rp-010",
+        "rp-011",
+        "rp-098"
+      ],
+      "integration_name": "Service layer with typed command/result contract",
+      "combined_problem_addressed": "Entrypoints need a stable use-case boundary that separates protocol concerns from domain orchestration.",
+      "combined_guidance": [
+        "Give services typed inputs and explicit failure outputs/exceptions.",
+        "Keep HTTP/CLI/database details out of signatures."
+      ],
+      "failure_modes_prevented": [
+        "Entrypoint business branching.",
+        "Caller cannot distinguish success, absence, and domain failure."
+      ],
+      "tradeoffs": [
+        "Service layer can become a pass-through or anemic bag."
+      ],
+      "use_when": [
+        "Endpoint coordinates validation, repository lookup, and domain change."
+      ],
+      "do_not_use_when": [
+        "A pure domain method can be called directly."
+      ],
+      "small_project_version": "Use a typed function with injected dependency.",
+      "larger_project_version": "Use command handlers, UoW, and message bus when use cases multiply.",
+      "code_review_questions": [
+        "Does this service orchestrate or merely forward?",
+        "Are side effects visible?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Service layer with typed command/result contract",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-017, ap-018, ap-072",
+          "Robust Python sources: rp-007, rp-010, rp-011, rp-098"
+        ],
+        "inferred_claims": [
+          "Entrypoints need a stable use-case boundary that separates protocol concerns from domain orchestration."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-009",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-012",
+        "ap-050",
+        "ap-061"
+      ],
+      "robust_python_record_ids": [
+        "rp-043",
+        "rp-044",
+        "rp-074"
+      ],
+      "integration_name": "Adapter boundary with runtime validation",
+      "combined_problem_addressed": "Raw external data should not cross into trusted core code unchecked.",
+      "combined_guidance": [
+        "Validate and parse raw input at adapters.",
+        "Translate to typed commands/value objects before domain/service logic."
+      ],
+      "failure_modes_prevented": [
+        "Malformed JSON/env/API data reaching domain code.",
+        "Vendor DTOs leaking into core signatures."
+      ],
+      "tradeoffs": [
+        "Extra mapping code and possible duplication if rules are misplaced."
+      ],
+      "use_when": [
+        "Data comes from HTTP, messages, files, environment, or vendor APIs."
+      ],
+      "do_not_use_when": [
+        "Data is constructed internally by trusted code and already typed."
+      ],
+      "small_project_version": "Use a parser/validator function at the edge.",
+      "larger_project_version": "Use adapter modules with DTOs, ports, and contract tests.",
+      "code_review_questions": [
+        "Which raw inputs enter here?",
+        "Which validation belongs at edge versus domain?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Adapter boundary with runtime validation",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-012, ap-050, ap-061",
+          "Robust Python sources: rp-043, rp-044, rp-074"
+        ],
+        "inferred_claims": [
+          "Raw external data should not cross into trusted core code unchecked."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-010",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-055",
+        "ap-048"
+      ],
+      "robust_python_record_ids": [
+        "rp-044",
+        "rp-101",
+        "rp-123"
+      ],
+      "integration_name": "Configuration as immutable validated settings",
+      "combined_problem_addressed": "Deployment settings need early validation and explicit flow into adapters.",
+      "combined_guidance": [
+        "Load config once at startup/bootstrap.",
+        "Pass validated settings into repositories, clients, and buses."
+      ],
+      "failure_modes_prevented": [
+        "Scattered env reads.",
+        "Runtime failure from malformed config."
+      ],
+      "tradeoffs": [
+        "Validation API/tooling may be version-sensitive.",
+        "Strict startup can make local partial config harder."
+      ],
+      "use_when": [
+        "The application has environment-dependent infrastructure."
+      ],
+      "do_not_use_when": [
+        "A tiny script uses one obvious constant."
+      ],
+      "small_project_version": "Use a single settings object passed to one adapter.",
+      "larger_project_version": "Use bootstrap wiring with settings per environment and test substitutes.",
+      "code_review_questions": [
+        "Where are env vars read?",
+        "Can missing config fail at startup?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Configuration as immutable validated settings",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-055, ap-048",
+          "Robust Python sources: rp-044, rp-101, rp-123"
+        ],
+        "inferred_claims": [
+          "Deployment settings need early validation and explicit flow into adapters."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-011",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-044",
+        "ap-045",
+        "ap-046",
+        "ap-083",
+        "ap-084"
+      ],
+      "robust_python_record_ids": [
+        "rp-019",
+        "rp-020",
+        "rp-031"
+      ],
+      "integration_name": "Read model separated from domain writes with typed DTOs",
+      "combined_problem_addressed": "Read queries may need shapes optimized for display rather than write invariants.",
+      "combined_guidance": [
+        "Keep domain model for writes and invariants.",
+        "Use typed read DTOs or TypedDicts for query responses when read shape differs."
+      ],
+      "failure_modes_prevented": [
+        "Forcing aggregates to serve reporting needs.",
+        "Anonymous dict responses with missing keys."
+      ],
+      "tradeoffs": [
+        "Separate read models can become stale or duplicated."
+      ],
+      "use_when": [
+        "Read performance/shape conflicts with write model."
+      ],
+      "do_not_use_when": [
+        "Simple reads are fast and clear."
+      ],
+      "small_project_version": "Use one typed query function returning a DTO.",
+      "larger_project_version": "Use projections/read stores only after measured need.",
+      "code_review_questions": [
+        "Is the read path distorting the aggregate?",
+        "Is staleness acceptable?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Read model separated from domain writes with typed DTOs",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Architecture sources: ap-044, ap-045, ap-046, ap-083, ap-084",
+          "Robust Python sources: rp-019, rp-020, rp-031"
+        ],
+        "inferred_claims": [
+          "Read queries may need shapes optimized for display rather than write invariants."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-012",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-011",
+        "ap-013",
+        "ap-070"
+      ],
+      "robust_python_record_ids": [
+        "rp-057",
+        "rp-058",
+        "rp-108"
+      ],
+      "integration_name": "Fake adapter plus contract tests",
+      "combined_problem_addressed": "Fast tests need fakes, but fakes must not lie about adapter behavior.",
+      "combined_guidance": [
+        "Use fakes for service/domain tests.",
+        "Add contract/integration tests for real adapter behavior that matters."
+      ],
+      "failure_modes_prevented": [
+        "Slow tests for pure rules.",
+        "Fake/real behavior drift."
+      ],
+      "tradeoffs": [
+        "Contract tests add maintenance cost.",
+        "Some vendor behavior is hard to reproduce."
+      ],
+      "use_when": [
+        "A port/fake is used across tests."
+      ],
+      "do_not_use_when": [
+        "The dependency is pure and deterministic."
+      ],
+      "small_project_version": "Use an in-memory fake and a few adapter tests.",
+      "larger_project_version": "Use shared contract suites across fake, in-memory, and production adapters.",
+      "code_review_questions": [
+        "What behavior must fake and real share?",
+        "Which tests require real infrastructure?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Fake adapter plus contract tests",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-011, ap-013, ap-070",
+          "Robust Python sources: rp-057, rp-058, rp-108"
+        ],
+        "inferred_claims": [
+          "Fast tests need fakes, but fakes must not lie about adapter behavior."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-013",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-002",
+        "ap-012"
+      ],
+      "robust_python_record_ids": [
+        "rp-039",
+        "rp-041",
+        "rp-042",
+        "rp-073"
+      ],
+      "integration_name": "Protocol versus ABC selection for ports",
+      "combined_problem_addressed": "Port design needs to balance structural flexibility and explicit nominal contracts.",
+      "combined_guidance": [
+        "Prefer Protocol for small behavior-only ports and test doubles.",
+        "Prefer ABC when nominal subclassing, shared lifecycle, or runtime registration matters."
+      ],
+      "failure_modes_prevented": [
+        "Concrete infrastructure dependency in core.",
+        "Overgrown inheritance hierarchies."
+      ],
+      "tradeoffs": [
+        "Protocols may not enforce runtime semantics.",
+        "ABCs can add inheritance coupling."
+      ],
+      "use_when": [
+        "Multiple unrelated implementations satisfy one capability."
+      ],
+      "do_not_use_when": [
+        "Only one concrete object and no seam is needed."
+      ],
+      "small_project_version": "Use a tiny Protocol.",
+      "larger_project_version": "Use a package-level interface policy with contract tests and adapter docs.",
+      "code_review_questions": [
+        "Is structural compatibility enough?",
+        "Does the port include only used behavior?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Protocol versus ABC selection for ports",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-002, ap-012",
+          "Robust Python sources: rp-039, rp-041, rp-042, rp-073"
+        ],
+        "inferred_claims": [
+          "Port design needs to balance structural flexibility and explicit nominal contracts."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-014",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-007",
+        "ap-018",
+        "ap-039",
+        "ap-040"
+      ],
+      "robust_python_record_ids": [
+        "rp-011",
+        "rp-077",
+        "rp-098"
+      ],
+      "integration_name": "Domain error hierarchy with explicit caller contract",
+      "combined_problem_addressed": "Failures need different handling depending on domain meaning and command/event semantics.",
+      "combined_guidance": [
+        "Use named domain exceptions or result objects for expected business failures.",
+        "Do not mix infrastructure exceptions with domain vocabulary."
+      ],
+      "failure_modes_prevented": [
+        "Generic errors leaking to callers.",
+        "Command success reported despite domain failure."
+      ],
+      "tradeoffs": [
+        "Too many custom exceptions can add noise.",
+        "Result objects require disciplined checking."
+      ],
+      "use_when": [
+        "Callers need to distinguish recoverable business failure."
+      ],
+      "do_not_use_when": [
+        "The failure is a programming defect that should crash early."
+      ],
+      "small_project_version": "Use one named exception or Result variant.",
+      "larger_project_version": "Use a hierarchy by layer: validation, domain, infrastructure, retryable.",
+      "code_review_questions": [
+        "Can callers distinguish absence, invalid command, and infrastructure failure?",
+        "Where is error translated?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Domain error hierarchy with explicit caller contract",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-007, ap-018, ap-039, ap-040",
+          "Robust Python sources: rp-011, rp-077, rp-098"
+        ],
+        "inferred_claims": [
+          "Failures need different handling depending on domain meaning and command/event semantics."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-015",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-053",
+        "ap-090",
+        "ap-091",
+        "ap-092",
+        "ap-093",
+        "ap-094",
+        "ap-095",
+        "ap-096"
+      ],
+      "robust_python_record_ids": [
+        "rp-009",
+        "rp-102",
+        "rp-114",
+        "rp-125"
+      ],
+      "integration_name": "Overengineering gate for architecture patterns",
+      "combined_problem_addressed": "Patterns can harm maintainability when adopted without demonstrated forces.",
+      "combined_guidance": [
+        "Require a specific pain, invariant, or testability problem before adding a pattern.",
+        "Prefer the smallest design that resolves current risk."
+      ],
+      "failure_modes_prevented": [
+        "Pattern cargo culting.",
+        "Microservices or buses introduced before boundaries exist."
+      ],
+      "tradeoffs": [
+        "Waiting too long can make later extraction harder.",
+        "Simple designs may need later refactor."
+      ],
+      "use_when": [
+        "A pattern adds files/concepts beyond direct code."
+      ],
+      "do_not_use_when": [
+        "The abstraction solves no observed problem."
+      ],
+      "small_project_version": "Use a function, dataclass, or direct call first.",
+      "larger_project_version": "Add repositories/UoW/events/CQRS incrementally with decision notes.",
+      "code_review_questions": [
+        "What problem does this pattern solve now?",
+        "What simpler design was rejected and why?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Overengineering gate for architecture patterns",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-053, ap-090, ap-091, ap-092, ap-093, ap-094, ap-095, ap-096",
+          "Robust Python sources: rp-009, rp-102, rp-114, rp-125"
+        ],
+        "inferred_claims": [
+          "Patterns can harm maintainability when adopted without demonstrated forces."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-016",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-030"
+      ],
+      "robust_python_record_ids": [
+        "rp-016",
+        "rp-004"
+      ],
+      "integration_name": "Aggregate repository with semantic identifiers",
+      "combined_problem_addressed": "Repository lookup keys should not confuse identifiers from different aggregates.",
+      "combined_guidance": [
+        "Use semantic ID types at repository boundaries.",
+        "Convert raw strings/ints at the adapter edge."
+      ],
+      "failure_modes_prevented": [
+        "Wrong aggregate loaded by wrong ID type."
+      ],
+      "tradeoffs": [
+        "NewType is static-only; runtime validation still needed."
+      ],
+      "use_when": [
+        "Identifiers of same primitive type coexist."
+      ],
+      "do_not_use_when": [
+        "There is only one ID type in a tiny module."
+      ],
+      "small_project_version": "Use NewType for one ID.",
+      "larger_project_version": "Use value object IDs with parsing and persistence adapters.",
+      "code_review_questions": [
+        "Can an order ID be passed as a user ID?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Aggregate repository with semantic identifiers",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Architecture sources: ap-030",
+          "Robust Python sources: rp-016, rp-004"
+        ],
+        "inferred_claims": [
+          "Repository lookup keys should not confuse identifiers from different aggregates."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-017",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-031"
+      ],
+      "robust_python_record_ids": [
+        "rp-016",
+        "rp-017",
+        "rp-031"
+      ],
+      "integration_name": "Optimistic concurrency plus explicit version type",
+      "combined_problem_addressed": "Concurrency tokens should not be confused with business quantities.",
+      "combined_guidance": [
+        "Represent versions explicitly and update them only at persistence boundary.",
+        "Test stale version conflict paths."
+      ],
+      "failure_modes_prevented": [
+        "Lost update from untracked version.",
+        "Version number accidentally treated as quantity."
+      ],
+      "tradeoffs": [
+        "Adds conflict handling paths."
+      ],
+      "use_when": [
+        "Concurrent writes can target same aggregate."
+      ],
+      "do_not_use_when": [
+        "No concurrent writes or external locking handles it."
+      ],
+      "small_project_version": "Add int version field and conflict test.",
+      "larger_project_version": "Use typed Version value, repository checks, and retry policy.",
+      "code_review_questions": [
+        "Where is version checked?",
+        "What happens on conflict?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Optimistic concurrency plus explicit version type",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Architecture sources: ap-031",
+          "Robust Python sources: rp-016, rp-017, rp-031"
+        ],
+        "inferred_claims": [
+          "Concurrency tokens should not be confused with business quantities."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-018",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-001",
+        "ap-002",
+        "ap-017"
+      ],
+      "robust_python_record_ids": [
+        "rp-048",
+        "rp-104"
+      ],
+      "integration_name": "Policy/mechanism split at application boundary",
+      "combined_problem_addressed": "Business policy becomes untestable when it constructs mechanisms directly.",
+      "combined_guidance": [
+        "Inject mechanisms through services or handlers.",
+        "Keep domain policy pure where possible."
+      ],
+      "failure_modes_prevented": [
+        "Network/database needed for pure rule tests."
+      ],
+      "tradeoffs": [
+        "More explicit parameters/wiring."
+      ],
+      "use_when": [
+        "A decision uses a side-effecting collaborator."
+      ],
+      "do_not_use_when": [
+        "Mechanism is trivial and stable."
+      ],
+      "small_project_version": "Pass a function/protocol into one use case.",
+      "larger_project_version": "Wire ports/adapters in bootstrap with contract tests.",
+      "code_review_questions": [
+        "Does business logic construct infrastructure?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Policy/mechanism split at application boundary",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-001, ap-002, ap-017",
+          "Robust Python sources: rp-048, rp-104"
+        ],
+        "inferred_claims": [
+          "Business policy becomes untestable when it constructs mechanisms directly."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-019",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-036",
+        "ap-037"
+      ],
+      "robust_python_record_ids": [
+        "rp-041",
+        "rp-100"
+      ],
+      "integration_name": "Typed event handler callable contract",
+      "combined_problem_addressed": "Message bus dispatch depends on handlers accepting the right message and dependencies.",
+      "combined_guidance": [
+        "Define handler callable shape with Protocol or type alias.",
+        "Keep handler dependencies wired outside dispatch."
+      ],
+      "failure_modes_prevented": [
+        "Handler registered for wrong message shape."
+      ],
+      "tradeoffs": [
+        "Typing higher-order callables can be complex."
+      ],
+      "use_when": [
+        "Handlers are dynamically registered."
+      ],
+      "do_not_use_when": [
+        "Direct call is enough."
+      ],
+      "small_project_version": "Use Callable[[Message], None].",
+      "larger_project_version": "Use generic handler Protocol and bus typing.",
+      "code_review_questions": [
+        "Can the bus register this handler safely?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Typed event handler callable contract",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Architecture sources: ap-036, ap-037",
+          "Robust Python sources: rp-041, rp-100"
+        ],
+        "inferred_claims": [
+          "Message bus dispatch depends on handlers accepting the right message and dependencies."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-020",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-060",
+        "ap-061",
+        "ap-062"
+      ],
+      "robust_python_record_ids": [
+        "rp-043",
+        "rp-033",
+        "rp-074"
+      ],
+      "integration_name": "Validation split: syntax DTO to semantic value object",
+      "combined_problem_addressed": "External input can be syntactically valid while still violating domain invariants.",
+      "combined_guidance": [
+        "Use DTO/schema for syntax and domain/value constructors for semantics.",
+        "Avoid duplicating the same rule in both places."
+      ],
+      "failure_modes_prevented": [
+        "Malformed payloads and invalid domain objects."
+      ],
+      "tradeoffs": [
+        "Mapping code adds maintenance."
+      ],
+      "use_when": [
+        "Input crosses a trust boundary."
+      ],
+      "do_not_use_when": [
+        "No domain invariant exists."
+      ],
+      "small_project_version": "Parser returns a command dataclass.",
+      "larger_project_version": "Edge DTO maps to value objects/entities through factories.",
+      "code_review_questions": [
+        "Which validation requires database/domain state?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Validation split: syntax DTO to semantic value object",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-060, ap-061, ap-062",
+          "Robust Python sources: rp-043, rp-033, rp-074"
+        ],
+        "inferred_claims": [
+          "External input can be syntactically valid while still violating domain invariants."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-021",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-048",
+        "ap-055"
+      ],
+      "robust_python_record_ids": [
+        "rp-044",
+        "rp-046",
+        "rp-101"
+      ],
+      "integration_name": "Typed configuration injected through bootstrap",
+      "combined_problem_addressed": "Configuration and dependency construction should meet at a single composition root.",
+      "combined_guidance": [
+        "Validate config, create adapters, and pass dependencies explicitly.",
+        "Keep settings out of domain model."
+      ],
+      "failure_modes_prevented": [
+        "Hidden env dependencies.",
+        "Tests using production config accidentally."
+      ],
+      "tradeoffs": [
+        "Bootstrap grows and needs organization."
+      ],
+      "use_when": [
+        "Multiple adapters depend on environment."
+      ],
+      "do_not_use_when": [
+        "Single local constant."
+      ],
+      "small_project_version": "One settings dataclass passed to adapter.",
+      "larger_project_version": "Environment-specific bootstrap with fakeable factories.",
+      "code_review_questions": [
+        "Can tests create app without real secrets?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Typed configuration injected through bootstrap",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-048, ap-055",
+          "Robust Python sources: rp-044, rp-046, rp-101"
+        ],
+        "inferred_claims": [
+          "Configuration and dependency construction should meet at a single composition root."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-022",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-044",
+        "ap-045"
+      ],
+      "robust_python_record_ids": [
+        "rp-020",
+        "rp-019"
+      ],
+      "integration_name": "Read DTO as TypedDict before richer view model",
+      "combined_problem_addressed": "Simple read paths need typed shape without unnecessary domain classes.",
+      "combined_guidance": [
+        "Use TypedDict or dataclass for read results depending on behavior needs.",
+        "Avoid rich domain objects for pure display rows."
+      ],
+      "failure_modes_prevented": [
+        "Missing response keys.",
+        "Domain write model contorted for display."
+      ],
+      "tradeoffs": [
+        "TypedDict lacks runtime validation and behavior."
+      ],
+      "use_when": [
+        "Query returns JSON-like data."
+      ],
+      "do_not_use_when": [
+        "Read result has invariants/behavior."
+      ],
+      "small_project_version": "TypedDict for one API response.",
+      "larger_project_version": "Read-model package with DTOs and query functions.",
+      "code_review_questions": [
+        "Is this response shape checked?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Read DTO as TypedDict before richer view model",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Architecture sources: ap-044, ap-045",
+          "Robust Python sources: rp-020, rp-019"
+        ],
+        "inferred_claims": [
+          "Simple read paths need typed shape without unnecessary domain classes."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-023",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-051",
+        "ap-105"
+      ],
+      "robust_python_record_ids": [
+        "rp-122",
+        "rp-057"
+      ],
+      "integration_name": "Characterization tests before seam extraction",
+      "combined_problem_addressed": "Refactoring working code without tests risks behavior loss.",
+      "combined_guidance": [
+        "Capture current behavior at the safest test level before extracting boundaries.",
+        "Then move one responsibility at a time."
+      ],
+      "failure_modes_prevented": [
+        "Regressions during modernization."
+      ],
+      "tradeoffs": [
+        "Characterization may preserve known bugs temporarily."
+      ],
+      "use_when": [
+        "Legacy behavior is important but unclear."
+      ],
+      "do_not_use_when": [
+        "Code is dead or unused."
+      ],
+      "small_project_version": "One test around current endpoint/script behavior.",
+      "larger_project_version": "A staged suite around service, repository, and adapters.",
+      "code_review_questions": [
+        "What behavior must remain unchanged?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Characterization tests before seam extraction",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-051, ap-105",
+          "Robust Python sources: rp-122, rp-057"
+        ],
+        "inferred_claims": [
+          "Refactoring working code without tests risks behavior loss."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-024",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-094",
+        "ap-080"
+      ],
+      "robust_python_record_ids": [
+        "rp-050",
+        "rp-051"
+      ],
+      "integration_name": "Direct call before event bus",
+      "combined_problem_addressed": "Event buses are costly when synchronous direct flow is enough.",
+      "combined_guidance": [
+        "Use direct calls until independent handlers or decoupling needs appear.",
+        "When events are introduced, define ordering and failure semantics."
+      ],
+      "failure_modes_prevented": [
+        "Hidden control flow and handler failures."
+      ],
+      "tradeoffs": [
+        "Direct calls can accumulate too many side effects later."
+      ],
+      "use_when": [
+        "Only one immediate reaction."
+      ],
+      "do_not_use_when": [
+        "Multiple independent reactions exist."
+      ],
+      "small_project_version": "Function call with explicit error handling.",
+      "larger_project_version": "In-process bus, then broker if durable/distributed need appears.",
+      "code_review_questions": [
+        "Why not a direct call?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Direct call before event bus",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-094, ap-080",
+          "Robust Python sources: rp-050, rp-051"
+        ],
+        "inferred_claims": [
+          "Event buses are costly when synchronous direct flow is enough."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-025",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-091",
+        "ap-092",
+        "ap-093",
+        "ap-095"
+      ],
+      "robust_python_record_ids": [
+        "rp-009",
+        "rp-125"
+      ],
+      "integration_name": "CRUD escape hatch",
+      "combined_problem_addressed": "Some domains do not benefit from rich models or architecture patterns.",
+      "combined_guidance": [
+        "Use framework CRUD directly when rules are simple and tests remain clear.",
+        "Add patterns only where behavior grows."
+      ],
+      "failure_modes_prevented": [
+        "Unnecessary repositories, services, UoW, CQRS."
+      ],
+      "tradeoffs": [
+        "May need later extraction if business rules grow."
+      ],
+      "use_when": [
+        "The feature is data entry/reporting with minimal rules."
+      ],
+      "do_not_use_when": [
+        "Invariants, workflows, or test pain appear."
+      ],
+      "small_project_version": "Framework model/view/form with tests.",
+      "larger_project_version": "Extract service/repository around the first nontrivial workflow.",
+      "code_review_questions": [
+        "Is this mostly CRUD?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "CRUD escape hatch",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-091, ap-092, ap-093, ap-095",
+          "Robust Python sources: rp-009, rp-125"
+        ],
+        "inferred_claims": [
+          "Some domains do not benefit from rich models or architecture patterns."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-026",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-010",
+        "ap-058",
+        "ap-059"
+      ],
+      "robust_python_record_ids": [
+        "rp-035",
+        "rp-036"
+      ],
+      "integration_name": "Domain model not framework model by default",
+      "combined_problem_addressed": "Framework-owned models can mix persistence and domain rules in ways that hinder tests.",
+      "combined_guidance": [
+        "Keep rules in plain domain classes/functions where framework coupling hurts.",
+        "Use adapters/views to translate."
+      ],
+      "failure_modes_prevented": [
+        "Domain tests requiring framework setup."
+      ],
+      "tradeoffs": [
+        "Extra mapping layer may be costly."
+      ],
+      "use_when": [
+        "Framework model has nontrivial business behavior."
+      ],
+      "do_not_use_when": [
+        "Simple framework CRUD is sufficient."
+      ],
+      "small_project_version": "Extract one pure rule from model/view.",
+      "larger_project_version": "Separate domain package with repository adapters.",
+      "code_review_questions": [
+        "Can this rule run without framework setup?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Domain model not framework model by default",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Architecture sources: ap-010, ap-058, ap-059",
+          "Robust Python sources: rp-035, rp-036"
+        ],
+        "inferred_claims": [
+          "Framework-owned models can mix persistence and domain rules in ways that hinder tests."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-027",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-073",
+        "ap-018",
+        "ap-039"
+      ],
+      "robust_python_record_ids": [
+        "rp-011",
+        "rp-098"
+      ],
+      "integration_name": "Boundary-specific exception translation",
+      "combined_problem_addressed": "Layer-internal failures should be translated to the caller’s language at boundaries.",
+      "combined_guidance": [
+        "Let domain raise domain errors.",
+        "Translate to HTTP/CLI/message results at the adapter."
+      ],
+      "failure_modes_prevented": [
+        "HTTP exceptions in domain model.",
+        "Leaked database errors to API clients."
+      ],
+      "tradeoffs": [
+        "Translation code can be repetitive."
+      ],
+      "use_when": [
+        "Different callers need different error formats."
+      ],
+      "do_not_use_when": [
+        "Single internal script handles all errors locally."
+      ],
+      "small_project_version": "Map one domain error to response.",
+      "larger_project_version": "Central error mapping per entrypoint/message type.",
+      "code_review_questions": [
+        "Where is this error translated?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Boundary-specific exception translation",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-073, ap-018, ap-039",
+          "Robust Python sources: rp-011, rp-098"
+        ],
+        "inferred_claims": [
+          "Layer-internal failures should be translated to the caller’s language at boundaries."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-028",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-002",
+        "ap-047"
+      ],
+      "robust_python_record_ids": [
+        "rp-023",
+        "rp-091",
+        "rp-092"
+      ],
+      "integration_name": "Type checker as architecture smoke test",
+      "combined_problem_addressed": "Typed boundaries expose dependency leaks and missing contracts during architecture refactor.",
+      "combined_guidance": [
+        "Annotate ports, commands, and service signatures during seam extraction.",
+        "Use type errors to find hidden coupling."
+      ],
+      "failure_modes_prevented": [
+        "Adapter type leaking into core.",
+        "None/dynamic values crossing seams."
+      ],
+      "tradeoffs": [
+        "Checker configuration can be noisy during migration."
+      ],
+      "use_when": [
+        "Refactoring boundaries in typed or partially typed code."
+      ],
+      "do_not_use_when": [
+        "Prototype code lacks stable contracts."
+      ],
+      "small_project_version": "Annotate one service and port.",
+      "larger_project_version": "Ratchet strictness on domain/application packages first.",
+      "code_review_questions": [
+        "What type errors indicate design leakage?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Type checker as architecture smoke test",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Architecture sources: ap-002, ap-047",
+          "Robust Python sources: rp-023, rp-091, rp-092"
+        ],
+        "inferred_claims": [
+          "Typed boundaries expose dependency leaks and missing contracts during architecture refactor."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-029",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-050"
+      ],
+      "robust_python_record_ids": [
+        "rp-041",
+        "rp-073"
+      ],
+      "integration_name": "Small protocol for external client port",
+      "combined_problem_addressed": "API clients should expose application-needed behavior, not vendor SDK breadth.",
+      "combined_guidance": [
+        "Define a small protocol around needed external operation.",
+        "Wrap vendor SDK in adapter."
+      ],
+      "failure_modes_prevented": [
+        "Vendor objects throughout core code."
+      ],
+      "tradeoffs": [
+        "Adapter maintenance and testing."
+      ],
+      "use_when": [
+        "External service affects workflow."
+      ],
+      "do_not_use_when": [
+        "One isolated script call to SDK."
+      ],
+      "small_project_version": "Function parameter typed by Protocol.",
+      "larger_project_version": "Port/adapters package with contract tests and retries.",
+      "code_review_questions": [
+        "Does core import vendor SDK?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Small protocol for external client port",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-050",
+          "Robust Python sources: rp-041, rp-073"
+        ],
+        "inferred_claims": [
+          "API clients should expose application-needed behavior, not vendor SDK breadth."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-030",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-038"
+      ],
+      "robust_python_record_ids": [
+        "rp-014",
+        "rp-028",
+        "rp-113"
+      ],
+      "integration_name": "Enum/Literal command modes instead of strings",
+      "combined_problem_addressed": "Commands with mode strings can request unsupported behavior silently.",
+      "combined_guidance": [
+        "Use Literal for tiny local modes or Enum for shared command states.",
+        "Parse raw strings at edge."
+      ],
+      "failure_modes_prevented": [
+        "Typos and unsupported command modes."
+      ],
+      "tradeoffs": [
+        "Boundary conversion overhead."
+      ],
+      "use_when": [
+        "Mode controls use-case behavior."
+      ],
+      "do_not_use_when": [
+        "Mode is arbitrary user data."
+      ],
+      "small_project_version": "Literal in function signature.",
+      "larger_project_version": "Enum in command model plus serialization tests.",
+      "code_review_questions": [
+        "Can invalid mode reach handler?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Enum/Literal command modes instead of strings",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-038",
+          "Robust Python sources: rp-014, rp-028, rp-113"
+        ],
+        "inferred_claims": [
+          "Commands with mode strings can request unsupported behavior silently."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-031",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-018",
+        "ap-039"
+      ],
+      "robust_python_record_ids": [
+        "rp-011",
+        "rp-012"
+      ],
+      "integration_name": "Result object for expected service failure",
+      "combined_problem_addressed": "Expected use-case failures may be clearer as explicit results than exceptions.",
+      "combined_guidance": [
+        "Use a result union/object when callers must branch routinely.",
+        "Use exceptions for violated assumptions or unexpected defects."
+      ],
+      "failure_modes_prevented": [
+        "Caller misses recoverable failure.",
+        "Exception-driven normal flow."
+      ],
+      "tradeoffs": [
+        "Result checking can be ignored without discipline."
+      ],
+      "use_when": [
+        "Failure is expected and part of UI/API behavior."
+      ],
+      "do_not_use_when": [
+        "Failure is unrecoverable programming defect."
+      ],
+      "small_project_version": "Return Success|Failure dataclass union.",
+      "larger_project_version": "Typed result hierarchy with API translation.",
+      "code_review_questions": [
+        "Is this failure normal for caller?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Result object for expected service failure",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Architecture sources: ap-018, ap-039",
+          "Robust Python sources: rp-011, rp-012"
+        ],
+        "inferred_claims": [
+          "Expected use-case failures may be clearer as explicit results than exceptions."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-032",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-082",
+        "ap-041"
+      ],
+      "robust_python_record_ids": [
+        "rp-077",
+        "rp-118"
+      ],
+      "integration_name": "Outbox-like thinking before external event publish",
+      "combined_problem_addressed": "External events need consistency between state commit and publication.",
+      "combined_guidance": [
+        "Treat event publication as a resource/transaction concern.",
+        "Verify current infrastructure patterns before implementation."
+      ],
+      "failure_modes_prevented": [
+        "State committed without event or event without state."
+      ],
+      "tradeoffs": [
+        "Outbox infrastructure adds complexity."
+      ],
+      "use_when": [
+        "External consumers rely on event durability."
+      ],
+      "do_not_use_when": [
+        "In-process non-durable reactions are sufficient."
+      ],
+      "small_project_version": "Publish after commit with failure logging in monolith.",
+      "larger_project_version": "Use durable outbox/broker strategy after verification.",
+      "code_review_questions": [
+        "What happens if publish fails after commit?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Outbox-like thinking before external event publish",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Architecture sources: ap-082, ap-041",
+          "Robust Python sources: rp-077, rp-118"
+        ],
+        "inferred_claims": [
+          "External events need consistency between state commit and publication."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-033",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-033"
+      ],
+      "robust_python_record_ids": [
+        "rp-036",
+        "rp-050"
+      ],
+      "integration_name": "Aggregate event list as typed mutable internal state",
+      "combined_problem_addressed": "Domain events should be collected without exposing arbitrary mutation.",
+      "combined_guidance": [
+        "Keep aggregate event collection controlled.",
+        "Expose drain/collect behavior at application boundary."
+      ],
+      "failure_modes_prevented": [
+        "Callers append fake events or lose events."
+      ],
+      "tradeoffs": [
+        "Additional event-management methods."
+      ],
+      "use_when": [
+        "Aggregate emits events."
+      ],
+      "do_not_use_when": [
+        "No secondary reactions exist."
+      ],
+      "small_project_version": "events list with convention and tests.",
+      "larger_project_version": "Encapsulated pending-events API collected by UoW.",
+      "code_review_questions": [
+        "Who may append or clear events?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Aggregate event list as typed mutable internal state",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Architecture sources: ap-033",
+          "Robust Python sources: rp-036, rp-050"
+        ],
+        "inferred_claims": [
+          "Domain events should be collected without exposing arbitrary mutation."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-034",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-008",
+        "ap-018"
+      ],
+      "robust_python_record_ids": [
+        "rp-010",
+        "rp-011"
+      ],
+      "integration_name": "Repository return Optional versus domain exception",
+      "combined_problem_addressed": "Lookup absence must be explicit at the service boundary.",
+      "combined_guidance": [
+        "Return Optional from repository get when absence is normal.",
+        "Translate absence into domain/service error where use case requires existence."
+      ],
+      "failure_modes_prevented": [
+        "Unchecked missing aggregate.",
+        "Generic KeyError/AttributeError."
+      ],
+      "tradeoffs": [
+        "Optional can leak if not resolved."
+      ],
+      "use_when": [
+        "Repository lookup may miss."
+      ],
+      "do_not_use_when": [
+        "Missing row violates storage invariant and should fail loudly."
+      ],
+      "small_project_version": "repo.get returns Aggregate|None and service checks.",
+      "larger_project_version": "Result/exception translation at service layer.",
+      "code_review_questions": [
+        "Where is None resolved?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Repository return Optional versus domain exception",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-008, ap-018",
+          "Robust Python sources: rp-010, rp-011"
+        ],
+        "inferred_claims": [
+          "Lookup absence must be explicit at the service boundary."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-035",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-047",
+        "ap-048"
+      ],
+      "robust_python_record_ids": [
+        "rp-046",
+        "rp-047"
+      ],
+      "integration_name": "Service dependency list as design smell meter",
+      "combined_problem_addressed": "Too many service dependencies can reveal mixed responsibilities.",
+      "combined_guidance": [
+        "Make dependencies explicit, then review whether the service does too much.",
+        "Split by use case or extract policies where needed."
+      ],
+      "failure_modes_prevented": [
+        "Hidden globals.",
+        "God service objects."
+      ],
+      "tradeoffs": [
+        "Explicit injection can be verbose."
+      ],
+      "use_when": [
+        "Constructor/handler needs many collaborators."
+      ],
+      "do_not_use_when": [
+        "A coordinator legitimately orchestrates several ports."
+      ],
+      "small_project_version": "Pass dependencies to one function.",
+      "larger_project_version": "Use bootstrap and handler factories with responsibility review.",
+      "code_review_questions": [
+        "Does each dependency support this use case?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Service dependency list as design smell meter",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Architecture sources: ap-047, ap-048",
+          "Robust Python sources: rp-046, rp-047"
+        ],
+        "inferred_claims": [
+          "Too many service dependencies can reveal mixed responsibilities."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-036",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-023",
+        "ap-025"
+      ],
+      "robust_python_record_ids": [
+        "rp-041",
+        "rp-118"
+      ],
+      "integration_name": "Protocol-backed fake UoW",
+      "combined_problem_addressed": "Unit of Work tests need fake transaction behavior matching the real boundary.",
+      "combined_guidance": [
+        "Define UoW port/protocol and fake commit/rollback state.",
+        "Integration-test real context manager behavior."
+      ],
+      "failure_modes_prevented": [
+        "Service tests cannot assert transaction outcome."
+      ],
+      "tradeoffs": [
+        "Fake transaction semantics may drift."
+      ],
+      "use_when": [
+        "Services commit/rollback."
+      ],
+      "do_not_use_when": [
+        "No writes occur."
+      ],
+      "small_project_version": "FakeUoW with committed flag.",
+      "larger_project_version": "Contract tests for fake and real UoW adapters.",
+      "code_review_questions": [
+        "Does fake rollback on failure?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Protocol-backed fake UoW",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-023, ap-025",
+          "Robust Python sources: rp-041, rp-118"
+        ],
+        "inferred_claims": [
+          "Unit of Work tests need fake transaction behavior matching the real boundary."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-037",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-027",
+        "ap-028"
+      ],
+      "robust_python_record_ids": [
+        "rp-033",
+        "rp-035"
+      ],
+      "integration_name": "Domain invariant as constructor or method guard",
+      "combined_problem_addressed": "Invariants must be enforced when objects are created or mutated.",
+      "combined_guidance": [
+        "Validate construction invariants in value objects.",
+        "Validate transition invariants in entity/aggregate methods."
+      ],
+      "failure_modes_prevented": [
+        "Invalid state exists between checks."
+      ],
+      "tradeoffs": [
+        "Validation duplication."
+      ],
+      "use_when": [
+        "Rule must always hold."
+      ],
+      "do_not_use_when": [
+        "Rule is merely an edge syntax check."
+      ],
+      "small_project_version": "Value __post_init__ guard.",
+      "larger_project_version": "Aggregate method guard with tests and transaction boundary.",
+      "code_review_questions": [
+        "When can invalid state first appear?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Domain invariant as constructor or method guard",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-027, ap-028",
+          "Robust Python sources: rp-033, rp-035"
+        ],
+        "inferred_claims": [
+          "Invariants must be enforced when objects are created or mutated."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-038",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-020",
+        "ap-021",
+        "ap-074"
+      ],
+      "robust_python_record_ids": [
+        "rp-057",
+        "rp-058",
+        "rp-080"
+      ],
+      "integration_name": "Testing split by boundary cost",
+      "combined_problem_addressed": "A maintainable suite places tests where they give confidence cheaply.",
+      "combined_guidance": [
+        "Unit test pure domain rules.",
+        "Service-test orchestration with fakes.",
+        "Integration-test adapters and E2E-test critical flows."
+      ],
+      "failure_modes_prevented": [
+        "Slow brittle suite.",
+        "Untested wiring seams."
+      ],
+      "tradeoffs": [
+        "Lower-level tests can miss protocol issues."
+      ],
+      "use_when": [
+        "Tests are slow or duplicated."
+      ],
+      "do_not_use_when": [
+        "A single unit test covers a pure helper."
+      ],
+      "small_project_version": "Unit + one integration test.",
+      "larger_project_version": "Pyramid with contract tests per port and selected E2E scenarios.",
+      "code_review_questions": [
+        "Which layer owns this behavior?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Testing split by boundary cost",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-020, ap-021, ap-074",
+          "Robust Python sources: rp-057, rp-058, rp-080"
+        ],
+        "inferred_claims": [
+          "A maintainable suite places tests where they give confidence cheaply."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-039",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-051",
+        "ap-105"
+      ],
+      "robust_python_record_ids": [
+        "rp-008",
+        "rp-026",
+        "rp-094"
+      ],
+      "integration_name": "Incremental typing during architecture refactor",
+      "combined_problem_addressed": "Modernization is safer when behavior, boundaries, and types evolve in small steps.",
+      "combined_guidance": [
+        "Add characterization tests.",
+        "Annotate extracted boundary signatures.",
+        "Move one responsibility at a time."
+      ],
+      "failure_modes_prevented": [
+        "Big-bang rewrite regression.",
+        "Untyped seam ambiguity."
+      ],
+      "tradeoffs": [
+        "Partial typing leaves mixed zones."
+      ],
+      "use_when": [
+        "Legacy code is being modularized."
+      ],
+      "do_not_use_when": [
+        "No change pressure."
+      ],
+      "small_project_version": "Annotate one extracted function.",
+      "larger_project_version": "Ratchet typing by package after tests pass.",
+      "code_review_questions": [
+        "Did tests protect behavior before typing/refactor?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Incremental typing during architecture refactor",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-051, ap-105",
+          "Robust Python sources: rp-008, rp-026, rp-094"
+        ],
+        "inferred_claims": [
+          "Modernization is safer when behavior, boundaries, and types evolve in small steps."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-040",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-012"
+      ],
+      "robust_python_record_ids": [
+        "rp-054",
+        "rp-078",
+        "rp-042"
+      ],
+      "integration_name": "Plugin contract as port plus runtime validation",
+      "combined_problem_addressed": "Dynamic extensions need both static shape and runtime safety checks.",
+      "combined_guidance": [
+        "Define plugin port/protocol.",
+        "Validate loaded plugin objects before use and keep registration explicit until discovery is needed."
+      ],
+      "failure_modes_prevented": [
+        "Bad plugin causes runtime failure.",
+        "Untrusted extension loaded accidentally."
+      ],
+      "tradeoffs": [
+        "Plugin system adds packaging/security concerns."
+      ],
+      "use_when": [
+        "Third parties or separate teams extend behavior."
+      ],
+      "do_not_use_when": [
+        "Implementations are closed and shipped together."
+      ],
+      "small_project_version": "Explicit registry of callables.",
+      "larger_project_version": "Entry-point discovery with protocol checks and sandbox/security review.",
+      "code_review_questions": [
+        "Who may register plugins?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Plugin contract as port plus runtime validation",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Architecture sources: ap-012",
+          "Robust Python sources: rp-054, rp-078, rp-042"
+        ],
+        "inferred_claims": [
+          "Dynamic extensions need both static shape and runtime safety checks."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-041",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-006"
+      ],
+      "robust_python_record_ids": [
+        "rp-009",
+        "rp-053",
+        "rp-114"
+      ],
+      "integration_name": "Function-first domain service before class hierarchy",
+      "combined_problem_addressed": "Stateless business rules do not always need objects or inheritance.",
+      "combined_guidance": [
+        "Start with a plain typed function for stateless rules.",
+        "Move to strategy/protocol only when multiple algorithms or dependencies appear."
+      ],
+      "failure_modes_prevented": [
+        "Artificial service classes.",
+        "Inheritance for stateless helpers."
+      ],
+      "tradeoffs": [
+        "Functions may need organization as domain grows."
+      ],
+      "use_when": [
+        "Rule has inputs and output but no identity/state."
+      ],
+      "do_not_use_when": [
+        "Rule owns state transitions on an entity."
+      ],
+      "small_project_version": "Pure function in domain module.",
+      "larger_project_version": "Strategy/protocol only after interchangeable policies exist.",
+      "code_review_questions": [
+        "Why is this a class?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Function-first domain service before class hierarchy",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-006",
+          "Robust Python sources: rp-009, rp-053, rp-114"
+        ],
+        "inferred_claims": [
+          "Stateless business rules do not always need objects or inheritance."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-042",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-060",
+        "ap-061",
+        "ap-062"
+      ],
+      "robust_python_record_ids": [
+        "rp-020",
+        "rp-074"
+      ],
+      "integration_name": "DTO is not domain model by default",
+      "combined_problem_addressed": "Transport-shaped data can be valid at the edge but unsuitable as core model.",
+      "combined_guidance": [
+        "Use DTOs/TypedDicts for transport and convert to domain objects for behavior.",
+        "Do not make domain depend on framework schemas."
+      ],
+      "failure_modes_prevented": [
+        "Transport fields leak into domain rules."
+      ],
+      "tradeoffs": [
+        "Mapping code."
+      ],
+      "use_when": [
+        "Payload shape differs from domain language."
+      ],
+      "do_not_use_when": [
+        "Simple pass-through data transformation."
+      ],
+      "small_project_version": "TypedDict at edge.",
+      "larger_project_version": "DTO/domain mapping layer with tests.",
+      "code_review_questions": [
+        "Does this field exist only for transport?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "DTO is not domain model by default",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-060, ap-061, ap-062",
+          "Robust Python sources: rp-020, rp-074"
+        ],
+        "inferred_claims": [
+          "Transport-shaped data can be valid at the edge but unsuitable as core model."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-043",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-023",
+        "ap-024",
+        "ap-040"
+      ],
+      "robust_python_record_ids": [
+        "rp-011",
+        "rp-119"
+      ],
+      "integration_name": "Failure boundary around resource and transaction",
+      "combined_problem_addressed": "Failure policy must decide what is rolled back, retried, reported, or suppressed.",
+      "combined_guidance": [
+        "At each boundary, specify exception propagation/suppression.",
+        "Do not let context managers or handlers swallow failures unintentionally."
+      ],
+      "failure_modes_prevented": [
+        "Ambiguous partial success.",
+        "Lost exceptions."
+      ],
+      "tradeoffs": [
+        "Explicit policies take design effort."
+      ],
+      "use_when": [
+        "Transactions, handlers, or resources are involved."
+      ],
+      "do_not_use_when": [
+        "Pure computation without side effects."
+      ],
+      "small_project_version": "Document and test one failure branch.",
+      "larger_project_version": "Layered error policy across commands/events/adapters.",
+      "code_review_questions": [
+        "What happens on exception here?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Failure boundary around resource and transaction",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-023, ap-024, ap-040",
+          "Robust Python sources: rp-011, rp-119"
+        ],
+        "inferred_claims": [
+          "Failure policy must decide what is rolled back, retried, reported, or suppressed."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-044",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-038",
+        "ap-061"
+      ],
+      "robust_python_record_ids": [
+        "rp-031",
+        "rp-043",
+        "rp-123"
+      ],
+      "integration_name": "Dataclass command versus pydantic edge model",
+      "combined_problem_addressed": "The same request may need both runtime parsing and stable core typing.",
+      "combined_guidance": [
+        "Use pydantic or parser model at edge when raw data needs validation.",
+        "Use plain dataclass command internally if framework independence matters."
+      ],
+      "failure_modes_prevented": [
+        "Framework model leaks into core.",
+        "Raw dict reaches handler."
+      ],
+      "tradeoffs": [
+        "Conversion between models."
+      ],
+      "use_when": [
+        "External raw data enters command handler."
+      ],
+      "do_not_use_when": [
+        "Internal trusted code constructs commands directly."
+      ],
+      "small_project_version": "Parser returns dataclass command.",
+      "larger_project_version": "Separate API schemas, commands, and domain values.",
+      "code_review_questions": [
+        "Is handler tied to validation framework?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Dataclass command versus pydantic edge model",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Architecture sources: ap-038, ap-061",
+          "Robust Python sources: rp-031, rp-043, rp-123"
+        ],
+        "inferred_claims": [
+          "The same request may need both runtime parsing and stable core typing."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-045",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-058",
+        "ap-059",
+        "ap-055"
+      ],
+      "robust_python_record_ids": [
+        "rp-062",
+        "rp-124"
+      ],
+      "integration_name": "Architecture source-era framework caution",
+      "combined_problem_addressed": "Framework, packaging, and tooling details in both books may be stale.",
+      "combined_guidance": [
+        "Preserve architectural principle but verify current library syntax and behavior.",
+        "Do not copy source-era commands into future projects without checking docs."
+      ],
+      "failure_modes_prevented": [
+        "Obsolete APIs or packaging commands."
+      ],
+      "tradeoffs": [
+        "Verification adds time."
+      ],
+      "use_when": [
+        "Recommending exact framework/tool commands."
+      ],
+      "do_not_use_when": [
+        "Only conceptual boundary reasoning is discussed."
+      ],
+      "small_project_version": "Flag current verification need.",
+      "larger_project_version": "Consult current docs and project lockfiles before patching.",
+      "code_review_questions": [
+        "What version is installed?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Architecture source-era framework caution",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-058, ap-059, ap-055",
+          "Robust Python sources: rp-062, rp-124"
+        ],
+        "inferred_claims": [
+          "Framework, packaging, and tooling details in both books may be stale."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    }
+  ],
+  "validation_summary": {
+    "generated_at": "2026-06-16T06:13:43+00:00",
+    "valid_json": true,
+    "source_format_limitation": "Uploaded material was unpacked EPUB, not PDF; page_or_anchor fields use HTML files and anchors.",
+    "record_ids_unique": true,
+    "unresolved_cross_references": [],
+    "records_missing_source_traceability": [],
+    "record_count": 45
+  }
+}

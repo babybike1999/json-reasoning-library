@@ -1,0 +1,2289 @@
+{
+  "file_metadata": {
+    "file_name": "data_structures_algorithms_js_google_apps_script_translation_layer_v1.json",
+    "package_id": "data_structures_algorithms_js_reasoning_os_v1",
+    "package_version": "1.0",
+    "generated_at_utc": "2026-08-25T17:45:26.946739+00:00",
+    "purpose": "Twenty required guarded translations from source concepts to Apps Script design patterns.",
+    "record_count": 20,
+    "source_title": "Data Structures and Algorithms with JavaScript",
+    "source_author": "Michael McMillan",
+    "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+    "source_boundary": "Source-supported concepts are separated from low-confidence Apps Script, spreadsheet, internal-tool, and AI-agent extensions. Current platform behavior must be verified.",
+    "copyright_safety": "Concepts and implementation logic are paraphrased. No long source passages, long code listings, full algorithm implementations, or exercise solutions are reproduced."
+  },
+  "google_apps_script_translation_records": [
+    {
+      "id": "dsa-gas-arrays-sheet-batches",
+      "record_type": "google_apps_script_translation_record",
+      "name": "Arrays as sheet batch containers",
+      "summary": "Treat a sheet range as an in-memory array-of-arrays, perform transformations away from the service boundary, and write only a validated rectangular result.",
+      "source_concept": "Arrays as sheet batch containers",
+      "programming_problem_addressed": "Translates a source-supported data-structure or algorithm concept into a guarded Apps Script design pattern.",
+      "data_shape_assumption": "The current project data shape, APIs, limits, and side effects are inspected before code is proposed.",
+      "algorithmic_role": "Runtime-boundary translation.",
+      "runtime_context": "Hosted Google Apps Script runtime; all runtime, service, quota, trigger, authorization, and deployment behavior requires current verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Read a bounded range once, retain row provenance, validate shape and headers, transform in memory, then batch-write a rectangular array after dry-run checks.",
+      "complexity_or_scale_note": "Measure with realistic project data and separate in-memory operations from service calls.",
+      "use_when": [
+        "Indexed rows and columns",
+        "Two-dimensional rectangular data",
+        "Iteration and transformation over in-memory values"
+      ],
+      "do_not_use_when": [
+        "Book shell input/output code",
+        "Assumption that every nested array is rectangular",
+        "Assumption that spreadsheet values have one uniform type"
+      ],
+      "common_failure_modes": [
+        "Header row treated as data",
+        "Jagged output rejected or misaligned",
+        "Row/column indexes drift",
+        "Repeated service calls inside loops"
+      ],
+      "tests_or_checks": [
+        "Verify current authoritative documentation.",
+        "Test on a copied spreadsheet or dry-run fixture before live side effects."
+      ],
+      "diagnostic_questions": [
+        "What are the header and data row boundaries?",
+        "Is every output row the same width?",
+        "Which values require date/number/string normalization?"
+      ],
+      "related_record_ids": [
+        "dsa-array-two-dimensional",
+        "dsa-sheet-read-once",
+        "dsa-sheet-batch-write-after-validation"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Two-Dimensional and Multidimensional Arrays",
+        "page_or_anchor": "OEBPS/ch02.html#idp17846512",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source presents JavaScript arrays, two-dimensional arrays, iteration, and arrays of objects as core representations."
+        ],
+        "inferred_claims": [
+          "The Apps Script APIs and workflow pattern are translation extensions, not direct claims from the source.",
+          "Current platform behavior must be verified before implementation."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch02.html",
+            "chapter_number": "2",
+            "chapter_title": "Arrays",
+            "section_heading": "Processing Two-Dimensional Array Elements",
+            "page_or_anchor": "OEBPS/ch02.html#idp18183376"
+          },
+          {
+            "source_file": "ch02.html",
+            "chapter_number": "2",
+            "chapter_title": "Arrays",
+            "section_heading": "Arrays of Objects",
+            "page_or_anchor": "OEBPS/ch02.html#idp18891520"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "google-apps-script",
+        "translation-layer",
+        "arrays"
+      ],
+      "source_data_structure_or_algorithm": "Arrays",
+      "source_chapter_or_section": "2 — Arrays — Two-Dimensional and Multidimensional Arrays",
+      "apps_script_transfer_type": "partial_transfer_requires_apps_script_api",
+      "what_transfers": [
+        "Indexed rows and columns",
+        "Two-dimensional rectangular data",
+        "Iteration and transformation over in-memory values"
+      ],
+      "what_does_not_transfer": [
+        "Book shell input/output code",
+        "Assumption that every nested array is rectangular",
+        "Assumption that spreadsheet values have one uniform type"
+      ],
+      "apps_script_equivalent_or_related_api": [
+        "Spreadsheet range batch-read API (current documentation required)",
+        "Spreadsheet range batch-write API (current documentation required)"
+      ],
+      "current_verification_required": true,
+      "safe_apps_script_pattern": "Read a bounded range once, retain row provenance, validate shape and headers, transform in memory, then batch-write a rectangular array after dry-run checks.",
+      "related_source_record_ids": [
+        "dsa-array-two-dimensional",
+        "dsa-ds-two-dimensional-array"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+    },
+    {
+      "id": "dsa-gas-objects-dictionaries-row-records",
+      "record_type": "google_apps_script_translation_record",
+      "name": "Objects and dictionaries as row records and lookup maps",
+      "summary": "Convert positional rows into named records and build key-addressed configuration or mapping indexes when repeated lookup is the dominant operation.",
+      "source_concept": "Objects and dictionaries as row records and lookup maps",
+      "programming_problem_addressed": "Translates a source-supported data-structure or algorithm concept into a guarded Apps Script design pattern.",
+      "data_shape_assumption": "The current project data shape, APIs, limits, and side effects are inspected before code is proposed.",
+      "algorithmic_role": "Runtime-boundary translation.",
+      "runtime_context": "Hosted Google Apps Script runtime; all runtime, service, quota, trigger, authorization, and deployment behavior requires current verification.",
+      "transfers_to_google_apps_script": "direct_language_transfer_if_current_runtime_supports",
+      "apps_script_translation_note": "Create null-safe or otherwise verified records, normalize keys explicitly, preserve original row index, and fail validation on duplicate or missing required keys according to policy.",
+      "complexity_or_scale_note": "Measure with realistic project data and separate in-memory operations from service calls.",
+      "use_when": [
+        "Key-value representation",
+        "Named access to record fields",
+        "Lookup and counting by key"
+      ],
+      "do_not_use_when": [
+        "Book-specific Dictionary class as an automatic production recommendation",
+        "Prototype-sensitive or inherited-key assumptions",
+        "Unspecified duplicate-key behavior"
+      ],
+      "common_failure_modes": [
+        "Prototype-key collision",
+        "Duplicate key silently overwrites prior row",
+        "Missing key becomes undefined without validation",
+        "Inconsistent key normalization"
+      ],
+      "tests_or_checks": [
+        "Verify current authoritative documentation.",
+        "Test on a copied spreadsheet or dry-run fixture before live side effects."
+      ],
+      "diagnostic_questions": [
+        "Is the key unique?",
+        "Should duplicate keys fail, group, or overwrite?",
+        "Must the record be serialized or persisted?"
+      ],
+      "related_record_ids": [
+        "dsa-dict-key-value",
+        "dsa-sheet-row-array-to-object",
+        "dsa-decision-object-versus-map"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "7",
+        "chapter_title": "Dictionaries",
+        "section_heading": "The Dictionary Class",
+        "page_or_anchor": "OEBPS/ch07.html#idp29229184",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines dictionaries through key-value pairs and demonstrates object-based data structures."
+        ],
+        "inferred_claims": [
+          "The Apps Script APIs and workflow pattern are translation extensions, not direct claims from the source.",
+          "Current platform behavior must be verified before implementation."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch01.html",
+            "chapter_number": "1",
+            "chapter_title": "The JavaScript Programming Environment and Model",
+            "section_heading": "Objects and Object-Oriented Programming",
+            "page_or_anchor": "OEBPS/ch01.html#idp12945408"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "google-apps-script",
+        "translation-layer",
+        "objects-and-dictionaries"
+      ],
+      "source_data_structure_or_algorithm": "Objects and dictionaries",
+      "source_chapter_or_section": "7 — Dictionaries — The Dictionary Class",
+      "apps_script_transfer_type": "direct_language_transfer_if_current_runtime_supports",
+      "what_transfers": [
+        "Key-value representation",
+        "Named access to record fields",
+        "Lookup and counting by key"
+      ],
+      "what_does_not_transfer": [
+        "Book-specific Dictionary class as an automatic production recommendation",
+        "Prototype-sensitive or inherited-key assumptions",
+        "Unspecified duplicate-key behavior"
+      ],
+      "apps_script_equivalent_or_related_api": [
+        "Plain JavaScript objects in the current Apps Script runtime",
+        "Current serialization behavior",
+        "Current runtime Map support if considered"
+      ],
+      "current_verification_required": true,
+      "safe_apps_script_pattern": "Create null-safe or otherwise verified records, normalize keys explicitly, preserve original row index, and fail validation on duplicate or missing required keys according to policy.",
+      "related_source_record_ids": [
+        "dsa-dict-key-value",
+        "dsa-term-dictionary",
+        "dsa-term-lookup",
+        "dsa-term-key-value-pair"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+    },
+    {
+      "id": "dsa-gas-hash-lookup-map",
+      "record_type": "google_apps_script_translation_record",
+      "name": "Hash-table reasoning for lookup and indexing",
+      "summary": "Use the source’s key-to-location reasoning to justify an index, while choosing a current native representation only after verifying runtime behavior and key semantics.",
+      "source_concept": "Hash-table reasoning for lookup and indexing",
+      "programming_problem_addressed": "Translates a source-supported data-structure or algorithm concept into a guarded Apps Script design pattern.",
+      "data_shape_assumption": "The current project data shape, APIs, limits, and side effects are inspected before code is proposed.",
+      "algorithmic_role": "Runtime-boundary translation.",
+      "runtime_context": "Hosted Google Apps Script runtime; all runtime, service, quota, trigger, authorization, and deployment behavior requires current verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Define the key contract and duplicate policy first; select a verified object or Map representation; build once; validate coverage; then perform lookups.",
+      "complexity_or_scale_note": "Measure with realistic project data and separate in-memory operations from service calls.",
+      "use_when": [
+        "Index construction before repeated retrieval",
+        "Key normalization",
+        "Collision and duplicate awareness"
+      ],
+      "do_not_use_when": [
+        "The source-era custom HashTable class as default Apps Script code",
+        "Assumed native Map behavior",
+        "Assumed constant-time guarantees for every key distribution"
+      ],
+      "common_failure_modes": [
+        "Native Map assumed without verification",
+        "Object and Map semantics conflated",
+        "Composite key ambiguity",
+        "Collision/duplicate policy omitted"
+      ],
+      "tests_or_checks": [
+        "Verify current authoritative documentation.",
+        "Test on a copied spreadsheet or dry-run fixture before live side effects."
+      ],
+      "diagnostic_questions": [
+        "Will keys be strings, numbers, or composite values?",
+        "Does insertion order matter?",
+        "Will the index cross an execution or serialization boundary?"
+      ],
+      "related_record_ids": [
+        "dsa-hash-overview",
+        "dsa-risk-native-map-set-verification",
+        "dsa-decision-object-versus-map"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "8",
+        "chapter_title": "Hashing",
+        "section_heading": "An Overview of Hashing",
+        "page_or_anchor": "OEBPS/ch08.html#idp30907488",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source describes hash tables as key-directed storage with explicit hash functions and collision handling."
+        ],
+        "inferred_claims": [
+          "The Apps Script APIs and workflow pattern are translation extensions, not direct claims from the source.",
+          "Current platform behavior must be verified before implementation."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch08.html",
+            "chapter_number": "8",
+            "chapter_title": "Hashing",
+            "section_heading": "Choosing a Hash Function",
+            "page_or_anchor": "OEBPS/ch08.html#idp30958800"
+          },
+          {
+            "source_file": "ch08.html",
+            "chapter_number": "8",
+            "chapter_title": "Hashing",
+            "section_heading": "Handling Collisions",
+            "page_or_anchor": "OEBPS/ch08.html#idp33219712"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "google-apps-script",
+        "translation-layer",
+        "hash-tables"
+      ],
+      "source_data_structure_or_algorithm": "Hash tables",
+      "source_chapter_or_section": "8 — Hashing — An Overview of Hashing",
+      "apps_script_transfer_type": "current_verification_required",
+      "what_transfers": [
+        "Index construction before repeated retrieval",
+        "Key normalization",
+        "Collision and duplicate awareness"
+      ],
+      "what_does_not_transfer": [
+        "The source-era custom HashTable class as default Apps Script code",
+        "Assumed native Map behavior",
+        "Assumed constant-time guarantees for every key distribution"
+      ],
+      "apps_script_equivalent_or_related_api": [
+        "Current JavaScript Map support in Apps Script (verify)",
+        "Plain-object lookup behavior (verify)",
+        "Serialization or persistence APIs when needed (verify)"
+      ],
+      "current_verification_required": true,
+      "safe_apps_script_pattern": "Define the key contract and duplicate policy first; select a verified object or Map representation; build once; validate coverage; then perform lookups.",
+      "related_source_record_ids": [
+        "dsa-hash-overview",
+        "dsa-term-hash-table",
+        "dsa-ds-hash-table",
+        "dsa-alg-hashing"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+    },
+    {
+      "id": "dsa-gas-sets-duplicate-coverage",
+      "record_type": "google_apps_script_translation_record",
+      "name": "Set reasoning for duplicate and coverage checks",
+      "summary": "Represent uniqueness and membership explicitly when validating duplicate IDs, expected headers, submitted locations, or required categories.",
+      "source_concept": "Set reasoning for duplicate and coverage checks",
+      "programming_problem_addressed": "Translates a source-supported data-structure or algorithm concept into a guarded Apps Script design pattern.",
+      "data_shape_assumption": "The current project data shape, APIs, limits, and side effects are inspected before code is proposed.",
+      "algorithmic_role": "Runtime-boundary translation.",
+      "runtime_context": "Hosted Google Apps Script runtime; all runtime, service, quota, trigger, authorization, and deployment behavior requires current verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Normalize values, construct expected and actual uniqueness collections, compute missing/unexpected/duplicate evidence, and preserve duplicate row provenance separately.",
+      "complexity_or_scale_note": "Measure with realistic project data and separate in-memory operations from service calls.",
+      "use_when": [
+        "Uniqueness constraint",
+        "Membership testing",
+        "Union, intersection, difference, and subset reasoning"
+      ],
+      "do_not_use_when": [
+        "Source custom Set implementation as automatic current best practice",
+        "Assumed native Set equality or serialization behavior"
+      ],
+      "common_failure_modes": [
+        "Duplicates normalized differently",
+        "Set used when occurrence counts matter",
+        "Expected and actual values use different case/whitespace rules"
+      ],
+      "tests_or_checks": [
+        "Verify current authoritative documentation.",
+        "Test on a copied spreadsheet or dry-run fixture before live side effects."
+      ],
+      "diagnostic_questions": [
+        "Do we need only membership, or also counts and original rows?",
+        "What normalization defines equality?",
+        "Does order matter to the output?"
+      ],
+      "related_record_ids": [
+        "dsa-set-uniqueness",
+        "dsa-sheet-duplicate-id-detection",
+        "dsa-decision-set-versus-list"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "9",
+        "chapter_title": "Sets",
+        "section_heading": "Fundamental Set Definitions, Operations, and Properties",
+        "page_or_anchor": "OEBPS/ch09.html#idp34336432",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines sets as collections without duplicates and implements membership and set operations."
+        ],
+        "inferred_claims": [
+          "The Apps Script APIs and workflow pattern are translation extensions, not direct claims from the source.",
+          "Current platform behavior must be verified before implementation."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch09.html",
+            "chapter_number": "9",
+            "chapter_title": "Sets",
+            "section_heading": "Set Operations",
+            "page_or_anchor": "OEBPS/ch09.html#idp34347536"
+          },
+          {
+            "source_file": "ch09.html",
+            "chapter_number": "9",
+            "chapter_title": "Sets",
+            "section_heading": "More Set Operations",
+            "page_or_anchor": "OEBPS/ch09.html#idp34358176"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "google-apps-script",
+        "translation-layer",
+        "sets"
+      ],
+      "source_data_structure_or_algorithm": "Sets",
+      "source_chapter_or_section": "9 — Sets — Fundamental Set Definitions, Operations, and Properties",
+      "apps_script_transfer_type": "current_verification_required",
+      "what_transfers": [
+        "Uniqueness constraint",
+        "Membership testing",
+        "Union, intersection, difference, and subset reasoning"
+      ],
+      "what_does_not_transfer": [
+        "Source custom Set implementation as automatic current best practice",
+        "Assumed native Set equality or serialization behavior"
+      ],
+      "apps_script_equivalent_or_related_api": [
+        "Current JavaScript Set support in Apps Script (verify)",
+        "Object-key fallback behavior (verify)"
+      ],
+      "current_verification_required": true,
+      "safe_apps_script_pattern": "Normalize values, construct expected and actual uniqueness collections, compute missing/unexpected/duplicate evidence, and preserve duplicate row provenance separately.",
+      "related_source_record_ids": [
+        "dsa-set-uniqueness",
+        "dsa-decision-set-versus-list",
+        "dsa-term-set",
+        "dsa-ds-set"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+    },
+    {
+      "id": "dsa-gas-lists-ordered-workflow",
+      "record_type": "google_apps_script_translation_record",
+      "name": "List abstraction for ordered workflow state",
+      "summary": "Use list semantics to make ordered validation issues, processing stages, or user-visible steps explicit, but prefer a native array when a custom list adds no value.",
+      "source_concept": "List abstraction for ordered workflow state",
+      "programming_problem_addressed": "Translates a source-supported data-structure or algorithm concept into a guarded Apps Script design pattern.",
+      "data_shape_assumption": "The current project data shape, APIs, limits, and side effects are inspected before code is proposed.",
+      "algorithmic_role": "Runtime-boundary translation.",
+      "runtime_context": "Hosted Google Apps Script runtime; all runtime, service, quota, trigger, authorization, and deployment behavior requires current verification.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Use an array for simple ordered items; introduce a named list abstraction only when cursor, navigation, or domain-specific operations make state safer.",
+      "complexity_or_scale_note": "Measure with realistic project data and separate in-memory operations from service calls.",
+      "use_when": [
+        "Ordered sequence",
+        "Position and navigation",
+        "Insert, remove, find, contains, and iteration semantics"
+      ],
+      "do_not_use_when": [
+        "Needless custom List class around ordinary arrays",
+        "Source file-reading environment"
+      ],
+      "common_failure_modes": [
+        "List abstraction hides raw row provenance",
+        "Position cursor becomes stale after mutation",
+        "Queue semantics are implemented as arbitrary list edits"
+      ],
+      "tests_or_checks": [
+        "Verify current authoritative documentation.",
+        "Test on a copied spreadsheet or dry-run fixture before live side effects."
+      ],
+      "diagnostic_questions": [
+        "Is arbitrary positional navigation required?",
+        "Would a queue or simple array better express the processing rule?",
+        "Must order be preserved for users?"
+      ],
+      "related_record_ids": [
+        "dsa-list-adt",
+        "dsa-decision-list-versus-queue",
+        "dsa-sheet-accumulate-validation-errors"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "A List ADT",
+        "page_or_anchor": "OEBPS/ch03.html#idp19348032",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines a list ADT with positional, navigation, insertion, removal, search, and iteration operations."
+        ],
+        "inferred_claims": [
+          "The Apps Script APIs and workflow pattern are translation extensions, not direct claims from the source.",
+          "Current platform behavior must be verified before implementation."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "google-apps-script",
+        "translation-layer",
+        "lists"
+      ],
+      "source_data_structure_or_algorithm": "Lists",
+      "source_chapter_or_section": "3 — Lists — A List ADT",
+      "apps_script_transfer_type": "direct_conceptual_transfer",
+      "what_transfers": [
+        "Ordered sequence",
+        "Position and navigation",
+        "Insert, remove, find, contains, and iteration semantics"
+      ],
+      "what_does_not_transfer": [
+        "Needless custom List class around ordinary arrays",
+        "Source file-reading environment"
+      ],
+      "apps_script_equivalent_or_related_api": [
+        "Current JavaScript Array behavior (verify relevant methods)",
+        "Apps Script data/service APIs used by the workflow (verify)"
+      ],
+      "current_verification_required": true,
+      "safe_apps_script_pattern": "Use an array for simple ordered items; introduce a named list abstraction only when cursor, navigation, or domain-specific operations make state safer.",
+      "related_source_record_ids": [
+        "dsa-list-adt",
+        "dsa-decision-list-versus-queue",
+        "dsa-core-adt-separates-interface-storage",
+        "dsa-term-list"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+    },
+    {
+      "id": "dsa-gas-stacks-nested-history",
+      "record_type": "google_apps_script_translation_record",
+      "name": "Stack for nested parsing and reversible history concepts",
+      "summary": "Apply LIFO semantics when the most recently opened or performed item must be resolved first, such as nested parsing or bounded undo history.",
+      "source_concept": "Stack for nested parsing and reversible history concepts",
+      "programming_problem_addressed": "Translates a source-supported data-structure or algorithm concept into a guarded Apps Script design pattern.",
+      "data_shape_assumption": "The current project data shape, APIs, limits, and side effects are inspected before code is proposed.",
+      "algorithmic_role": "Runtime-boundary translation.",
+      "runtime_context": "Hosted Google Apps Script runtime; all runtime, service, quota, trigger, authorization, and deployment behavior requires current verification.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Define the reversible action record, cap history, keep client/server state boundaries explicit, and persist only through a verified mechanism when required.",
+      "complexity_or_scale_note": "Measure with realistic project data and separate in-memory operations from service calls.",
+      "use_when": [
+        "Push, pop, peek",
+        "LIFO ordering",
+        "Nested-state and reversal reasoning"
+      ],
+      "do_not_use_when": [
+        "Unbounded in-memory history across executions",
+        "Assumption that Apps Script Web Apps preserve server memory",
+        "Call-stack implementation details"
+      ],
+      "common_failure_modes": [
+        "Stack used for FIFO work",
+        "History grows without bound",
+        "Persisted values cannot be serialized",
+        "Undo side effect is not reversible"
+      ],
+      "tests_or_checks": [
+        "Verify current authoritative documentation.",
+        "Test on a copied spreadsheet or dry-run fixture before live side effects."
+      ],
+      "diagnostic_questions": [
+        "Must the newest item be handled first?",
+        "What data is required to reverse an action?",
+        "Must the stack survive an execution?"
+      ],
+      "related_record_ids": [
+        "dsa-stack-lifo",
+        "dsa-decision-stack-versus-queue",
+        "dsa-verify-web-app-boundary"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "4",
+        "chapter_title": "Stacks",
+        "section_heading": "Stack Operations",
+        "page_or_anchor": "OEBPS/ch04.html#idp21554816",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines stack operations and demonstrates LIFO applications including reversal and recursion."
+        ],
+        "inferred_claims": [
+          "The Apps Script APIs and workflow pattern are translation extensions, not direct claims from the source.",
+          "Current platform behavior must be verified before implementation."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch04.html",
+            "chapter_number": "4",
+            "chapter_title": "Stacks",
+            "section_heading": "Demonstrating Recursion",
+            "page_or_anchor": "OEBPS/ch04.html#idp22543312"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "google-apps-script",
+        "translation-layer",
+        "stacks"
+      ],
+      "source_data_structure_or_algorithm": "Stacks",
+      "source_chapter_or_section": "4 — Stacks — Stack Operations",
+      "apps_script_transfer_type": "direct_conceptual_transfer",
+      "what_transfers": [
+        "Push, pop, peek",
+        "LIFO ordering",
+        "Nested-state and reversal reasoning"
+      ],
+      "what_does_not_transfer": [
+        "Unbounded in-memory history across executions",
+        "Assumption that Apps Script Web Apps preserve server memory",
+        "Call-stack implementation details"
+      ],
+      "apps_script_equivalent_or_related_api": [
+        "Current client/server Web App boundary (verify)",
+        "Current persistence API if history must survive an execution (verify)"
+      ],
+      "current_verification_required": true,
+      "safe_apps_script_pattern": "Define the reversible action record, cap history, keep client/server state boundaries explicit, and persist only through a verified mechanism when required.",
+      "related_source_record_ids": [
+        "dsa-stack-lifo",
+        "dsa-decision-stack-versus-queue",
+        "dsa-term-stack",
+        "dsa-ds-stack"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+    },
+    {
+      "id": "dsa-gas-queues-staged-processing",
+      "record_type": "google_apps_script_translation_record",
+      "name": "Queue for staged processing and retries",
+      "summary": "Use FIFO worklist semantics for staged uploads, validation, reporting, or retries while making persistence, deduplication, dependency order, and retry limits explicit.",
+      "source_concept": "Queue for staged processing and retries",
+      "programming_problem_addressed": "Translates a source-supported data-structure or algorithm concept into a guarded Apps Script design pattern.",
+      "data_shape_assumption": "The current project data shape, APIs, limits, and side effects are inspected before code is proposed.",
+      "algorithmic_role": "Runtime-boundary translation.",
+      "runtime_context": "Hosted Google Apps Script runtime; all runtime, service, quota, trigger, authorization, and deployment behavior requires current verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Persist queue state through a verified store, assign stable item IDs, cap attempts, record outcomes, separate retryable from terminal failures, and guard concurrent claims.",
+      "complexity_or_scale_note": "Measure with realistic project data and separate in-memory operations from service calls.",
+      "use_when": [
+        "Enqueue/dequeue/front/back",
+        "FIFO work order",
+        "Priority-queue distinction"
+      ],
+      "do_not_use_when": [
+        "Assumption that an in-memory queue survives execution termination",
+        "Immediate retry without idempotency",
+        "FIFO when dependencies or priorities override arrival order"
+      ],
+      "common_failure_modes": [
+        "Queue never drains",
+        "Retry creates duplicates",
+        "Two workers process the same item",
+        "Poison item blocks progress",
+        "Dependency order violated"
+      ],
+      "tests_or_checks": [
+        "Verify current authoritative documentation.",
+        "Test on a copied spreadsheet or dry-run fixture before live side effects."
+      ],
+      "diagnostic_questions": [
+        "What makes an item unique?",
+        "Can processing be safely repeated?",
+        "Must FIFO yield to priority or dependency?",
+        "Where does state persist?"
+      ],
+      "related_record_ids": [
+        "dsa-queue-fifo",
+        "dsa-risk-queue-retry-duplication",
+        "dsa-decision-retry-queue-versus-immediate"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "5",
+        "chapter_title": "Queues",
+        "section_heading": "Queue Operations",
+        "page_or_anchor": "OEBPS/ch05.html#idp23142720",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines FIFO queues and separately introduces priority queues."
+        ],
+        "inferred_claims": [
+          "The Apps Script APIs and workflow pattern are translation extensions, not direct claims from the source.",
+          "Current platform behavior must be verified before implementation."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch05.html",
+            "chapter_number": "5",
+            "chapter_title": "Queues",
+            "section_heading": "Priority Queues",
+            "page_or_anchor": "OEBPS/ch05.html#idp25398448"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "google-apps-script",
+        "translation-layer",
+        "queues"
+      ],
+      "source_data_structure_or_algorithm": "Queues",
+      "source_chapter_or_section": "5 — Queues — Queue Operations",
+      "apps_script_transfer_type": "partial_transfer_requires_apps_script_api",
+      "what_transfers": [
+        "Enqueue/dequeue/front/back",
+        "FIFO work order",
+        "Priority-queue distinction"
+      ],
+      "what_does_not_transfer": [
+        "Assumption that an in-memory queue survives execution termination",
+        "Immediate retry without idempotency",
+        "FIFO when dependencies or priorities override arrival order"
+      ],
+      "apps_script_equivalent_or_related_api": [
+        "Current trigger behavior (verify)",
+        "Current PropertiesService/CacheService/Sheets behavior if used for persistence (verify)",
+        "Current LockService behavior for concurrent workers (verify)"
+      ],
+      "current_verification_required": true,
+      "safe_apps_script_pattern": "Persist queue state through a verified store, assign stable item IDs, cap attempts, record outcomes, separate retryable from terminal failures, and guard concurrent claims.",
+      "related_source_record_ids": [
+        "dsa-queue-fifo",
+        "dsa-term-queue",
+        "dsa-ds-queue",
+        "dsa-queue-operations"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+    },
+    {
+      "id": "dsa-gas-trees-hierarchy-caution",
+      "record_type": "google_apps_script_translation_record",
+      "name": "Tree reasoning for hierarchy, with implementation restraint",
+      "summary": "Use tree terminology to clarify parent-child category or account hierarchies, but prefer tables, paths, or lookup maps unless traversal and ordered-tree operations are genuinely required.",
+      "source_concept": "Tree reasoning for hierarchy, with implementation restraint",
+      "programming_problem_addressed": "Translates a source-supported data-structure or algorithm concept into a guarded Apps Script design pattern.",
+      "data_shape_assumption": "The current project data shape, APIs, limits, and side effects are inspected before code is proposed.",
+      "algorithmic_role": "Runtime-boundary translation.",
+      "runtime_context": "Hosted Google Apps Script runtime; all runtime, service, quota, trigger, authorization, and deployment behavior requires current verification.",
+      "transfers_to_google_apps_script": "conceptual_only",
+      "apps_script_translation_note": "Define node ID and parent ID, validate one root/cycle/orphan rules, and use a simple table plus adjacency index unless real tree operations justify a class.",
+      "complexity_or_scale_note": "Measure with realistic project data and separate in-memory operations from service calls.",
+      "use_when": [
+        "Root, parent, child, leaf, path, depth, traversal",
+        "Ordered-tree reasoning when order invariant is real"
+      ],
+      "do_not_use_when": [
+        "Custom BST as default spreadsheet lookup",
+        "Assumption of balanced-tree performance",
+        "Implicit hierarchy inferred from display indentation"
+      ],
+      "common_failure_modes": [
+        "Tree overengineering",
+        "Cycles in supposedly hierarchical data",
+        "Orphan nodes",
+        "Duplicate parent paths",
+        "Degenerate BST"
+      ],
+      "tests_or_checks": [
+        "Verify current authoritative documentation.",
+        "Test on a copied spreadsheet or dry-run fixture before live side effects."
+      ],
+      "diagnostic_questions": [
+        "What operation requires hierarchy?",
+        "Can a parent-ID table answer it?",
+        "Can cycles occur?",
+        "Does sorted lookup justify a tree over an index?"
+      ],
+      "related_record_ids": [
+        "dsa-tree-terminology",
+        "dsa-risk-tree-overengineering",
+        "dsa-decision-sorted-array-versus-tree"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Trees Defined",
+        "page_or_anchor": "OEBPS/ch10.html#idp36001232",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines tree and BST structure, traversal, search, minimum/maximum, and removal operations."
+        ],
+        "inferred_claims": [
+          "The Apps Script APIs and workflow pattern are translation extensions, not direct claims from the source.",
+          "Current platform behavior must be verified before implementation."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch10.html",
+            "chapter_number": "10",
+            "chapter_title": "Binary Trees and Binary Search Trees",
+            "section_heading": "Binary Trees and Binary Search Trees",
+            "page_or_anchor": "OEBPS/ch10.html#idp36001824"
+          },
+          {
+            "source_file": "ch10.html",
+            "chapter_number": "10",
+            "chapter_title": "Binary Trees and Binary Search Trees",
+            "section_heading": "Traversing a Binary Search Tree",
+            "page_or_anchor": "OEBPS/ch10.html#idp36049872"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "google-apps-script",
+        "translation-layer",
+        "trees-and-binary-search-trees"
+      ],
+      "source_data_structure_or_algorithm": "Trees and binary search trees",
+      "source_chapter_or_section": "10 — Binary Trees and Binary Search Trees — Trees Defined",
+      "apps_script_transfer_type": "conceptual_only",
+      "what_transfers": [
+        "Root, parent, child, leaf, path, depth, traversal",
+        "Ordered-tree reasoning when order invariant is real"
+      ],
+      "what_does_not_transfer": [
+        "Custom BST as default spreadsheet lookup",
+        "Assumption of balanced-tree performance",
+        "Implicit hierarchy inferred from display indentation"
+      ],
+      "apps_script_equivalent_or_related_api": [
+        "Spreadsheet tables or configuration sources representing parent IDs (project-specific)",
+        "Current JavaScript runtime structures if implementing a tree (verify)"
+      ],
+      "current_verification_required": true,
+      "safe_apps_script_pattern": "Define node ID and parent ID, validate one root/cycle/orphan rules, and use a simple table plus adjacency index unless real tree operations justify a class.",
+      "related_source_record_ids": [
+        "dsa-tree-terminology",
+        "dsa-decision-sorted-array-versus-tree"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+    },
+    {
+      "id": "dsa-gas-graphs-dependency-model",
+      "record_type": "google_apps_script_translation_record",
+      "name": "Graph reasoning for dependencies and networks",
+      "summary": "Model entities as vertices and relationships as edges only when path, reachability, dependency, or ordering questions cannot be answered cleanly by a flat table alone.",
+      "source_concept": "Graph reasoning for dependencies and networks",
+      "programming_problem_addressed": "Translates a source-supported data-structure or algorithm concept into a guarded Apps Script design pattern.",
+      "data_shape_assumption": "The current project data shape, APIs, limits, and side effects are inspected before code is proposed.",
+      "algorithmic_role": "Runtime-boundary translation.",
+      "runtime_context": "Hosted Google Apps Script runtime; all runtime, service, quota, trigger, authorization, and deployment behavior requires current verification.",
+      "transfers_to_google_apps_script": "conceptual_only",
+      "apps_script_translation_note": "State the graph question first; define node and edge schemas; validate missing nodes, duplicates, direction, and cycles; then choose traversal suited to the question.",
+      "complexity_or_scale_note": "Measure with realistic project data and separate in-memory operations from service calls.",
+      "use_when": [
+        "Vertex/edge representation",
+        "Adjacency",
+        "Paths",
+        "DFS/BFS",
+        "Shortest-path and topological-order questions under source assumptions"
+      ],
+      "do_not_use_when": [
+        "Graph class as default workflow representation",
+        "Shortest-path claims for weighted networks not covered by the demonstrated BFS treatment",
+        "Topological order when cycles exist"
+      ],
+      "common_failure_modes": [
+        "Node and edge definitions are vague",
+        "Cycles ignored",
+        "Directionality omitted",
+        "Weighted problem treated as unweighted",
+        "Graph adds no decision value"
+      ],
+      "tests_or_checks": [
+        "Verify current authoritative documentation.",
+        "Test on a copied spreadsheet or dry-run fixture before live side effects."
+      ],
+      "diagnostic_questions": [
+        "What are the nodes?",
+        "What are the edges?",
+        "Are edges directed or weighted?",
+        "What exact decision does the graph answer?"
+      ],
+      "related_record_ids": [
+        "dsa-graph-definition",
+        "dsa-risk-graph-overengineering",
+        "dsa-decision-graph-versus-table"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "11",
+        "chapter_title": "Graphs and Graph Algorithms",
+        "section_heading": "Graph Definitions",
+        "page_or_anchor": "OEBPS/ch11.html#idp38726848",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines graphs, adjacency representations, DFS, BFS, shortest paths in its unweighted treatment, and topological sorting."
+        ],
+        "inferred_claims": [
+          "The Apps Script APIs and workflow pattern are translation extensions, not direct claims from the source.",
+          "Current platform behavior must be verified before implementation."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch11.html",
+            "chapter_number": "11",
+            "chapter_title": "Graphs and Graph Algorithms",
+            "section_heading": "Searching a Graph",
+            "page_or_anchor": "OEBPS/ch11.html#idp39626432"
+          },
+          {
+            "source_file": "ch11.html",
+            "chapter_number": "11",
+            "chapter_title": "Graphs and Graph Algorithms",
+            "section_heading": "Finding the Shortest Path",
+            "page_or_anchor": "OEBPS/ch11.html#idp40213008"
+          },
+          {
+            "source_file": "ch11.html",
+            "chapter_number": "11",
+            "chapter_title": "Graphs and Graph Algorithms",
+            "section_heading": "Topological Sorting",
+            "page_or_anchor": "OEBPS/ch11.html#idp40990000"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "google-apps-script",
+        "translation-layer",
+        "graphs"
+      ],
+      "source_data_structure_or_algorithm": "Graphs",
+      "source_chapter_or_section": "11 — Graphs and Graph Algorithms — Graph Definitions",
+      "apps_script_transfer_type": "conceptual_only",
+      "what_transfers": [
+        "Vertex/edge representation",
+        "Adjacency",
+        "Paths",
+        "DFS/BFS",
+        "Shortest-path and topological-order questions under source assumptions"
+      ],
+      "what_does_not_transfer": [
+        "Graph class as default workflow representation",
+        "Shortest-path claims for weighted networks not covered by the demonstrated BFS treatment",
+        "Topological order when cycles exist"
+      ],
+      "apps_script_equivalent_or_related_api": [
+        "Current runtime collections if graph is implemented (verify)",
+        "Spreadsheet or configuration sources containing edge rows (project-specific)"
+      ],
+      "current_verification_required": true,
+      "safe_apps_script_pattern": "State the graph question first; define node and edge schemas; validate missing nodes, duplicates, direction, and cycles; then choose traversal suited to the question.",
+      "related_source_record_ids": [
+        "dsa-graph-definition",
+        "dsa-term-graph",
+        "dsa-term-vertex",
+        "dsa-term-edge"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+    },
+    {
+      "id": "dsa-gas-sorting-built-in-boundary",
+      "record_type": "google_apps_script_translation_record",
+      "name": "Sorting concept versus current built-in sort",
+      "summary": "Use the source algorithms to reason about comparison, movement, partitioning, merging, and input sensitivity; choose a current built-in sort unless custom behavior is justified and verified.",
+      "source_concept": "Sorting concept versus current built-in sort",
+      "programming_problem_addressed": "Translates a source-supported data-structure or algorithm concept into a guarded Apps Script design pattern.",
+      "data_shape_assumption": "The current project data shape, APIs, limits, and side effects are inspected before code is proposed.",
+      "algorithmic_role": "Runtime-boundary translation.",
+      "runtime_context": "Hosted Google Apps Script runtime; all runtime, service, quota, trigger, authorization, and deployment behavior requires current verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Define typed sort keys, tie-breakers, null handling, and order preservation needs; verify current sort semantics; benchmark only if sorting is material.",
+      "complexity_or_scale_note": "Measure with realistic project data and separate in-memory operations from service calls.",
+      "use_when": [
+        "Need for a comparator and ordering contract",
+        "Performance trade-offs",
+        "Presorted/reverse-sorted/duplicate-heavy test cases"
+      ],
+      "do_not_use_when": [
+        "Source implementations as automatic production code",
+        "Assumed sort stability",
+        "String conversion assumptions for numeric/date values"
+      ],
+      "common_failure_modes": [
+        "Comparator missing or inconsistent",
+        "Numeric strings sorted lexicographically",
+        "Stability assumed",
+        "Original user order lost"
+      ],
+      "tests_or_checks": [
+        "Verify current authoritative documentation.",
+        "Test on a copied spreadsheet or dry-run fixture before live side effects."
+      ],
+      "diagnostic_questions": [
+        "What is the primary key and tie-breaker?",
+        "Must equal-key rows preserve original order?",
+        "Should sorting occur in memory or on the sheet?"
+      ],
+      "related_record_ids": [
+        "dsa-sort-basic-versus-advanced",
+        "dsa-risk-unstable-sort-assumption",
+        "dsa-decision-built-in-versus-custom-sort"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "12",
+        "chapter_title": "Sorting Algorithms",
+        "section_heading": "Basic Sorting Algorithms",
+        "page_or_anchor": "OEBPS/ch12.html#idp42067616",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source presents multiple simple and advanced sorting algorithms and compares their behavior."
+        ],
+        "inferred_claims": [
+          "The Apps Script APIs and workflow pattern are translation extensions, not direct claims from the source.",
+          "Current platform behavior must be verified before implementation."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch12.html",
+            "chapter_number": "12",
+            "chapter_title": "Sorting Algorithms",
+            "section_heading": "Advanced Sorting Algorithms",
+            "page_or_anchor": "OEBPS/ch12.html#idp44058656"
+          },
+          {
+            "source_file": "ch12.html",
+            "chapter_number": "12",
+            "chapter_title": "Sorting Algorithms",
+            "section_heading": "The Quicksort Algorithm",
+            "page_or_anchor": "OEBPS/ch12.html#idp47099520"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "google-apps-script",
+        "translation-layer",
+        "sorting-algorithms"
+      ],
+      "source_data_structure_or_algorithm": "Sorting algorithms",
+      "source_chapter_or_section": "12 — Sorting Algorithms — Basic Sorting Algorithms",
+      "apps_script_transfer_type": "current_verification_required",
+      "what_transfers": [
+        "Need for a comparator and ordering contract",
+        "Performance trade-offs",
+        "Presorted/reverse-sorted/duplicate-heavy test cases"
+      ],
+      "what_does_not_transfer": [
+        "Source implementations as automatic production code",
+        "Assumed sort stability",
+        "String conversion assumptions for numeric/date values"
+      ],
+      "apps_script_equivalent_or_related_api": [
+        "Current JavaScript Array.sort behavior in Apps Script (verify)",
+        "Spreadsheet range sorting APIs if considered (verify)"
+      ],
+      "current_verification_required": true,
+      "safe_apps_script_pattern": "Define typed sort keys, tie-breakers, null handling, and order preservation needs; verify current sort semantics; benchmark only if sorting is material.",
+      "related_source_record_ids": [
+        "dsa-sort-basic-versus-advanced",
+        "dsa-sort-basic-nested-loops",
+        "dsa-perf-basic-sort-scale"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+    },
+    {
+      "id": "dsa-gas-searching-choice",
+      "record_type": "google_apps_script_translation_record",
+      "name": "Sequential scan, binary search, or lookup map",
+      "summary": "Choose search strategy from data ordering, query count, mutation frequency, and key semantics rather than from algorithm familiarity.",
+      "source_concept": "Sequential scan, binary search, or lookup map",
+      "programming_problem_addressed": "Translates a source-supported data-structure or algorithm concept into a guarded Apps Script design pattern.",
+      "data_shape_assumption": "The current project data shape, APIs, limits, and side effects are inspected before code is proposed.",
+      "algorithmic_role": "Runtime-boundary translation.",
+      "runtime_context": "Hosted Google Apps Script runtime; all runtime, service, quota, trigger, authorization, and deployment behavior requires current verification.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Define equality and ordering, count expected queries, preserve row provenance, then select scan, sorted search, or key index and test against edge cases.",
+      "complexity_or_scale_note": "Measure with realistic project data and separate in-memory operations from service calls.",
+      "use_when": [
+        "Sequential search for unsorted one-off scans",
+        "Binary search for stable sorted data",
+        "Counting and text-search distinctions"
+      ],
+      "do_not_use_when": [
+        "Binary search on unsorted rows",
+        "Self-organizing mutation when order must remain user-visible",
+        "Repeated linear scan when an index is warranted"
+      ],
+      "common_failure_modes": [
+        "Unsorted binary search",
+        "Mixed-type comparisons",
+        "Repeated sorting",
+        "Map built with nonunique keys",
+        "Mutation destroys original order"
+      ],
+      "tests_or_checks": [
+        "Verify current authoritative documentation.",
+        "Test on a copied spreadsheet or dry-run fixture before live side effects."
+      ],
+      "diagnostic_questions": [
+        "How many searches follow each data load?",
+        "Is data already sorted and stable?",
+        "Are keys unique?",
+        "Must original order be preserved?"
+      ],
+      "related_record_ids": [
+        "dsa-search-binary",
+        "dsa-decision-sequential-versus-binary",
+        "dsa-decision-binary-versus-map"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "13",
+        "chapter_title": "Searching Algorithms",
+        "section_heading": "Binary Search",
+        "page_or_anchor": "OEBPS/ch13.html#idp50459344",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source covers sequential search, self-organizing data, binary search, occurrence counting, and textual search."
+        ],
+        "inferred_claims": [
+          "The Apps Script APIs and workflow pattern are translation extensions, not direct claims from the source.",
+          "Current platform behavior must be verified before implementation."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch13.html",
+            "chapter_number": "13",
+            "chapter_title": "Searching Algorithms",
+            "section_heading": "Using Self-Organizing Data",
+            "page_or_anchor": "OEBPS/ch13.html#idp49721744"
+          },
+          {
+            "source_file": "ch13.html",
+            "chapter_number": "13",
+            "chapter_title": "Searching Algorithms",
+            "section_heading": "Counting Occurrences",
+            "page_or_anchor": "OEBPS/ch13.html#idp51894320"
+          },
+          {
+            "source_file": "ch13.html",
+            "chapter_number": "13",
+            "chapter_title": "Searching Algorithms",
+            "section_heading": "Searching Textual Data",
+            "page_or_anchor": "OEBPS/ch13.html#idp51489200"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "google-apps-script",
+        "translation-layer",
+        "searching-algorithms"
+      ],
+      "source_data_structure_or_algorithm": "Searching algorithms",
+      "source_chapter_or_section": "13 — Searching Algorithms — Binary Search",
+      "apps_script_transfer_type": "direct_conceptual_transfer",
+      "what_transfers": [
+        "Sequential search for unsorted one-off scans",
+        "Binary search for stable sorted data",
+        "Counting and text-search distinctions"
+      ],
+      "what_does_not_transfer": [
+        "Binary search on unsorted rows",
+        "Self-organizing mutation when order must remain user-visible",
+        "Repeated linear scan when an index is warranted"
+      ],
+      "apps_script_equivalent_or_related_api": [
+        "Current JavaScript array methods and Map/Object behavior (verify)",
+        "Spreadsheet text/date comparison behavior (project-specific)"
+      ],
+      "current_verification_required": true,
+      "safe_apps_script_pattern": "Define equality and ordering, count expected queries, preserve row provenance, then select scan, sorted search, or key index and test against edge cases.",
+      "related_source_record_ids": [
+        "dsa-search-binary",
+        "dsa-decision-sequential-versus-binary",
+        "dsa-decision-binary-versus-map",
+        "dsa-term-binary-search"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+    },
+    {
+      "id": "dsa-gas-dynamic-programming",
+      "record_type": "google_apps_script_translation_record",
+      "name": "Dynamic programming as a guarded optimization tool",
+      "summary": "Use dynamic programming only when the operational problem has a stated recurrence, overlapping subproblems, bounded state space, and a required output contract.",
+      "source_concept": "Dynamic programming as a guarded optimization tool",
+      "programming_problem_addressed": "Translates a source-supported data-structure or algorithm concept into a guarded Apps Script design pattern.",
+      "data_shape_assumption": "The current project data shape, APIs, limits, and side effects are inspected before code is proposed.",
+      "algorithmic_role": "Runtime-boundary translation.",
+      "runtime_context": "Hosted Google Apps Script runtime; all runtime, service, quota, trigger, authorization, and deployment behavior requires current verification.",
+      "transfers_to_google_apps_script": "conceptual_only",
+      "apps_script_translation_note": "Write objective, constraints, state variables, transition, base cases, state count, and reconstruction needs before implementation; compare with a simpler baseline.",
+      "complexity_or_scale_note": "Measure with realistic project data and separate in-memory operations from service calls.",
+      "use_when": [
+        "Subproblem decomposition",
+        "Stored subproblem results",
+        "Table or reduced-state reasoning"
+      ],
+      "do_not_use_when": [
+        "Large state tables without resource estimates",
+        "Optimization language without a formal objective and constraints",
+        "Value-only answer when users need selected actions"
+      ],
+      "common_failure_modes": [
+        "State explosion",
+        "Wrong recurrence",
+        "No reconstruction",
+        "Simpler one-pass or cached lookup ignored"
+      ],
+      "tests_or_checks": [
+        "Verify current authoritative documentation.",
+        "Test on a copied spreadsheet or dry-run fixture before live side effects."
+      ],
+      "diagnostic_questions": [
+        "Which subproblems repeat?",
+        "How many states exist?",
+        "Must the solution choices be reconstructed?",
+        "Would a small cache solve the real problem?"
+      ],
+      "related_record_ids": [
+        "dsa-dp-table-subsolutions",
+        "dsa-risk-dp-overengineering",
+        "dsa-decision-dp-versus-cached-lookup"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "14",
+        "chapter_title": "Advanced Algorithms",
+        "section_heading": "Dynamic Programming",
+        "page_or_anchor": "OEBPS/ch14.html#idp54524000",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source explains dynamic programming through stored subproblem solutions and examples including Fibonacci, longest common substring, and knapsack."
+        ],
+        "inferred_claims": [
+          "The Apps Script APIs and workflow pattern are translation extensions, not direct claims from the source.",
+          "Current platform behavior must be verified before implementation."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch14.html",
+            "chapter_number": "14",
+            "chapter_title": "Advanced Algorithms",
+            "section_heading": "A Dynamic Programming Example: Computing Fibonacci Numbers",
+            "page_or_anchor": "OEBPS/ch14.html#idp54527024"
+          },
+          {
+            "source_file": "ch14.html",
+            "chapter_number": "14",
+            "chapter_title": "Advanced Algorithms",
+            "section_heading": "The Knapsack Problem: A Dynamic Programming Solution",
+            "page_or_anchor": "OEBPS/ch14.html#idp56550304"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "google-apps-script",
+        "translation-layer",
+        "dynamic-programming"
+      ],
+      "source_data_structure_or_algorithm": "Dynamic programming",
+      "source_chapter_or_section": "14 — Advanced Algorithms — Dynamic Programming",
+      "apps_script_transfer_type": "conceptual_only",
+      "what_transfers": [
+        "Subproblem decomposition",
+        "Stored subproblem results",
+        "Table or reduced-state reasoning"
+      ],
+      "what_does_not_transfer": [
+        "Large state tables without resource estimates",
+        "Optimization language without a formal objective and constraints",
+        "Value-only answer when users need selected actions"
+      ],
+      "apps_script_equivalent_or_related_api": [
+        "Current runtime memory/execution behavior (verify)",
+        "Project data and business-rule sources"
+      ],
+      "current_verification_required": true,
+      "safe_apps_script_pattern": "Write objective, constraints, state variables, transition, base cases, state count, and reconstruction needs before implementation; compare with a simpler baseline.",
+      "related_source_record_ids": [
+        "dsa-dp-table-subsolutions",
+        "dsa-risk-dp-overengineering",
+        "dsa-decision-dp-versus-cached-lookup",
+        "dsa-term-dynamic-programming"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+    },
+    {
+      "id": "dsa-gas-greedy-heuristics",
+      "record_type": "google_apps_script_translation_record",
+      "name": "Greedy operational heuristic with counterexample testing",
+      "summary": "A local-priority rule can support fast operational decisions only when the domain permits it, counterexamples are tested, and suboptimality is acceptable or ruled out.",
+      "source_concept": "Greedy operational heuristic with counterexample testing",
+      "programming_problem_addressed": "Translates a source-supported data-structure or algorithm concept into a guarded Apps Script design pattern.",
+      "data_shape_assumption": "The current project data shape, APIs, limits, and side effects are inspected before code is proposed.",
+      "algorithmic_role": "Runtime-boundary translation.",
+      "runtime_context": "Hosted Google Apps Script runtime; all runtime, service, quota, trigger, authorization, and deployment behavior requires current verification.",
+      "transfers_to_google_apps_script": "conceptual_only",
+      "apps_script_translation_note": "Define objective and feasibility, state the local rule, test adversarial small cases against an exact method, and document acceptable loss and human override.",
+      "complexity_or_scale_note": "Measure with realistic project data and separate in-memory operations from service calls.",
+      "use_when": [
+        "Local-choice strategy",
+        "Need to distinguish optimal and suboptimal outcomes",
+        "Domain-specific correctness"
+      ],
+      "do_not_use_when": [
+        "Claim of global optimum without proof",
+        "Fractional choice in an indivisible domain",
+        "One denomination system generalized to all"
+      ],
+      "common_failure_modes": [
+        "Local optimum",
+        "Hidden constraint violation",
+        "Priority score not aligned to objective",
+        "Fractional/discrete boundary ignored"
+      ],
+      "tests_or_checks": [
+        "Verify current authoritative documentation.",
+        "Test on a copied spreadsheet or dry-run fixture before live side effects."
+      ],
+      "diagnostic_questions": [
+        "What is optimized?",
+        "Can items be split?",
+        "What counterexample breaks the rule?",
+        "Is approximate output acceptable?"
+      ],
+      "related_record_ids": [
+        "dsa-greedy-local-choice",
+        "dsa-risk-greedy-local-optimum",
+        "dsa-decision-greedy-versus-exact"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "14",
+        "chapter_title": "Advanced Algorithms",
+        "section_heading": "Greedy Algorithms",
+        "page_or_anchor": "OEBPS/ch14.html#idp56742640",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines greedy local choices, shows a denomination-sensitive coin example, and distinguishes fractional from 0-1 knapsack."
+        ],
+        "inferred_claims": [
+          "The Apps Script APIs and workflow pattern are translation extensions, not direct claims from the source.",
+          "Current platform behavior must be verified before implementation."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch14.html",
+            "chapter_number": "14",
+            "chapter_title": "Advanced Algorithms",
+            "section_heading": "A First Greedy Algorithm Example: The Coin-Changing Problem",
+            "page_or_anchor": "OEBPS/ch14.html#idp57193264"
+          },
+          {
+            "source_file": "ch14.html",
+            "chapter_number": "14",
+            "chapter_title": "Advanced Algorithms",
+            "section_heading": "A Greedy Algorithm Solution to the Knapsack Problem",
+            "page_or_anchor": "OEBPS/ch14.html#idp57348928"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "google-apps-script",
+        "translation-layer",
+        "greedy-algorithms"
+      ],
+      "source_data_structure_or_algorithm": "Greedy algorithms",
+      "source_chapter_or_section": "14 — Advanced Algorithms — Greedy Algorithms",
+      "apps_script_transfer_type": "conceptual_only",
+      "what_transfers": [
+        "Local-choice strategy",
+        "Need to distinguish optimal and suboptimal outcomes",
+        "Domain-specific correctness"
+      ],
+      "what_does_not_transfer": [
+        "Claim of global optimum without proof",
+        "Fractional choice in an indivisible domain",
+        "One denomination system generalized to all"
+      ],
+      "apps_script_equivalent_or_related_api": [
+        "Project-specific data and rules",
+        "Current runtime behavior only if implemented"
+      ],
+      "current_verification_required": true,
+      "safe_apps_script_pattern": "Define objective and feasibility, state the local rule, test adversarial small cases against an exact method, and document acceptable loss and human override.",
+      "related_source_record_ids": [
+        "dsa-greedy-local-choice",
+        "dsa-risk-greedy-local-optimum",
+        "dsa-decision-greedy-versus-exact",
+        "dsa-core-local-versus-global-quality"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+    },
+    {
+      "id": "dsa-gas-complexity-timeout-design",
+      "record_type": "google_apps_script_translation_record",
+      "name": "Algorithmic scale under hosted execution limits",
+      "summary": "Translate the source’s efficiency comparisons into explicit row-count, operation-count, service-call, and interruption-risk checks without asserting current Apps Script limits from the book.",
+      "source_concept": "Algorithmic scale under hosted execution limits",
+      "programming_problem_addressed": "Translates a source-supported data-structure or algorithm concept into a guarded Apps Script design pattern.",
+      "data_shape_assumption": "The current project data shape, APIs, limits, and side effects are inspected before code is proposed.",
+      "algorithmic_role": "Runtime-boundary translation.",
+      "runtime_context": "Hosted Google Apps Script runtime; all runtime, service, quota, trigger, authorization, and deployment behavior requires current verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Estimate operation and service-call counts, verify current limits, benchmark realistic data, structure side effects for safe retry, and monitor actual logs.",
+      "complexity_or_scale_note": "Measure with realistic project data and separate in-memory operations from service calls.",
+      "use_when": [
+        "Compare alternative structures and algorithms",
+        "Identify dominant operations",
+        "Test at realistic scale"
+      ],
+      "do_not_use_when": [
+        "Any current quota or execution-time number",
+        "Assumption that local JavaScript timing predicts hosted spreadsheet timing"
+      ],
+      "common_failure_modes": [
+        "Nested-loop timeout",
+        "Quota hit",
+        "Partial write",
+        "Web App latency",
+        "Trigger fails on largest period"
+      ],
+      "tests_or_checks": [
+        "Verify current authoritative documentation.",
+        "Test on a copied spreadsheet or dry-run fixture before live side effects."
+      ],
+      "diagnostic_questions": [
+        "What is the maximum row count?",
+        "How many service calls occur?",
+        "What happens if execution stops halfway?",
+        "Which current limit must be verified?"
+      ],
+      "related_record_ids": [
+        "dsa-perf-growth-versus-service-cost",
+        "dsa-risk-quota-timeout",
+        "dsa-workflow-diagnose-timeout"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "Preface",
+        "chapter_title": "Preface",
+        "section_heading": "Why Study Data Structures and Algorithms",
+        "page_or_anchor": "OEBPS/preface01.html#idp7339520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source emphasizes choosing efficient structures and algorithms and times alternatives in its own environment."
+        ],
+        "inferred_claims": [
+          "The Apps Script APIs and workflow pattern are translation extensions, not direct claims from the source.",
+          "Current platform behavior must be verified before implementation."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch12.html",
+            "chapter_number": "12",
+            "chapter_title": "Sorting Algorithms",
+            "section_heading": "Timing Comparisons of the Basic Sorting Algorithms",
+            "page_or_anchor": "OEBPS/ch12.html#idp44057744"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "google-apps-script",
+        "translation-layer",
+        "complexity-and-efficiency"
+      ],
+      "source_data_structure_or_algorithm": "Complexity and efficiency",
+      "source_chapter_or_section": "Preface — Preface — Why Study Data Structures and Algorithms",
+      "apps_script_transfer_type": "current_verification_required",
+      "what_transfers": [
+        "Compare alternative structures and algorithms",
+        "Identify dominant operations",
+        "Test at realistic scale"
+      ],
+      "what_does_not_transfer": [
+        "Any current quota or execution-time number",
+        "Assumption that local JavaScript timing predicts hosted spreadsheet timing"
+      ],
+      "apps_script_equivalent_or_related_api": [
+        "Current Apps Script quotas documentation",
+        "Current execution logs",
+        "Current Spreadsheet service documentation"
+      ],
+      "current_verification_required": true,
+      "safe_apps_script_pattern": "Estimate operation and service-call counts, verify current limits, benchmark realistic data, structure side effects for safe retry, and monitor actual logs.",
+      "related_source_record_ids": [
+        "dsa-core-thesis",
+        "dsa-core-programs-structure-plus-algorithms",
+        "dsa-core-structure-shapes-algorithm",
+        "dsa-core-arrays-not-universal"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+    },
+    {
+      "id": "dsa-gas-batch-operations",
+      "record_type": "google_apps_script_translation_record",
+      "name": "Batch operations minimize service-boundary crossings",
+      "summary": "Use arrays as the in-memory work surface so spreadsheet reads and writes can be grouped rather than interleaved with per-row logic.",
+      "source_concept": "Batch operations minimize service-boundary crossings",
+      "programming_problem_addressed": "Translates a source-supported data-structure or algorithm concept into a guarded Apps Script design pattern.",
+      "data_shape_assumption": "The current project data shape, APIs, limits, and side effects are inspected before code is proposed.",
+      "algorithmic_role": "Runtime-boundary translation.",
+      "runtime_context": "Hosted Google Apps Script runtime; all runtime, service, quota, trigger, authorization, and deployment behavior requires current verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Read only the required range once, transform and validate in memory, and perform a bounded batch write after all fatal checks pass.",
+      "complexity_or_scale_note": "Measure with realistic project data and separate in-memory operations from service calls.",
+      "use_when": [
+        "Process rows and columns in memory",
+        "Accumulate transformed output before side effects"
+      ],
+      "do_not_use_when": [
+        "Source shell input/output mechanisms",
+        "Any claim about current API latency or quotas without verification"
+      ],
+      "common_failure_modes": [
+        "get/set-style service call inside every iteration",
+        "Output width mismatch",
+        "Memory blow-up from unbounded ranges"
+      ],
+      "tests_or_checks": [
+        "Verify current authoritative documentation.",
+        "Test on a copied spreadsheet or dry-run fixture before live side effects."
+      ],
+      "diagnostic_questions": [
+        "Can this service call move outside the loop?",
+        "What is the smallest bounded range?",
+        "Is output rectangular and validated?"
+      ],
+      "related_record_ids": [
+        "dsa-sheet-read-once",
+        "dsa-sheet-batch-write-after-validation",
+        "dsa-risk-repeated-sheet-service-call"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Processing Two-Dimensional Array Elements",
+        "page_or_anchor": "OEBPS/ch02.html#idp18183376",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source demonstrates iterating over multidimensional arrays in memory; batching across a spreadsheet API is an extension."
+        ],
+        "inferred_claims": [
+          "The Apps Script APIs and workflow pattern are translation extensions, not direct claims from the source.",
+          "Current platform behavior must be verified before implementation."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "google-apps-script",
+        "translation-layer",
+        "array-iteration-and-batch-operations"
+      ],
+      "source_data_structure_or_algorithm": "Array iteration and batch operations",
+      "source_chapter_or_section": "2 — Arrays — Processing Two-Dimensional Array Elements",
+      "apps_script_transfer_type": "partial_transfer_requires_apps_script_api",
+      "what_transfers": [
+        "Process rows and columns in memory",
+        "Accumulate transformed output before side effects"
+      ],
+      "what_does_not_transfer": [
+        "Source shell input/output mechanisms",
+        "Any claim about current API latency or quotas without verification"
+      ],
+      "apps_script_equivalent_or_related_api": [
+        "Current spreadsheet batch-read/write methods (verify)",
+        "Current execution logging (verify)"
+      ],
+      "current_verification_required": true,
+      "safe_apps_script_pattern": "Read only the required range once, transform and validate in memory, and perform a bounded batch write after all fatal checks pass.",
+      "related_source_record_ids": [
+        "dsa-array-two-dimensional-processing"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+    },
+    {
+      "id": "dsa-gas-data-shape-validation",
+      "record_type": "google_apps_script_translation_record",
+      "name": "Validate data shape before transformation or export",
+      "summary": "Treat row width, headers, types, keys, required fields, and mappings as preconditions rather than assumptions embedded deep in transformation loops.",
+      "source_concept": "Validate data shape before transformation or export",
+      "programming_problem_addressed": "Translates a source-supported data-structure or algorithm concept into a guarded Apps Script design pattern.",
+      "data_shape_assumption": "The current project data shape, APIs, limits, and side effects are inspected before code is proposed.",
+      "algorithmic_role": "Runtime-boundary translation.",
+      "runtime_context": "Hosted Google Apps Script runtime; all runtime, service, quota, trigger, authorization, and deployment behavior requires current verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Parse into a neutral row record with provenance, validate all structural and semantic rules, collect errors, and transform only validated records.",
+      "complexity_or_scale_note": "Measure with realistic project data and separate in-memory operations from service calls.",
+      "use_when": [
+        "Explicit field representation",
+        "Iteration over structured records",
+        "Separation of representation from later algorithms"
+      ],
+      "do_not_use_when": [
+        "Assumption that uploaded sheet rows match the example objects",
+        "Silent coercion of malformed dates or numbers"
+      ],
+      "common_failure_modes": [
+        "Header drift",
+        "Jagged rows",
+        "Missing required key",
+        "Mixed types",
+        "Unmapped location",
+        "Duplicate ID"
+      ],
+      "tests_or_checks": [
+        "Verify current authoritative documentation.",
+        "Test on a copied spreadsheet or dry-run fixture before live side effects."
+      ],
+      "diagnostic_questions": [
+        "What exact schema is expected?",
+        "Which fields are fatal versus optional?",
+        "How are missing and blank distinguished?",
+        "What is the unique key?"
+      ],
+      "related_record_ids": [
+        "dsa-sheet-required-header-validation",
+        "dsa-sheet-row-array-to-object",
+        "dsa-workflow-parse-validate-transform-export"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Arrays of Objects",
+        "page_or_anchor": "OEBPS/ch02.html#idp18891520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source demonstrates arrays of objects and object-contained arrays, supporting explicit data representation before algorithm application."
+        ],
+        "inferred_claims": [
+          "The Apps Script APIs and workflow pattern are translation extensions, not direct claims from the source.",
+          "Current platform behavior must be verified before implementation."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch02.html",
+            "chapter_number": "2",
+            "chapter_title": "Arrays",
+            "section_heading": "Arrays in Objects",
+            "page_or_anchor": "OEBPS/ch02.html#idp19040720"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "google-apps-script",
+        "translation-layer",
+        "arrays-of-objects-and-structured-records"
+      ],
+      "source_data_structure_or_algorithm": "Arrays of objects and structured records",
+      "source_chapter_or_section": "2 — Arrays — Arrays of Objects",
+      "apps_script_transfer_type": "partial_transfer_requires_apps_script_api",
+      "what_transfers": [
+        "Explicit field representation",
+        "Iteration over structured records",
+        "Separation of representation from later algorithms"
+      ],
+      "what_does_not_transfer": [
+        "Assumption that uploaded sheet rows match the example objects",
+        "Silent coercion of malformed dates or numbers"
+      ],
+      "apps_script_equivalent_or_related_api": [
+        "Current spreadsheet/file upload APIs (verify)",
+        "Current date/number conversion behavior (verify)"
+      ],
+      "current_verification_required": true,
+      "safe_apps_script_pattern": "Parse into a neutral row record with provenance, validate all structural and semantic rules, collect errors, and transform only validated records.",
+      "related_source_record_ids": [
+        "dsa-array-of-objects"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+    },
+    {
+      "id": "dsa-gas-idempotency",
+      "record_type": "google_apps_script_translation_record",
+      "name": "Idempotent live writes through stable processing keys",
+      "summary": "Prevent retries from creating duplicate side effects by defining a stable key for each logical output and recording whether that key has already been committed.",
+      "source_concept": "Idempotent live writes through stable processing keys",
+      "programming_problem_addressed": "Translates a source-supported data-structure or algorithm concept into a guarded Apps Script design pattern.",
+      "data_shape_assumption": "The current project data shape, APIs, limits, and side effects are inspected before code is proposed.",
+      "algorithmic_role": "Runtime-boundary translation.",
+      "runtime_context": "Hosted Google Apps Script runtime; all runtime, service, quota, trigger, authorization, and deployment behavior requires current verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Derive a deterministic key from normalized business identity, check and claim it through a verified persistence/concurrency boundary, record outcome, and make retries return the existing result when safe.",
+      "complexity_or_scale_note": "Measure with realistic project data and separate in-memory operations from service calls.",
+      "use_when": [
+        "Uniqueness and membership reasoning",
+        "Duplicate prevention by structure"
+      ],
+      "do_not_use_when": [
+        "Persistence across executions from an in-memory set",
+        "Atomic check-and-write without a verified concurrency mechanism"
+      ],
+      "common_failure_modes": [
+        "Retry duplicates email/export/write",
+        "Key changes between runs",
+        "Check and write race",
+        "Partial commit not recorded"
+      ],
+      "tests_or_checks": [
+        "Verify current authoritative documentation.",
+        "Test on a copied spreadsheet or dry-run fixture before live side effects."
+      ],
+      "diagnostic_questions": [
+        "What uniquely identifies the logical side effect?",
+        "Where is commit state stored?",
+        "Can two executions race?",
+        "What does a partial commit mean?"
+      ],
+      "related_record_ids": [
+        "dsa-risk-idempotency-missing",
+        "dsa-sheet-idempotent-export-keys",
+        "dsa-decision-idempotency-key-versus-after-detection"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "9",
+        "chapter_title": "Sets",
+        "section_heading": "Fundamental Set Definitions, Operations, and Properties",
+        "page_or_anchor": "OEBPS/ch09.html#idp34336432",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines set uniqueness and membership; durable idempotency and concurrency controls are Apps Script workflow extensions."
+        ],
+        "inferred_claims": [
+          "The Apps Script APIs and workflow pattern are translation extensions, not direct claims from the source.",
+          "Current platform behavior must be verified before implementation."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "google-apps-script",
+        "translation-layer",
+        "set-uniqueness-applied-to-idempotency"
+      ],
+      "source_data_structure_or_algorithm": "Set uniqueness applied to idempotency",
+      "source_chapter_or_section": "9 — Sets — Fundamental Set Definitions, Operations, and Properties",
+      "apps_script_transfer_type": "partial_transfer_requires_apps_script_api",
+      "what_transfers": [
+        "Uniqueness and membership reasoning",
+        "Duplicate prevention by structure"
+      ],
+      "what_does_not_transfer": [
+        "Persistence across executions from an in-memory set",
+        "Atomic check-and-write without a verified concurrency mechanism"
+      ],
+      "apps_script_equivalent_or_related_api": [
+        "Current persistence service or sheet storage (verify)",
+        "Current LockService or transactional boundary (verify)",
+        "Destination API idempotency support (verify)"
+      ],
+      "current_verification_required": true,
+      "safe_apps_script_pattern": "Derive a deterministic key from normalized business identity, check and claim it through a verified persistence/concurrency boundary, record outcome, and make retries return the existing result when safe.",
+      "related_source_record_ids": [
+        "dsa-term-set",
+        "dsa-ds-set",
+        "dsa-set-uniqueness",
+        "dsa-risk-duplicate-not-detected"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+    },
+    {
+      "id": "dsa-gas-partial-failure",
+      "record_type": "google_apps_script_translation_record",
+      "name": "Structured partial-failure results",
+      "summary": "Represent each item’s status, error, provenance, and side-effect outcome explicitly so a batch can report mixed results without losing accountability.",
+      "source_concept": "Structured partial-failure results",
+      "programming_problem_addressed": "Translates a source-supported data-structure or algorithm concept into a guarded Apps Script design pattern.",
+      "data_shape_assumption": "The current project data shape, APIs, limits, and side effects are inspected before code is proposed.",
+      "algorithmic_role": "Runtime-boundary translation.",
+      "runtime_context": "Hosted Google Apps Script runtime; all runtime, service, quota, trigger, authorization, and deployment behavior requires current verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Return a structured run object with success, warning, failure, skipped, and unprocessed items; preserve source row and stable key; separate validation from side-effect failures.",
+      "complexity_or_scale_note": "Measure with realistic project data and separate in-memory operations from service calls.",
+      "use_when": [
+        "Ordered collections of items",
+        "Per-item processing sequence",
+        "Queue/worklist reasoning"
+      ],
+      "do_not_use_when": [
+        "Assumption that throwing one exception explains all row failures",
+        "Assumption that failed and unprocessed mean the same thing"
+      ],
+      "common_failure_modes": [
+        "Only first error reported",
+        "Successful writes omitted from log",
+        "Retry includes terminal failures",
+        "Original row cannot be located"
+      ],
+      "tests_or_checks": [
+        "Verify current authoritative documentation.",
+        "Test on a copied spreadsheet or dry-run fixture before live side effects."
+      ],
+      "diagnostic_questions": [
+        "Can valid rows proceed when others fail?",
+        "Which failures are retryable?",
+        "How is original input located?",
+        "Which side effects already occurred?"
+      ],
+      "related_record_ids": [
+        "dsa-risk-partial-failure-unstructured",
+        "dsa-sheet-structured-processing-results",
+        "dsa-tool-partial-failure-reporting"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "A List ADT",
+        "page_or_anchor": "OEBPS/ch03.html#idp19348032",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source supplies ordered list and queue abstractions; structured partial-failure reporting is an internal-tool extension."
+        ],
+        "inferred_claims": [
+          "The Apps Script APIs and workflow pattern are translation extensions, not direct claims from the source.",
+          "Current platform behavior must be verified before implementation."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch05.html",
+            "chapter_number": "5",
+            "chapter_title": "Queues",
+            "section_heading": "Queue Operations",
+            "page_or_anchor": "OEBPS/ch05.html#idp23142720"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "google-apps-script",
+        "translation-layer",
+        "ordered-list-and-queue-applied-to-processing-results"
+      ],
+      "source_data_structure_or_algorithm": "Ordered list and queue applied to processing results",
+      "source_chapter_or_section": "3 — Lists — A List ADT",
+      "apps_script_transfer_type": "partial_transfer_requires_apps_script_api",
+      "what_transfers": [
+        "Ordered collections of items",
+        "Per-item processing sequence",
+        "Queue/worklist reasoning"
+      ],
+      "what_does_not_transfer": [
+        "Assumption that throwing one exception explains all row failures",
+        "Assumption that failed and unprocessed mean the same thing"
+      ],
+      "apps_script_equivalent_or_related_api": [
+        "Current logging and persistence mechanisms (verify)",
+        "Destination service behavior (verify)"
+      ],
+      "current_verification_required": true,
+      "safe_apps_script_pattern": "Return a structured run object with success, warning, failure, skipped, and unprocessed items; preserve source row and stable key; separate validation from side-effect failures.",
+      "related_source_record_ids": [
+        "dsa-core-adt-separates-interface-storage",
+        "dsa-term-list",
+        "dsa-ds-list",
+        "dsa-list-adt"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+    },
+    {
+      "id": "dsa-gas-state-persistence",
+      "record_type": "google_apps_script_translation_record",
+      "name": "Persist queue, checkpoint, and run state deliberately",
+      "summary": "In-memory structures should not be assumed to survive separate executions; choose a current verified persistence mechanism based on durability, size, concurrency, and audit requirements.",
+      "source_concept": "Persist queue, checkpoint, and run state deliberately",
+      "programming_problem_addressed": "Translates a source-supported data-structure or algorithm concept into a guarded Apps Script design pattern.",
+      "data_shape_assumption": "The current project data shape, APIs, limits, and side effects are inspected before code is proposed.",
+      "algorithmic_role": "Runtime-boundary translation.",
+      "runtime_context": "Hosted Google Apps Script runtime; all runtime, service, quota, trigger, authorization, and deployment behavior requires current verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Define durability and audit requirements; select a verified store; version the state schema; use stable item IDs; validate read-modify-write concurrency; keep recoverable run history.",
+      "complexity_or_scale_note": "Measure with realistic project data and separate in-memory operations from service calls.",
+      "use_when": [
+        "Queue item schema",
+        "Front/back and processing-order semantics",
+        "Explicit state transitions"
+      ],
+      "do_not_use_when": [
+        "In-memory queue surviving a trigger boundary",
+        "Source shell lifecycle assumptions"
+      ],
+      "common_failure_modes": [
+        "Lost queue after execution",
+        "Cache eviction treated as durable state",
+        "State exceeds service limit",
+        "Concurrent update overwrites newer state"
+      ],
+      "tests_or_checks": [
+        "Verify current authoritative documentation.",
+        "Test on a copied spreadsheet or dry-run fixture before live side effects."
+      ],
+      "diagnostic_questions": [
+        "Must state survive minutes, days, or indefinitely?",
+        "How large can it grow?",
+        "Can more than one execution modify it?",
+        "Is an audit trail required?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-queues-staged-processing",
+        "dsa-verify-state-services",
+        "dsa-risk-queue-retry-duplication"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "5",
+        "chapter_title": "Queues",
+        "section_heading": "Queue Operations",
+        "page_or_anchor": "OEBPS/ch05.html#idp23142720",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines queue state in a running program; persistence across hosted executions is not covered and therefore requires a translation boundary."
+        ],
+        "inferred_claims": [
+          "The Apps Script APIs and workflow pattern are translation extensions, not direct claims from the source.",
+          "Current platform behavior must be verified before implementation."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "google-apps-script",
+        "translation-layer",
+        "queue-state-persistence"
+      ],
+      "source_data_structure_or_algorithm": "Queue state persistence",
+      "source_chapter_or_section": "5 — Queues — Queue Operations",
+      "apps_script_transfer_type": "current_verification_required",
+      "what_transfers": [
+        "Queue item schema",
+        "Front/back and processing-order semantics",
+        "Explicit state transitions"
+      ],
+      "what_does_not_transfer": [
+        "In-memory queue surviving a trigger boundary",
+        "Source shell lifecycle assumptions"
+      ],
+      "apps_script_equivalent_or_related_api": [
+        "PropertiesService (current behavior and limits must be verified)",
+        "CacheService (current behavior and eviction must be verified)",
+        "Sheets or other durable store (project-specific, verify)"
+      ],
+      "current_verification_required": true,
+      "safe_apps_script_pattern": "Define durability and audit requirements; select a verified store; version the state schema; use stable item IDs; validate read-modify-write concurrency; keep recoverable run history.",
+      "related_source_record_ids": [
+        "dsa-term-queue",
+        "dsa-ds-queue",
+        "dsa-queue-fifo",
+        "dsa-queue-operations"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+    },
+    {
+      "id": "dsa-gas-concurrency-locking",
+      "record_type": "google_apps_script_translation_record",
+      "name": "Concurrency guard for shared indexes, queues, and idempotency keys",
+      "summary": "When multiple executions can read and update the same state, structure the operation as claim-check-update and verify the platform’s locking and failure semantics.",
+      "source_concept": "Concurrency guard for shared indexes, queues, and idempotency keys",
+      "programming_problem_addressed": "Translates a source-supported data-structure or algorithm concept into a guarded Apps Script design pattern.",
+      "data_shape_assumption": "The current project data shape, APIs, limits, and side effects are inspected before code is proposed.",
+      "algorithmic_role": "Runtime-boundary translation.",
+      "runtime_context": "Hosted Google Apps Script runtime; all runtime, service, quota, trigger, authorization, and deployment behavior requires current verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Keep critical sections narrow, recheck state after acquiring a verified lock, assign claim tokens, make side effects idempotent where possible, and log release/commit outcomes.",
+      "complexity_or_scale_note": "Measure with realistic project data and separate in-memory operations from service calls.",
+      "use_when": [
+        "Queue item identity",
+        "Exclusive dequeue/claim concept",
+        "Explicit state transition"
+      ],
+      "do_not_use_when": [
+        "Any source claim about concurrent workers",
+        "Assumed atomic object or sheet update",
+        "Assumed lock duration or scope"
+      ],
+      "common_failure_modes": [
+        "Two workers claim same item",
+        "Lock expires before side effect completes",
+        "Deadlock-like retry churn",
+        "State updated without commit record"
+      ],
+      "tests_or_checks": [
+        "Verify current authoritative documentation.",
+        "Test on a copied spreadsheet or dry-run fixture before live side effects."
+      ],
+      "diagnostic_questions": [
+        "Can triggers overlap?",
+        "Which state requires exclusive access?",
+        "Can the external side effect be made idempotent?",
+        "What happens after lock or execution loss?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-idempotency",
+        "dsa-verify-lock-service",
+        "dsa-risk-idempotency-missing"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "5",
+        "chapter_title": "Queues",
+        "section_heading": "Queue Operations",
+        "page_or_anchor": "OEBPS/ch05.html#idp23142720",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source provides queue semantics but does not discuss concurrent Apps Script workers; concurrency handling is a current-platform extension."
+        ],
+        "inferred_claims": [
+          "The Apps Script APIs and workflow pattern are translation extensions, not direct claims from the source.",
+          "Current platform behavior must be verified before implementation."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "google-apps-script",
+        "translation-layer",
+        "queue-processing-under-concurrent-execution"
+      ],
+      "source_data_structure_or_algorithm": "Queue processing under concurrent execution",
+      "source_chapter_or_section": "5 — Queues — Queue Operations",
+      "apps_script_transfer_type": "current_verification_required",
+      "what_transfers": [
+        "Queue item identity",
+        "Exclusive dequeue/claim concept",
+        "Explicit state transition"
+      ],
+      "what_does_not_transfer": [
+        "Any source claim about concurrent workers",
+        "Assumed atomic object or sheet update",
+        "Assumed lock duration or scope"
+      ],
+      "apps_script_equivalent_or_related_api": [
+        "LockService (current behavior must be verified)",
+        "Trigger concurrency behavior (verify)",
+        "Destination API concurrency/idempotency behavior (verify)"
+      ],
+      "current_verification_required": true,
+      "safe_apps_script_pattern": "Keep critical sections narrow, recheck state after acquiring a verified lock, assign claim tokens, make side effects idempotent where possible, and log release/commit outcomes.",
+      "related_source_record_ids": [
+        "dsa-term-queue",
+        "dsa-ds-queue",
+        "dsa-queue-fifo",
+        "dsa-queue-operations"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm reasoning to Google Apps Script. Current Apps Script behavior must be verified."
+    }
+  ],
+  "translation_boundary": "Every record is a low-confidence extension. Current Apps Script behavior must be verified."
+}

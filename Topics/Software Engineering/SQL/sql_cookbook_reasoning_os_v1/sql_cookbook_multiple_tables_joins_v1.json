@@ -1,0 +1,3671 @@
+{
+  "package_id": "sql-cookbook-reasoning-os-v1",
+  "section_key": "join_records",
+  "record_count": 18,
+  "unique_record_count": 18,
+  "source_boundary": "Uploaded second edition only. Derivation and source anchors are carried on every substantive record.",
+  "usage_note": "These are canonical records reused across topical modules. Count distinct IDs across the package, not module totals.",
+  "records": [
+    {
+      "id": "sql-recipe-03-01",
+      "record_type": "recipe_pattern",
+      "name": "3.1 Stacking One Rowset atop Another",
+      "summary": "Align projected columns and combine rowsets with UNION ALL; use UNION only when set-level duplicate removal is intended.",
+      "source_recipe_or_concept": "3.1 Stacking One Rowset atop Another; supporting source units: 3.1",
+      "sql_problem_addressed": "Stack compatible rowsets without joining their entities.",
+      "query_intent": "Stack compatible rowsets without joining their entities.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One output occurrence per contributing input occurrence with UNION ALL.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "DEPT",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "T1",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "SALES",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One output occurrence per contributing input occurrence with UNION ALL.",
+      "key_columns_or_join_conditions": [
+        "Corresponding projection positions, not a relationship key."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Stack compatible rowsets without joining their entities."
+      ],
+      "aggregation_or_windowing": "Align projected columns and combine rowsets with UNION ALL; use UNION only when set-level duplicate removal is intended.",
+      "result_shape": "A single rowset with aligned column types.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Any claim that deduplication uses a particular physical operation requires an actual plan.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Set operations and join predicates do not have identical NULL behavior.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Stack compatible rowsets without joining their entities."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one output occurrence per contributing input occurrence with union all."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "tests_or_checks": [
+        "Check projection order, compatible types, expected row-count sum, and duplicate policy."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.1 Stacking One Rowset atop Another",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-1",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-1.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-1.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-1.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Stack compatible rowsets without joining their entities.",
+          "Align projected columns and combine rowsets with UNION ALL; use UNION only when set-level duplicate removal is intended.",
+          "Stacking adds rows, whereas joining relates rows; UNION and UNION ALL differ in duplicate preservation."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.1 Stacking One Rowset atop Another",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-1",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch03"
+      ],
+      "recipe_name": "3.1 Stacking One Rowset atop Another",
+      "problem_paraphrase": "Stack compatible rowsets without joining their entities.",
+      "solution_pattern": "Align projected columns and combine rowsets with UNION ALL; use UNION only when set-level duplicate removal is intended.",
+      "discussion_reasoning": "Stacking adds rows, whereas joining relates rows; UNION and UNION ALL differ in duplicate preservation.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One output occurrence per contributing input occurrence with UNION ALL.",
+      "output_shape": "A single rowset with aligned column types.",
+      "assumptions": [
+        "One output occurrence per contributing input occurrence with UNION ALL.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Any claim that deduplication uses a particular physical operation requires an actual plan."
+      ],
+      "test_query_or_validation_shape": "Check projection order, compatible types, expected row-count sum, and duplicate policy.",
+      "when_to_use": [
+        "Stack compatible rowsets without joining their entities."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one output occurrence per contributing input occurrence with union all."
+      ],
+      "related_records": [
+        "sql-recipe-03-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "One output occurrence per contributing input occurrence with UNION ALL.",
+      "join_key_assumptions": [
+        "Stacking is not matching; compatible column positions and types are required."
+      ],
+      "expected_cardinality": "UNION ALL yields the sum of input counts; UNION yields distinct projected rows.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Check projection order, compatible types, expected row-count sum, and duplicate policy.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-1",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "DEPT",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-1",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "T1",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-1",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "SALES",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-1",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-03-02",
+      "record_type": "recipe_pattern",
+      "name": "3.2 Combining Related Rows",
+      "summary": "Join using the established matching columns, separating relationship conditions from population filters.",
+      "source_recipe_or_concept": "3.2 Combining Related Rows; supporting source units: 3.2",
+      "sql_problem_addressed": "Attach attributes from a related entity.",
+      "query_intent": "Attach attributes from a related entity.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "Source example: employee rows related to their department.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "DEPT",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "Source example: employee rows related to their department.",
+      "key_columns_or_join_conditions": [
+        "EMP.DEPTNO = DEPT.DEPTNO in the example; live keys must be inspected."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Attach attributes from a related entity."
+      ],
+      "aggregation_or_windowing": "Join using the established matching columns, separating relationship conditions from population filters.",
+      "result_shape": "Matched employee-and-department attributes.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "The book presents both comma-join predicates and explicit JOIN syntax.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "NULL relationship values do not create an ordinary equality match.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Attach attributes from a related entity."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from source example: employee rows related to their department."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "tests_or_checks": [
+        "Check department-key uniqueness, employee match counts, and unmatched employees."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-01",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.2 Combining Related Rows",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Attach attributes from a related entity.",
+          "Join using the established matching columns, separating relationship conditions from population filters.",
+          "Only matching combinations survive an inner equi-join."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.2 Combining Related Rows",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch03"
+      ],
+      "recipe_name": "3.2 Combining Related Rows",
+      "problem_paraphrase": "Attach attributes from a related entity.",
+      "solution_pattern": "Join using the established matching columns, separating relationship conditions from population filters.",
+      "discussion_reasoning": "Only matching combinations survive an inner equi-join.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "Source example: employee rows related to their department.",
+      "output_shape": "Matched employee-and-department attributes.",
+      "assumptions": [
+        "Source example: employee rows related to their department.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The book presents both comma-join predicates and explicit JOIN syntax."
+      ],
+      "test_query_or_validation_shape": "Check department-key uniqueness, employee match counts, and unmatched employees.",
+      "when_to_use": [
+        "Attach attributes from a related entity."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from source example: employee rows related to their department."
+      ],
+      "related_records": [
+        "sql-recipe-03-01",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "Source example: employee rows related to their department.",
+      "join_key_assumptions": [
+        "Check EMP.DEPTNO to DEPT.DEPTNO and preserve the complete live relationship key."
+      ],
+      "expected_cardinality": "At most one department match per employee only when the department key is unique.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Check department-key uniqueness, employee match counts, and unmatched employees.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "DEPT",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-03-03",
+      "record_type": "recipe_pattern",
+      "name": "3.3 Finding Rows in Common Between Two Tables",
+      "summary": "Join on every comparison column or use a compatible set intersection when only shared values are needed.",
+      "source_recipe_or_concept": "3.3 Finding Rows in Common Between Two Tables; supporting source units: 3.3",
+      "sql_problem_addressed": "Find rows shared across two sources using a complete comparison definition.",
+      "query_intent": "Find rows shared across two sources using a complete comparison definition.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One comparison tuple or intended matched entity.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One comparison tuple or intended matched entity.",
+      "key_columns_or_join_conditions": [
+        "Source comparison includes ENAME, JOB, and SAL; it is not an asserted business key."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Find rows shared across two sources using a complete comparison definition."
+      ],
+      "aggregation_or_windowing": "Join on every comparison column or use a compatible set intersection when only shared values are needed.",
+      "result_shape": "Shared records or tuples.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "The recipe separates a multi-column join from INTERSECT-based alternatives; its platform grouping is not a current feature matrix.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Equality joins and set intersection can treat NULL-bearing tuples differently.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Find rows shared across two sources using a complete comparison definition."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one comparison tuple or intended matched entity."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "tests_or_checks": [
+        "Create rows equal on one field but different on another; also test duplicate tuples and NULLs."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-01",
+        "sql-recipe-03-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.3 Finding Rows in Common Between Two Tables",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-3",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-3.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-3.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-3.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Find rows shared across two sources using a complete comparison definition.",
+          "Join on every comparison column or use a compatible set intersection when only shared values are needed.",
+          "A partial comparison can treat genuinely different records as matches; set intersection also changes duplicate semantics."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.3 Finding Rows in Common Between Two Tables",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-3",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch03"
+      ],
+      "recipe_name": "3.3 Finding Rows in Common Between Two Tables",
+      "problem_paraphrase": "Find rows shared across two sources using a complete comparison definition.",
+      "solution_pattern": "Join on every comparison column or use a compatible set intersection when only shared values are needed.",
+      "discussion_reasoning": "A partial comparison can treat genuinely different records as matches; set intersection also changes duplicate semantics.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "MySQL and SQL Server",
+          "dialects": [
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-3.2.1",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2, Oracle, and PostgreSQL",
+          "dialects": [
+            "DB2",
+            "Oracle",
+            "PostgreSQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-3.2.2",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "One comparison tuple or intended matched entity.",
+      "output_shape": "Shared records or tuples.",
+      "assumptions": [
+        "One comparison tuple or intended matched entity.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The recipe separates a multi-column join from INTERSECT-based alternatives; its platform grouping is not a current feature matrix."
+      ],
+      "test_query_or_validation_shape": "Create rows equal on one field but different on another; also test duplicate tuples and NULLs.",
+      "when_to_use": [
+        "Find rows shared across two sources using a complete comparison definition."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one comparison tuple or intended matched entity."
+      ],
+      "related_records": [
+        "sql-recipe-03-01",
+        "sql-recipe-03-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "One comparison tuple or intended matched entity.",
+      "join_key_assumptions": [
+        "Match every field defining the intended common row, not merely a convenient attribute."
+      ],
+      "expected_cardinality": "A join can return repeated matching combinations; an intersection uses projected set semantics.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Create rows equal on one field but different on another; also test duplicate tuples and NULLs.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-3",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-03-04",
+      "record_type": "recipe_pattern",
+      "name": "3.4 Retrieving Values from One Table That Do Not Exist in Another",
+      "summary": "Use set difference or a NULL-reviewed anti-membership test.",
+      "source_recipe_or_concept": "3.4 Retrieving Values from One Table That Do Not Exist in Another; supporting source units: 3.4",
+      "sql_problem_addressed": "Find values present in the first source and absent from the second.",
+      "query_intent": "Find values present in the first source and absent from the second.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One returned comparison value under set semantics, or retained source occurrences under a predicate.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "DEPT",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One returned comparison value under set semantics, or retained source occurrences under a predicate.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Find values present in the first source and absent from the second."
+      ],
+      "aggregation_or_windowing": "Use set difference or a NULL-reviewed anti-membership test.",
+      "result_shape": "First-source values missing from the second.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "Source maps EXCEPT to DB2/PostgreSQL/SQL Server, MINUS to Oracle, and a subquery to MySQL.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Do not treat NOT IN and NOT EXISTS as interchangeable when NULLs are possible.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Find values present in the first source and absent from the second."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one returned comparison value under set semantics, or retained source occurrences under a predicate."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "tests_or_checks": [
+        "Test an empty target, a target NULL, duplicate source values, and a NULL source key."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-01",
+        "sql-recipe-03-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.4 Retrieving Values from One Table That Do Not Exist in Another",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-4",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-4.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-4.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-4.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Find values present in the first source and absent from the second.",
+          "Use set difference or a NULL-reviewed anti-membership test.",
+          "NOT IN can fail to produce the expected exclusions when the subquery contains NULL."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.4 Retrieving Values from One Table That Do Not Exist in Another",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-4",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch03"
+      ],
+      "recipe_name": "3.4 Retrieving Values from One Table That Do Not Exist in Another",
+      "problem_paraphrase": "Find values present in the first source and absent from the second.",
+      "solution_pattern": "Use set difference or a NULL-reviewed anti-membership test.",
+      "discussion_reasoning": "NOT IN can fail to produce the expected exclusions when the subquery contains NULL.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2, PostgreSQL, and SQL Server",
+          "dialects": [
+            "DB2",
+            "PostgreSQL",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-4.2.1",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-4.2.2",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL",
+          "dialects": [
+            "MySQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-4.2.3",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2, PostgreSQL, and SQL Server",
+          "dialects": [
+            "DB2",
+            "PostgreSQL",
+            "SQL Server"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-4.3.1",
+          "function_tokens_detected": [
+            "PROBLEM",
+            "QUERY"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-4.3.2",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL",
+          "dialects": [
+            "MySQL"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-4.3.3",
+          "function_tokens_detected": [
+            "DEPTNO",
+            "NEW_DEPT",
+            "NEW_DEPTVALUES",
+            "PREDICATE",
+            "RETURNED",
+            "ROWS",
+            "TABLES"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "One returned comparison value under set semantics, or retained source occurrences under a predicate.",
+      "output_shape": "First-source values missing from the second.",
+      "assumptions": [
+        "One returned comparison value under set semantics, or retained source occurrences under a predicate.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Source maps EXCEPT to DB2/PostgreSQL/SQL Server, MINUS to Oracle, and a subquery to MySQL."
+      ],
+      "test_query_or_validation_shape": "Test an empty target, a target NULL, duplicate source values, and a NULL source key.",
+      "when_to_use": [
+        "Find values present in the first source and absent from the second."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one returned comparison value under set semantics, or retained source occurrences under a predicate."
+      ],
+      "related_records": [
+        "sql-recipe-03-01",
+        "sql-recipe-03-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "One returned comparison value under set semantics, or retained source occurrences under a predicate.",
+      "join_key_assumptions": [
+        "The comparison expression and its NULL policy define absence."
+      ],
+      "expected_cardinality": "Retain candidate values absent from the comparison projection, under stated set/NULL rules.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Test an empty target, a target NULL, duplicate source values, and a NULL source key.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-4",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "DEPT",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-4",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-03-05",
+      "record_type": "recipe_pattern",
+      "name": "3.5 Retrieving Rows from One Table That Do Not Correspond to Rows in Another",
+      "summary": "Preserve the source with a left join and keep rows where a reliable target match column is NULL.",
+      "source_recipe_or_concept": "3.5 Retrieving Rows from One Table That Do Not Correspond to Rows in Another; supporting source units: 3.5",
+      "sql_problem_addressed": "Return full source rows lacking a corresponding related row.",
+      "query_intent": "Return full source rows lacking a corresponding related row.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One row per unmatched source entity.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "DEPT",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "SALES",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One row per unmatched source entity.",
+      "key_columns_or_join_conditions": [
+        "DEPT.DEPTNO = EMP.DEPTNO; test the joined match key in the book example."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Return full source rows lacking a corresponding related row."
+      ],
+      "aggregation_or_windowing": "Preserve the source with a left join and keep rows where a reliable target match column is NULL.",
+      "result_shape": "Source entities without related records.",
+      "dialects_covered": [
+        "DB2",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "A nullable descriptive field is not automatically a valid no-match indicator.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Return full source rows lacking a corresponding related row."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one row per unmatched source entity."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-not-in-null-trap"
+      ],
+      "tests_or_checks": [
+        "Verify the tested target column cannot be NULL on a genuine match; compare with a correlated absence test."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-01",
+        "sql-recipe-03-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-not-in-null-trap"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.5 Retrieving Rows from One Table That Do Not Correspond to Rows in Another",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-5",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-5.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-5.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-5.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Return full source rows lacking a corresponding related row.",
+          "Preserve the source with a left join and keep rows where a reliable target match column is NULL.",
+          "The unmatched outer-join row identifies absence in the target."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.5 Retrieving Rows from One Table That Do Not Correspond to Rows in Another",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-5",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch03"
+      ],
+      "recipe_name": "3.5 Retrieving Rows from One Table That Do Not Correspond to Rows in Another",
+      "problem_paraphrase": "Return full source rows lacking a corresponding related row.",
+      "solution_pattern": "Preserve the source with a left join and keep rows where a reliable target match column is NULL.",
+      "discussion_reasoning": "The unmatched outer-join row identifies absence in the target.",
+      "dialects_supported": [
+        "DB2",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2, MySQL, PostgreSQL, and SQL Server",
+          "dialects": [
+            "DB2",
+            "PostgreSQL",
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-5.2.1",
+          "function_tokens_detected": [
+            "NULLS"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "One row per unmatched source entity.",
+      "output_shape": "Source entities without related records.",
+      "assumptions": [
+        "One row per unmatched source entity.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Verify the tested target column cannot be NULL on a genuine match; compare with a correlated absence test.",
+      "when_to_use": [
+        "Return full source rows lacking a corresponding related row."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one row per unmatched source entity."
+      ],
+      "related_records": [
+        "sql-recipe-03-01",
+        "sql-recipe-03-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-not-in-null-trap"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "One row per unmatched source entity.",
+      "join_key_assumptions": [
+        "Correlate using the complete intended relationship; right-side duplication must not change existence."
+      ],
+      "expected_cardinality": "At most one output copy per candidate when using an existence/absence test.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Verify the tested target column cannot be NULL on a genuine match; compare with a correlated absence test.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-5",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "DEPT",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-5",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "SALES",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-5",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-03-06",
+      "record_type": "recipe_pattern",
+      "name": "3.6 Adding Joins to a Query Without Interfering with Other Joins",
+      "summary": "Use an outer join for optional related rows, or a scalar subquery only when at most one related value is guaranteed.",
+      "source_recipe_or_concept": "3.6 Adding Joins to a Query Without Interfering with Other Joins; supporting source units: 3.6",
+      "sql_problem_addressed": "Add optional information without losing previously returned records.",
+      "query_intent": "Add optional information without losing previously returned records.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "Original result grain unless multiple optional matches expand it.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "DEPT",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP_BONUS",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "Original result grain unless multiple optional matches expand it.",
+      "key_columns_or_join_conditions": [
+        "Employee key to EMP_BONUS employee key; DEPTNO relationship remains separate."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Add optional information without losing previously returned records."
+      ],
+      "aggregation_or_windowing": "Use an outer join for optional related rows, or a scalar subquery only when at most one related value is guaranteed.",
+      "result_shape": "Original rows with optional attributes.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "The source’s scalar-subquery alternative is not permission to assume a one-row relationship.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "No optional match yields NULL; do not confuse it with a matched row’s missing attribute.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Add optional information without losing previously returned records."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from original result grain unless multiple optional matches expand it."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-outer-join-filtered-in-where"
+      ],
+      "tests_or_checks": [
+        "Compare source-key counts before and after, including zero, one, and two optional matches."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-01",
+        "sql-recipe-03-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-outer-join-filtered-in-where"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.6 Adding Joins to a Query Without Interfering with Other Joins",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-6",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-6.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-6.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-6.3",
+          "See Also": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-6.4"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Add optional information without losing previously returned records.",
+          "Use an outer join for optional related rows, or a scalar subquery only when at most one related value is guaranteed.",
+          "An inner join drops nonmatches; a scalar subquery fails when it returns multiple rows."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.6 Adding Joins to a Query Without Interfering with Other Joins",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-6",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch03"
+      ],
+      "recipe_name": "3.6 Adding Joins to a Query Without Interfering with Other Joins",
+      "problem_paraphrase": "Add optional information without losing previously returned records.",
+      "solution_pattern": "Use an outer join for optional related rows, or a scalar subquery only when at most one related value is guaranteed.",
+      "discussion_reasoning": "An inner join drops nonmatches; a scalar subquery fails when it returns multiple rows.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "Original result grain unless multiple optional matches expand it.",
+      "output_shape": "Original rows with optional attributes.",
+      "assumptions": [
+        "Original result grain unless multiple optional matches expand it.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The source’s scalar-subquery alternative is not permission to assume a one-row relationship."
+      ],
+      "test_query_or_validation_shape": "Compare source-key counts before and after, including zero, one, and two optional matches.",
+      "when_to_use": [
+        "Add optional information without losing previously returned records."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from original result grain unless multiple optional matches expand it."
+      ],
+      "related_records": [
+        "sql-recipe-03-01",
+        "sql-recipe-03-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-outer-join-filtered-in-where"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "Original result grain unless multiple optional matches expand it.",
+      "join_key_assumptions": [
+        "The added input must have the intended match cardinality at its complete key."
+      ],
+      "expected_cardinality": "Existing relationships should retain their prior rows; new optional matches may multiply rows unless constrained.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Compare source-key counts before and after, including zero, one, and two optional matches.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-6",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "DEPT",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-6",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "EMP_BONUS",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-6",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-03-07",
+      "record_type": "recipe_pattern",
+      "name": "3.7 Determining Whether Two Tables Have the Same Data",
+      "summary": "Compare both directions, including grouped occurrence counts where duplicates matter, and combine discrepancies.",
+      "source_recipe_or_concept": "3.7 Determining Whether Two Tables Have the Same Data; supporting source units: 3.7",
+      "sql_problem_addressed": "Determine whether two rowsets contain the same data and multiplicities.",
+      "query_intent": "Determine whether two rowsets contain the same data and multiplicities.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "Comparison tuple plus occurrence count when evaluating bags.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "DEPT",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "Comparison tuple plus occurrence count when evaluating bags.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Determine whether two rowsets contain the same data and multiplicities."
+      ],
+      "aggregation_or_windowing": "Compare both directions, including grouped occurrence counts where duplicates matter, and combine discrepancies.",
+      "result_shape": "Rows or counted tuples that differ in either direction.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "Source uses EXCEPT/MINUS or correlated alternatives according to its dialect groupings.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Use an explicit policy for comparing NULL-bearing tuples.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Determine whether two rowsets contain the same data and multiplicities."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from comparison tuple plus occurrence count when evaluating bags."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "tests_or_checks": [
+        "Test equal counts with different values and equal distinct values with different repetition counts."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-01",
+        "sql-recipe-03-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.7 Determining Whether Two Tables Have the Same Data",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-7",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-7.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-7.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-7.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Determine whether two rowsets contain the same data and multiplicities.",
+          "Compare both directions, including grouped occurrence counts where duplicates matter, and combine discrepancies.",
+          "One-way difference is incomplete, and equal total row counts do not prove equal contents."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.7 Determining Whether Two Tables Have the Same Data",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-7",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch03"
+      ],
+      "recipe_name": "3.7 Determining Whether Two Tables Have the Same Data",
+      "problem_paraphrase": "Determine whether two rowsets contain the same data and multiplicities.",
+      "solution_pattern": "Compare both directions, including grouped occurrence counts where duplicates matter, and combine discrepancies.",
+      "discussion_reasoning": "One-way difference is incomplete, and equal total row counts do not prove equal contents.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2 and PostgreSQL",
+          "dialects": [
+            "DB2",
+            "PostgreSQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-7.2.1",
+          "function_tokens_detected": [
+            "COUNT"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-7.2.2",
+          "function_tokens_detected": [
+            "COUNT"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL and SQL Server",
+          "dialects": [
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-7.2.3",
+          "function_tokens_detected": [
+            "COALESCE",
+            "COUNT"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2, Oracle, and PostgreSQL",
+          "dialects": [
+            "DB2",
+            "Oracle",
+            "PostgreSQL"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-7.3.1",
+          "function_tokens_detected": [
+            "COUNT"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL and SQL Server",
+          "dialects": [
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-7.3.2",
+          "function_tokens_detected": [
+            "COALESCE",
+            "COOKBOOK",
+            "COUNT",
+            "ROWS"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "Comparison tuple plus occurrence count when evaluating bags.",
+      "output_shape": "Rows or counted tuples that differ in either direction.",
+      "assumptions": [
+        "Comparison tuple plus occurrence count when evaluating bags.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Source uses EXCEPT/MINUS or correlated alternatives according to its dialect groupings."
+      ],
+      "test_query_or_validation_shape": "Test equal counts with different values and equal distinct values with different repetition counts.",
+      "when_to_use": [
+        "Determine whether two rowsets contain the same data and multiplicities."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from comparison tuple plus occurrence count when evaluating bags."
+      ],
+      "related_records": [
+        "sql-recipe-03-01",
+        "sql-recipe-03-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "Comparison tuple plus occurrence count when evaluating bags.",
+      "join_key_assumptions": [
+        "Compare compatible full row projections and account for duplicate counts."
+      ],
+      "expected_cardinality": "Equality requires the same rows and, when intended, the same multiplicities on both sides.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Test equal counts with different values and equal distinct values with different repetition counts.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-7",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "DEPT",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-7",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-03-08",
+      "record_type": "recipe_pattern",
+      "name": "3.8 Identifying and Avoiding Cartesian Products",
+      "summary": "Inspect the relationship graph and add the missing relationship predicates; retain a cross join only when every combination is intended.",
+      "source_recipe_or_concept": "3.8 Identifying and Avoiding Cartesian Products; supporting source units: 3.8",
+      "sql_problem_addressed": "Diagnose a join that creates unrelated combinations.",
+      "query_intent": "Diagnose a join that creates unrelated combinations.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "Either a justified pair of input rows or the intended related entity.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "DEPT",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "SALES",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "Either a justified pair of input rows or the intended related entity.",
+      "key_columns_or_join_conditions": [
+        "Every input must be connected through the intended complete join conditions."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Diagnose a join that creates unrelated combinations."
+      ],
+      "aggregation_or_windowing": "Inspect the relationship graph and add the missing relationship predicates; retain a cross join only when every combination is intended.",
+      "result_shape": "Related rows rather than an accidental product.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "The book’s n−1 relationship heuristic is a starting check, not proof of correct composite keys.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Adding a predicate does not by itself establish correct NULL handling.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Diagnose a join that creates unrelated combinations."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from either a justified pair of input rows or the intended related entity."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "tests_or_checks": [
+        "Predict the product size before joining and examine repeated keys afterward."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-01",
+        "sql-recipe-03-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.8 Identifying and Avoiding Cartesian Products",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Diagnose a join that creates unrelated combinations.",
+          "Inspect the relationship graph and add the missing relationship predicates; retain a cross join only when every combination is intended.",
+          "Unrestricted combinations multiply the input row counts."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.8 Identifying and Avoiding Cartesian Products",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch03"
+      ],
+      "recipe_name": "3.8 Identifying and Avoiding Cartesian Products",
+      "problem_paraphrase": "Diagnose a join that creates unrelated combinations.",
+      "solution_pattern": "Inspect the relationship graph and add the missing relationship predicates; retain a cross join only when every combination is intended.",
+      "discussion_reasoning": "Unrestricted combinations multiply the input row counts.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "Either a justified pair of input rows or the intended related entity.",
+      "output_shape": "Related rows rather than an accidental product.",
+      "assumptions": [
+        "Either a justified pair of input rows or the intended related entity.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The book’s n−1 relationship heuristic is a starting check, not proof of correct composite keys."
+      ],
+      "test_query_or_validation_shape": "Predict the product size before joining and examine repeated keys afterward.",
+      "when_to_use": [
+        "Diagnose a join that creates unrelated combinations."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from either a justified pair of input rows or the intended related entity."
+      ],
+      "related_records": [
+        "sql-recipe-03-01",
+        "sql-recipe-03-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "Either a justified pair of input rows or the intended related entity.",
+      "join_key_assumptions": [
+        "Declare whether every pair is intended or supply the omitted relationship condition."
+      ],
+      "expected_cardinality": "An unrestricted pairwise product has left-count multiplied by right-count rows.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Predict the product size before joining and examine repeated keys afterward.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "DEPT",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "SALES",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-03-09",
+      "record_type": "recipe_pattern",
+      "name": "3.9 Performing Joins When Using Aggregates",
+      "summary": "Aggregate the parent measure at its own grain before joining; the book’s DISTINCT-aggregate shortcut is conditional on value uniqueness.",
+      "source_recipe_or_concept": "3.9 Performing Joins When Using Aggregates; supporting source units: 3.9",
+      "sql_problem_addressed": "Avoid counting a parent measure multiple times after a detail join.",
+      "query_intent": "Avoid counting a parent measure multiple times after a detail join.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "Employee salary grain versus employee-bonus row grain, then requested department summary.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP_BONUS",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "Employee salary grain versus employee-bonus row grain, then requested department summary.",
+      "key_columns_or_join_conditions": [
+        "EMP.EMPNO to EMP_BONUS.EMPNO; salary belongs to employee, bonus to related detail."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Avoid counting a parent measure multiple times after a detail join."
+      ],
+      "aggregation_or_windowing": "Aggregate the parent measure at its own grain before joining; the book’s DISTINCT-aggregate shortcut is conditional on value uniqueness.",
+      "result_shape": "Totals that respect each measure’s originating grain.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "The source’s DISTINCT window examples are not a validated cross-dialect implementation.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Review missing measures independently of duplicate expansion.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Avoid counting a parent measure multiple times after a detail join."
+      ],
+      "do_not_use_when": [
+        "The required grain or output shape differs from totals that respect each measure’s originating grain.",
+        "An unresolved source issue would be treated as production-ready SQL."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-aggregate-inflated-after-join"
+      ],
+      "tests_or_checks": [
+        "Add two employees with equal salaries and one employee with multiple bonuses; reconcile against independent source totals."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-02",
+        "sql-recipe-03-08",
+        "sql-recipe-07-03",
+        "sql-recipe-12-18",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-aggregate-inflated-after-join"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.9 Performing Joins When Using Aggregates",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Avoid counting a parent measure multiple times after a detail join.",
+          "Aggregate the parent measure at its own grain before joining; the book’s DISTINCT-aggregate shortcut is conditional on value uniqueness.",
+          "Distinct amounts are not distinct entities: two employees may legitimately have the same salary."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.9 Performing Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "recipe",
+        "ch03"
+      ],
+      "recipe_name": "3.9 Performing Joins When Using Aggregates",
+      "problem_paraphrase": "Avoid counting a parent measure multiple times after a detail join.",
+      "solution_pattern": "Aggregate the parent measure at its own grain before joining; the book’s DISTINCT-aggregate shortcut is conditional on value uniqueness.",
+      "discussion_reasoning": "Distinct amounts are not distinct entities: two employees may legitimately have the same salary.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "MySQL and PostgreSQL",
+          "dialects": [
+            "PostgreSQL",
+            "MySQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.2.1",
+          "function_tokens_detected": [
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2, Oracle, and SQL Server",
+          "dialects": [
+            "DB2",
+            "Oracle",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.2.2",
+          "function_tokens_detected": [
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL and PostgreSQL",
+          "dialects": [
+            "PostgreSQL",
+            "MySQL"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.3.1",
+          "function_tokens_detected": [
+            "EMP.SAL",
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2, Oracle, and SQL Server",
+          "dialects": [
+            "DB2",
+            "Oracle",
+            "SQL Server"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.3.2",
+          "function_tokens_detected": [
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "Employee salary grain versus employee-bonus row grain, then requested department summary.",
+      "output_shape": "Totals that respect each measure’s originating grain.",
+      "assumptions": [
+        "Employee salary grain versus employee-bonus row grain, then requested department summary.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The source’s DISTINCT window examples are not a validated cross-dialect implementation.",
+        "Deduplicating salaries by value cannot preserve two different employees with the same salary. The discussion also describes aggregation before the join."
+      ],
+      "test_query_or_validation_shape": "Add two employees with equal salaries and one employee with multiple bonuses; reconcile against independent source totals.",
+      "when_to_use": [
+        "Avoid counting a parent measure multiple times after a detail join."
+      ],
+      "when_not_to_use": [
+        "The required grain or output shape differs from totals that respect each measure’s originating grain.",
+        "An unresolved source issue would be treated as production-ready SQL."
+      ],
+      "related_records": [
+        "sql-recipe-03-02",
+        "sql-recipe-03-08",
+        "sql-recipe-07-03",
+        "sql-recipe-12-18",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-aggregate-inflated-after-join"
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "Employee salary grain versus employee-bonus row grain, then requested department summary.",
+      "join_key_assumptions": [
+        "Preserve employee identity; salary equality is not employee identity."
+      ],
+      "expected_cardinality": "An employee with several bonuses appears at bonus-event grain after joining.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Add two employees with equal salaries and one employee with multiple bonuses; reconcile against independent source totals.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "EMP_BONUS",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-03-10",
+      "record_type": "recipe_pattern",
+      "name": "3.10 Performing Outer Joins When Using Aggregates",
+      "summary": "Preserve the required parent population with an outer join and protect parent-grain aggregates from detail duplication.",
+      "source_recipe_or_concept": "3.10 Performing Outer Joins When Using Aggregates; supporting source units: 3.10",
+      "sql_problem_addressed": "Include parents without detail while computing correct totals.",
+      "query_intent": "Include parents without detail while computing correct totals.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "All qualifying employees, with bonus detail aggregated appropriately.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP_BONUS",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "All qualifying employees, with bonus detail aggregated appropriately.",
+      "key_columns_or_join_conditions": [
+        "Employee key and department key must retain their separate roles."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Include parents without detail while computing correct totals."
+      ],
+      "aggregation_or_windowing": "Preserve the required parent population with an outer join and protect parent-grain aggregates from detail duplication.",
+      "result_shape": "Summary including employees who have no bonus.",
+      "dialects_covered": [
+        "DB2",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "Review preaggregation before relying on SUM(DISTINCT measure) or DISTINCT windows.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "The source explicitly gives the missing bonus branch zero contribution; that is example-specific semantics.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Include parents without detail while computing correct totals."
+      ],
+      "do_not_use_when": [
+        "The required grain or output shape differs from summary including employees who have no bonus.",
+        "An unresolved source issue would be treated as production-ready SQL."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-outer-join-filtered-in-where",
+        "sql-risk-aggregate-inflated-after-join"
+      ],
+      "tests_or_checks": [
+        "Test a department with no bonuses, repeated bonuses, and two equal salaries."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-02",
+        "sql-recipe-03-08",
+        "sql-recipe-07-03",
+        "sql-recipe-12-18",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-outer-join-filtered-in-where",
+        "sql-risk-aggregate-inflated-after-join"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.10 Performing Outer Joins When Using Aggregates",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Include parents without detail while computing correct totals.",
+          "Preserve the required parent population with an outer join and protect parent-grain aggregates from detail duplication.",
+          "A missing bonus and a repeated employee salary are separate problems and must be handled separately."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.10 Performing Outer Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "recipe",
+        "ch03"
+      ],
+      "recipe_name": "3.10 Performing Outer Joins When Using Aggregates",
+      "problem_paraphrase": "Include parents without detail while computing correct totals.",
+      "solution_pattern": "Preserve the required parent population with an outer join and protect parent-grain aggregates from detail duplication.",
+      "discussion_reasoning": "A missing bonus and a repeated employee salary are separate problems and must be handled separately.",
+      "dialects_supported": [
+        "DB2",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2, MySQL, PostgreSQL, and SQL Server",
+          "dialects": [
+            "DB2",
+            "PostgreSQL",
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10.2.1",
+          "function_tokens_detected": [
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "All qualifying employees, with bonus detail aggregated appropriately.",
+      "output_shape": "Summary including employees who have no bonus.",
+      "assumptions": [
+        "All qualifying employees, with bonus detail aggregated appropriately.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Review preaggregation before relying on SUM(DISTINCT measure) or DISTINCT windows.",
+        "Deduplicating salaries by value cannot preserve two different employees with the same salary. The discussion also describes aggregation before the join."
+      ],
+      "test_query_or_validation_shape": "Test a department with no bonuses, repeated bonuses, and two equal salaries.",
+      "when_to_use": [
+        "Include parents without detail while computing correct totals."
+      ],
+      "when_not_to_use": [
+        "The required grain or output shape differs from summary including employees who have no bonus.",
+        "An unresolved source issue would be treated as production-ready SQL."
+      ],
+      "related_records": [
+        "sql-recipe-03-02",
+        "sql-recipe-03-08",
+        "sql-recipe-07-03",
+        "sql-recipe-12-18",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-outer-join-filtered-in-where",
+        "sql-risk-aggregate-inflated-after-join"
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "All qualifying employees, with bonus detail aggregated appropriately.",
+      "join_key_assumptions": [
+        "Preaggregate compatible rowsets and test absence using a reliable child identifier."
+      ],
+      "expected_cardinality": "An employee with no bonus is preserved once; multiple bonuses still repeat the employee measure.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Test a department with no bonuses, repeated bonuses, and two equal salaries.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "EMP_BONUS",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-03-11",
+      "record_type": "recipe_pattern",
+      "name": "3.11 Returning Missing Data from Multiple Tables",
+      "summary": "Use a supported full outer join or the source’s combination of opposite outer joins.",
+      "source_recipe_or_concept": "3.11 Returning Missing Data from Multiple Tables; supporting source units: 3.11",
+      "sql_problem_addressed": "Show matched records and unmatched records from either side.",
+      "query_intent": "Show matched records and unmatched records from either side.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "Matched pairs plus unmatched source entities.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "DEPT",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "SALES",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "Matched pairs plus unmatched source entities.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Show matched records and unmatched records from either side."
+      ],
+      "aggregation_or_windowing": "Use a supported full outer join or the source’s combination of opposite outer joins.",
+      "result_shape": "A reconciliation rowset with gaps visible on both sides.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "The source heading includes MySQL alongside FULL OUTER JOIN, then says to use a UNION workaround; preserve this inconsistency as a review flag.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Each unmatched side is NULL-extended; retain reliable source identifiers.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Show matched records and unmatched records from either side."
+      ],
+      "do_not_use_when": [
+        "The required grain or output shape differs from a reconciliation rowset with gaps visible on both sides.",
+        "An unresolved source issue would be treated as production-ready SQL."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-outer-join-filtered-in-where"
+      ],
+      "tests_or_checks": [
+        "Test left-only, right-only, one-to-many, and duplicate-identical matched rows."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-01",
+        "sql-recipe-03-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-outer-join-filtered-in-where"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.11 Returning Missing Data from Multiple Tables",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-11",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-11.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-11.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-11.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Show matched records and unmatched records from either side.",
+          "Use a supported full outer join or the source’s combination of opposite outer joins.",
+          "Both populations need preservation, but a UNION fallback has its own duplicate-removal behavior."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.11 Returning Missing Data from Multiple Tables",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-11",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "recipe",
+        "ch03"
+      ],
+      "recipe_name": "3.11 Returning Missing Data from Multiple Tables",
+      "problem_paraphrase": "Show matched records and unmatched records from either side.",
+      "solution_pattern": "Use a supported full outer join or the source’s combination of opposite outer joins.",
+      "discussion_reasoning": "Both populations need preservation, but a UNION fallback has its own duplicate-removal behavior.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2, MySQL, PostgreSQL, and SQL Server",
+          "dialects": [
+            "DB2",
+            "PostgreSQL",
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-11.2.1",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-11.2.2",
+          "function_tokens_detected": [
+            "D.DEPTNO",
+            "E.DEPTNO"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "Matched pairs plus unmatched source entities.",
+      "output_shape": "A reconciliation rowset with gaps visible on both sides.",
+      "assumptions": [
+        "Matched pairs plus unmatched source entities.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The source heading includes MySQL alongside FULL OUTER JOIN, then says to use a UNION workaround; preserve this inconsistency as a review flag.",
+        "The dialect heading includes MySQL while the body describes a UNION workaround rather than direct FULL OUTER JOIN."
+      ],
+      "test_query_or_validation_shape": "Test left-only, right-only, one-to-many, and duplicate-identical matched rows.",
+      "when_to_use": [
+        "Show matched records and unmatched records from either side."
+      ],
+      "when_not_to_use": [
+        "The required grain or output shape differs from a reconciliation rowset with gaps visible on both sides.",
+        "An unresolved source issue would be treated as production-ready SQL."
+      ],
+      "related_records": [
+        "sql-recipe-03-01",
+        "sql-recipe-03-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-outer-join-filtered-in-where"
+      ],
+      "source_issue_ids": [
+        "source-issue-full-join-heading"
+      ],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "Matched pairs plus unmatched source entities.",
+      "join_key_assumptions": [
+        "Retain enough left/right identity to distinguish absence from a NULL attribute."
+      ],
+      "expected_cardinality": "Preserve matches and both unmatched populations; duplicate keys can still multiply matched rows.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Test left-only, right-only, one-to-many, and duplicate-identical matched rows.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-11",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "DEPT",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-11",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "SALES",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-11",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-03-12",
+      "record_type": "recipe_pattern",
+      "name": "3.12 Using NULLs in Operations and Comparisons",
+      "summary": "Replace missing values with COALESCE before the comparison or expression only when that substitution matches the question.",
+      "source_recipe_or_concept": "3.12 Using NULLs in Operations and Comparisons; supporting source units: 3.12",
+      "sql_problem_addressed": "Compare or calculate with missing values when an explicit replacement is intended.",
+      "query_intent": "Compare or calculate with missing values when an explicit replacement is intended.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One comparison or expression result per source row.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One comparison or expression result per source row.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Compare or calculate with missing values when an explicit replacement is intended."
+      ],
+      "aggregation_or_windowing": "Replace missing values with COALESCE before the comparison or expression only when that substitution matches the question.",
+      "result_shape": "Rows evaluated using a documented NULL substitute.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "COALESCE changes meaning; it does not establish that missing commissions are always zero.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Compare or calculate with missing values when an explicit replacement is intended."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one comparison or expression result per source row."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "tests_or_checks": [
+        "Contrast results under missing-as-zero and missing-excluded interpretations."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-01",
+        "sql-recipe-03-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.12 Using NULLs in Operations and Comparisons",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-12",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-12.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-12.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-12.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Compare or calculate with missing values when an explicit replacement is intended.",
+          "Replace missing values with COALESCE before the comparison or expression only when that substitution matches the question.",
+          "The fallback participates as a real value in the resulting computation."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.12 Using NULLs in Operations and Comparisons",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-12",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch03"
+      ],
+      "recipe_name": "3.12 Using NULLs in Operations and Comparisons",
+      "problem_paraphrase": "Compare or calculate with missing values when an explicit replacement is intended.",
+      "solution_pattern": "Replace missing values with COALESCE before the comparison or expression only when that substitution matches the question.",
+      "discussion_reasoning": "The fallback participates as a real value in the resulting computation.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One comparison or expression result per source row.",
+      "output_shape": "Rows evaluated using a documented NULL substitute.",
+      "assumptions": [
+        "One comparison or expression result per source row.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Contrast results under missing-as-zero and missing-excluded interpretations.",
+      "when_to_use": [
+        "Compare or calculate with missing values when an explicit replacement is intended."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one comparison or expression result per source row."
+      ],
+      "related_records": [
+        "sql-recipe-03-01",
+        "sql-recipe-03-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "One comparison or expression result per source row.",
+      "join_key_assumptions": [
+        "COALESCE supplies a chosen fallback; it is not a relationship-key repair."
+      ],
+      "expected_cardinality": "This recipe changes value interpretation rather than prescribing a new join cardinality.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Contrast results under missing-as-zero and missing-excluded interpretations.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-12",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-04-14",
+      "record_type": "recipe_pattern",
+      "name": "4.14 Deleting a Single Record",
+      "summary": "Filter by an inspected primary or unique key rather than an ambiguous attribute.",
+      "source_recipe_or_concept": "4.14 Deleting a Single Record; supporting source units: 4.14",
+      "sql_problem_addressed": "Delete a single known record.",
+      "query_intent": "Delete a single known record.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One specifically identified target entity.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One specifically identified target entity.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Delete a single known record."
+      ],
+      "aggregation_or_windowing": "Filter by an inspected primary or unique key rather than an ambiguous attribute.",
+      "result_shape": "At most one row removed.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Verify nullable unique-key behavior rather than assuming every named key is a non-NULL primary key.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Delete a single known record."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one specifically identified target entity."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-not-in-null-trap",
+        "sql-risk-destructive-write"
+      ],
+      "tests_or_checks": [
+        "Confirm exactly one previewed record and distinguish missing-key from multiple-match errors."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-not-in-null-trap",
+        "sql-risk-destructive-write"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.14 Deleting a Single Record",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-14",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-14.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-14.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-14.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Delete a single known record.",
+          "Filter by an inspected primary or unique key rather than an ambiguous attribute.",
+          "Unique identity bounds the intended deletion to at most one record."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.14 Deleting a Single Record",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-14",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch04"
+      ],
+      "recipe_name": "4.14 Deleting a Single Record",
+      "problem_paraphrase": "Delete a single known record.",
+      "solution_pattern": "Filter by an inspected primary or unique key rather than an ambiguous attribute.",
+      "discussion_reasoning": "Unique identity bounds the intended deletion to at most one record.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One specifically identified target entity.",
+      "output_shape": "At most one row removed.",
+      "assumptions": [
+        "One specifically identified target entity.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Confirm exactly one previewed record and distinguish missing-key from multiple-match errors.",
+      "when_to_use": [
+        "Delete a single known record."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one specifically identified target entity."
+      ],
+      "related_records": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-not-in-null-trap",
+        "sql-risk-destructive-write"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "One specifically identified target entity.",
+      "join_key_assumptions": [
+        "Match the target to related data by the complete key, then preview exact target identifiers."
+      ],
+      "expected_cardinality": "One deletion candidate per target row regardless of how many related matches are found.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Confirm exactly one previewed record and distinguish missing-key from multiple-match errors.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-14",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-generated-sql",
+        "sql-verify-merge",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-13-01",
+      "record_type": "recipe_pattern",
+      "name": "13.1 Expressing a Parent-Child Relationship",
+      "summary": "Self-join the child’s parent-reference column to the parent row’s identity column.",
+      "source_recipe_or_concept": "13.1 Expressing a Parent-Child Relationship; supporting source units: 13.1",
+      "sql_problem_addressed": "Attach the immediate parent’s information to each child.",
+      "query_intent": "Attach the immediate parent’s information to each child.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One child-to-parent relationship.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One child-to-parent relationship.",
+      "key_columns_or_join_conditions": [
+        "Child EMP.MGR = parent EMP.EMPNO; use separate aliases."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Attach the immediate parent’s information to each child."
+      ],
+      "aggregation_or_windowing": "Self-join the child’s parent-reference column to the parent row’s identity column.",
+      "result_shape": "Children with their immediate parent’s attributes.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "Concatenation differences affect only the example’s display expression.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "A NULL parent reference represents a root in the source’s EMP example; an inner join does not preserve that root.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Attach the immediate parent’s information to each child."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one child-to-parent relationship."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-recursive-query-no-termination"
+      ],
+      "tests_or_checks": [
+        "Test a root, an orphan reference, duplicate parent identifiers, and a normal child."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-13-04",
+        "sql-recipe-13-05",
+        "sql-risk-current-version-assumption",
+        "sql-risk-recursive-query-no-termination"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "13",
+        "chapter_title": "Chapter 13. Hierarchical Queries",
+        "section_heading": "13.1 Expressing a Parent-Child Relationship",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-1",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-1.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-1.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-1.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Attach the immediate parent’s information to each child.",
+          "Self-join the child’s parent-reference column to the parent row’s identity column.",
+          "The two aliases represent different relationship roles even though they read the same table."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "13.1 Expressing a Parent-Child Relationship",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-1",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch13"
+      ],
+      "recipe_name": "13.1 Expressing a Parent-Child Relationship",
+      "problem_paraphrase": "Attach the immediate parent’s information to each child.",
+      "solution_pattern": "Self-join the child’s parent-reference column to the parent row’s identity column.",
+      "discussion_reasoning": "The two aliases represent different relationship roles even though they read the same table.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2, Oracle, and PostgreSQL",
+          "dialects": [
+            "DB2",
+            "Oracle",
+            "PostgreSQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-1.2.1",
+          "function_tokens_detected": [
+            "BAR"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL",
+          "dialects": [
+            "MySQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-1.2.2",
+          "function_tokens_detected": [
+            "CONCAT"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "SQL Server",
+          "dialects": [
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-1.2.3",
+          "function_tokens_detected": [
+            "SIGN"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "One child-to-parent relationship.",
+      "output_shape": "Children with their immediate parent’s attributes.",
+      "assumptions": [
+        "One child-to-parent relationship.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Concatenation differences affect only the example’s display expression."
+      ],
+      "test_query_or_validation_shape": "Test a root, an orphan reference, duplicate parent identifiers, and a normal child.",
+      "when_to_use": [
+        "Attach the immediate parent’s information to each child."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one child-to-parent relationship."
+      ],
+      "related_records": [
+        "sql-recipe-13-04",
+        "sql-recipe-13-05",
+        "sql-risk-current-version-assumption",
+        "sql-risk-recursive-query-no-termination"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "One child-to-parent relationship.",
+      "join_key_assumptions": [
+        "Employee MGR references the manager-role EMPNO; aliases distinguish relationship roles."
+      ],
+      "expected_cardinality": "At most one manager per employee only under the example’s unique employee identifier assumption.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Test a root, an orphan reference, duplicate parent identifiers, and a normal child.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-1",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-11-03",
+      "record_type": "recipe_pattern",
+      "name": "11.3 Incorporating OR Logic When Using Outer Joins",
+      "summary": "Move optional-side OR conditions into the join predicate or prefilter the optional rowset.",
+      "source_recipe_or_concept": "11.3 Incorporating OR Logic When Using Outer Joins; supporting source units: 11.3",
+      "sql_problem_addressed": "Restrict optional matches while retaining the preserved outer population.",
+      "query_intent": "Restrict optional matches while retaining the preserved outer population.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One preserved entity with qualifying optional matches.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "DEPT",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "SALES",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One preserved entity with qualifying optional matches.",
+      "key_columns_or_join_conditions": [
+        "Separate preserved-side population filters from optional-side match eligibility."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Restrict optional matches while retaining the preserved outer population."
+      ],
+      "aggregation_or_windowing": "Move optional-side OR conditions into the join predicate or prefilter the optional rowset.",
+      "result_shape": "All required preserved rows plus only eligible optional details.",
+      "dialects_covered": [
+        "DB2",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "A NULL-extended row must survive when its preserved entity is required.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Restrict optional matches while retaining the preserved outer population."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one preserved entity with qualifying optional matches."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-unstable-order-by"
+      ],
+      "tests_or_checks": [
+        "Test no match, a match failing the optional filter, and two eligible matches."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-11-01",
+        "sql-recipe-11-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-unstable-order-by"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "11",
+        "chapter_title": "Chapter 11. Advanced Searching",
+        "section_heading": "11.3 Incorporating OR Logic When Using Outer Joins",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-3",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-3.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-3.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-3.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Restrict optional matches while retaining the preserved outer population.",
+          "Move optional-side OR conditions into the join predicate or prefilter the optional rowset.",
+          "Filtering optional-side values in the final WHERE can remove the very nonmatches the outer join was meant to keep."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "11.3 Incorporating OR Logic When Using Outer Joins",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-3",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch11"
+      ],
+      "recipe_name": "11.3 Incorporating OR Logic When Using Outer Joins",
+      "problem_paraphrase": "Restrict optional matches while retaining the preserved outer population.",
+      "solution_pattern": "Move optional-side OR conditions into the join predicate or prefilter the optional rowset.",
+      "discussion_reasoning": "Filtering optional-side values in the final WHERE can remove the very nonmatches the outer join was meant to keep.",
+      "dialects_supported": [
+        "DB2",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2, MySQL, PostgreSQL, and SQL Server",
+          "dialects": [
+            "DB2",
+            "PostgreSQL",
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-3.3.1",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "One preserved entity with qualifying optional matches.",
+      "output_shape": "All required preserved rows plus only eligible optional details.",
+      "assumptions": [
+        "One preserved entity with qualifying optional matches.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Test no match, a match failing the optional filter, and two eligible matches.",
+      "when_to_use": [
+        "Restrict optional matches while retaining the preserved outer population."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one preserved entity with qualifying optional matches."
+      ],
+      "related_records": [
+        "sql-recipe-11-01",
+        "sql-recipe-11-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-unstable-order-by"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "One preserved entity with qualifying optional matches.",
+      "join_key_assumptions": [
+        "Check whether each OR condition applies to the same relationship or a separate existence test."
+      ],
+      "expected_cardinality": "Multiple alternatives can be represented without unintentionally dropping optional matches.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Test no match, a match failing the optional filter, and two eligible matches.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-3",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "DEPT",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-3",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "SALES",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-3",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-11-04",
+      "record_type": "recipe_pattern",
+      "name": "11.4 Determining Which Rows Are Reciprocals",
+      "summary": "Self-join with the two comparison columns reversed and use a canonical pair ordering when only one representation is wanted.",
+      "source_recipe_or_concept": "11.4 Determining Which Rows Are Reciprocals; supporting source units: 11.4",
+      "sql_problem_addressed": "Find reversed pairs such as (a,b) and (b,a).",
+      "query_intent": "Find reversed pairs such as (a,b) and (b,a).",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One reciprocal value pair or source-row pair, as specified.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        }
+      ],
+      "required_grain": "One reciprocal value pair or source-row pair, as specified.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Find reversed pairs such as (a,b) and (b,a)."
+      ],
+      "aggregation_or_windowing": "Self-join with the two comparison columns reversed and use a canonical pair ordering when only one representation is wanted.",
+      "result_shape": "Reciprocal pairs without unwanted reversed duplicates.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "The source uses DISTINCT for a value-pair output; it should not hide unexpected entity-level duplication.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Equality on NULL components needs an explicit matching policy.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Find reversed pairs such as (a,b) and (b,a)."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one reciprocal value pair or source-row pair, as specified."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-unstable-order-by"
+      ],
+      "tests_or_checks": [
+        "Test equal values, duplicated source rows, missing reversed partners, and NULL components."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-11-01",
+        "sql-recipe-11-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-unstable-order-by"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "11",
+        "chapter_title": "Chapter 11. Advanced Searching",
+        "section_heading": "11.4 Determining Which Rows Are Reciprocals",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-4",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-4.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-4.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-4.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Find reversed pairs such as (a,b) and (b,a).",
+          "Self-join with the two comparison columns reversed and use a canonical pair ordering when only one representation is wanted.",
+          "Reciprocity is a relationship between two rows, not a numeric reciprocal calculation."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "11.4 Determining Which Rows Are Reciprocals",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-4",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch11"
+      ],
+      "recipe_name": "11.4 Determining Which Rows Are Reciprocals",
+      "problem_paraphrase": "Find reversed pairs such as (a,b) and (b,a).",
+      "solution_pattern": "Self-join with the two comparison columns reversed and use a canonical pair ordering when only one representation is wanted.",
+      "discussion_reasoning": "Reciprocity is a relationship between two rows, not a numeric reciprocal calculation.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One reciprocal value pair or source-row pair, as specified.",
+      "output_shape": "Reciprocal pairs without unwanted reversed duplicates.",
+      "assumptions": [
+        "One reciprocal value pair or source-row pair, as specified.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The source uses DISTINCT for a value-pair output; it should not hide unexpected entity-level duplication."
+      ],
+      "test_query_or_validation_shape": "Test equal values, duplicated source rows, missing reversed partners, and NULL components.",
+      "when_to_use": [
+        "Find reversed pairs such as (a,b) and (b,a)."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one reciprocal value pair or source-row pair, as specified."
+      ],
+      "related_records": [
+        "sql-recipe-11-01",
+        "sql-recipe-11-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-unstable-order-by"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "One reciprocal value pair or source-row pair, as specified.",
+      "join_key_assumptions": [
+        "Match the reversed endpoint keys, and specify self-pair and duplicate-edge handling."
+      ],
+      "expected_cardinality": "A reciprocal pair can appear in both orientations unless a pair representation is deliberately canonicalized.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Test equal values, duplicated source rows, missing reversed partners, and NULL components.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-14-10",
+      "record_type": "recipe_pattern",
+      "name": "14.10 Converting a Scalar Subquery to a Composite Subquery in Oracle",
+      "summary": "Construct a declared Oracle object containing several attributes so the subquery still returns one value.",
+      "source_recipe_or_concept": "14.10 Converting a Scalar Subquery to a Composite Subquery in Oracle; supporting source units: 14.10",
+      "sql_problem_addressed": "Return a composite value through an Oracle scalar-subquery interface.",
+      "query_intent": "Return a composite value through an Oracle scalar-subquery interface.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One scalar object per outer row.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "DEPT",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "SALES",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One scalar object per outer row.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Return a composite value through an Oracle scalar-subquery interface."
+      ],
+      "aggregation_or_windowing": "Construct a declared Oracle object containing several attributes so the subquery still returns one value.",
+      "result_shape": "An object-valued column with accessible attributes.",
+      "dialects_covered": [
+        "Oracle"
+      ],
+      "dialect_specific_notes": [
+        "The source calls the example artificial and notes a normal join is simpler; object-type creation needs explicit authorization.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "No object and an object containing NULL attributes are distinct states to inspect.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Return a composite value through an Oracle scalar-subquery interface."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one scalar object per outer row."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Test zero, one, and multiple matched source rows and verify the object type definition."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-14-01",
+        "sql-recipe-14-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "14",
+        "chapter_title": "Chapter 14. Odds ’n’ Ends",
+        "section_heading": "14.10 Converting a Scalar Subquery to a Composite Subquery in Oracle",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-10",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-10.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-10.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-10.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Return a composite value through an Oracle scalar-subquery interface.",
+          "Construct a declared Oracle object containing several attributes so the subquery still returns one value.",
+          "Multiple object attributes do not remove the requirement that the scalar subquery return at most one row."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "14.10 Converting a Scalar Subquery to a Composite Subquery in Oracle",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-10",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch14"
+      ],
+      "recipe_name": "14.10 Converting a Scalar Subquery to a Composite Subquery in Oracle",
+      "problem_paraphrase": "Return a composite value through an Oracle scalar-subquery interface.",
+      "solution_pattern": "Construct a declared Oracle object containing several attributes so the subquery still returns one value.",
+      "discussion_reasoning": "Multiple object attributes do not remove the requirement that the scalar subquery return at most one row.",
+      "dialects_supported": [
+        "Oracle"
+      ],
+      "dialect_variants": [],
+      "input_shape": "One scalar object per outer row.",
+      "output_shape": "An object-valued column with accessible attributes.",
+      "assumptions": [
+        "One scalar object per outer row.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The source calls the example artificial and notes a normal join is simpler; object-type creation needs explicit authorization."
+      ],
+      "test_query_or_validation_shape": "Test zero, one, and multiple matched source rows and verify the object type definition.",
+      "when_to_use": [
+        "Return a composite value through an Oracle scalar-subquery interface."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one scalar object per outer row."
+      ],
+      "related_records": [
+        "sql-recipe-14-01",
+        "sql-recipe-14-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "One scalar object per outer row.",
+      "join_key_assumptions": [
+        "Do not treat multiple related records as a scalar without a justified reduction."
+      ],
+      "expected_cardinality": "A scalar/composite expression needs an intended single matching result for each outer context.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Test zero, one, and multiple matched source rows and verify the object type definition.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-10",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "DEPT",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-10",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "SALES",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-10",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-oracle-version"
+      ]
+    },
+    {
+      "id": "sql-concept-row-value-distinct",
+      "record_type": "core_sql_pattern",
+      "name": "Entity identity is not measure equality",
+      "summary": "Two entities may have equal measure values, so DISTINCT on a measure cannot generally repair duplicated entities after a join.",
+      "source_recipe_or_concept": "3.9 Performing Joins When Using Aggregates; supporting source units: 3.9, 3.10",
+      "sql_problem_addressed": "Two entities may have equal measure values, so DISTINCT on a measure cannot generally repair duplicated entities after a join.",
+      "query_intent": "Entity identity is not measure equality",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Preserve employee identity separately from bonus-event grain.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Correct entity total and separately aggregated bonus total.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Entity identity is not measure equality is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Use two employees with the same salary and multiple bonus rows."
+      ],
+      "diagnostic_questions": [
+        "Which concrete output row would demonstrate that this design answers the intended question?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-09",
+        "sql-recipe-03-10"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.9 Performing Joins When Using Aggregates",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "Two entities may have equal measure values, so DISTINCT on a measure cannot generally repair duplicated entities after a join.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.9 Performing Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "3.10 Performing Outer Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "medium",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "core_sql_pattern"
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "table_grain": "Preserve employee identity separately from bonus-event grain.",
+      "join_key_assumptions": [
+        "Entity identifiers, not measure values, control the relationship."
+      ],
+      "expected_cardinality": "One total per entity grouping after separating parent and child grains.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Use two employees with the same salary and multiple bonus rows.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    }
+  ]
+}

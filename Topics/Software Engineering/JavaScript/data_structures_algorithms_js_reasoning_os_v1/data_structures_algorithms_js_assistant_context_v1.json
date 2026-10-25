@@ -1,0 +1,4297 @@
+{
+  "context_metadata": {
+    "file_name": "data_structures_algorithms_js_assistant_context_v1.json",
+    "package_id": "data_structures_algorithms_js_reasoning_os_v1",
+    "package_version": "1.0",
+    "generated_at_utc": "2026-08-25T17:45:26.946739+00:00",
+    "purpose": "Compact routing and decision context for future AI assistants. This is not the full OS and does not duplicate full record bodies.",
+    "target_size_bytes": {
+      "minimum": 76800,
+      "maximum": 204800
+    },
+    "source_title": "Data Structures and Algorithms with JavaScript",
+    "source_author": "Michael McMillan",
+    "source_era_boundary": "Algorithmic reasoning transfers more reliably than source-era JavaScript implementation details. Apps Script behavior requires current verification.",
+    "actual_size_bytes_after_serialization": 191687
+  },
+  "core_thesis": {
+    "id": "dsa-core-thesis",
+    "summary": "Nontrivial programs require both a representation for the data they manipulate and algorithms that transform input into output. Arrays are important but not sufficient for every problem; the right structure can make the algorithm clearer and more efficient, while source-era JavaScript implementation details must be separated from current runtime behavior.",
+    "selection_principle": "Choose representation from the problem’s required operations, invariants, and scale; do not default to arrays or advanced structures without evidence."
+  },
+  "authority_order": [
+    "Current project code and runtime behavior",
+    "Current error logs, execution logs, stack traces, and user reports",
+    "Current data shape in Sheets, CSV, XLSX, APIs, or uploaded files",
+    "Current Google Apps Script documentation and quotas",
+    "Current JavaScript runtime documentation when relevant",
+    "Current business requirements, SOPs, and workflow rules",
+    "Source-supported data-structure and algorithm concepts from the book",
+    "Cross-chapter synthesis from the source",
+    "Google Apps Script translation-layer extensions",
+    "Internal-tool workflow extensions",
+    "AI-agent workflow extensions",
+    "General programming advice"
+  ],
+  "data_structure_selection_gate": [
+    "What problem is the script solving?",
+    "What is the input data shape?",
+    "What is the output data shape?",
+    "What uniquely identifies each record?",
+    "Do we need order, uniqueness, lookup, grouping, hierarchy, dependency, or processing order?",
+    "What data structure fits that need?",
+    "What operation dominates runtime?",
+    "What is the expected row count or scale?",
+    "Are we repeatedly scanning data that could be indexed?",
+    "Are we calling Apps Script services inside loops?",
+    "What validation must happen before transformation?",
+    "What happens on duplicate, missing, malformed, or unmapped data?",
+    "Can errors be collected without writing live output?",
+    "What current Apps Script behavior must be verified?",
+    "What test proves the structure and algorithm work?"
+  ],
+  "high_priority_rules": [
+    "Identify input shape, output shape, stable keys, cardinality, order, uniqueness, grouping, hierarchy, dependency, processing order, and scale before proposing code.",
+    "Prefer bounded batch reads and writes; do not place repeated spreadsheet service calls inside row loops without explicit current evidence.",
+    "Build validated lookup maps for repeated key search; define duplicate and missing-key policy first.",
+    "Use sets for uniqueness/coverage only when order and occurrence counts are handled separately as needed.",
+    "Use queues for staged work only with durable state, bounded retries, idempotency, concurrency controls, and item-level results.",
+    "Use binary search only on data proven sorted by the same comparator.",
+    "Treat trees, graphs, dynamic programming, and greedy optimization as problem-specific tools, not signs of sophistication.",
+    "Parse, validate, transform, preview, and then export; do not begin live effects while still discovering fatal errors.",
+    "Preserve original row/source provenance through sorting, filtering, grouping, joins, and error reporting.",
+    "Separate source-era SpiderMonkey/Node examples, current JavaScript features, and current Apps Script host APIs."
+  ],
+  "workflow_router": [
+    {
+      "task": "Choose a structure",
+      "workflow_id": "dsa-workflow-choose-data-structure"
+    },
+    {
+      "task": "Review a Sheets script",
+      "workflow_id": "dsa-workflow-review-sheets-transformation"
+    },
+    {
+      "task": "Diagnose timeout",
+      "workflow_id": "dsa-workflow-diagnose-timeout"
+    },
+    {
+      "task": "Design a processor",
+      "workflow_id": "dsa-workflow-parse-validate-transform-export"
+    },
+    {
+      "task": "Review retries/idempotency",
+      "workflow_id": "dsa-workflow-review-queue-retry-idempotency"
+    },
+    {
+      "task": "Review partial failures",
+      "workflow_id": "dsa-workflow-review-partial-failure"
+    },
+    {
+      "task": "Verify source-era code",
+      "workflow_id": "dsa-workflow-verify-source-era-runtime"
+    },
+    {
+      "task": "Decide on current docs",
+      "workflow_id": "dsa-workflow-decide-current-docs"
+    }
+  ],
+  "must_not_do": [
+    "Assume arrays are always enough.",
+    "Implement source-era classes blindly.",
+    "Treat Apps Script as Node.js, SpiderMonkey shell, or browser JavaScript.",
+    "Assume current Map/Set/sort/service/quota/trigger/Web App behavior without verification.",
+    "Use binary search on unsorted data.",
+    "Use nested scans without checking scale and key-index alternatives.",
+    "Write live outputs before validation or ignore duplicates, missing mappings, partial failures, and idempotency.",
+    "Invent current project code, schemas, or business rules."
+  ],
+  "current_verification_categories": [
+    "dsa-verify-spidermonkey-node",
+    "dsa-verify-current-js-features",
+    "dsa-verify-array-object-runtime",
+    "dsa-verify-map-set-runtime",
+    "dsa-verify-array-sort-runtime",
+    "dsa-verify-v8-runtime",
+    "dsa-verify-apps-script-quotas",
+    "dsa-verify-execution-limits",
+    "dsa-verify-spreadsheet-performance",
+    "dsa-verify-state-services",
+    "dsa-verify-lock-service",
+    "dsa-verify-triggers",
+    "dsa-verify-web-app-boundary",
+    "dsa-verify-authorization-deployment",
+    "dsa-verify-file-upload",
+    "dsa-verify-source-repository-errata",
+    "dsa-verify-project-data-shape"
+  ],
+  "record_catalog": [
+    {
+      "id": "dsa-core-thesis",
+      "record_group": "core_thesis",
+      "name": "Choose representation and algorithm together",
+      "summary": "Nontrivial programs require both a representation for the data they manipulate and algorithms that…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-core-programs-structure-plus-algorithms",
+      "record_group": "core_principles",
+      "name": "Programs combine data structures and algorithms",
+      "summary": "Nontrivial programs need a representation for the data they manipulate and procedures that transfor…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-core-structure-shapes-algorithm",
+      "record_group": "core_principles",
+      "name": "The right structure can simplify the algorithm",
+      "summary": "Selecting a structure that naturally supports the needed operations can make the solution easier to…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-core-arrays-not-universal",
+      "record_group": "core_principles",
+      "name": "Arrays are common but not universal",
+      "summary": "Arrays are effective for many problems, but their familiarity should not prevent consideration of l…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-core-appropriate-over-familiar",
+      "record_group": "core_principles",
+      "name": "Choose the most appropriate structure and algorithm",
+      "summary": "The design objective is not merely to know many structures or algorithms, but to select the combina…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-core-input-output-shape",
+      "record_group": "core_principles",
+      "name": "Reason from input shape to output shape",
+      "summary": "Algorithm design should begin with the form of the incoming data, the desired result, and the inter…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-core-adt-separates-interface-storage",
+      "record_group": "core_principles",
+      "name": "An ADT defines behavior independently of storage",
+      "summary": "A list ADT specifies properties and operations without requiring one storage mechanism; the book th…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-core-iterator-hides-storage",
+      "record_group": "core_principles",
+      "name": "Iteration can hide the storage mechanism",
+      "summary": "An iterator lets client logic traverse a list without direct knowledge of its underlying storage.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-core-preconditions-control-algorithms",
+      "record_group": "core_principles",
+      "name": "Algorithm preconditions are part of correctness",
+      "summary": "Binary search requires sorted data, topological sorting requires a directed precedence relation, an…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-core-runtime-boundary",
+      "record_group": "core_principles",
+      "name": "Concepts transfer more reliably than source-era runtime code",
+      "summary": "The source targets a SpiderMonkey JavaScript shell and notes that Node.js requires translation; the…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-core-measure-with-realistic-data",
+      "record_group": "core_principles",
+      "name": "Performance claims need representative measurements",
+      "summary": "The sorting chapter constructs a test bed and compares algorithms on larger data sets because small…",
+      "classification": "source_direct_example",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-core-simple-structure-can-be-enough",
+      "record_group": "core_principles",
+      "name": "A simple structure can be enough when the algorithm carries the work",
+      "summary": "The advanced-algorithms chapter uses arrays as tables and emphasizes that a powerful algorithm can…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-core-local-versus-global-quality",
+      "record_group": "core_principles",
+      "name": "Local choices do not guarantee a global optimum",
+      "summary": "Greedy algorithms select the best available local choice; they are appropriate only when that rule…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-algorithm",
+      "record_group": "terminology_registry",
+      "name": "algorithm",
+      "summary": "A procedure used with a data representation to transform or solve a programming problem.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-data-structure",
+      "record_group": "terminology_registry",
+      "name": "data structure",
+      "summary": "An organization for data that supports the operations a program needs.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-array",
+      "record_group": "terminology_registry",
+      "name": "array",
+      "summary": "A linear collection accessed through indices; JavaScript arrays are described as specialized object…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-list",
+      "record_group": "terminology_registry",
+      "name": "list",
+      "summary": "An ordered sequence with properties and operations such as append, insert, remove, movement, and it…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-stack",
+      "record_group": "terminology_registry",
+      "name": "stack",
+      "summary": "A last-in, first-out collection accessed at its top.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-queue",
+      "record_group": "terminology_registry",
+      "name": "queue",
+      "summary": "A first-in, first-out collection that removes from the front and adds at the rear.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-linked-list",
+      "record_group": "terminology_registry",
+      "name": "linked list",
+      "summary": "A sequence of node objects connected by links rather than stored solely in adjacent array positions.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-dictionary",
+      "record_group": "terminology_registry",
+      "name": "dictionary",
+      "summary": "A key-value collection whose operations associate, find, remove, and display values by key.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-hash-table",
+      "record_group": "terminology_registry",
+      "name": "hash table",
+      "summary": "A table that stores values at positions computed from keys by a hash function.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-set",
+      "record_group": "terminology_registry",
+      "name": "set",
+      "summary": "A collection of unique members supporting membership and set operations.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-binary-tree",
+      "record_group": "terminology_registry",
+      "name": "binary tree",
+      "summary": "A tree in which each node has at most two child nodes.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-binary-search-tree",
+      "record_group": "terminology_registry",
+      "name": "binary search tree",
+      "summary": "A binary tree that places lower-valued nodes to one side and higher-valued nodes to the other.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-graph",
+      "record_group": "terminology_registry",
+      "name": "graph",
+      "summary": "A set of vertices connected by edges, used to model networks and relationships.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-vertex",
+      "record_group": "terminology_registry",
+      "name": "vertex",
+      "summary": "An entity or node in a graph.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-edge",
+      "record_group": "terminology_registry",
+      "name": "edge",
+      "summary": "A connection between two vertices; it may be directed or undirected depending on the graph.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-path",
+      "record_group": "terminology_registry",
+      "name": "path",
+      "summary": "A sequence of vertices connected by edges in a graph.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-sorting",
+      "record_group": "terminology_registry",
+      "name": "sorting",
+      "summary": "Rearranging data into a defined order using comparison or distribution procedures.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-searching",
+      "record_group": "terminology_registry",
+      "name": "searching",
+      "summary": "Finding a specified value in a collection, with sequential and binary search presented for unsorted…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-sequential-search",
+      "record_group": "terminology_registry",
+      "name": "sequential search",
+      "summary": "A scan from the beginning that checks each element until it finds a match or reaches the end.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-binary-search",
+      "record_group": "terminology_registry",
+      "name": "binary search",
+      "summary": "A midpoint-based search that repeatedly halves a sorted search range.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-recursion",
+      "record_group": "terminology_registry",
+      "name": "recursion",
+      "summary": "A function repeatedly calls itself on smaller instances until a terminating condition is reached.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-dynamic-programming",
+      "record_group": "terminology_registry",
+      "name": "dynamic programming",
+      "summary": "A strategy that stores solutions to smaller subproblems in a table and combines them into a larger…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-greedy-algorithm",
+      "record_group": "terminology_registry",
+      "name": "greedy algorithm",
+      "summary": "A procedure that takes the best current choice without considering all future consequences.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-complexity",
+      "record_group": "terminology_registry",
+      "name": "complexity",
+      "summary": "The amount of work or storage an algorithm requires as data size and structure change; the source o…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-efficiency",
+      "record_group": "terminology_registry",
+      "name": "efficiency",
+      "summary": "How productively an algorithm uses time and, where discussed, storage relative to alternatives.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-iteration",
+      "record_group": "terminology_registry",
+      "name": "iteration",
+      "summary": "Repeated traversal or computation through loop or iterator operations.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-lookup",
+      "record_group": "terminology_registry",
+      "name": "lookup",
+      "summary": "Retrieving a value by a key or search criterion through dictionary, hash-table, tree, or search ope…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-duplicate",
+      "record_group": "terminology_registry",
+      "name": "duplicate",
+      "summary": "A repeated value that a set rejects as an additional member, or that another structure may preserve.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-ordered-data",
+      "record_group": "terminology_registry",
+      "name": "ordered data",
+      "summary": "Data arranged under a comparison or sequence rule, enabling operations such as binary search or ord…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-unordered-data",
+      "record_group": "terminology_registry",
+      "name": "unordered data",
+      "summary": "Data without the sorted order required by binary search; the source uses sequential search for such…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-key-value-pair",
+      "record_group": "terminology_registry",
+      "name": "key-value pair",
+      "summary": "An association in which a key identifies the value stored or retrieved in a dictionary.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-collision",
+      "record_group": "terminology_registry",
+      "name": "collision",
+      "summary": "A condition in which different keys produce the same hash-table location.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-traversal",
+      "record_group": "terminology_registry",
+      "name": "traversal",
+      "summary": "Systematic visitation of elements or nodes in a structure, such as list iteration, tree orders, or…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-breadth-first-search",
+      "record_group": "terminology_registry",
+      "name": "breadth-first search",
+      "summary": "A graph traversal that explores vertices layer by layer using a queue.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-depth-first-search",
+      "record_group": "terminology_registry",
+      "name": "depth-first search",
+      "summary": "A graph traversal that follows a path deeply, then backtracks to explore alternatives.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-adjacency",
+      "record_group": "terminology_registry",
+      "name": "adjacency",
+      "summary": "The direct connection relationship between graph vertices, represented in the source with adjacency…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-local-optimum",
+      "record_group": "terminology_registry",
+      "name": "local optimum",
+      "summary": "The best choice available at a particular greedy step.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-term-global-optimum",
+      "record_group": "terminology_registry",
+      "name": "global optimum",
+      "summary": "The best complete solution to the overall problem.",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-ds-array",
+      "record_group": "data_structure_records",
+      "name": "Array",
+      "summary": "A linear collection accessed by integer-like indices; in JavaScript the source describes arrays as…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-ds-list",
+      "record_group": "data_structure_records",
+      "name": "List ADT",
+      "summary": "An ordered sequence with defined operations for insertion, removal, cursor movement, and traversal.",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-ds-stack",
+      "record_group": "data_structure_records",
+      "name": "Stack",
+      "summary": "A last-in, first-out collection accessed from one end through push, pop, and peek operations.",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-ds-queue",
+      "record_group": "data_structure_records",
+      "name": "Queue",
+      "summary": "A first-in, first-out collection that adds at the rear and removes from the front.",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-ds-linked-list",
+      "record_group": "data_structure_records",
+      "name": "Linked list",
+      "summary": "A sequence of node objects connected by references, used to avoid some insertion and deletion costs…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-ds-dictionary",
+      "record_group": "data_structure_records",
+      "name": "Dictionary",
+      "summary": "A key-value collection that retrieves values by named keys rather than by scanning positional eleme…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-ds-hash-table",
+      "record_group": "data_structure_records",
+      "name": "Hash table",
+      "summary": "A keyed table that converts keys into array positions through a hash function and needs a strategy…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-ds-set",
+      "record_group": "data_structure_records",
+      "name": "Set",
+      "summary": "A collection whose members are unique and that supports membership and operations such as union, in…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-ds-bst",
+      "record_group": "data_structure_records",
+      "name": "Binary search tree",
+      "summary": "A binary tree ordered so lower values are placed on one side and higher values on the other, suppor…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-ds-graph",
+      "record_group": "data_structure_records",
+      "name": "Graph",
+      "summary": "A collection of vertices connected by edges that represents networks, routes, and dependency relati…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-ds-two-dimensional-array",
+      "record_group": "data_structure_records",
+      "name": "Two-dimensional array",
+      "summary": "An array of arrays used to represent row-column data and dynamic-programming tables.",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-ds-priority-queue",
+      "record_group": "data_structure_records",
+      "name": "Priority queue",
+      "summary": "A queue variant where removal follows priority rather than simple arrival order.",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-alg-sequential-search",
+      "record_group": "algorithm_records",
+      "name": "Sequential search",
+      "summary": "Scans elements from the beginning until a match is found or the collection ends.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-alg-binary-search",
+      "record_group": "algorithm_records",
+      "name": "Binary search",
+      "summary": "Repeatedly compares with a midpoint and discards half of a sorted search range.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-alg-depth-first-search",
+      "record_group": "algorithm_records",
+      "name": "Depth-first search",
+      "summary": "Explores one path as far as possible, backtracks, and continues through remaining unvisited paths.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-alg-breadth-first-search",
+      "record_group": "algorithm_records",
+      "name": "Breadth-first search",
+      "summary": "Explores vertices layer by layer using a queue.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-alg-topological-sort",
+      "record_group": "algorithm_records",
+      "name": "Topological sorting",
+      "summary": "Orders vertices of a directed precedence graph so edges point from earlier to later positions.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-alg-bubble-sort",
+      "record_group": "algorithm_records",
+      "name": "Bubble sort",
+      "summary": "Repeatedly compares neighboring elements and moves larger values toward one end.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-alg-selection-sort",
+      "record_group": "algorithm_records",
+      "name": "Selection sort",
+      "summary": "Selects the smallest remaining element and places it into the next output position.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-alg-insertion-sort",
+      "record_group": "algorithm_records",
+      "name": "Insertion sort",
+      "summary": "Builds a sorted prefix by inserting each next value into its proper position.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-alg-shellsort",
+      "record_group": "algorithm_records",
+      "name": "Shellsort",
+      "summary": "Improves insertion sort by comparing distant elements through a decreasing gap sequence.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-alg-mergesort",
+      "record_group": "algorithm_records",
+      "name": "Mergesort",
+      "summary": "Recursively or iteratively forms sorted sublists and merges them into larger sorted lists.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-alg-quicksort",
+      "record_group": "algorithm_records",
+      "name": "Quicksort",
+      "summary": "Chooses a pivot, partitions values around it, and recursively sorts the smaller and larger partitio…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-alg-dynamic-programming",
+      "record_group": "algorithm_records",
+      "name": "Dynamic programming",
+      "summary": "Solves smaller subproblems, stores their results in a table, and combines them into a larger soluti…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-alg-greedy",
+      "record_group": "algorithm_records",
+      "name": "Greedy algorithm",
+      "summary": "Makes the best available local choice at each step, accepting that the final result may be optimal…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-alg-recursion",
+      "record_group": "algorithm_records",
+      "name": "Recursion",
+      "summary": "A function solves a problem by calling itself on smaller instances until a base case is reached.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-alg-hashing",
+      "record_group": "algorithm_records",
+      "name": "Hashing",
+      "summary": "Transforms a key into a table position, with collision handling when different keys map to the same…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-alg-radix-sort-queues",
+      "record_group": "algorithm_records",
+      "name": "Radix sorting with queues",
+      "summary": "Distributes numbers into queues by digit position and collects them over successive passes.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-array-definition",
+      "record_group": "array_records",
+      "name": "JavaScript array as indexed specialized object",
+      "summary": "The source contrasts conventional contiguous-array definitions with JavaScript arrays, whose intege…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-array-creation",
+      "record_group": "array_records",
+      "name": "Array creation choices",
+      "summary": "The source demonstrates array literals and constructor forms, including empty arrays, initialized e…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-array-indexed-access-growth",
+      "record_group": "array_records",
+      "name": "Indexed access, writes, and dynamic growth",
+      "summary": "Elements are read and written through bracket indexing, and loops should use the array length rathe…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-array-split-string",
+      "record_group": "array_records",
+      "name": "Create arrays by splitting strings",
+      "summary": "A string can be divided at a delimiter to create an array of parts.",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-array-reference-versus-copy",
+      "record_group": "array_records",
+      "name": "Array assignment and copy semantics",
+      "summary": "Assigning one array variable to another shares the same underlying elements in the source example;…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-array-indexof-lastindexof",
+      "record_group": "array_records",
+      "name": "Array value search with index results",
+      "summary": "The source uses value-search accessor functions that return the first or last matching index and re…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-array-string-representation",
+      "record_group": "array_records",
+      "name": "Array string representation",
+      "summary": "The source shows array-to-string operations that produce comma-delimited representations.",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-array-concat-slice",
+      "record_group": "array_records",
+      "name": "Create arrays with concatenation and slicing",
+      "summary": "The source creates new arrays by joining existing arrays or selecting a contiguous subset.",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-array-push-unshift",
+      "record_group": "array_records",
+      "name": "Add elements at array end or beginning",
+      "summary": "The source contrasts efficient-looking end addition with beginning insertion that requires shifting…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-array-pop-shift",
+      "record_group": "array_records",
+      "name": "Remove elements at array end or beginning",
+      "summary": "The source presents end removal and beginning removal and explains that beginning removal collapses…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-array-splice-middle",
+      "record_group": "array_records",
+      "name": "Insert or remove in the middle with splice-like mutation",
+      "summary": "The source uses a mutator that accepts a starting position, removal count, and optional inserted va…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-array-sort-comparator",
+      "record_group": "array_records",
+      "name": "Array ordering and comparator semantics",
+      "summary": "The source shows reversal and sorting, warns that default sorting treats values lexicographically,…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-array-iterators-non-generating",
+      "record_group": "array_records",
+      "name": "Iterator functions that do not return a new array",
+      "summary": "The source groups iterator functions that apply logic to elements or reduce the collection to Boole…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-array-iterators-generating",
+      "record_group": "array_records",
+      "name": "Iterator functions that return new arrays",
+      "summary": "The source uses one iterator to transform every element and another to retain only elements satisfy…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-array-two-dimensional",
+      "record_group": "array_records",
+      "name": "Two-dimensional arrays as arrays of arrays",
+      "summary": "Because JavaScript arrays are one-dimensional, the source constructs row-column structures by placi…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-array-two-dimensional-processing",
+      "record_group": "array_records",
+      "name": "Nested traversal of row-column arrays",
+      "summary": "The source processes two-dimensional values with an outer row loop and an inner column loop.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-array-jagged",
+      "record_group": "array_records",
+      "name": "Jagged arrays",
+      "summary": "The source allows inner arrays to have different lengths and processes each row according to its ow…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-array-of-objects",
+      "record_group": "array_records",
+      "name": "Arrays of objects",
+      "summary": "The source stores object instances in arrays so ordered collection operations can be combined with…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-array-in-object",
+      "record_group": "array_records",
+      "name": "Arrays as object properties",
+      "summary": "The source places arrays inside objects to group collection data with related behavior or metadata.",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-array-front-middle-shift-cost",
+      "record_group": "array_records",
+      "name": "Front and middle array edits require shifting",
+      "summary": "The source repeatedly explains that adding or removing near the beginning or middle requires moving…",
+      "classification": "source_direct_complexity_claim",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-array-spreadsheet-row-container",
+      "record_group": "array_records",
+      "name": "Arrays as spreadsheet row containers",
+      "summary": "In an Apps Script extension, a rectangular range can be treated as an array of row arrays, validate…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-list-adt",
+      "record_group": "list_records",
+      "name": "List abstract data type",
+      "summary": "The source defines a list as an ordered sequence with length, current position, insertion, removal,…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-list-array-backed-implementation",
+      "record_group": "list_records",
+      "name": "Array-backed list implementation",
+      "summary": "The source implements the list contract with an internal array, a list size, and a current-position…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-list-append",
+      "record_group": "list_records",
+      "name": "Append to a list",
+      "summary": "Append adds an element at the current logical end and increments list length.",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-list-find-remove",
+      "record_group": "list_records",
+      "name": "Find before remove in a list",
+      "summary": "The source locates an element, uses the resulting position for removal, and reports failure when no…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-list-find",
+      "record_group": "list_records",
+      "name": "Find an element in a list",
+      "summary": "The source scans internal storage and returns the matching position or a sentinel for absence.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-list-insert",
+      "record_group": "list_records",
+      "name": "Insert relative to an existing element",
+      "summary": "The source finds a reference element and inserts the new value immediately after it when present.",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-list-clear",
+      "record_group": "list_records",
+      "name": "Clear all list state",
+      "summary": "Clearing removes stored elements and resets logical length and cursor state.",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-list-contains",
+      "record_group": "list_records",
+      "name": "List membership test",
+      "summary": "Contains scans list elements and returns whether the requested value is present.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-list-cursor-movement",
+      "record_group": "list_records",
+      "name": "Cursor movement and current-element retrieval",
+      "summary": "The list implementation tracks a current position and supports movement to a position followed by r…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-list-iterator-functions",
+      "record_group": "list_records",
+      "name": "Forward and backward list iterator functions",
+      "summary": "The source implements movement tests and next/previous retrieval around a current-position cursor.",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-list-iterator-abstraction",
+      "record_group": "list_records",
+      "name": "Iterator abstraction over list storage",
+      "summary": "The source presents iterators as a uniform traversal interface that avoids direct dependence on the…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-list-kiosk-application",
+      "record_group": "list_records",
+      "name": "List-based availability and checkout workflow",
+      "summary": "The source models available movies and customer checkouts as lists, moving an item from availabilit…",
+      "classification": "source_direct_example",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-list-shell-file-reading",
+      "record_group": "list_records",
+      "name": "Source-shell file reading in the list example",
+      "summary": "The list application reads a text file through the source JavaScript shell; this is environment-spe…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-list-array-shortcomings",
+      "record_group": "list_records",
+      "name": "Array shortcomings for frequent insertion and deletion",
+      "summary": "The linked-list chapter motivates node-based lists by noting the shifting work associated with inse…",
+      "classification": "source_direct_complexity_claim",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-list-linked-definition",
+      "record_group": "list_records",
+      "name": "Singly linked list definition",
+      "summary": "A linked list is built from node objects, each holding an element and a reference to the next node,…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-list-linked-node-class",
+      "record_group": "list_records",
+      "name": "Node and linked-list classes",
+      "summary": "The source separates node state from list operations: nodes contain element/link fields, while the…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-list-linked-insert",
+      "record_group": "list_records",
+      "name": "Insert a linked-list node by relinking",
+      "summary": "Insertion finds a target node, links the new node to the target’s successor, and then links the tar…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-list-linked-remove",
+      "record_group": "list_records",
+      "name": "Remove a linked-list node by bypassing it",
+      "summary": "Removal finds the predecessor of the target and redirects its next link around the removed node.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-list-doubly-linked",
+      "record_group": "list_records",
+      "name": "Doubly linked list",
+      "summary": "The source adds a previous link to each node so the list can move in both directions and removal ca…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-list-circular-linked",
+      "record_group": "list_records",
+      "name": "Circular linked list",
+      "summary": "The source links the final node back to the head so traversal can continue cyclically rather than t…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-list-other-navigation",
+      "record_group": "list_records",
+      "name": "Additional linked-list navigation and display functions",
+      "summary": "The source extends linked-list traversal with movement and display helpers, illustrating how operat…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-list-ordered-validation-extension",
+      "record_group": "list_records",
+      "name": "Ordered validation issue list",
+      "summary": "As an internal-tool extension, validation issues can remain in an ordered list so users see errors…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-stack-lifo",
+      "record_group": "stack_queue_records",
+      "name": "Stack LIFO invariant",
+      "summary": "A stack exposes one end, called the top, so the most recently added element is the first removable…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-stack-operations",
+      "record_group": "stack_queue_records",
+      "name": "Push, pop, peek, length, and clear",
+      "summary": "The source identifies adding, removing, inspecting the top, tracking element count, and clearing as…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-stack-array-backed",
+      "record_group": "stack_queue_records",
+      "name": "Array-backed stack implementation",
+      "summary": "The source implements a stack with an array and a top counter, using end-oriented operations to pre…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-stack-base-conversion",
+      "record_group": "stack_queue_records",
+      "name": "Reverse remainders for base conversion",
+      "summary": "The source converts a number to another base by pushing successive remainders and popping them in r…",
+      "classification": "source_direct_example",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-stack-palindrome",
+      "record_group": "stack_queue_records",
+      "name": "Palindrome check by reversal",
+      "summary": "The source pushes characters and pops them to reconstruct the reverse, then compares the result wit…",
+      "classification": "source_direct_example",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-stack-recursion-model",
+      "record_group": "stack_queue_records",
+      "name": "Stack model of recursive state",
+      "summary": "The source demonstrates recursion by using a stack to hold intermediate values, showing how deferre…",
+      "classification": "source_direct_example",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-queue-fifo",
+      "record_group": "stack_queue_records",
+      "name": "Queue FIFO invariant",
+      "summary": "A queue accepts elements at its rear and removes them from its front so the earliest arrival is pro…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-queue-operations",
+      "record_group": "stack_queue_records",
+      "name": "Enqueue, dequeue, front, back, display, and empty checks",
+      "summary": "The source defines operations for adding at the rear, removing from the front, inspecting both ends…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-queue-array-backed",
+      "record_group": "stack_queue_records",
+      "name": "Array-backed queue implementation",
+      "summary": "The source implements a queue with an array, adding at the end and removing at the beginning.",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-queue-square-dance",
+      "record_group": "stack_queue_records",
+      "name": "Parallel queues for partner assignment",
+      "summary": "The source separates two participant groups into queues and pairs front elements in arrival order.",
+      "classification": "source_direct_example",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-queue-radix-sort",
+      "record_group": "stack_queue_records",
+      "name": "Queues as digit buckets in radix sort",
+      "summary": "The source distributes values into digit-specific queues and then collects the queues in order over…",
+      "classification": "source_direct_example",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-queue-priority",
+      "record_group": "stack_queue_records",
+      "name": "Priority queue selection",
+      "summary": "The source modifies queue removal so the item with the highest processing priority is selected rath…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-stack-nested-history-extension",
+      "record_group": "stack_queue_records",
+      "name": "Stacks for nested parsing or undo-history concepts",
+      "summary": "In an Apps Script or Web App extension, stack semantics can model nested parser state, backtracking…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-queue-staged-processing-extension",
+      "record_group": "stack_queue_records",
+      "name": "Queues for staged processing under execution limits",
+      "summary": "A queue can model pending uploads, validations, exports, or notifications, but Apps Script executio…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-queue-validation-worklist-extension",
+      "record_group": "stack_queue_records",
+      "name": "Validation worklist queue",
+      "summary": "An internal-tool validation pipeline can enqueue independent records or files, process them in cont…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-dict-key-value",
+      "record_group": "dictionary_hash_records",
+      "name": "Dictionary key-value abstraction",
+      "summary": "The source uses a dictionary to associate a key with a value and retrieve or remove data through th…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-dict-add-find-remove",
+      "record_group": "dictionary_hash_records",
+      "name": "Dictionary add, find, and remove operations",
+      "summary": "The source defines core operations to assign a value to a key, retrieve the value by key, and delet…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-dict-show-count-clear",
+      "record_group": "dictionary_hash_records",
+      "name": "Dictionary display, count, and clear helpers",
+      "summary": "The source supplements dictionary lookup with functions to enumerate keys, count entries, and clear…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-dict-sorted-display",
+      "record_group": "dictionary_hash_records",
+      "name": "Sort dictionary keys before display",
+      "summary": "The source obtains dictionary keys, sorts them, and then displays associated values in key order.",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-dict-counting-pattern",
+      "record_group": "dictionary_hash_records",
+      "name": "Dictionary counting pattern",
+      "summary": "The dictionary exercises and auxiliary operations support using keys as categories and values as co…",
+      "classification": "source_implied",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-hash-overview",
+      "record_group": "dictionary_hash_records",
+      "name": "Hashing maps keys to table positions",
+      "summary": "A hash function converts a key into an array index so data can be stored and retrieved from a table…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-hash-table-class",
+      "record_group": "dictionary_hash_records",
+      "name": "Hash table storage class",
+      "summary": "The source creates a table array and methods to hash, insert, retrieve, and display stored values.",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-hash-function",
+      "record_group": "dictionary_hash_records",
+      "name": "Hash function selection",
+      "summary": "The source first demonstrates a simple character-code sum and explains that a hash function should…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-hash-better-function",
+      "record_group": "dictionary_hash_records",
+      "name": "Improved string hashing and prime-sized tables",
+      "summary": "The source improves key distribution by accumulating character codes with a multiplier and recommen…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-hash-integer-keys",
+      "record_group": "dictionary_hash_records",
+      "name": "Hashing integer keys",
+      "summary": "The source demonstrates hashing generated integer keys into the table and displays how values occup…",
+      "classification": "source_direct_example",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-hash-store-retrieve",
+      "record_group": "dictionary_hash_records",
+      "name": "Store and retrieve key-value data in a hash table",
+      "summary": "The source distinguishes storing only a value from storing key-value associations needed for later…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-hash-collision-strategies",
+      "record_group": "dictionary_hash_records",
+      "name": "Collision handling is required",
+      "summary": "When distinct keys hash to the same table position, the source introduces separate chaining and lin…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-hash-separate-chaining",
+      "record_group": "dictionary_hash_records",
+      "name": "Separate chaining",
+      "summary": "The source stores a secondary collection at each table position so multiple colliding entries can c…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-hash-linear-probing",
+      "record_group": "dictionary_hash_records",
+      "name": "Linear probing",
+      "summary": "The source resolves a collision by scanning forward for an available table position and keeps key/v…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-dict-repeated-scan-to-index",
+      "record_group": "dictionary_hash_records",
+      "name": "Replace repeated scans with a lookup index",
+      "summary": "The dictionary and hashing chapters support the general rule that repeated searches for the same ke…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-dict-grouping-pattern",
+      "record_group": "dictionary_hash_records",
+      "name": "Group rows by key into dictionary buckets",
+      "summary": "In a spreadsheet extension, rows can be indexed by location, date, category, or composite key, with…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-dict-mapping-validation-extension",
+      "record_group": "dictionary_hash_records",
+      "name": "Validate all required mappings before export",
+      "summary": "A location, vendor, account, or column mapping should be built as a keyed dictionary and checked fo…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-set-uniqueness",
+      "record_group": "set_records",
+      "name": "Set uniqueness invariant",
+      "summary": "A set stores members without duplicates; adding an existing member does not create another member.",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-set-definitions",
+      "record_group": "set_records",
+      "name": "Set, empty set, universal set, equality, and subset concepts",
+      "summary": "The source introduces basic set vocabulary, including empty and universal sets, equality, and subse…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-set-operations",
+      "record_group": "set_records",
+      "name": "Union, intersection, and difference",
+      "summary": "The source defines union as members from either set, intersection as shared members, and difference…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-set-class",
+      "record_group": "set_records",
+      "name": "Array-backed set class",
+      "summary": "The source implements set membership over an array with add, remove, show, contains, and size opera…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-set-membership",
+      "record_group": "set_records",
+      "name": "Set membership testing",
+      "summary": "The source tests membership before adding and when answering whether a value belongs to the set.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-set-union",
+      "record_group": "set_records",
+      "name": "Set union implementation",
+      "summary": "Union begins with members of one set and adds members from the other only when absent.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-set-intersection",
+      "record_group": "set_records",
+      "name": "Set intersection implementation",
+      "summary": "Intersection retains members from one set that are contained in the other.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-set-difference",
+      "record_group": "set_records",
+      "name": "Set difference implementation",
+      "summary": "Difference retains members from the first set that are not contained in the second.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-set-subset",
+      "record_group": "set_records",
+      "name": "Subset test",
+      "summary": "The source tests whether every member of one set appears in another and uses size as an initial rej…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-set-duplicate-detection-extension",
+      "record_group": "set_records",
+      "name": "Duplicate ID detection with a set",
+      "summary": "In a spreadsheet workflow extension, track seen normalized IDs in a set and emit a structured error…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-set-coverage-extension",
+      "record_group": "set_records",
+      "name": "Expected-versus-actual coverage with set difference",
+      "summary": "Build expected and actual membership sets, then compute missing and unexpected values in both diffe…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-set-native-boundary",
+      "record_group": "set_records",
+      "name": "Source Set class versus current native Set",
+      "summary": "The source implements Set manually; future assistants must verify whether and how current Apps Scri…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tree-terminology",
+      "record_group": "tree_records",
+      "name": "Tree terminology and hierarchy",
+      "summary": "The source defines a tree through nodes connected by parent-child relationships and identifies root…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-tree-binary-definition",
+      "record_group": "tree_records",
+      "name": "Binary tree definition",
+      "summary": "A binary tree limits each node to at most two child nodes, commonly called left and right.",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-tree-bst-ordering",
+      "record_group": "tree_records",
+      "name": "Binary search tree ordering invariant",
+      "summary": "The source places values smaller than a node in its left subtree and larger values in its right sub…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-tree-node-bst-classes",
+      "record_group": "tree_records",
+      "name": "Node and BST class responsibilities",
+      "summary": "The source defines nodes with data and child links, while the BST owns the root and tree-level oper…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-tree-insert",
+      "record_group": "tree_records",
+      "name": "BST insertion by repeated comparison",
+      "summary": "Insertion begins at the root, follows left or right links according to comparison, and attaches the…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-tree-traversals",
+      "record_group": "tree_records",
+      "name": "BST traversal families",
+      "summary": "The source presents in-order, pre-order, and post-order traversals, each visiting the current node…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-tree-inorder",
+      "record_group": "tree_records",
+      "name": "In-order traversal",
+      "summary": "In-order traversal visits the left subtree, then the current node, then the right subtree; under th…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-tree-preorder",
+      "record_group": "tree_records",
+      "name": "Pre-order traversal",
+      "summary": "Pre-order traversal visits the current node before traversing its left and right subtrees.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-tree-postorder",
+      "record_group": "tree_records",
+      "name": "Post-order traversal",
+      "summary": "Post-order traversal visits both subtrees before the current node.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-tree-min-max",
+      "record_group": "tree_records",
+      "name": "BST minimum and maximum search",
+      "summary": "The source finds the minimum by repeatedly following left links and the maximum by repeatedly follo…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-tree-search-specific",
+      "record_group": "tree_records",
+      "name": "Search for a specific BST value",
+      "summary": "The source compares the target with the current node and follows one child branch until it finds th…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-tree-remove",
+      "record_group": "tree_records",
+      "name": "BST node removal",
+      "summary": "The source handles removal according to whether the target is a leaf, has one child, or has two chi…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-tree-remove-leaf",
+      "record_group": "tree_records",
+      "name": "Remove a leaf node",
+      "summary": "A leaf can be removed by clearing the parent link that points to it, with a separate root case.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-tree-remove-one-child",
+      "record_group": "tree_records",
+      "name": "Remove a node with one child",
+      "summary": "The parent is relinked directly to the target’s sole child, with root handling where necessary.",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-tree-remove-two-children",
+      "record_group": "tree_records",
+      "name": "Remove a node with two children",
+      "summary": "The source replaces the removed node with an ordered successor from its right subtree and then repa…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-tree-count-occurrences",
+      "record_group": "tree_records",
+      "name": "Count repeated BST values",
+      "summary": "The source augments nodes with a count so duplicate insertions can increase frequency rather than c…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-tree-source-limitation-no-balancing",
+      "record_group": "tree_records",
+      "name": "BST balancing is not developed in the source",
+      "summary": "The detected BST chapter covers insertion, traversal, search, removal, and occurrence counts but do…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-tree-hierarchy-extension",
+      "record_group": "tree_records",
+      "name": "Hierarchy modeling without automatically implementing a tree",
+      "summary": "Account categories, menu categories, or responsibility hierarchies can be reasoned about as trees,…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-graph-definition",
+      "record_group": "graph_records",
+      "name": "Graph vertices and edges",
+      "summary": "The source models a graph as vertices connected by edges and distinguishes directed from undirected…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-graph-path-cycle-terms",
+      "record_group": "graph_records",
+      "name": "Paths, cycles, and connectivity",
+      "summary": "The source distinguishes paths formed by sequences of edges and identifies cycles and connectivity…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-graph-real-world-models",
+      "record_group": "graph_records",
+      "name": "Real-world systems modeled by graphs",
+      "summary": "The source uses maps, transportation, computer networks, and related systems to show how vertices a…",
+      "classification": "source_direct_example",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-graph-adjacency-list",
+      "record_group": "graph_records",
+      "name": "Adjacency-list representation",
+      "summary": "The source represents each vertex with a collection of its adjacent vertices, enabling traversal fr…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-graph-representing-edges",
+      "record_group": "graph_records",
+      "name": "Edge representation choices",
+      "summary": "The source contrasts adjacency lists with an adjacency matrix, a two-dimensional array indicating w…",
+      "classification": "source_direct_data_structure",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-graph-class-build",
+      "record_group": "graph_records",
+      "name": "Build a graph from vertices and edges",
+      "summary": "The source initializes neighbor collections for each vertex and adds edges by updating the correspo…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-graph-search-overview",
+      "record_group": "graph_records",
+      "name": "Graph search as reachability exploration",
+      "summary": "The source uses graph search to determine which vertices can be reached from a starting vertex and…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-graph-dfs",
+      "record_group": "graph_records",
+      "name": "Depth-first graph traversal",
+      "summary": "DFS marks a vertex, recursively visits each unvisited neighbor, and backtracks when a path is exhau…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-graph-bfs",
+      "record_group": "graph_records",
+      "name": "Breadth-first graph traversal",
+      "summary": "BFS marks and enqueues neighbors, then processes queued vertices so exploration proceeds layer by l…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-graph-shortest-path-problem",
+      "record_group": "graph_records",
+      "name": "Shortest-path problem framing",
+      "summary": "The source frames shortest paths as minimizing travel or network connection cost between vertices.",
+      "classification": "source_direct_example",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-graph-shortest-path-bfs",
+      "record_group": "graph_records",
+      "name": "BFS yields shortest paths by edge count",
+      "summary": "The source explains that BFS checks one-edge paths before two-edge paths and can therefore support…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-graph-path-reconstruction",
+      "record_group": "graph_records",
+      "name": "Predecessor tracking and path reconstruction",
+      "summary": "The source records the vertex from which each newly discovered vertex was reached, then follows tho…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-graph-topological-order",
+      "record_group": "graph_records",
+      "name": "Topological order for precedence constraints",
+      "summary": "The source orders vertices in a directed graph so every directed edge goes from an earlier vertex t…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-graph-topological-algorithm",
+      "record_group": "graph_records",
+      "name": "DFS-like topological sorting with a stack",
+      "summary": "The source visits adjacent vertices recursively and pushes a vertex only after its outgoing neighbo…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-graph-symbolic-vertices",
+      "record_group": "graph_records",
+      "name": "Map symbolic labels to internal vertex identifiers",
+      "summary": "The source keeps numeric internal vertices while adding an array that associates each vertex with a…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-graph-topological-precondition",
+      "record_group": "graph_records",
+      "name": "Cycle detection is a required dependency-order check",
+      "summary": "A directed cycle cannot satisfy the source’s defining condition that every edge point from an earli…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-graph-workflow-dependency-extension",
+      "record_group": "graph_records",
+      "name": "Workflow dependency graph for internal tools",
+      "summary": "Reports, approvals, data refreshes, and handoffs can be modeled as vertices and dependency edges wh…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-graph-supplier-route-extension",
+      "record_group": "graph_records",
+      "name": "Supplier, warehouse, and location network model",
+      "summary": "A supplier/logistics graph may represent vendors, warehouses, and restaurant locations as vertices…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sort-basic-versus-advanced",
+      "record_group": "sorting_records",
+      "name": "Basic and advanced sorting families",
+      "summary": "The source contrasts simple, easy-to-implement sorts for small data with more advanced algorithms i…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-sort-test-bed",
+      "record_group": "sorting_records",
+      "name": "Reusable array test bed for sorting",
+      "summary": "The source builds a class that stores test data, generates values, displays them, swaps elements, a…",
+      "classification": "source_direct_example",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-sort-random-data",
+      "record_group": "sorting_records",
+      "name": "Generate random test data",
+      "summary": "The source populates the test array with scaled random values to create varied inputs for sorting d…",
+      "classification": "source_direct_example",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-sort-basic-nested-loops",
+      "record_group": "sorting_records",
+      "name": "Nested-loop structure of basic sorts",
+      "summary": "The source describes basic sorting algorithms as using an outer pass through the list and an inner…",
+      "classification": "source_direct_complexity_claim",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-sort-bubble",
+      "record_group": "sorting_records",
+      "name": "Bubble sort mechanics",
+      "summary": "Bubble sort compares adjacent values and swaps out-of-order pairs over repeated passes so larger va…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-sort-selection",
+      "record_group": "sorting_records",
+      "name": "Selection sort mechanics",
+      "summary": "Selection sort scans the remaining unsorted portion for the smallest value and places it into the n…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-sort-insertion",
+      "record_group": "sorting_records",
+      "name": "Insertion sort mechanics",
+      "summary": "Insertion sort maintains an ordered portion and shifts larger values to make room for each new item…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-sort-timing-comparison",
+      "record_group": "sorting_records",
+      "name": "Timing comparisons of basic sorts",
+      "summary": "The source times bubble, selection, and insertion sorts on increasing data sizes and cautions that…",
+      "classification": "source_direct_example",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-sort-advanced-family",
+      "record_group": "sorting_records",
+      "name": "Advanced sorting family for larger data",
+      "summary": "The source introduces Shellsort, Mergesort, and Quicksort as more advanced approaches for larger da…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-sort-shell",
+      "record_group": "sorting_records",
+      "name": "Shellsort with decreasing gaps",
+      "summary": "Shellsort compares elements far apart first and gradually reduces the gap until the final pass beha…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-sort-gap-sequence",
+      "record_group": "sorting_records",
+      "name": "Dynamic Shellsort gap sequence",
+      "summary": "The source presents a formula-based gap sequence attributed to Sedgewick and recomputes smaller gap…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-sort-merge",
+      "record_group": "sorting_records",
+      "name": "Mergesort by merging sorted sublists",
+      "summary": "Mergesort forms sorted sublists and merges them into increasingly larger sorted lists, using additi…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-sort-bottom-up-merge",
+      "record_group": "sorting_records",
+      "name": "Bottom-up Mergesort concept",
+      "summary": "The retained subsection describes beginning with one-element runs and repeatedly merging them into…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-sort-top-down-merge",
+      "record_group": "sorting_records",
+      "name": "Top-down recursive Mergesort",
+      "summary": "The source recursively divides an array until one-element base cases and merges sorted left and rig…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sort-quicksort",
+      "record_group": "sorting_records",
+      "name": "Quicksort partitioning",
+      "summary": "Quicksort chooses a pivot, separates values into lower and higher groups, and recursively sorts tho…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-sort-quicksort-base-partition",
+      "record_group": "sorting_records",
+      "name": "Quicksort base case and partition steps",
+      "summary": "The source stops recursion for an empty partition, selects a pivot, distributes remaining values to…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-sort-built-in-boundary",
+      "record_group": "sorting_records",
+      "name": "Built-in sort versus hand implementation",
+      "summary": "The source algorithms are valuable for reasoning and education, but current Apps Script production…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sort-stable-user-output-extension",
+      "record_group": "sorting_records",
+      "name": "Preserve stable user-visible order on ties",
+      "summary": "When report rows share the same primary sort key, retain original row order or apply an explicit se…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sort-update-note-merge-version",
+      "record_group": "sorting_records",
+      "name": "Mergesort update note and retained subsection",
+      "summary": "The preface update note says the iterative Mergesort version was removed and replaced with a recurs…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-search-selection-frame",
+      "record_group": "searching_records",
+      "name": "Sequential versus binary search selection",
+      "summary": "The source uses sequential search for randomly ordered lists and binary search for sorted lists, wh…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-search-sequential",
+      "record_group": "searching_records",
+      "name": "Sequential search through a list",
+      "summary": "Sequential search starts at the first element and compares each value until a match is found or the…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-search-boolean-versus-index",
+      "record_group": "searching_records",
+      "name": "Search result contract: Boolean versus position",
+      "summary": "The source presents a search that first reports success/failure and then a version that returns the…",
+      "classification": "source_direct_code_pattern",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-search-min-max-scan",
+      "record_group": "searching_records",
+      "name": "Minimum and maximum scan",
+      "summary": "The source initializes the current extreme from the first element and scans the remaining elements,…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-search-self-organizing",
+      "record_group": "searching_records",
+      "name": "Self-organizing sequential search",
+      "summary": "The source moves frequently found items toward the front so future successful sequential searches f…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-search-pareto-threshold",
+      "record_group": "searching_records",
+      "name": "80/20-inspired relocation threshold",
+      "summary": "The source uses an 80/20 access-skew idea and proposes moving a found item to the beginning only wh…",
+      "classification": "source_direct_example",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-search-binary",
+      "record_group": "searching_records",
+      "name": "Binary search midpoint narrowing",
+      "summary": "Binary search maintains lower and upper bounds, compares the midpoint, and moves one bound inward u…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-search-binary-sorted-precondition",
+      "record_group": "searching_records",
+      "name": "Binary search requires verified sorted data",
+      "summary": "The source states that binary search works only when the data is sorted; the comparison rule used t…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-search-binary-trace",
+      "record_group": "searching_records",
+      "name": "Trace midpoint changes to debug binary search",
+      "summary": "The source instruments midpoint values so the narrowing search path can be observed and checked.",
+      "classification": "source_direct_example",
+      "confidence": "high",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-search-count-occurrences",
+      "record_group": "searching_records",
+      "name": "Count adjacent duplicates around a binary-search hit",
+      "summary": "After binary search finds one occurrence in sorted data, the source scans left and right while adja…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-search-textual-data",
+      "record_group": "searching_records",
+      "name": "Sequential and binary search over tokenized text",
+      "summary": "The source reads text, splits it into words, and compares sequential and binary searching after sor…",
+      "classification": "source_direct_example",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-search-shell-file-boundary",
+      "record_group": "searching_records",
+      "name": "Text-search file I/O is shell-specific",
+      "summary": "The textual-search example reads a local file through the source JavaScript interpreter; that input…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-search-map-for-repeated-keys",
+      "record_group": "searching_records",
+      "name": "Lookup map often beats repeated search for keys",
+      "summary": "For repeated searches by stable key, dictionary-style indexing usually expresses the problem more d…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-search-header-index-extension",
+      "record_group": "searching_records",
+      "name": "Find spreadsheet columns through a header index map",
+      "summary": "Read the header row once, normalize each header, and build a name-to-column-index map rather than s…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-advanced-algorithms-frame",
+      "record_group": "dynamic_programming_and_greedy_records",
+      "name": "Advanced algorithms with simple table structures",
+      "summary": "The source contrasts bottom-up dynamic programming with greedy local-choice strategies and notes th…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-dp-table-subsolutions",
+      "record_group": "dynamic_programming_and_greedy_records",
+      "name": "Dynamic programming table of subsolutions",
+      "summary": "A dynamic programming solution stores results of smaller subproblems in an array or table so they c…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-dp-fibonacci-recomputation",
+      "record_group": "dynamic_programming_and_greedy_records",
+      "name": "Recursive Fibonacci recomputes subproblems",
+      "summary": "The source uses the recursion tree to show that a naive recursive Fibonacci function calculates the…",
+      "classification": "source_direct_complexity_claim",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-dp-fibonacci-table",
+      "record_group": "dynamic_programming_and_greedy_records",
+      "name": "Fibonacci with stored intermediate values",
+      "summary": "The source fills an array from base values upward, storing each new Fibonacci result as the sum of…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-dp-fibonacci-constant-state",
+      "record_group": "dynamic_programming_and_greedy_records",
+      "name": "Simplify a DP table when only recent state is needed",
+      "summary": "The source observes that the Fibonacci array is unnecessary when only the previous two values are n…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-dp-longest-common-substring",
+      "record_group": "dynamic_programming_and_greedy_records",
+      "name": "Longest common substring table",
+      "summary": "The source uses a two-dimensional table of character-match lengths, resets nonmatches, tracks the l…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-dp-knapsack-recursive",
+      "record_group": "dynamic_programming_and_greedy_records",
+      "name": "Recursive 0-1 knapsack formulation",
+      "summary": "The source formulates the discrete knapsack problem recursively, choosing whether to include items…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-dp-knapsack-table",
+      "record_group": "dynamic_programming_and_greedy_records",
+      "name": "Dynamic programming knapsack table",
+      "summary": "The source fills a two-dimensional table over items and capacities, storing the best value availabl…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-dp-knapsack-reconstruction-limit",
+      "record_group": "dynamic_programming_and_greedy_records",
+      "name": "Knapsack value table does not identify selected items",
+      "summary": "The source notes that its demonstrated dynamic-programming table yields the optimal value but does…",
+      "classification": "source_direct_example",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-greedy-local-choice",
+      "record_group": "dynamic_programming_and_greedy_records",
+      "name": "Greedy local-choice rule",
+      "summary": "A greedy algorithm selects what looks best at the current step without modeling how that choice aff…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-greedy-coin-change",
+      "record_group": "dynamic_programming_and_greedy_records",
+      "name": "Greedy coin-changing example",
+      "summary": "The source takes as many coins as possible from the highest denomination before moving to the next…",
+      "classification": "source_direct_example",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-greedy-coin-change-boundary",
+      "record_group": "dynamic_programming_and_greedy_records",
+      "name": "Coin-change greedy rule depends on denominations",
+      "summary": "The source warns that removing an available denomination can make the same largest-first rule subop…",
+      "classification": "source_direct_complexity_claim",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-greedy-fractional-knapsack",
+      "record_group": "dynamic_programming_and_greedy_records",
+      "name": "Fractional knapsack by value-to-size ratio",
+      "summary": "For divisible goods, the source ranks items by value per unit size and takes as much as possible fr…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-greedy-zero-one-boundary",
+      "record_group": "dynamic_programming_and_greedy_records",
+      "name": "Fractional versus 0-1 knapsack boundary",
+      "summary": "The source distinguishes continuous items, which may be divided, from discrete items that must be t…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-greedy-operational-heuristic-extension",
+      "record_group": "dynamic_programming_and_greedy_records",
+      "name": "Operational greedy heuristic with explicit acceptance criteria",
+      "summary": "A prep, batching, or prioritization tool may use a simple local ranking only when the objective, co…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-dp-apps-script-boundary",
+      "record_group": "dynamic_programming_and_greedy_records",
+      "name": "Dynamic programming is usually conceptual for Apps Script tools",
+      "summary": "Most spreadsheet automations need parsing, indexing, validation, and batching rather than a full dy…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-perf-structure-algorithm-interaction",
+      "record_group": "complexity_and_performance_records",
+      "name": "Representation changes algorithmic cost",
+      "summary": "Performance is not only a property of an algorithm name; it also depends on whether the chosen stru…",
+      "classification": "source_direct_complexity_claim",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-perf-basic-sort-scale",
+      "record_group": "complexity_and_performance_records",
+      "name": "Basic sorts degrade on larger datasets",
+      "summary": "Bubble, selection, and insertion sort are useful teaching tools and may be adequate for small input…",
+      "classification": "source_direct_complexity_claim",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-perf-sort-timing-comparison",
+      "record_group": "complexity_and_performance_records",
+      "name": "Measure competing algorithms under the same test bed",
+      "summary": "Comparative timing is meaningful only when algorithms receive comparable input sizes, distributions…",
+      "classification": "source_direct_example",
+      "confidence": "high",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-perf-sequential-versus-binary",
+      "record_group": "complexity_and_performance_records",
+      "name": "Search cost depends on ordering and reuse",
+      "summary": "Sequential search works on unsorted data, while binary search reduces the search interval repeatedl…",
+      "classification": "source_direct_complexity_claim",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-perf-hash-lookup-tradeoff",
+      "record_group": "complexity_and_performance_records",
+      "name": "Hash lookup trades order for key-directed access",
+      "summary": "Hashing computes a storage position from a key to support direct retrieval, but collisions and tabl…",
+      "classification": "source_direct_complexity_claim",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-perf-linked-list-operation-tradeoff",
+      "record_group": "complexity_and_performance_records",
+      "name": "Insertion and deletion efficiency depends on access needs",
+      "summary": "Linked lists can avoid the element shifting associated with array insertion and deletion, but findi…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-perf-dp-state-growth",
+      "record_group": "complexity_and_performance_records",
+      "name": "Dynamic programming cost follows the state space",
+      "summary": "Dynamic programming avoids repeated subproblem work by storing results, but the number and shape of…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-perf-nested-loop-growth",
+      "record_group": "complexity_and_performance_records",
+      "name": "Repeated nested scans multiply work",
+      "summary": "When each input row scans another full collection, total work grows as the product of the two colle…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-perf-repeated-search",
+      "record_group": "complexity_and_performance_records",
+      "name": "Index once for repeated key search",
+      "summary": "A one-time dictionary or hash-like index can replace repeated sequential searches when the same col…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-perf-growth-versus-service-cost",
+      "record_group": "complexity_and_performance_records",
+      "name": "Separate in-memory growth from hosted-service cost",
+      "summary": "Algorithmic work over arrays and service calls to an external spreadsheet API are different cost ca…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-perf-realistic-benchmark",
+      "record_group": "complexity_and_performance_records",
+      "name": "Benchmark realistic data shapes, not just row counts",
+      "summary": "Performance tests should represent actual ordering, duplicate rates, key distributions, missing map…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-perf-timeout-partial-write",
+      "record_group": "complexity_and_performance_records",
+      "name": "Timeout risk becomes a correctness risk after side effects begin",
+      "summary": "When a long-running transformation writes incrementally, interruption can leave a partially updated…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-gas-arrays-sheet-batches",
+      "record_group": "google_apps_script_translation_records",
+      "name": "Arrays as sheet batch containers",
+      "summary": "Treat a sheet range as an in-memory array-of-arrays, perform transformations away from the service…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-gas-objects-dictionaries-row-records",
+      "record_group": "google_apps_script_translation_records",
+      "name": "Objects and dictionaries as row records and lookup maps",
+      "summary": "Convert positional rows into named records and build key-addressed configuration or mapping indexes…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-gas-hash-lookup-map",
+      "record_group": "google_apps_script_translation_records",
+      "name": "Hash-table reasoning for lookup and indexing",
+      "summary": "Use the source’s key-to-location reasoning to justify an index, while choosing a current native rep…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-gas-sets-duplicate-coverage",
+      "record_group": "google_apps_script_translation_records",
+      "name": "Set reasoning for duplicate and coverage checks",
+      "summary": "Represent uniqueness and membership explicitly when validating duplicate IDs, expected headers, sub…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-gas-lists-ordered-workflow",
+      "record_group": "google_apps_script_translation_records",
+      "name": "List abstraction for ordered workflow state",
+      "summary": "Use list semantics to make ordered validation issues, processing stages, or user-visible steps expl…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-gas-stacks-nested-history",
+      "record_group": "google_apps_script_translation_records",
+      "name": "Stack for nested parsing and reversible history concepts",
+      "summary": "Apply LIFO semantics when the most recently opened or performed item must be resolved first, such a…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-gas-queues-staged-processing",
+      "record_group": "google_apps_script_translation_records",
+      "name": "Queue for staged processing and retries",
+      "summary": "Use FIFO worklist semantics for staged uploads, validation, reporting, or retries while making pers…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-gas-trees-hierarchy-caution",
+      "record_group": "google_apps_script_translation_records",
+      "name": "Tree reasoning for hierarchy, with implementation restraint",
+      "summary": "Use tree terminology to clarify parent-child category or account hierarchies, but prefer tables, pa…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-gas-graphs-dependency-model",
+      "record_group": "google_apps_script_translation_records",
+      "name": "Graph reasoning for dependencies and networks",
+      "summary": "Model entities as vertices and relationships as edges only when path, reachability, dependency, or…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-gas-sorting-built-in-boundary",
+      "record_group": "google_apps_script_translation_records",
+      "name": "Sorting concept versus current built-in sort",
+      "summary": "Use the source algorithms to reason about comparison, movement, partitioning, merging, and input se…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-gas-searching-choice",
+      "record_group": "google_apps_script_translation_records",
+      "name": "Sequential scan, binary search, or lookup map",
+      "summary": "Choose search strategy from data ordering, query count, mutation frequency, and key semantics rathe…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-gas-dynamic-programming",
+      "record_group": "google_apps_script_translation_records",
+      "name": "Dynamic programming as a guarded optimization tool",
+      "summary": "Use dynamic programming only when the operational problem has a stated recurrence, overlapping subp…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-gas-greedy-heuristics",
+      "record_group": "google_apps_script_translation_records",
+      "name": "Greedy operational heuristic with counterexample testing",
+      "summary": "A local-priority rule can support fast operational decisions only when the domain permits it, count…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-gas-complexity-timeout-design",
+      "record_group": "google_apps_script_translation_records",
+      "name": "Algorithmic scale under hosted execution limits",
+      "summary": "Translate the source’s efficiency comparisons into explicit row-count, operation-count, service-cal…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-gas-batch-operations",
+      "record_group": "google_apps_script_translation_records",
+      "name": "Batch operations minimize service-boundary crossings",
+      "summary": "Use arrays as the in-memory work surface so spreadsheet reads and writes can be grouped rather than…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-gas-data-shape-validation",
+      "record_group": "google_apps_script_translation_records",
+      "name": "Validate data shape before transformation or export",
+      "summary": "Treat row width, headers, types, keys, required fields, and mappings as preconditions rather than a…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-gas-idempotency",
+      "record_group": "google_apps_script_translation_records",
+      "name": "Idempotent live writes through stable processing keys",
+      "summary": "Prevent retries from creating duplicate side effects by defining a stable key for each logical outp…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-gas-partial-failure",
+      "record_group": "google_apps_script_translation_records",
+      "name": "Structured partial-failure results",
+      "summary": "Represent each item’s status, error, provenance, and side-effect outcome explicitly so a batch can…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-gas-state-persistence",
+      "record_group": "google_apps_script_translation_records",
+      "name": "Persist queue, checkpoint, and run state deliberately",
+      "summary": "In-memory structures should not be assumed to survive separate executions; choose a current verifie…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-gas-concurrency-locking",
+      "record_group": "google_apps_script_translation_records",
+      "name": "Concurrency guard for shared indexes, queues, and idempotency keys",
+      "summary": "When multiple executions can read and update the same state, structure the operation as claim-check…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-r365-report-processor",
+      "record_group": "internal_tool_pattern_records",
+      "name": "R365 report processor",
+      "summary": "A guarded processor should parse a source report into provenance-preserving records, validate repor…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-uber-eats-reviews",
+      "record_group": "internal_tool_pattern_records",
+      "name": "Uber Eats Reviews transformation",
+      "summary": "Treat each review as a keyed source record, validate identity and date/rating fields, normalize to…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-sevenrooms-guest-satisfaction",
+      "record_group": "internal_tool_pattern_records",
+      "name": "SevenRooms Guest Satisfaction transformation",
+      "summary": "Represent each response as a provenance-preserving record, validate survey identity and metric mapp…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-csv-xlsx-upload-validation",
+      "record_group": "internal_tool_pattern_records",
+      "name": "CSV/XLSX upload validation",
+      "summary": "Parse uploaded tabular data into a neutral shape, identify the workbook/sheet/header contract, coll…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-sheets-import-export",
+      "record_group": "internal_tool_pattern_records",
+      "name": "Google Sheets import/export workflow",
+      "summary": "Use bounded batch reads, row provenance, lookup maps, full validation, and rectangular batch writes…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-manager-qr-form",
+      "record_group": "internal_tool_pattern_records",
+      "name": "Manager QR form workflow",
+      "summary": "Model a form submission as a stable keyed record, validate required structured fields and free-text…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-warehouse-pickup-form",
+      "record_group": "internal_tool_pattern_records",
+      "name": "Warehouse pickup form workflow",
+      "summary": "Represent each pickup request as a keyed operational event with ordered items, structured cause, lo…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-scorecard-sync",
+      "record_group": "internal_tool_pattern_records",
+      "name": "Scorecard synchronization helper scripts",
+      "summary": "Treat each source metric/date/location combination as a stable key, index configuration and destina…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-dashboard-preparation",
+      "record_group": "internal_tool_pattern_records",
+      "name": "Dashboard data preparation",
+      "summary": "Prepare dashboards from validated typed records using explicit grouping keys, stable sort rules, ag…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-email-report-generation",
+      "record_group": "internal_tool_pattern_records",
+      "name": "Email/report generation",
+      "summary": "Build a report from a validated immutable-ish view model, separate recipient routing from content r…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-dry-run-live",
+      "record_group": "internal_tool_pattern_records",
+      "name": "Dry-run/live execution pattern",
+      "summary": "Use one deterministic transformation pipeline for both modes; dry-run returns the exact proposed si…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-partial-failure-reporting",
+      "record_group": "internal_tool_pattern_records",
+      "name": "Partial failure reporting",
+      "summary": "Represent run-level and item-level states explicitly so users can distinguish validation failures,…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-webapp-status-state",
+      "record_group": "internal_tool_pattern_records",
+      "name": "User-facing Web App status state",
+      "summary": "Model client-visible status as an explicit state machine or record keyed to a run, while treating b…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-config-driven-report-types",
+      "record_group": "internal_tool_pattern_records",
+      "name": "Config-driven report types",
+      "summary": "Represent each supported report type as a validated configuration record containing identification…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-location-mapping",
+      "record_group": "internal_tool_pattern_records",
+      "name": "Location mapping",
+      "summary": "Normalize external location labels or IDs into an authoritative internal location key through one v…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-date-fiscal-week",
+      "record_group": "internal_tool_pattern_records",
+      "name": "Date parsing and fiscal-week logic",
+      "summary": "Parse raw date values separately from business-period assignment, use a versioned fiscal-calendar l…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-audit-run-history",
+      "record_group": "internal_tool_pattern_records",
+      "name": "Audit log and run history",
+      "summary": "Store an append-oriented run record with configuration version, input identity, counts, proposed/co…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-retry-idempotency",
+      "record_group": "internal_tool_pattern_records",
+      "name": "Retry and idempotency boundary",
+      "summary": "Classify failures before retry, queue only retryable items, preserve stable logical action keys, an…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-duplicate-detection",
+      "record_group": "internal_tool_pattern_records",
+      "name": "Duplicate detection",
+      "summary": "Define duplicate identity before processing, normalize key components, detect duplicates both withi…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-required-field-coverage",
+      "record_group": "internal_tool_pattern_records",
+      "name": "Required field coverage",
+      "summary": "Compare each record’s present/valid field set with the required schema and compare aggregate submit…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-tool-expected-actual-headers",
+      "record_group": "internal_tool_pattern_records",
+      "name": "Expected-versus-actual header comparison",
+      "summary": "Normalize and index actual headers, reject duplicate normalized names, compare required and allowed…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sheet-read-once",
+      "record_group": "spreadsheet_data_workflow_records",
+      "name": "Read sheet once into an array",
+      "summary": "Load only the required rectangular range into memory once, then perform row-level logic over the ar…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sheet-header-index-map",
+      "record_group": "spreadsheet_data_workflow_records",
+      "name": "Build a header row to column-index map",
+      "summary": "Resolve columns by validated normalized header name rather than hard-coded position so reorderings…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sheet-row-array-to-object",
+      "record_group": "spreadsheet_data_workflow_records",
+      "name": "Convert a row array to an object record",
+      "summary": "Translate positional cells into named fields while attaching original sheet/row provenance and leav…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sheet-object-to-export-row",
+      "record_group": "spreadsheet_data_workflow_records",
+      "name": "Convert an object record to an export row",
+      "summary": "Project a validated named record into a destination column order defined by an explicit output sche…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sheet-required-header-validation",
+      "record_group": "spreadsheet_data_workflow_records",
+      "name": "Validate required headers before row processing",
+      "summary": "Compare normalized required headers with actual headers and stop structural parsing when mandatory…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sheet-expected-vs-actual-headers",
+      "record_group": "spreadsheet_data_workflow_records",
+      "name": "Compare expected and actual header coverage",
+      "summary": "Return named missing, unexpected, duplicate, and aliased headers with positions so schema drift is…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sheet-duplicate-id-detection",
+      "record_group": "spreadsheet_data_workflow_records",
+      "name": "Detect duplicate record IDs",
+      "summary": "Build a seen-key set for membership speed and a key-to-source-rows map for explanation, then apply…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sheet-group-rows",
+      "record_group": "spreadsheet_data_workflow_records",
+      "name": "Group rows by location, date, or category",
+      "summary": "Accumulate records into groups keyed by an explicit canonical dimension tuple while retaining sourc…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sheet-join-by-key",
+      "record_group": "spreadsheet_data_workflow_records",
+      "name": "Join two sheets by key",
+      "summary": "Build a validated index from the reference sheet once, then enrich each primary record with one loo…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sheet-validate-mappings-before-export",
+      "record_group": "spreadsheet_data_workflow_records",
+      "name": "Validate mappings before export",
+      "summary": "Resolve every required external-to-internal mapping before creating live output and return one comp…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sheet-sort-output-rows",
+      "record_group": "spreadsheet_data_workflow_records",
+      "name": "Sort output rows by typed keys",
+      "summary": "Sort only after defining typed primary and tie-breaker keys, null behavior, stable-order requiremen…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sheet-preserve-original-row-index",
+      "record_group": "spreadsheet_data_workflow_records",
+      "name": "Preserve original row index for error reporting",
+      "summary": "Attach source sheet and row coordinates before filtering, sorting, grouping, or joining so every er…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sheet-accumulate-validation-errors",
+      "record_group": "spreadsheet_data_workflow_records",
+      "name": "Accumulate validation errors before writing",
+      "summary": "Collect all independently detectable structural and row-level issues into ordered records so users…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sheet-structured-processing-results",
+      "record_group": "spreadsheet_data_workflow_records",
+      "name": "Return structured processing results",
+      "summary": "Return a machine-readable run object that accounts for every input record, proposed action, committ…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sheet-dry-run-preview",
+      "record_group": "spreadsheet_data_workflow_records",
+      "name": "Create a dry-run preview before writing",
+      "summary": "Materialize the exact output rows and proposed destination actions without performing side effects,…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sheet-batch-write-after-validation",
+      "record_group": "spreadsheet_data_workflow_records",
+      "name": "Batch write only after validation passes",
+      "summary": "Commit a bounded rectangular output only after structural, semantic, mapping, duplicate, and destin…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sheet-rollback-recovery",
+      "record_group": "spreadsheet_data_workflow_records",
+      "name": "Plan rollback or recovery before live writes",
+      "summary": "Define how to restore, resume, or safely rerun each side effect before execution, using snapshots,…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sheet-audit-run-history",
+      "record_group": "spreadsheet_data_workflow_records",
+      "name": "Maintain an audit log and run history",
+      "summary": "Record structured run metadata and item/action outcomes so a user can identify the input, configura…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sheet-idempotent-export-keys",
+      "record_group": "spreadsheet_data_workflow_records",
+      "name": "Use idempotent export keys",
+      "summary": "Derive a deterministic logical output key from stable normalized business identity and use it to pr…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-sheet-partial-failure-report",
+      "record_group": "spreadsheet_data_workflow_records",
+      "name": "Produce a partial failure report",
+      "summary": "Report exactly which rows/actions succeeded, failed validation, failed during side effects, were sk…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-risk-array-only-thinking",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Array-only thinking",
+      "summary": "Every problem is represented as one or more positional arrays even when the dominant need is named…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-risk-wrong-data-structure",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Wrong data structure for the dominant operation",
+      "summary": "The chosen representation makes the most frequent or correctness-critical operation awkward, slow,…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-risk-nested-loop-timeout",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Nested-loop timeout from repeated full scans",
+      "summary": "Each source row scans a mapping or second dataset from beginning to end, multiplying work and threa…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-risk-repeated-sheet-service-call",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Repeated spreadsheet service calls inside loops",
+      "summary": "Row-by-row reads or writes cross the hosted spreadsheet service boundary on every iteration instead…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-risk-missing-lookup-map",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Missing lookup map for repeated key retrieval",
+      "summary": "Stable reference data is searched repeatedly by key instead of being normalized and indexed once.",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-risk-duplicate-not-detected",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Duplicate identity is not detected or is defined incorrectly",
+      "summary": "Repeated logical records pass through because uniqueness is not modeled, the key is incomplete, or…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-risk-header-index-drift",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Header/index drift",
+      "summary": "Code assumes fixed column positions, so a reordered, inserted, renamed, duplicated, or missing head…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-risk-row-shape-assumption",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Unvalidated row-shape assumption",
+      "summary": "Code assumes every row has the same width, field types, key components, and header interpretation e…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-risk-mutation-during-iteration",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Mutation during iteration changes traversal semantics",
+      "summary": "Elements are added, removed, reordered, or rewritten while the same collection is being traversed,…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-risk-unstable-sort-assumption",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Unverified sort stability or comparator behavior",
+      "summary": "Code assumes equal-key rows preserve prior order or that the current runtime compares values as int…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-risk-binary-search-unsorted-data",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Binary search applied to unsorted or inconsistently ordered data",
+      "summary": "Binary search discards half of the candidate interval based on an ordering precondition that the da…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-risk-set-versus-list-confusion",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Set and list semantics are confused",
+      "summary": "A set is used when order, duplicates, or counts matter, or a list is used when uniqueness and membe…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-risk-queue-retry-duplication",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Retry queue duplicates work or never drains",
+      "summary": "Failed items are re-enqueued without stable identity, bounded attempts, terminal classification, or…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-risk-stack-queue-order-confusion",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Stack used where FIFO is required, or queue used where LIFO is required",
+      "summary": "Processing order is implemented with the wrong end-removal rule, reversing fairness, nesting, histo…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-risk-tree-overengineering",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Tree overengineering in a flat or small workflow",
+      "summary": "A custom tree or BST is introduced for a hierarchy or lookup that a table, path, sorted array, or d…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-risk-graph-overengineering",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Graph overengineering without a graph question",
+      "summary": "Nodes and edges are modeled even though the workflow only needs a flat mapping, ordered list, or si…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-risk-greedy-local-optimum",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Greedy local choice mistaken for a global optimum",
+      "summary": "A locally best-looking choice is assumed to maximize the final result even though the problem’s con…",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-risk-dp-overengineering",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Dynamic programming overengineering or state explosion",
+      "summary": "A routine workflow is recast as a large optimization table without a clear recurrence, overlapping…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-risk-source-era-js-runtime-assumption",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Source-era JavaScript presented as current runtime best practice",
+      "summary": "Book code or language behavior is copied into a current project without separating enduring algorit…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-risk-node-spidermonkey-appsscript-confusion",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "SpiderMonkey, Node.js, browser, and Apps Script runtimes are conflated",
+      "summary": "Code, globals, modules, I/O, persistence, or client/server assumptions from one environment are tre…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-risk-native-map-set-verification",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Native Map or Set behavior assumed without current Apps Script verification",
+      "summary": "A modern native structure is recommended or serialized/persisted based on generic JavaScript expect…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-risk-quota-timeout",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Quota or execution timeout treated as only a performance issue",
+      "summary": "A long-running script exceeds a current hosted limit or trigger window and leaves work incomplete,…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-risk-live-write-before-validation",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Live write begins before complete validation",
+      "summary": "The processor writes or sends outputs while still discovering structural, mapping, duplicate, or ro…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-risk-partial-failure-unstructured",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Partial failure is represented only as an exception or Boolean",
+      "summary": "A batch returns “failed” or throws one error without accounting for which items succeeded, failed v…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-risk-idempotency-missing",
+      "record_group": "failure_modes_and_pitfalls",
+      "name": "Idempotency boundary is missing",
+      "summary": "The same logical input can create another live write, export, email, or API action on rerun because…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-decision-array-versus-object-record",
+      "record_group": "decision_rules",
+      "name": "Array row versus object record",
+      "summary": "Default: Keep raw input as an array for transport, then convert to a named object record for nontri…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-decision-array-scan-versus-lookup",
+      "record_group": "decision_rules",
+      "name": "Array scan versus dictionary lookup",
+      "summary": "Default: Use a sequential scan for a small one-off search; build a validated lookup index for repea…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-decision-list-versus-queue",
+      "record_group": "decision_rules",
+      "name": "List versus queue",
+      "summary": "Default: Use a simple list/array for general ordered storage; use a queue when oldest-first process…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-decision-stack-versus-queue",
+      "record_group": "decision_rules",
+      "name": "Stack versus queue",
+      "summary": "Default: Use a queue for oldest-first work and a stack for newest-first reversal, nested state, or…",
+      "classification": "source_direct_definition",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-decision-set-versus-list",
+      "record_group": "decision_rules",
+      "name": "Set versus list",
+      "summary": "Default: Use a set for uniqueness and membership; use a list/array for ordered occurrences; combine…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-decision-object-versus-map",
+      "record_group": "decision_rules",
+      "name": "Plain object/dictionary versus native Map",
+      "summary": "Default: Use a plain object for simple string-keyed JSON-like records; consider Map only when its v…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-decision-set-versus-object-keys",
+      "record_group": "decision_rules",
+      "name": "Native Set versus object keys for membership",
+      "summary": "Default: Prefer the representation whose equality, iteration, serialization, and boundary behavior…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-decision-sorted-array-versus-tree",
+      "record_group": "decision_rules",
+      "name": "Sorted array versus tree",
+      "summary": "Default: Use a sorted array or lookup map for typical small/medium Apps Script datasets; implement…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-decision-graph-versus-table",
+      "record_group": "decision_rules",
+      "name": "Graph versus table",
+      "summary": "Default: Start with an edge table or mapping; build graph indexes/algorithms only when a path, reac…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-decision-built-in-versus-custom-sort",
+      "record_group": "decision_rules",
+      "name": "Built-in sort versus custom sort algorithm",
+      "summary": "Default: Use the current verified built-in sort with an explicit comparator; use custom source algo…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-decision-sequential-versus-binary",
+      "record_group": "decision_rules",
+      "name": "Sequential search versus binary search",
+      "summary": "Default: Use sequential search for unsorted/small/one-off data; use binary search only when data is…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-decision-binary-versus-map",
+      "record_group": "decision_rules",
+      "name": "Binary search versus lookup map",
+      "summary": "Default: Use a validated lookup map for repeated unique-key retrieval; use binary search when sorte…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-decision-greedy-versus-exact",
+      "record_group": "decision_rules",
+      "name": "Greedy heuristic versus exact algorithm",
+      "summary": "Default: Use the simplest method that satisfies required correctness; use greedy only with a known…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-decision-dp-versus-cached-lookup",
+      "record_group": "decision_rules",
+      "name": "Dynamic programming versus simpler cached lookup or rolling state",
+      "summary": "Default: Start with the smallest cache/state that eliminates demonstrated repeated work; use a full…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-decision-custom-versus-native",
+      "record_group": "decision_rules",
+      "name": "Custom data structure versus native JavaScript structure",
+      "summary": "Default: Use the simplest current verified native structure that expresses the invariant; implement…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-decision-clarity-versus-sophistication",
+      "record_group": "decision_rules",
+      "name": "Code clarity versus theoretical sophistication",
+      "summary": "Default: Choose the simplest design that makes the invariant, scale, and failure behavior explicit…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-decision-source-era-versus-modern",
+      "record_group": "decision_rules",
+      "name": "Source-era implementation versus modern/runtime-native implementation",
+      "summary": "Default: Preserve the source algorithm and invariant, but re-evaluate syntax, APIs, native structur…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-decision-batch-versus-service-calls",
+      "record_group": "decision_rules",
+      "name": "Batch read/write versus repeated service calls",
+      "summary": "Default: Use bounded batch reads and writes with in-memory transformation unless current API semant…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-decision-validate-all-versus-write-as-you-go",
+      "record_group": "decision_rules",
+      "name": "Validate all rows before live write versus write-as-you-go",
+      "summary": "Default: Validate the complete proposed output before live side effects; use chunked writes only wi…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-decision-structured-errors-versus-throw",
+      "record_group": "decision_rules",
+      "name": "Structured error collection versus throwing immediately",
+      "summary": "Default: Collect independently detectable row/field issues with provenance; throw or stop immediate…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-decision-retry-queue-versus-immediate",
+      "record_group": "decision_rules",
+      "name": "Retry queue versus immediate retry",
+      "summary": "Default: Queue a bounded, classified retry with stable identity rather than immediately looping, un…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-decision-idempotency-key-versus-after-detection",
+      "record_group": "decision_rules",
+      "name": "Idempotency key versus duplicate detection after the fact",
+      "summary": "Default: Prevent duplication with a stable pre-side-effect idempotency key and commit-state check;…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-input-shape",
+      "record_group": "diagnostic_questions",
+      "name": "Input shape",
+      "summary": "What is the exact physical and semantic shape of the input before any transformation?",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-output-shape",
+      "record_group": "diagnostic_questions",
+      "name": "Output shape",
+      "summary": "What exact output schema and side effects must exist after a successful run?",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-unique-key",
+      "record_group": "diagnostic_questions",
+      "name": "Identity",
+      "summary": "What stable normalized key uniquely identifies each logical input record and each logical side effe…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-required-semantics",
+      "record_group": "diagnostic_questions",
+      "name": "Structure selection",
+      "summary": "Does the collection require positional order, named fields, uniqueness, direct lookup, FIFO/LIFO pr…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-question-repeated-scans",
+      "record_group": "diagnostic_questions",
+      "name": "Lookup performance",
+      "summary": "How many times does the code scan the same reference collection, and can one validated index replac…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-dominant-operation",
+      "record_group": "diagnostic_questions",
+      "name": "Complexity",
+      "summary": "Which operation dominates total runtime at maximum expected scale: parsing, comparison, lookup, sor…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-max-scale",
+      "record_group": "diagnostic_questions",
+      "name": "Scale",
+      "summary": "What are the normal, peak, and worst credible row counts, key counts, output counts, and file sizes?",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-service-calls",
+      "record_group": "diagnostic_questions",
+      "name": "Apps Script services",
+      "summary": "How many Apps Script service calls occur inside row or cell loops, and which can be moved into boun…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-binary-precondition",
+      "record_group": "diagnostic_questions",
+      "name": "Searching",
+      "summary": "What proves the collection is sorted by the same comparator immediately before binary search?",
+      "classification": "source_direct_algorithm",
+      "confidence": "high",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-question-duplicates-by-structure",
+      "record_group": "diagnostic_questions",
+      "name": "Uniqueness",
+      "summary": "Are duplicates impossible by the selected structure and durable key contract, or merely checked aft…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-missing-mapping",
+      "record_group": "diagnostic_questions",
+      "name": "Mappings",
+      "summary": "What exact result occurs when a required location, vendor, account, metric, or header mapping is mi…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-duplicate-key-policy",
+      "record_group": "diagnostic_questions",
+      "name": "Key cardinality",
+      "summary": "When two rows normalize to the same key, should the system fail, keep first/last, group all, merge…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-question-original-order",
+      "record_group": "diagnostic_questions",
+      "name": "Order and provenance",
+      "summary": "Must users see original row order, and how will that order and source coordinate survive sorting, f…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-error-collection",
+      "record_group": "diagnostic_questions",
+      "name": "Validation errors",
+      "summary": "Which errors can be collected across all rows, and which structural failures make further validatio…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-live-idempotency",
+      "record_group": "diagnostic_questions",
+      "name": "Idempotency",
+      "summary": "What deterministic key and commit evidence make each live write, export, or message safe to retry?",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-timeout-halfway",
+      "record_group": "diagnostic_questions",
+      "name": "Interruption",
+      "summary": "If execution stops after committing only part of the action list, how are completed, uncertain, and…",
+      "classification": "google_apps_script_translation_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-header-row",
+      "record_group": "diagnostic_questions",
+      "name": "Schema discovery",
+      "summary": "Which exact row is the header row, and what evidence distinguishes it from title, blank, merged, or…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-row-width",
+      "record_group": "diagnostic_questions",
+      "name": "Rectangularity",
+      "summary": "Does every parsed and exported row have the expected width, and how are jagged rows classified?",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-join-cardinality",
+      "record_group": "diagnostic_questions",
+      "name": "Joins",
+      "summary": "Is the join one-to-one, many-to-one, one-to-many, or many-to-many, and what output row multiplicati…",
+      "classification": "spreadsheet_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-queue-persistence",
+      "record_group": "diagnostic_questions",
+      "name": "Queue state",
+      "summary": "Where does queue state persist across executions, and what durability, capacity, audit, and concurr…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-retryability",
+      "record_group": "diagnostic_questions",
+      "name": "Retries",
+      "summary": "Which failure codes are retryable, for how many attempts, after what revalidation, and with what ev…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-runtime-owner",
+      "record_group": "diagnostic_questions",
+      "name": "Runtime boundary",
+      "summary": "Which runtime executes each function—source-era shell, Node.js, Apps Script server, or browser clie…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-current-docs-trigger",
+      "record_group": "diagnostic_questions",
+      "name": "Current verification",
+      "summary": "Which material claim depends on current Apps Script quotas, services, triggers, authorization, depl…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-graph-definition",
+      "record_group": "diagnostic_questions",
+      "name": "Graphs",
+      "summary": "What exactly are the vertices and edges, are edges directed or weighted, and what path, reachabilit…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-question-tree-operation",
+      "record_group": "diagnostic_questions",
+      "name": "Trees",
+      "summary": "Which required operation—hierarchical traversal, ordered search, minimum/maximum, insertion, or del…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-greedy-objective",
+      "record_group": "diagnostic_questions",
+      "name": "Greedy algorithms",
+      "summary": "What objective and constraints does the local greedy choice optimize, and what smallest counterexam…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-question-dp-state",
+      "record_group": "diagnostic_questions",
+      "name": "Dynamic programming",
+      "summary": "What are the state variables, recurrence, base cases, total state count, and required reconstructio…",
+      "classification": "source_synthesis",
+      "confidence": "medium",
+      "current_verification_required": false
+    },
+    {
+      "id": "dsa-question-sort-contract",
+      "record_group": "diagnostic_questions",
+      "name": "Sorting",
+      "summary": "What typed comparator, null policy, tie-breaker, and original-order requirement define a correct so…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-partial-status",
+      "record_group": "diagnostic_questions",
+      "name": "Partial failure",
+      "summary": "Can every input and proposed action be assigned exactly one accountable status with source provenan…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-dry-live-equivalence",
+      "record_group": "diagnostic_questions",
+      "name": "Dry-run/live safety",
+      "summary": "Does dry-run produce the exact same proposed action objects that live mode will commit, apart from…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-recovery",
+      "record_group": "diagnostic_questions",
+      "name": "Recovery",
+      "summary": "For each side effect, is recovery achieved by rollback, resume, reconciliation, compensating action…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-date-period",
+      "record_group": "diagnostic_questions",
+      "name": "Dates and fiscal periods",
+      "summary": "What timezone, parsing format, and authoritative fiscal-calendar rule maps each source date to one…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-report-identification",
+      "record_group": "diagnostic_questions",
+      "name": "Report type",
+      "summary": "What evidence identifies exactly one supported report type before its rows are interpreted?",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-side-effect-inventory",
+      "record_group": "diagnostic_questions",
+      "name": "Side effects",
+      "summary": "Which operations mutate Sheets, send messages, call APIs, update archives, or change state, and whi…",
+      "classification": "internal_tool_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-concurrency",
+      "record_group": "diagnostic_questions",
+      "name": "Concurrency",
+      "summary": "Can two executions overlap on the same queue, sheet range, key registry, or destination action, and…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-cache-invalidation",
+      "record_group": "diagnostic_questions",
+      "name": "Caching",
+      "summary": "What exact key, lifetime, invalidation event, and fallback makes a cache correct rather than merely…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-question-test-proof",
+      "record_group": "diagnostic_questions",
+      "name": "Testing",
+      "summary": "What realistic fixture and exact invariant would falsify the proposed structure or algorithm?",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-workflow-choose-data-structure",
+      "record_group": "ai_agent_workflows",
+      "name": "Choose a data structure for an Apps Script problem",
+      "summary": "Select the simplest representation that makes the problem invariant and dominant operations explici…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-workflow-review-sheets-transformation",
+      "record_group": "ai_agent_workflows",
+      "name": "Review a Google Sheets transformation script",
+      "summary": "Determine whether the script reads, represents, validates, transforms, and writes spreadsheet data…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-workflow-diagnose-timeout",
+      "record_group": "ai_agent_workflows",
+      "name": "Diagnose Apps Script timeout from algorithmic structure",
+      "summary": "Identify whether runtime is dominated by repeated service calls, nested scans, sorting, parsing, AP…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-workflow-replace-repeated-search",
+      "record_group": "ai_agent_workflows",
+      "name": "Replace repeated search with a lookup map",
+      "summary": "Convert a repeated scan into one validated index build plus direct lookups without losing duplicate…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-workflow-design-duplicate-detection",
+      "record_group": "ai_agent_workflows",
+      "name": "Design duplicate detection",
+      "summary": "Define logical identity and detect duplicates within the current input and across prior committed o…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-workflow-design-required-header-validation",
+      "record_group": "ai_agent_workflows",
+      "name": "Design required-header validation",
+      "summary": "Identify the true header row, normalize names, detect duplicates, compare expected/actual schemas,…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-workflow-parse-validate-transform-export",
+      "record_group": "ai_agent_workflows",
+      "name": "Design parse → validate → transform → export pipeline",
+      "summary": "Separate physical parsing, structural/semantic validation, pure transformation, proposed actions, a…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-workflow-review-sorting-searching",
+      "record_group": "ai_agent_workflows",
+      "name": "Review sorting and searching logic",
+      "summary": "Verify ordering contracts, comparator/type behavior, sortedness preconditions, search frequency, an…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-workflow-review-queue-retry-idempotency",
+      "record_group": "ai_agent_workflows",
+      "name": "Review queue, retry, and idempotency logic",
+      "summary": "Ensure staged work has durable identity, correct order, bounded retry, safe concurrency, commit rec…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-workflow-review-partial-failure",
+      "record_group": "ai_agent_workflows",
+      "name": "Review partial failure handling",
+      "summary": "Verify that a batch accounts for every item and side effect, distinguishes failure stages, supports…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-workflow-review-row-shape",
+      "record_group": "ai_agent_workflows",
+      "name": "Review row-shape assumptions",
+      "summary": "Make every physical and semantic assumption about headers, row width, types, blanks, keys, provenan…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-workflow-review-mapping-logic",
+      "record_group": "ai_agent_workflows",
+      "name": "Review location, vendor, account, or other mapping logic",
+      "summary": "Ensure mappings use stable canonical keys, deterministic normalization, explicit alias/cardinality…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-workflow-review-dependency-graph",
+      "record_group": "ai_agent_workflows",
+      "name": "Review dependency or escalation workflow as a graph",
+      "summary": "Determine whether graph modeling adds value, define nodes/edges/direction/weights, validate cycles,…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-workflow-decide-not-overengineer",
+      "record_group": "ai_agent_workflows",
+      "name": "Decide when not to over-engineer",
+      "summary": "Reject custom structures or advanced algorithms when a clear native array/object/index pipeline mee…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-workflow-structure-messy-spreadsheet-code",
+      "record_group": "ai_agent_workflows",
+      "name": "Convert messy spreadsheet code into a structured data workflow",
+      "summary": "Refactor interleaved spreadsheet logic into explicit configuration, read, parse, validate, transfor…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-workflow-test-plan-transformation",
+      "record_group": "ai_agent_workflows",
+      "name": "Create a test plan for a data transformation",
+      "summary": "Prove schema, key, order, mapping, duplicate, scale, side-effect, partial-failure, and idempotency…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-workflow-verify-source-era-runtime",
+      "record_group": "ai_agent_workflows",
+      "name": "Verify source-era JavaScript against current Apps Script runtime",
+      "summary": "Separate enduring data-structure/algorithm logic from SpiderMonkey shell code, Node translations, c…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-workflow-decide-current-docs",
+      "record_group": "ai_agent_workflows",
+      "name": "Decide when current Google documentation is required",
+      "summary": "Flag every material claim whose accuracy depends on current Apps Script services, quotas, V8, trigg…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-verify-spidermonkey-node",
+      "record_group": "current_verification_flags",
+      "name": "SpiderMonkey shell and Node.js translation behavior",
+      "summary": "Shell globals, I/O, modules, syntax support, and Node behavior can differ by version and are not Ap…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-verify-current-js-features",
+      "record_group": "current_verification_flags",
+      "name": "Current JavaScript syntax and language features",
+      "summary": "Language syntax, standard methods, modules, and best practices evolve; source-era examples must not…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-verify-array-object-runtime",
+      "record_group": "current_verification_flags",
+      "name": "Current Array and Object behavior in Apps Script",
+      "summary": "The needed methods, iteration, key/property, date/value, and serialization behavior must match the…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-verify-map-set-runtime",
+      "record_group": "current_verification_flags",
+      "name": "Current native Map and Set behavior in Apps Script",
+      "summary": "Availability, equality, iteration, serialization, client/server transfer, and persistence behavior…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-verify-array-sort-runtime",
+      "record_group": "current_verification_flags",
+      "name": "Current Array sorting behavior",
+      "summary": "Built-in sort implementation, stability, type coercion, and service-side sorting behavior are runti…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-verify-v8-runtime",
+      "record_group": "current_verification_flags",
+      "name": "Current Apps Script V8 runtime support",
+      "summary": "Supported syntax, standard library features, execution semantics, and migration notes are current p…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-verify-apps-script-quotas",
+      "record_group": "current_verification_flags",
+      "name": "Current Apps Script quotas",
+      "summary": "Quotas vary by service, account, deployment, and time; exact numbers may change and materially affe…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-verify-execution-limits",
+      "record_group": "current_verification_flags",
+      "name": "Current execution time and trigger limits",
+      "summary": "Execution limits and trigger contexts affect whether work must be bounded, resumed, or moved to ano…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-verify-spreadsheet-performance",
+      "record_group": "current_verification_flags",
+      "name": "Current SpreadsheetApp read/write performance and constraints",
+      "summary": "Batching guidance remains a translation pattern, but actual range limits, latency, memory, formulas…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-verify-state-services",
+      "record_group": "current_verification_flags",
+      "name": "Current PropertiesService, CacheService, and durable state behavior",
+      "summary": "Capacity, retention, eviction, serialization, scope, concurrency, and availability determine whethe…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-verify-lock-service",
+      "record_group": "current_verification_flags",
+      "name": "Current LockService and concurrency behavior",
+      "summary": "Lock scope, acquisition, timeout, release, trigger overlap, and failure semantics determine whether…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-verify-triggers",
+      "record_group": "current_verification_flags",
+      "name": "Current Apps Script trigger behavior",
+      "summary": "Trigger authorization, event objects, schedules, concurrency, retries, ownership, and execution con…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-verify-web-app-boundary",
+      "record_group": "current_verification_flags",
+      "name": "Current Apps Script Web App client/server and deployment boundary",
+      "summary": "Client/server calls, serialization, user identity, deployment access, state lifetime, and error pro…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-verify-authorization-deployment",
+      "record_group": "current_verification_flags",
+      "name": "Current Apps Script authorization scopes and deployment behavior",
+      "summary": "Permissions and deployment identity determine which services, files, recipients, and users the tool…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-verify-file-upload",
+      "record_group": "current_verification_flags",
+      "name": "Current file upload and CSV/XLSX parsing behavior",
+      "summary": "Upload size, encoding, multipart/client-server transfer, Drive conversion, parser libraries, dates,…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-verify-source-repository-errata",
+      "record_group": "current_verification_flags",
+      "name": "Current source repository, errata, and content updates",
+      "summary": "Repository contents, availability, branches, errata, and later corrections may have changed and wer…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-verify-project-data-shape",
+      "record_group": "current_verification_flags",
+      "name": "Current project row counts, schemas, and data distributions",
+      "summary": "Keys, duplicate rates, missing mappings, row counts, date formats, header variants, and scale deter…",
+      "classification": "current_verification_flag",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-cross-eloquent-javascript",
+      "record_group": "cross_domain_connections",
+      "name": "Data Structures and Algorithms × Eloquent JavaScript",
+      "summary": "Eloquent JavaScript can supply language, program structure, browser, Node, and asynchronous-program…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-cross-javascript-definitive-guide",
+      "record_group": "cross_domain_connections",
+      "name": "Data Structures and Algorithms × JavaScript: The Definitive Guide",
+      "summary": "A JavaScript reference can clarify language and native collection behavior, while this package supp…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-cross-google-apps-script",
+      "record_group": "cross_domain_connections",
+      "name": "Data Structures and Algorithms × Google Apps Script projects",
+      "summary": "This package supplies conceptual structure and algorithm reasoning; current Apps Script documentati…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-cross-excel-python-in-excel",
+      "record_group": "cross_domain_connections",
+      "name": "Data Structures and Algorithms × Excel / Python in Excel",
+      "summary": "Excel-oriented modules can validate workbook structure, formulas, table semantics, types, and audit…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-cross-streamlit",
+      "record_group": "cross_domain_connections",
+      "name": "Data Structures and Algorithms × Streamlit",
+      "summary": "Streamlit modules can guide interactive state, uploads, feedback, and data-display behavior; this p…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-cross-ddia",
+      "record_group": "cross_domain_connections",
+      "name": "Data Structures and Algorithms × Designing Data-Intensive Applications (DDIA)",
+      "summary": "DDIA can deepen durability, replication, consistency, idempotency, concurrency, and failure reasoni…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-cross-robust-python",
+      "record_group": "cross_domain_connections",
+      "name": "Data Structures and Algorithms × Robust Python",
+      "summary": "Robust Python can contribute type design, contracts, error models, and maintainability principles;…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-cross-architecture-patterns-python",
+      "record_group": "cross_domain_connections",
+      "name": "Data Structures and Algorithms × Architecture Patterns with Python",
+      "summary": "Architecture patterns can help isolate domain logic, adapters, units of work, events, and repositor…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-cross-statistical-inference",
+      "record_group": "cross_domain_connections",
+      "name": "Data Structures and Algorithms × Statistical Inference",
+      "summary": "Statistical modules determine whether aggregations, denominators, samples, and conclusions are vali…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-cross-pattern-recognition-ml",
+      "record_group": "cross_domain_connections",
+      "name": "Data Structures and Algorithms × Pattern Recognition / Machine Learning",
+      "summary": "ML modules can address feature representation, training, validation, and predictive decisions; this…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-cross-hcd",
+      "record_group": "cross_domain_connections",
+      "name": "Data Structures and Algorithms × The Design of Everyday Things / Human-Centered Design",
+      "summary": "HCD modules ask whether users understand, trust, and recover from the workflow; this package struct…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-cross-toyota-way",
+      "record_group": "cross_domain_connections",
+      "name": "Data Structures and Algorithms × Toyota Way",
+      "summary": "Toyota-style operational thinking can use structured events and validation to reveal abnormalities…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-cross-operational-excellence",
+      "record_group": "cross_domain_connections",
+      "name": "Data Structures and Algorithms × Operational Excellence",
+      "summary": "Operational-excellence modules define process goals, standard work, controls, and improvement loops…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-cross-hooked-ethical-adoption",
+      "record_group": "cross_domain_connections",
+      "name": "Data Structures and Algorithms × Hooked / ethical adoption",
+      "summary": "Adoption modules can help reduce friction and provide timely feedback; this package ensures the und…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-cross-eos-core-values",
+      "record_group": "cross_domain_connections",
+      "name": "Data Structures and Algorithms × EOS / Core Values",
+      "summary": "EOS modules define accountable owners, scorecards, meeting rhythms, and value-aligned behavior; thi…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-cross-restaurant-operations",
+      "record_group": "cross_domain_connections",
+      "name": "Data Structures and Algorithms × Restaurant operations",
+      "summary": "Restaurant operations supply the actual grain, SOPs, fiscal periods, locations, items, roles, and e…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-cross-warehouse-operations",
+      "record_group": "cross_domain_connections",
+      "name": "Data Structures and Algorithms × Warehouse operations",
+      "summary": "Warehouse operations provide item, supplier, location, lead-time, route, priority, and fulfillment…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-cross-scorecards",
+      "record_group": "cross_domain_connections",
+      "name": "Data Structures and Algorithms × Scorecards",
+      "summary": "Scorecard systems require stable metric/location/period identity, coverage checks, update/no-op sem…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-cross-r365",
+      "record_group": "cross_domain_connections",
+      "name": "Data Structures and Algorithms × R365 report processing",
+      "summary": "Current R365 exports/imports provide the authoritative schemas and constraints; this package suppli…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    },
+    {
+      "id": "dsa-cross-forms-dashboards",
+      "record_group": "cross_domain_connections",
+      "name": "Data Structures and Algorithms × Forms and dashboards",
+      "summary": "Forms capture structured events and dashboards aggregate them; this package connects them through v…",
+      "classification": "ai_agent_workflow_extension",
+      "confidence": "low",
+      "current_verification_required": true
+    }
+  ]
+}

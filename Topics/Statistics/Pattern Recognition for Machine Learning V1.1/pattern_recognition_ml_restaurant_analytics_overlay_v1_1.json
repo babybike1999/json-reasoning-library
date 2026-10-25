@@ -1,0 +1,1127 @@
+{
+  "package": "Pattern Recognition and Machine Learning Active Reasoning Pack V1.1",
+  "file_role": "Operational restaurant/OMAKAI-style analytics overlay. All records are extensions, not direct book claims.",
+  "source_boundary": "Do not infer OMAKAI facts from this file. It only provides safe ML review frames for restaurant-group data examples supplied in the repair prompt.",
+  "restaurant_analytics_decision_gate": [
+    "What decision are we trying to improve?",
+    "Is this prediction, classification, clustering, anomaly detection, forecasting, reporting, or causal inference?",
+    "What is the target?",
+    "What data exists before the decision?",
+    "What data would be leakage?",
+    "Is the sample representative?",
+    "Are locations comparable or should they be modeled separately?",
+    "What seasonality, holiday, event, promo, menu, weather, or operational confounders exist?",
+    "What validation design proves this works?",
+    "What operational action would change if the model is right?",
+    "What is the simplest useful non-ML baseline?",
+    "What would make this conclusion unsafe?"
+  ],
+  "records": [
+    {
+      "id": "restaurant-guest-satisfaction-classification",
+      "restaurant_use_case": "Guest satisfaction classification",
+      "ml_task_type": "classification",
+      "business_decision_improved": "guest recovery or manager follow-up",
+      "possible_target": "low/medium/high satisfaction or low-satisfaction risk",
+      "candidate_features": [
+        "location",
+        "date/time/daypart",
+        "source/platform",
+        "historical metrics before decision",
+        "known promo/event/menu/weather context",
+        "customer/order attributes available before decision"
+      ],
+      "features_that_may_be_leakage": [
+        "future target value",
+        "post-outcome resolution notes",
+        "future visits or sales",
+        "features computed using validation/test period",
+        "same target embedded as a feature"
+      ],
+      "required_data_checks": [
+        "define business decision first",
+        "verify target and feature timing",
+        "verify current export schema",
+        "check sample representativeness",
+        "check location/platform/time confounding",
+        "compare simple baseline",
+        "block causal claims unless causal design exists"
+      ],
+      "validation_design": "Use time-aware, group-aware, platform-aware, and/or location-aware validation matching the operational decision; use nested validation if features/models/thresholds are selected.",
+      "main_bias_or_confounding_risks": [
+        "ml-risk-operational-actionability-gap"
+      ],
+      "what_model_output_would_mean": "A prediction, grouping, warning, or score for the defined use case: Guest satisfaction classification.",
+      "what_model_output_would_not_mean": "It would not prove causality, represent all guests automatically, or justify action without validation and human review.",
+      "operational_action_if_true": "Escalate to the named owner for review only if the action, threshold, and evidence standard are pre-defined.",
+      "human_review_triggers": [
+        "low confidence",
+        "small sample",
+        "new location/menu/platform schema",
+        "high-impact guest or staffing action",
+        "out-of-support prediction"
+      ],
+      "minimum_useful_v1": "A clean data dictionary, leakage audit, simple baseline, and validation design before complex modeling.",
+      "related_ml_record_ids": [
+        "rule-omakai-restaurant-decision-gate",
+        "eval-simple-baseline-first",
+        "eval-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-operational-actionability-gap"
+      ],
+      "derivation": {
+        "classification": "restaurant_analytics_extension",
+        "confidence": "low",
+        "source_boundary_note": "This record applies source-supported ML reasoning to restaurant analytics; it is not a direct claim from the book."
+      }
+    },
+    {
+      "id": "restaurant-review-text-theme-classification",
+      "restaurant_use_case": "Review text theme classification",
+      "ml_task_type": "classification / text labeling",
+      "business_decision_improved": "operations follow-up on review themes",
+      "possible_target": "human-approved theme label",
+      "candidate_features": [
+        "location",
+        "date/time/daypart",
+        "source/platform",
+        "historical metrics before decision",
+        "known promo/event/menu/weather context",
+        "customer/order attributes available before decision"
+      ],
+      "features_that_may_be_leakage": [
+        "future target value",
+        "post-outcome resolution notes",
+        "future visits or sales",
+        "features computed using validation/test period",
+        "same target embedded as a feature"
+      ],
+      "required_data_checks": [
+        "define business decision first",
+        "verify target and feature timing",
+        "verify current export schema",
+        "check sample representativeness",
+        "check location/platform/time confounding",
+        "compare simple baseline",
+        "block causal claims unless causal design exists"
+      ],
+      "validation_design": "Use time-aware, group-aware, platform-aware, and/or location-aware validation matching the operational decision; use nested validation if features/models/thresholds are selected.",
+      "main_bias_or_confounding_risks": [
+        "ml-risk-nonrandom-review-sample",
+        "ml-risk-platform-selection-bias"
+      ],
+      "what_model_output_would_mean": "A prediction, grouping, warning, or score for the defined use case: Review text theme classification.",
+      "what_model_output_would_not_mean": "It would not prove causality, represent all guests automatically, or justify action without validation and human review.",
+      "operational_action_if_true": "Escalate to the named owner for review only if the action, threshold, and evidence standard are pre-defined.",
+      "human_review_triggers": [
+        "low confidence",
+        "small sample",
+        "new location/menu/platform schema",
+        "high-impact guest or staffing action",
+        "out-of-support prediction"
+      ],
+      "minimum_useful_v1": "A clean data dictionary, leakage audit, simple baseline, and validation design before complex modeling.",
+      "related_ml_record_ids": [
+        "rule-omakai-restaurant-decision-gate",
+        "eval-simple-baseline-first",
+        "eval-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-nonrandom-review-sample",
+        "ml-risk-platform-selection-bias"
+      ],
+      "derivation": {
+        "classification": "restaurant_analytics_extension",
+        "confidence": "low",
+        "source_boundary_note": "This record applies source-supported ML reasoning to restaurant analytics; it is not a direct claim from the book."
+      }
+    },
+    {
+      "id": "restaurant-uber-eats-rating-risk-analysis",
+      "restaurant_use_case": "Uber Eats rating-risk analysis",
+      "ml_task_type": "classification / risk ranking",
+      "business_decision_improved": "delivery-platform quality review",
+      "possible_target": "low-rating risk for a defined platform channel",
+      "candidate_features": [
+        "location",
+        "date/time/daypart",
+        "source/platform",
+        "historical metrics before decision",
+        "known promo/event/menu/weather context",
+        "customer/order attributes available before decision"
+      ],
+      "features_that_may_be_leakage": [
+        "future target value",
+        "post-outcome resolution notes",
+        "future visits or sales",
+        "features computed using validation/test period",
+        "same target embedded as a feature"
+      ],
+      "required_data_checks": [
+        "define business decision first",
+        "verify target and feature timing",
+        "verify current export schema",
+        "check sample representativeness",
+        "check location/platform/time confounding",
+        "compare simple baseline",
+        "block causal claims unless causal design exists"
+      ],
+      "validation_design": "Use time-aware, group-aware, platform-aware, and/or location-aware validation matching the operational decision; use nested validation if features/models/thresholds are selected.",
+      "main_bias_or_confounding_risks": [
+        "ml-risk-nonrandom-review-sample",
+        "ml-risk-platform-selection-bias"
+      ],
+      "what_model_output_would_mean": "A prediction, grouping, warning, or score for the defined use case: Uber Eats rating-risk analysis.",
+      "what_model_output_would_not_mean": "It would not prove causality, represent all guests automatically, or justify action without validation and human review.",
+      "operational_action_if_true": "Escalate to the named owner for review only if the action, threshold, and evidence standard are pre-defined.",
+      "human_review_triggers": [
+        "low confidence",
+        "small sample",
+        "new location/menu/platform schema",
+        "high-impact guest or staffing action",
+        "out-of-support prediction"
+      ],
+      "minimum_useful_v1": "A clean data dictionary, leakage audit, simple baseline, and validation design before complex modeling.",
+      "related_ml_record_ids": [
+        "rule-omakai-restaurant-decision-gate",
+        "eval-simple-baseline-first",
+        "eval-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-nonrandom-review-sample",
+        "ml-risk-platform-selection-bias"
+      ],
+      "derivation": {
+        "classification": "restaurant_analytics_extension",
+        "confidence": "low",
+        "source_boundary_note": "This record applies source-supported ML reasoning to restaurant analytics; it is not a direct claim from the book."
+      }
+    },
+    {
+      "id": "restaurant-repeat-customer-prediction",
+      "restaurant_use_case": "Repeat customer prediction",
+      "ml_task_type": "classification / time-window prediction",
+      "business_decision_improved": "retention outreach or loyalty planning",
+      "possible_target": "repeat visit within a future window",
+      "candidate_features": [
+        "location",
+        "date/time/daypart",
+        "source/platform",
+        "historical metrics before decision",
+        "known promo/event/menu/weather context",
+        "customer/order attributes available before decision"
+      ],
+      "features_that_may_be_leakage": [
+        "future target value",
+        "post-outcome resolution notes",
+        "future visits or sales",
+        "features computed using validation/test period",
+        "same target embedded as a feature"
+      ],
+      "required_data_checks": [
+        "define business decision first",
+        "verify target and feature timing",
+        "verify current export schema",
+        "check sample representativeness",
+        "check location/platform/time confounding",
+        "compare simple baseline",
+        "block causal claims unless causal design exists"
+      ],
+      "validation_design": "Use time-aware, group-aware, platform-aware, and/or location-aware validation matching the operational decision; use nested validation if features/models/thresholds are selected.",
+      "main_bias_or_confounding_risks": [
+        "ml-risk-temporal-split-mismatch",
+        "ml-risk-regression-extrapolation"
+      ],
+      "what_model_output_would_mean": "A prediction, grouping, warning, or score for the defined use case: Repeat customer prediction.",
+      "what_model_output_would_not_mean": "It would not prove causality, represent all guests automatically, or justify action without validation and human review.",
+      "operational_action_if_true": "Escalate to the named owner for review only if the action, threshold, and evidence standard are pre-defined.",
+      "human_review_triggers": [
+        "low confidence",
+        "small sample",
+        "new location/menu/platform schema",
+        "high-impact guest or staffing action",
+        "out-of-support prediction"
+      ],
+      "minimum_useful_v1": "A clean data dictionary, leakage audit, simple baseline, and validation design before complex modeling.",
+      "related_ml_record_ids": [
+        "rule-omakai-restaurant-decision-gate",
+        "eval-simple-baseline-first",
+        "eval-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-temporal-split-mismatch",
+        "ml-risk-regression-extrapolation"
+      ],
+      "derivation": {
+        "classification": "restaurant_analytics_extension",
+        "confidence": "low",
+        "source_boundary_note": "This record applies source-supported ML reasoning to restaurant analytics; it is not a direct claim from the book."
+      }
+    },
+    {
+      "id": "restaurant-sales-forecasting",
+      "restaurant_use_case": "Sales forecasting",
+      "ml_task_type": "regression / forecasting",
+      "business_decision_improved": "staffing, prep, purchasing, cash planning",
+      "possible_target": "future sales by date/location/daypart",
+      "candidate_features": [
+        "location",
+        "date/time/daypart",
+        "source/platform",
+        "historical metrics before decision",
+        "known promo/event/menu/weather context",
+        "customer/order attributes available before decision"
+      ],
+      "features_that_may_be_leakage": [
+        "future target value",
+        "post-outcome resolution notes",
+        "future visits or sales",
+        "features computed using validation/test period",
+        "same target embedded as a feature"
+      ],
+      "required_data_checks": [
+        "define business decision first",
+        "verify target and feature timing",
+        "verify current export schema",
+        "check sample representativeness",
+        "check location/platform/time confounding",
+        "compare simple baseline",
+        "block causal claims unless causal design exists"
+      ],
+      "validation_design": "Use time-aware, group-aware, platform-aware, and/or location-aware validation matching the operational decision; use nested validation if features/models/thresholds are selected.",
+      "main_bias_or_confounding_risks": [
+        "ml-risk-temporal-split-mismatch",
+        "ml-risk-regression-extrapolation"
+      ],
+      "what_model_output_would_mean": "A prediction, grouping, warning, or score for the defined use case: Sales forecasting.",
+      "what_model_output_would_not_mean": "It would not prove causality, represent all guests automatically, or justify action without validation and human review.",
+      "operational_action_if_true": "Escalate to the named owner for review only if the action, threshold, and evidence standard are pre-defined.",
+      "human_review_triggers": [
+        "low confidence",
+        "small sample",
+        "new location/menu/platform schema",
+        "high-impact guest or staffing action",
+        "out-of-support prediction"
+      ],
+      "minimum_useful_v1": "A clean data dictionary, leakage audit, simple baseline, and validation design before complex modeling.",
+      "related_ml_record_ids": [
+        "rule-omakai-restaurant-decision-gate",
+        "eval-simple-baseline-first",
+        "eval-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-temporal-split-mismatch",
+        "ml-risk-regression-extrapolation"
+      ],
+      "derivation": {
+        "classification": "restaurant_analytics_extension",
+        "confidence": "low",
+        "source_boundary_note": "This record applies source-supported ML reasoning to restaurant analytics; it is not a direct claim from the book."
+      }
+    },
+    {
+      "id": "restaurant-location-level-anomaly-detection",
+      "restaurant_use_case": "Location-level anomaly detection",
+      "ml_task_type": "anomaly detection / reporting",
+      "business_decision_improved": "manager review of unusual location patterns",
+      "possible_target": "deviation from expected location metric",
+      "candidate_features": [
+        "location",
+        "date/time/daypart",
+        "source/platform",
+        "historical metrics before decision",
+        "known promo/event/menu/weather context",
+        "customer/order attributes available before decision"
+      ],
+      "features_that_may_be_leakage": [
+        "future target value",
+        "post-outcome resolution notes",
+        "future visits or sales",
+        "features computed using validation/test period",
+        "same target embedded as a feature"
+      ],
+      "required_data_checks": [
+        "define business decision first",
+        "verify target and feature timing",
+        "verify current export schema",
+        "check sample representativeness",
+        "check location/platform/time confounding",
+        "compare simple baseline",
+        "block causal claims unless causal design exists"
+      ],
+      "validation_design": "Use time-aware, group-aware, platform-aware, and/or location-aware validation matching the operational decision; use nested validation if features/models/thresholds are selected.",
+      "main_bias_or_confounding_risks": [
+        "ml-risk-location-confounding",
+        "ml-risk-seasonality-event-confounding"
+      ],
+      "what_model_output_would_mean": "A prediction, grouping, warning, or score for the defined use case: Location-level anomaly detection.",
+      "what_model_output_would_not_mean": "It would not prove causality, represent all guests automatically, or justify action without validation and human review.",
+      "operational_action_if_true": "Escalate to the named owner for review only if the action, threshold, and evidence standard are pre-defined.",
+      "human_review_triggers": [
+        "low confidence",
+        "small sample",
+        "new location/menu/platform schema",
+        "high-impact guest or staffing action",
+        "out-of-support prediction"
+      ],
+      "minimum_useful_v1": "A clean data dictionary, leakage audit, simple baseline, and validation design before complex modeling.",
+      "related_ml_record_ids": [
+        "rule-omakai-restaurant-decision-gate",
+        "eval-simple-baseline-first",
+        "eval-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-location-confounding",
+        "ml-risk-seasonality-event-confounding"
+      ],
+      "derivation": {
+        "classification": "restaurant_analytics_extension",
+        "confidence": "low",
+        "source_boundary_note": "This record applies source-supported ML reasoning to restaurant analytics; it is not a direct claim from the book."
+      }
+    },
+    {
+      "id": "restaurant-marketing-spend-versus-sales-pattern-review",
+      "restaurant_use_case": "Marketing spend versus sales pattern review",
+      "ml_task_type": "regression / association review",
+      "business_decision_improved": "screen marketing patterns for follow-up",
+      "possible_target": "sales after marketing spend window",
+      "candidate_features": [
+        "location",
+        "date/time/daypart",
+        "source/platform",
+        "historical metrics before decision",
+        "known promo/event/menu/weather context",
+        "customer/order attributes available before decision"
+      ],
+      "features_that_may_be_leakage": [
+        "future target value",
+        "post-outcome resolution notes",
+        "future visits or sales",
+        "features computed using validation/test period",
+        "same target embedded as a feature"
+      ],
+      "required_data_checks": [
+        "define business decision first",
+        "verify target and feature timing",
+        "verify current export schema",
+        "check sample representativeness",
+        "check location/platform/time confounding",
+        "compare simple baseline",
+        "block causal claims unless causal design exists"
+      ],
+      "validation_design": "Use time-aware, group-aware, platform-aware, and/or location-aware validation matching the operational decision; use nested validation if features/models/thresholds are selected.",
+      "main_bias_or_confounding_risks": [
+        "ml-risk-nonrandom-review-sample",
+        "ml-risk-platform-selection-bias",
+        "ml-risk-correlation-treated-as-causation",
+        "ml-risk-seasonality-event-confounding"
+      ],
+      "what_model_output_would_mean": "A prediction, grouping, warning, or score for the defined use case: Marketing spend versus sales pattern review.",
+      "what_model_output_would_not_mean": "It would not prove causality, represent all guests automatically, or justify action without validation and human review.",
+      "operational_action_if_true": "Escalate to the named owner for review only if the action, threshold, and evidence standard are pre-defined.",
+      "human_review_triggers": [
+        "low confidence",
+        "small sample",
+        "new location/menu/platform schema",
+        "high-impact guest or staffing action",
+        "out-of-support prediction"
+      ],
+      "minimum_useful_v1": "A clean data dictionary, leakage audit, simple baseline, and validation design before complex modeling.",
+      "related_ml_record_ids": [
+        "rule-omakai-restaurant-decision-gate",
+        "eval-simple-baseline-first",
+        "eval-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-nonrandom-review-sample",
+        "ml-risk-platform-selection-bias",
+        "ml-risk-correlation-treated-as-causation",
+        "ml-risk-seasonality-event-confounding"
+      ],
+      "derivation": {
+        "classification": "restaurant_analytics_extension",
+        "confidence": "low",
+        "source_boundary_note": "This record applies source-supported ML reasoning to restaurant analytics; it is not a direct claim from the book."
+      }
+    },
+    {
+      "id": "restaurant-promo-lift-review",
+      "restaurant_use_case": "Promo lift review",
+      "ml_task_type": "regression / causal-design warning",
+      "business_decision_improved": "promo measurement and finance review",
+      "possible_target": "sales/margin/orders relative to baseline",
+      "candidate_features": [
+        "location",
+        "date/time/daypart",
+        "source/platform",
+        "historical metrics before decision",
+        "known promo/event/menu/weather context",
+        "customer/order attributes available before decision"
+      ],
+      "features_that_may_be_leakage": [
+        "future target value",
+        "post-outcome resolution notes",
+        "future visits or sales",
+        "features computed using validation/test period",
+        "same target embedded as a feature"
+      ],
+      "required_data_checks": [
+        "define business decision first",
+        "verify target and feature timing",
+        "verify current export schema",
+        "check sample representativeness",
+        "check location/platform/time confounding",
+        "compare simple baseline",
+        "block causal claims unless causal design exists"
+      ],
+      "validation_design": "Use time-aware, group-aware, platform-aware, and/or location-aware validation matching the operational decision; use nested validation if features/models/thresholds are selected.",
+      "main_bias_or_confounding_risks": [
+        "ml-risk-nonrandom-review-sample",
+        "ml-risk-platform-selection-bias",
+        "ml-risk-correlation-treated-as-causation",
+        "ml-risk-seasonality-event-confounding"
+      ],
+      "what_model_output_would_mean": "A prediction, grouping, warning, or score for the defined use case: Promo lift review.",
+      "what_model_output_would_not_mean": "It would not prove causality, represent all guests automatically, or justify action without validation and human review.",
+      "operational_action_if_true": "Escalate to the named owner for review only if the action, threshold, and evidence standard are pre-defined.",
+      "human_review_triggers": [
+        "low confidence",
+        "small sample",
+        "new location/menu/platform schema",
+        "high-impact guest or staffing action",
+        "out-of-support prediction"
+      ],
+      "minimum_useful_v1": "A clean data dictionary, leakage audit, simple baseline, and validation design before complex modeling.",
+      "related_ml_record_ids": [
+        "rule-omakai-restaurant-decision-gate",
+        "eval-simple-baseline-first",
+        "eval-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-nonrandom-review-sample",
+        "ml-risk-platform-selection-bias",
+        "ml-risk-correlation-treated-as-causation",
+        "ml-risk-seasonality-event-confounding"
+      ],
+      "derivation": {
+        "classification": "restaurant_analytics_extension",
+        "confidence": "low",
+        "source_boundary_note": "This record applies source-supported ML reasoning to restaurant analytics; it is not a direct claim from the book."
+      }
+    },
+    {
+      "id": "restaurant-labor-food-cost-anomaly-review",
+      "restaurant_use_case": "Labor/food-cost anomaly review",
+      "ml_task_type": "anomaly detection / regression residual review",
+      "business_decision_improved": "finance/operations review of cost variance",
+      "possible_target": "unexpected labor or food cost percentage",
+      "candidate_features": [
+        "location",
+        "date/time/daypart",
+        "source/platform",
+        "historical metrics before decision",
+        "known promo/event/menu/weather context",
+        "customer/order attributes available before decision"
+      ],
+      "features_that_may_be_leakage": [
+        "future target value",
+        "post-outcome resolution notes",
+        "future visits or sales",
+        "features computed using validation/test period",
+        "same target embedded as a feature"
+      ],
+      "required_data_checks": [
+        "define business decision first",
+        "verify target and feature timing",
+        "verify current export schema",
+        "check sample representativeness",
+        "check location/platform/time confounding",
+        "compare simple baseline",
+        "block causal claims unless causal design exists"
+      ],
+      "validation_design": "Use time-aware, group-aware, platform-aware, and/or location-aware validation matching the operational decision; use nested validation if features/models/thresholds are selected.",
+      "main_bias_or_confounding_risks": [
+        "ml-risk-nonrandom-review-sample",
+        "ml-risk-platform-selection-bias"
+      ],
+      "what_model_output_would_mean": "A prediction, grouping, warning, or score for the defined use case: Labor/food-cost anomaly review.",
+      "what_model_output_would_not_mean": "It would not prove causality, represent all guests automatically, or justify action without validation and human review.",
+      "operational_action_if_true": "Escalate to the named owner for review only if the action, threshold, and evidence standard are pre-defined.",
+      "human_review_triggers": [
+        "low confidence",
+        "small sample",
+        "new location/menu/platform schema",
+        "high-impact guest or staffing action",
+        "out-of-support prediction"
+      ],
+      "minimum_useful_v1": "A clean data dictionary, leakage audit, simple baseline, and validation design before complex modeling.",
+      "related_ml_record_ids": [
+        "rule-omakai-restaurant-decision-gate",
+        "eval-simple-baseline-first",
+        "eval-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-nonrandom-review-sample",
+        "ml-risk-platform-selection-bias"
+      ],
+      "derivation": {
+        "classification": "restaurant_analytics_extension",
+        "confidence": "low",
+        "source_boundary_note": "This record applies source-supported ML reasoning to restaurant analytics; it is not a direct claim from the book."
+      }
+    },
+    {
+      "id": "restaurant-complaint-clustering",
+      "restaurant_use_case": "Complaint clustering",
+      "ml_task_type": "clustering / text exploration",
+      "business_decision_improved": "build complaint theme taxonomy",
+      "possible_target": "no target unless later labeled",
+      "candidate_features": [
+        "location",
+        "date/time/daypart",
+        "source/platform",
+        "historical metrics before decision",
+        "known promo/event/menu/weather context",
+        "customer/order attributes available before decision"
+      ],
+      "features_that_may_be_leakage": [
+        "future target value",
+        "post-outcome resolution notes",
+        "future visits or sales",
+        "features computed using validation/test period",
+        "same target embedded as a feature"
+      ],
+      "required_data_checks": [
+        "define business decision first",
+        "verify target and feature timing",
+        "verify current export schema",
+        "check sample representativeness",
+        "check location/platform/time confounding",
+        "compare simple baseline",
+        "block causal claims unless causal design exists"
+      ],
+      "validation_design": "Use time-aware, group-aware, platform-aware, and/or location-aware validation matching the operational decision; use nested validation if features/models/thresholds are selected.",
+      "main_bias_or_confounding_risks": [
+        "ml-risk-operational-actionability-gap"
+      ],
+      "what_model_output_would_mean": "A prediction, grouping, warning, or score for the defined use case: Complaint clustering.",
+      "what_model_output_would_not_mean": "It would not prove causality, represent all guests automatically, or justify action without validation and human review.",
+      "operational_action_if_true": "Escalate to the named owner for review only if the action, threshold, and evidence standard are pre-defined.",
+      "human_review_triggers": [
+        "low confidence",
+        "small sample",
+        "new location/menu/platform schema",
+        "high-impact guest or staffing action",
+        "out-of-support prediction"
+      ],
+      "minimum_useful_v1": "A clean data dictionary, leakage audit, simple baseline, and validation design before complex modeling.",
+      "related_ml_record_ids": [
+        "rule-omakai-restaurant-decision-gate",
+        "eval-simple-baseline-first",
+        "eval-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-operational-actionability-gap"
+      ],
+      "derivation": {
+        "classification": "restaurant_analytics_extension",
+        "confidence": "low",
+        "source_boundary_note": "This record applies source-supported ML reasoning to restaurant analytics; it is not a direct claim from the book."
+      }
+    },
+    {
+      "id": "restaurant-operational-driver-review",
+      "restaurant_use_case": "Operational-driver review",
+      "ml_task_type": "predictive association / explanation warning",
+      "business_decision_improved": "prioritize operational factors for review",
+      "possible_target": "sales/rating/complaint/cost outcome",
+      "candidate_features": [
+        "location",
+        "date/time/daypart",
+        "source/platform",
+        "historical metrics before decision",
+        "known promo/event/menu/weather context",
+        "customer/order attributes available before decision"
+      ],
+      "features_that_may_be_leakage": [
+        "future target value",
+        "post-outcome resolution notes",
+        "future visits or sales",
+        "features computed using validation/test period",
+        "same target embedded as a feature"
+      ],
+      "required_data_checks": [
+        "define business decision first",
+        "verify target and feature timing",
+        "verify current export schema",
+        "check sample representativeness",
+        "check location/platform/time confounding",
+        "compare simple baseline",
+        "block causal claims unless causal design exists"
+      ],
+      "validation_design": "Use time-aware, group-aware, platform-aware, and/or location-aware validation matching the operational decision; use nested validation if features/models/thresholds are selected.",
+      "main_bias_or_confounding_risks": [
+        "ml-risk-nonrandom-review-sample",
+        "ml-risk-platform-selection-bias",
+        "ml-risk-correlation-treated-as-causation",
+        "ml-risk-seasonality-event-confounding"
+      ],
+      "what_model_output_would_mean": "A prediction, grouping, warning, or score for the defined use case: Operational-driver review.",
+      "what_model_output_would_not_mean": "It would not prove causality, represent all guests automatically, or justify action without validation and human review.",
+      "operational_action_if_true": "Escalate to the named owner for review only if the action, threshold, and evidence standard are pre-defined.",
+      "human_review_triggers": [
+        "low confidence",
+        "small sample",
+        "new location/menu/platform schema",
+        "high-impact guest or staffing action",
+        "out-of-support prediction"
+      ],
+      "minimum_useful_v1": "A clean data dictionary, leakage audit, simple baseline, and validation design before complex modeling.",
+      "related_ml_record_ids": [
+        "rule-omakai-restaurant-decision-gate",
+        "eval-simple-baseline-first",
+        "eval-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-nonrandom-review-sample",
+        "ml-risk-platform-selection-bias",
+        "ml-risk-correlation-treated-as-causation",
+        "ml-risk-seasonality-event-confounding"
+      ],
+      "derivation": {
+        "classification": "restaurant_analytics_extension",
+        "confidence": "low",
+        "source_boundary_note": "This record applies source-supported ML reasoning to restaurant analytics; it is not a direct claim from the book."
+      }
+    },
+    {
+      "id": "restaurant-owner-dashboard-ml-warning-layer",
+      "restaurant_use_case": "Owner dashboard ML warning layer",
+      "ml_task_type": "decision support / monitoring",
+      "business_decision_improved": "safe owner interpretation",
+      "possible_target": "not a target; dashboard warning layer",
+      "candidate_features": [
+        "location",
+        "date/time/daypart",
+        "source/platform",
+        "historical metrics before decision",
+        "known promo/event/menu/weather context",
+        "customer/order attributes available before decision"
+      ],
+      "features_that_may_be_leakage": [
+        "future target value",
+        "post-outcome resolution notes",
+        "future visits or sales",
+        "features computed using validation/test period",
+        "same target embedded as a feature"
+      ],
+      "required_data_checks": [
+        "define business decision first",
+        "verify target and feature timing",
+        "verify current export schema",
+        "check sample representativeness",
+        "check location/platform/time confounding",
+        "compare simple baseline",
+        "block causal claims unless causal design exists"
+      ],
+      "validation_design": "Use time-aware, group-aware, platform-aware, and/or location-aware validation matching the operational decision; use nested validation if features/models/thresholds are selected.",
+      "main_bias_or_confounding_risks": [
+        "ml-risk-operational-actionability-gap"
+      ],
+      "what_model_output_would_mean": "A prediction, grouping, warning, or score for the defined use case: Owner dashboard ML warning layer.",
+      "what_model_output_would_not_mean": "It would not prove causality, represent all guests automatically, or justify action without validation and human review.",
+      "operational_action_if_true": "Escalate to the named owner for review only if the action, threshold, and evidence standard are pre-defined.",
+      "human_review_triggers": [
+        "low confidence",
+        "small sample",
+        "new location/menu/platform schema",
+        "high-impact guest or staffing action",
+        "out-of-support prediction"
+      ],
+      "minimum_useful_v1": "A clean data dictionary, leakage audit, simple baseline, and validation design before complex modeling.",
+      "related_ml_record_ids": [
+        "rule-omakai-restaurant-decision-gate",
+        "eval-simple-baseline-first",
+        "eval-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-operational-actionability-gap"
+      ],
+      "derivation": {
+        "classification": "restaurant_analytics_extension",
+        "confidence": "low",
+        "source_boundary_note": "This record applies source-supported ML reasoning to restaurant analytics; it is not a direct claim from the book."
+      }
+    },
+    {
+      "id": "restaurant-when-not-to-use-ml-for-restaurant-data",
+      "restaurant_use_case": "When not to use ML for restaurant data",
+      "ml_task_type": "triage / governance",
+      "business_decision_improved": "avoid unnecessary complexity",
+      "possible_target": "not a target; no-ML decision gate",
+      "candidate_features": [
+        "location",
+        "date/time/daypart",
+        "source/platform",
+        "historical metrics before decision",
+        "known promo/event/menu/weather context",
+        "customer/order attributes available before decision"
+      ],
+      "features_that_may_be_leakage": [
+        "future target value",
+        "post-outcome resolution notes",
+        "future visits or sales",
+        "features computed using validation/test period",
+        "same target embedded as a feature"
+      ],
+      "required_data_checks": [
+        "define business decision first",
+        "verify target and feature timing",
+        "verify current export schema",
+        "check sample representativeness",
+        "check location/platform/time confounding",
+        "compare simple baseline",
+        "block causal claims unless causal design exists"
+      ],
+      "validation_design": "Use time-aware, group-aware, platform-aware, and/or location-aware validation matching the operational decision; use nested validation if features/models/thresholds are selected.",
+      "main_bias_or_confounding_risks": [
+        "ml-risk-operational-actionability-gap"
+      ],
+      "what_model_output_would_mean": "A prediction, grouping, warning, or score for the defined use case: When not to use ML for restaurant data.",
+      "what_model_output_would_not_mean": "It would not prove causality, represent all guests automatically, or justify action without validation and human review.",
+      "operational_action_if_true": "Escalate to the named owner for review only if the action, threshold, and evidence standard are pre-defined.",
+      "human_review_triggers": [
+        "low confidence",
+        "small sample",
+        "new location/menu/platform schema",
+        "high-impact guest or staffing action",
+        "out-of-support prediction"
+      ],
+      "minimum_useful_v1": "A clean data dictionary, leakage audit, simple baseline, and validation design before complex modeling.",
+      "related_ml_record_ids": [
+        "rule-omakai-restaurant-decision-gate",
+        "eval-simple-baseline-first",
+        "eval-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-operational-actionability-gap"
+      ],
+      "derivation": {
+        "classification": "restaurant_analytics_extension",
+        "confidence": "low",
+        "source_boundary_note": "This record applies source-supported ML reasoning to restaurant analytics; it is not a direct claim from the book."
+      }
+    },
+    {
+      "id": "restaurant-data-leakage-review-for-restaurant-metrics",
+      "restaurant_use_case": "Data leakage review for restaurant metrics",
+      "ml_task_type": "validation audit",
+      "business_decision_improved": "prevent inflated restaurant model results",
+      "possible_target": "any target with feature/target windows",
+      "candidate_features": [
+        "location",
+        "date/time/daypart",
+        "source/platform",
+        "historical metrics before decision",
+        "known promo/event/menu/weather context",
+        "customer/order attributes available before decision"
+      ],
+      "features_that_may_be_leakage": [
+        "future target value",
+        "post-outcome resolution notes",
+        "future visits or sales",
+        "features computed using validation/test period",
+        "same target embedded as a feature"
+      ],
+      "required_data_checks": [
+        "define business decision first",
+        "verify target and feature timing",
+        "verify current export schema",
+        "check sample representativeness",
+        "check location/platform/time confounding",
+        "compare simple baseline",
+        "block causal claims unless causal design exists"
+      ],
+      "validation_design": "Use time-aware, group-aware, platform-aware, and/or location-aware validation matching the operational decision; use nested validation if features/models/thresholds are selected.",
+      "main_bias_or_confounding_risks": [
+        "ml-risk-nonrandom-review-sample",
+        "ml-risk-platform-selection-bias",
+        "ml-risk-validation-leakage",
+        "ml-risk-feature-selection-leakage",
+        "ml-risk-duplicate-entity-leakage"
+      ],
+      "what_model_output_would_mean": "A prediction, grouping, warning, or score for the defined use case: Data leakage review for restaurant metrics.",
+      "what_model_output_would_not_mean": "It would not prove causality, represent all guests automatically, or justify action without validation and human review.",
+      "operational_action_if_true": "Escalate to the named owner for review only if the action, threshold, and evidence standard are pre-defined.",
+      "human_review_triggers": [
+        "low confidence",
+        "small sample",
+        "new location/menu/platform schema",
+        "high-impact guest or staffing action",
+        "out-of-support prediction"
+      ],
+      "minimum_useful_v1": "A clean data dictionary, leakage audit, simple baseline, and validation design before complex modeling.",
+      "related_ml_record_ids": [
+        "rule-omakai-restaurant-decision-gate",
+        "eval-simple-baseline-first",
+        "eval-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-nonrandom-review-sample",
+        "ml-risk-platform-selection-bias",
+        "ml-risk-validation-leakage",
+        "ml-risk-feature-selection-leakage",
+        "ml-risk-duplicate-entity-leakage"
+      ],
+      "derivation": {
+        "classification": "restaurant_analytics_extension",
+        "confidence": "low",
+        "source_boundary_note": "This record applies source-supported ML reasoning to restaurant analytics; it is not a direct claim from the book."
+      }
+    },
+    {
+      "id": "restaurant-nonrandom-review-sample-warning",
+      "restaurant_use_case": "Nonrandom review-sample warning",
+      "ml_task_type": "bias warning",
+      "business_decision_improved": "limit review claims to observed channel",
+      "possible_target": "review presence/rating/text",
+      "candidate_features": [
+        "location",
+        "date/time/daypart",
+        "source/platform",
+        "historical metrics before decision",
+        "known promo/event/menu/weather context",
+        "customer/order attributes available before decision"
+      ],
+      "features_that_may_be_leakage": [
+        "future target value",
+        "post-outcome resolution notes",
+        "future visits or sales",
+        "features computed using validation/test period",
+        "same target embedded as a feature"
+      ],
+      "required_data_checks": [
+        "define business decision first",
+        "verify target and feature timing",
+        "verify current export schema",
+        "check sample representativeness",
+        "check location/platform/time confounding",
+        "compare simple baseline",
+        "block causal claims unless causal design exists"
+      ],
+      "validation_design": "Use time-aware, group-aware, platform-aware, and/or location-aware validation matching the operational decision; use nested validation if features/models/thresholds are selected.",
+      "main_bias_or_confounding_risks": [
+        "ml-risk-nonrandom-review-sample",
+        "ml-risk-platform-selection-bias"
+      ],
+      "what_model_output_would_mean": "A prediction, grouping, warning, or score for the defined use case: Nonrandom review-sample warning.",
+      "what_model_output_would_not_mean": "It would not prove causality, represent all guests automatically, or justify action without validation and human review.",
+      "operational_action_if_true": "Escalate to the named owner for review only if the action, threshold, and evidence standard are pre-defined.",
+      "human_review_triggers": [
+        "low confidence",
+        "small sample",
+        "new location/menu/platform schema",
+        "high-impact guest or staffing action",
+        "out-of-support prediction"
+      ],
+      "minimum_useful_v1": "A clean data dictionary, leakage audit, simple baseline, and validation design before complex modeling.",
+      "related_ml_record_ids": [
+        "rule-omakai-restaurant-decision-gate",
+        "eval-simple-baseline-first",
+        "eval-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-nonrandom-review-sample",
+        "ml-risk-platform-selection-bias"
+      ],
+      "derivation": {
+        "classification": "restaurant_analytics_extension",
+        "confidence": "low",
+        "source_boundary_note": "This record applies source-supported ML reasoning to restaurant analytics; it is not a direct claim from the book."
+      }
+    },
+    {
+      "id": "restaurant-platform-bias-warning",
+      "restaurant_use_case": "Platform-bias warning",
+      "ml_task_type": "bias warning",
+      "business_decision_improved": "keep platform/source claims separated",
+      "possible_target": "platform-sourced metric",
+      "candidate_features": [
+        "location",
+        "date/time/daypart",
+        "source/platform",
+        "historical metrics before decision",
+        "known promo/event/menu/weather context",
+        "customer/order attributes available before decision"
+      ],
+      "features_that_may_be_leakage": [
+        "future target value",
+        "post-outcome resolution notes",
+        "future visits or sales",
+        "features computed using validation/test period",
+        "same target embedded as a feature"
+      ],
+      "required_data_checks": [
+        "define business decision first",
+        "verify target and feature timing",
+        "verify current export schema",
+        "check sample representativeness",
+        "check location/platform/time confounding",
+        "compare simple baseline",
+        "block causal claims unless causal design exists"
+      ],
+      "validation_design": "Use time-aware, group-aware, platform-aware, and/or location-aware validation matching the operational decision; use nested validation if features/models/thresholds are selected.",
+      "main_bias_or_confounding_risks": [
+        "ml-risk-operational-actionability-gap"
+      ],
+      "what_model_output_would_mean": "A prediction, grouping, warning, or score for the defined use case: Platform-bias warning.",
+      "what_model_output_would_not_mean": "It would not prove causality, represent all guests automatically, or justify action without validation and human review.",
+      "operational_action_if_true": "Escalate to the named owner for review only if the action, threshold, and evidence standard are pre-defined.",
+      "human_review_triggers": [
+        "low confidence",
+        "small sample",
+        "new location/menu/platform schema",
+        "high-impact guest or staffing action",
+        "out-of-support prediction"
+      ],
+      "minimum_useful_v1": "A clean data dictionary, leakage audit, simple baseline, and validation design before complex modeling.",
+      "related_ml_record_ids": [
+        "rule-omakai-restaurant-decision-gate",
+        "eval-simple-baseline-first",
+        "eval-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-operational-actionability-gap"
+      ],
+      "derivation": {
+        "classification": "restaurant_analytics_extension",
+        "confidence": "low",
+        "source_boundary_note": "This record applies source-supported ML reasoning to restaurant analytics; it is not a direct claim from the book."
+      }
+    },
+    {
+      "id": "restaurant-location-seasonality-event-confounding-warning",
+      "restaurant_use_case": "Location/seasonality/event confounding warning",
+      "ml_task_type": "bias warning",
+      "business_decision_improved": "avoid mistaking calendar/location effects for drivers",
+      "possible_target": "any location/time metric",
+      "candidate_features": [
+        "location",
+        "date/time/daypart",
+        "source/platform",
+        "historical metrics before decision",
+        "known promo/event/menu/weather context",
+        "customer/order attributes available before decision"
+      ],
+      "features_that_may_be_leakage": [
+        "future target value",
+        "post-outcome resolution notes",
+        "future visits or sales",
+        "features computed using validation/test period",
+        "same target embedded as a feature"
+      ],
+      "required_data_checks": [
+        "define business decision first",
+        "verify target and feature timing",
+        "verify current export schema",
+        "check sample representativeness",
+        "check location/platform/time confounding",
+        "compare simple baseline",
+        "block causal claims unless causal design exists"
+      ],
+      "validation_design": "Use time-aware, group-aware, platform-aware, and/or location-aware validation matching the operational decision; use nested validation if features/models/thresholds are selected.",
+      "main_bias_or_confounding_risks": [
+        "ml-risk-location-confounding",
+        "ml-risk-seasonality-event-confounding"
+      ],
+      "what_model_output_would_mean": "A prediction, grouping, warning, or score for the defined use case: Location/seasonality/event confounding warning.",
+      "what_model_output_would_not_mean": "It would not prove causality, represent all guests automatically, or justify action without validation and human review.",
+      "operational_action_if_true": "Escalate to the named owner for review only if the action, threshold, and evidence standard are pre-defined.",
+      "human_review_triggers": [
+        "low confidence",
+        "small sample",
+        "new location/menu/platform schema",
+        "high-impact guest or staffing action",
+        "out-of-support prediction"
+      ],
+      "minimum_useful_v1": "A clean data dictionary, leakage audit, simple baseline, and validation design before complex modeling.",
+      "related_ml_record_ids": [
+        "rule-omakai-restaurant-decision-gate",
+        "eval-simple-baseline-first",
+        "eval-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-location-confounding",
+        "ml-risk-seasonality-event-confounding"
+      ],
+      "derivation": {
+        "classification": "restaurant_analytics_extension",
+        "confidence": "low",
+        "source_boundary_note": "This record applies source-supported ML reasoning to restaurant analytics; it is not a direct claim from the book."
+      }
+    },
+    {
+      "id": "restaurant-prediction-to-action-review",
+      "restaurant_use_case": "Prediction-to-action review",
+      "ml_task_type": "decision gate",
+      "business_decision_improved": "turn validated predictions into safe actions",
+      "possible_target": "any model score or forecast used operationally",
+      "candidate_features": [
+        "location",
+        "date/time/daypart",
+        "source/platform",
+        "historical metrics before decision",
+        "known promo/event/menu/weather context",
+        "customer/order attributes available before decision"
+      ],
+      "features_that_may_be_leakage": [
+        "future target value",
+        "post-outcome resolution notes",
+        "future visits or sales",
+        "features computed using validation/test period",
+        "same target embedded as a feature"
+      ],
+      "required_data_checks": [
+        "define business decision first",
+        "verify target and feature timing",
+        "verify current export schema",
+        "check sample representativeness",
+        "check location/platform/time confounding",
+        "compare simple baseline",
+        "block causal claims unless causal design exists"
+      ],
+      "validation_design": "Use time-aware, group-aware, platform-aware, and/or location-aware validation matching the operational decision; use nested validation if features/models/thresholds are selected.",
+      "main_bias_or_confounding_risks": [
+        "ml-risk-nonrandom-review-sample",
+        "ml-risk-platform-selection-bias"
+      ],
+      "what_model_output_would_mean": "A prediction, grouping, warning, or score for the defined use case: Prediction-to-action review.",
+      "what_model_output_would_not_mean": "It would not prove causality, represent all guests automatically, or justify action without validation and human review.",
+      "operational_action_if_true": "Escalate to the named owner for review only if the action, threshold, and evidence standard are pre-defined.",
+      "human_review_triggers": [
+        "low confidence",
+        "small sample",
+        "new location/menu/platform schema",
+        "high-impact guest or staffing action",
+        "out-of-support prediction"
+      ],
+      "minimum_useful_v1": "A clean data dictionary, leakage audit, simple baseline, and validation design before complex modeling.",
+      "related_ml_record_ids": [
+        "rule-omakai-restaurant-decision-gate",
+        "eval-simple-baseline-first",
+        "eval-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-nonrandom-review-sample",
+        "ml-risk-platform-selection-bias"
+      ],
+      "derivation": {
+        "classification": "restaurant_analytics_extension",
+        "confidence": "low",
+        "source_boundary_note": "This record applies source-supported ML reasoning to restaurant analytics; it is not a direct claim from the book."
+      }
+    }
+  ]
+}

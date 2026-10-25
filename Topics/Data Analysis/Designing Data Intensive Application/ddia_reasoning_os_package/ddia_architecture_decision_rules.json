@@ -1,0 +1,1531 @@
+{
+  "architecture_decision_rules": [
+    {
+      "id": "ddia_decision_relational_versus_document_versus_graph_model",
+      "decision_name": "Relational versus document versus graph model",
+      "decision_context": "Chapter 2 reasoning about Relational Model Versus Document Model.",
+      "default_low_complexity_choice": "Prefer the simplest model that matches relationship shape and update patterns.",
+      "choose_this_when": [
+        "data is many-to-many or relationship-heavy",
+        "document locality is real",
+        "graph traversals dominate"
+      ],
+      "avoid_this_when": [
+        "the choice is driven only by product fashion or vendor familiarity"
+      ],
+      "risk_of_wrong_choice": [
+        "duplication drift",
+        "awkward joins",
+        "hard migrations"
+      ],
+      "system_examples": [
+        "LinkedIn profile-like documents",
+        "organization hierarchies",
+        "social relationships"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 2, Relational Model Versus Document Model"
+      ],
+      "related_record_ids": [
+        "ddia_concept_relational_model_for_many_to_many_data",
+        "ddia_concept_document_model_for_locality_and_tree_shaped_data",
+        "ddia_concept_graph_model_for_rich_relationships"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "2",
+        "chapter_title": "Data Models and Query Languages",
+        "section_heading": "Relational Model Versus Document Model",
+        "page_or_anchor": "MOBI_TEXT_CHAR_75336",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Relational versus document versus graph model."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_oltp_versus_olap_separation",
+      "decision_name": "OLTP versus OLAP separation",
+      "decision_context": "Chapter 3 reasoning about Transaction Processing or Analytics?.",
+      "default_low_complexity_choice": "Keep operational transactions separate until analytic scans demonstrably interfere.",
+      "choose_this_when": [
+        "analytical queries scan large data or require columnar layouts",
+        "user-facing latency suffers"
+      ],
+      "avoid_this_when": [
+        "the same database can meet latency and analytical needs with clear evidence"
+      ],
+      "risk_of_wrong_choice": [
+        "user latency spikes",
+        "stale warehouse assumptions",
+        "duplicated logic"
+      ],
+      "system_examples": [
+        "order database plus warehouse",
+        "reporting database"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 3, Transaction Processing or Analytics?"
+      ],
+      "related_record_ids": [
+        "ddia_concept_oltp_and_olap_separation"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "3",
+        "chapter_title": "Storage and Retrieval",
+        "section_heading": "Transaction Processing or Analytics?",
+        "page_or_anchor": "MOBI_TEXT_CHAR_159287",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for OLTP versus OLAP separation."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_b_tree_versus_log_structured_storage",
+      "decision_name": "B-tree versus log-structured storage",
+      "decision_context": "Chapter 3 reasoning about Data Structures That Power Your Database.",
+      "default_low_complexity_choice": "Use the storage engine whose write, read, and range-scan profile matches the workload.",
+      "choose_this_when": [
+        "write throughput and compaction tradeoffs are acceptable",
+        "range scans or mature indexing dominate"
+      ],
+      "avoid_this_when": [
+        "only the marketing label is known, not measured workload behavior"
+      ],
+      "risk_of_wrong_choice": [
+        "write amplification",
+        "compaction stalls",
+        "poor range reads"
+      ],
+      "system_examples": [
+        "write-heavy event store",
+        "transactional index"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 3, Data Structures That Power Your Database"
+      ],
+      "related_record_ids": [
+        "ddia_concept_sstables_and_lsm_trees",
+        "ddia_concept_b_tree_storage_for_ordered_mutable_indexes"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "3",
+        "chapter_title": "Storage and Retrieval",
+        "section_heading": "Data Structures That Power Your Database",
+        "page_or_anchor": "MOBI_TEXT_CHAR_159791",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for B-tree versus log-structured storage."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_secondary_index_budget",
+      "decision_name": "Secondary index budget",
+      "decision_context": "Chapter 3 reasoning about Data Structures That Power Your Database.",
+      "default_low_complexity_choice": "Add secondary indexes only for access paths that justify write and maintenance cost.",
+      "choose_this_when": [
+        "queries need alternate lookup fields often enough",
+        "freshness requirements are understood"
+      ],
+      "avoid_this_when": [
+        "an index duplicates data without an owner or correctness check"
+      ],
+      "risk_of_wrong_choice": [
+        "slow writes",
+        "stale index",
+        "high storage cost"
+      ],
+      "system_examples": [
+        "user lookup by email",
+        "search projection"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 3, Data Structures That Power Your Database"
+      ],
+      "related_record_ids": [
+        "ddia_concept_secondary_indexes_change_write_costs"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "3",
+        "chapter_title": "Storage and Retrieval",
+        "section_heading": "Data Structures That Power Your Database",
+        "page_or_anchor": "MOBI_TEXT_CHAR_159791",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Secondary index budget."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_encoding_format_choice",
+      "decision_name": "Encoding format choice",
+      "decision_context": "Chapter 4 reasoning about Formats for Encoding Data.",
+      "default_low_complexity_choice": "Select encodings for compatibility, safety, and independent evolution, not convenience alone.",
+      "choose_this_when": [
+        "data crosses languages, storage lifetimes, or service deployments"
+      ],
+      "avoid_this_when": [
+        "data is strictly local and ephemeral"
+      ],
+      "risk_of_wrong_choice": [
+        "schema break",
+        "unsafe deserialization",
+        "lockstep deployments"
+      ],
+      "system_examples": [
+        "public API payload",
+        "persisted event"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 4, Formats for Encoding Data"
+      ],
+      "related_record_ids": [
+        "ddia_concept_encoding_as_compatibility_boundary",
+        "ddia_concept_language_specific_serialization_risk"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "4",
+        "chapter_title": "Encoding and Evolution",
+        "section_heading": "Formats for Encoding Data",
+        "page_or_anchor": "MOBI_TEXT_CHAR_249938",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Encoding format choice."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_schema_evolution_strategy",
+      "decision_name": "Schema evolution strategy",
+      "decision_context": "Chapter 4 reasoning about Formats for Encoding Data.",
+      "default_low_complexity_choice": "Require old-reader/new-writer and new-reader/old-writer tests for durable or queued data.",
+      "choose_this_when": [
+        "rolling deploys, retained messages, or old records exist"
+      ],
+      "avoid_this_when": [
+        "all components are upgraded atomically and no old data remains"
+      ],
+      "risk_of_wrong_choice": [
+        "deployment rollback fails",
+        "old messages unreadable"
+      ],
+      "system_examples": [
+        "API version rollout",
+        "event schema change"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 4, Formats for Encoding Data"
+      ],
+      "related_record_ids": [
+        "ddia_concept_backward_and_forward_compatibility"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "4",
+        "chapter_title": "Encoding and Evolution",
+        "section_heading": "Formats for Encoding Data",
+        "page_or_anchor": "MOBI_TEXT_CHAR_249938",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Schema evolution strategy."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_service_api_versus_message_boundary",
+      "decision_name": "Service API versus message boundary",
+      "decision_context": "Chapter 4 reasoning about Modes of Dataflow.",
+      "default_low_complexity_choice": "Choose synchronous APIs for immediate request/response needs and messages for decoupled durable handoff.",
+      "choose_this_when": [
+        "producer and consumer should evolve or fail independently",
+        "immediate answer is unnecessary"
+      ],
+      "avoid_this_when": [
+        "callers require a result before proceeding"
+      ],
+      "risk_of_wrong_choice": [
+        "retry ambiguity",
+        "queue buildup",
+        "API coupling"
+      ],
+      "system_examples": [
+        "order-created event",
+        "payment authorization call"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 4, Modes of Dataflow"
+      ],
+      "related_record_ids": [
+        "ddia_concept_service_api_compatibility",
+        "ddia_concept_message_passing_compatibility"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "4",
+        "chapter_title": "Encoding and Evolution",
+        "section_heading": "Modes of Dataflow",
+        "page_or_anchor": "MOBI_TEXT_CHAR_282167",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Service API versus message boundary."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_single_leader_replication",
+      "decision_name": "Single-leader replication",
+      "decision_context": "Chapter 5 reasoning about Leaders and Followers.",
+      "default_low_complexity_choice": "Default to single-leader when one write authority is acceptable and simplicity matters.",
+      "choose_this_when": [
+        "writes can route to one leader",
+        "failover semantics are acceptable"
+      ],
+      "avoid_this_when": [
+        "offline or multi-region writes are mandatory"
+      ],
+      "risk_of_wrong_choice": [
+        "failover data loss",
+        "leader bottleneck"
+      ],
+      "system_examples": [
+        "primary database with followers"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 5, Leaders and Followers"
+      ],
+      "related_record_ids": [
+        "ddia_concept_single_leader_replication_write_authority"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "5",
+        "chapter_title": "Replication",
+        "section_heading": "Leaders and Followers",
+        "page_or_anchor": "MOBI_TEXT_CHAR_329050",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Single-leader replication."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_synchronous_versus_asynchronous_replication",
+      "decision_name": "Synchronous versus asynchronous replication",
+      "decision_context": "Chapter 5 reasoning about Leaders and Followers.",
+      "default_low_complexity_choice": "Use synchronous replication only for data whose acknowledged durability/freshness outweighs latency and availability cost.",
+      "choose_this_when": [
+        "losing an acknowledged write is unacceptable",
+        "replicas are close enough"
+      ],
+      "avoid_this_when": [
+        "latency or availability dominates and occasional lag is tolerable"
+      ],
+      "risk_of_wrong_choice": [
+        "lost acknowledged writes",
+        "blocked writes"
+      ],
+      "system_examples": [
+        "critical ledger",
+        "local read replica"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 5, Leaders and Followers"
+      ],
+      "related_record_ids": [
+        "ddia_concept_synchronous_versus_asynchronous_replicas"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "5",
+        "chapter_title": "Replication",
+        "section_heading": "Leaders and Followers",
+        "page_or_anchor": "MOBI_TEXT_CHAR_329050",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Synchronous versus asynchronous replication."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_multi_leader_replication",
+      "decision_name": "Multi-leader replication",
+      "decision_context": "Chapter 5 reasoning about Multi-Leader Replication.",
+      "default_low_complexity_choice": "Use multi-leader only when accepting local writes in multiple places is worth conflict handling.",
+      "choose_this_when": [
+        "offline clients or multi-datacenter writes require local acceptance"
+      ],
+      "avoid_this_when": [
+        "conflicts cannot be merged or surfaced"
+      ],
+      "risk_of_wrong_choice": [
+        "lost updates",
+        "divergent conflict resolution"
+      ],
+      "system_examples": [
+        "calendar sync",
+        "collaborative data"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 5, Multi-Leader Replication"
+      ],
+      "related_record_ids": [
+        "ddia_concept_multi_leader_replication_conflicts"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "5",
+        "chapter_title": "Replication",
+        "section_heading": "Multi-Leader Replication",
+        "page_or_anchor": "MOBI_TEXT_CHAR_341997",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Multi-leader replication."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_leaderless_replication",
+      "decision_name": "Leaderless replication",
+      "decision_context": "Chapter 5 reasoning about Leaderless Replication.",
+      "default_low_complexity_choice": "Use leaderless/quorum systems only after checking actual consistency semantics under failure.",
+      "choose_this_when": [
+        "availability and write acceptance under failures matter",
+        "conflict handling is designed"
+      ],
+      "avoid_this_when": [
+        "the team expects simple single-copy behavior"
+      ],
+      "risk_of_wrong_choice": [
+        "stale reads",
+        "version conflicts"
+      ],
+      "system_examples": [
+        "Dynamo-style store",
+        "eventually consistent key-value data"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 5, Leaderless Replication"
+      ],
+      "related_record_ids": [
+        "ddia_concept_quorums_in_leaderless_replication"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "5",
+        "chapter_title": "Replication",
+        "section_heading": "Leaderless Replication",
+        "page_or_anchor": "MOBI_TEXT_CHAR_327812",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Leaderless replication."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_partition_key_selection",
+      "decision_name": "Partition key selection",
+      "decision_context": "Chapter 6 reasoning about Partitioning of Key-Value Data.",
+      "default_low_complexity_choice": "Choose partition keys from observed access and load distribution, not just entity identity.",
+      "choose_this_when": [
+        "data exceeds one node",
+        "key distribution is measured"
+      ],
+      "avoid_this_when": [
+        "single-node capacity is enough or keys are highly skewed with no mitigation"
+      ],
+      "risk_of_wrong_choice": [
+        "hot shard",
+        "scatter-gather queries"
+      ],
+      "system_examples": [
+        "tenant ID",
+        "user ID",
+        "salted timestamp"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 6, Partitioning of Key-Value Data"
+      ],
+      "related_record_ids": [
+        "ddia_concept_partitioning_spreads_data_and_load"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "6",
+        "chapter_title": "Partitioning",
+        "section_heading": "Partitioning of Key-Value Data",
+        "page_or_anchor": "MOBI_TEXT_CHAR_434400",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Partition key selection."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_range_versus_hash_partitioning",
+      "decision_name": "Range versus hash partitioning",
+      "decision_context": "Chapter 6 reasoning about Partitioning of Key-Value Data.",
+      "default_low_complexity_choice": "Prefer range partitioning for range locality and hash partitioning for even distribution.",
+      "choose_this_when": [
+        "range scans dominate",
+        "uniform load dominates"
+      ],
+      "avoid_this_when": [
+        "the workload needs both without a secondary strategy"
+      ],
+      "risk_of_wrong_choice": [
+        "hot ranges",
+        "expensive scans"
+      ],
+      "system_examples": [
+        "time-series partitions",
+        "user-hash shards"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 6, Partitioning of Key-Value Data"
+      ],
+      "related_record_ids": [
+        "ddia_concept_key_range_partitioning",
+        "ddia_concept_hash_partitioning"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "6",
+        "chapter_title": "Partitioning",
+        "section_heading": "Partitioning of Key-Value Data",
+        "page_or_anchor": "MOBI_TEXT_CHAR_434400",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Range versus hash partitioning."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_rebalancing_strategy",
+      "decision_name": "Rebalancing strategy",
+      "decision_context": "Chapter 6 reasoning about Rebalancing Partitions.",
+      "default_low_complexity_choice": "Require throttled, observable, reversible rebalancing before relying on elastic scale.",
+      "choose_this_when": [
+        "cluster size or load changes",
+        "partitions must move"
+      ],
+      "avoid_this_when": [
+        "static capacity is enough and movement risk outweighs benefit"
+      ],
+      "risk_of_wrong_choice": [
+        "migration outage",
+        "wrong routing"
+      ],
+      "system_examples": [
+        "adding nodes to cluster"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 6, Rebalancing Partitions"
+      ],
+      "related_record_ids": [
+        "ddia_concept_rebalancing_without_excessive_disruption"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "6",
+        "chapter_title": "Partitioning",
+        "section_heading": "Rebalancing Partitions",
+        "page_or_anchor": "MOBI_TEXT_CHAR_53463",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Rebalancing strategy."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_transaction_boundary_choice",
+      "decision_name": "Transaction boundary choice",
+      "decision_context": "Chapter 7 reasoning about The Slippery Concept of a Transaction.",
+      "default_low_complexity_choice": "Put operations in one transaction when they maintain the same invariant and share a database boundary.",
+      "choose_this_when": [
+        "partial success would violate business rules"
+      ],
+      "avoid_this_when": [
+        "steps are independent and can be compensated safely"
+      ],
+      "risk_of_wrong_choice": [
+        "partial write",
+        "inconsistent state"
+      ],
+      "system_examples": [
+        "create order and order items"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 7, The Slippery Concept of a Transaction"
+      ],
+      "related_record_ids": [
+        "ddia_concept_transactions_bundle_correctness_boundaries"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "The Slippery Concept of a Transaction",
+        "page_or_anchor": "MOBI_TEXT_CHAR_479908",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Transaction boundary choice."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_isolation_level_choice",
+      "decision_name": "Isolation level choice",
+      "decision_context": "Chapter 7 reasoning about Weak Isolation Levels.",
+      "default_low_complexity_choice": "Select isolation by the anomalies the workflow cannot tolerate, not by name alone.",
+      "choose_this_when": [
+        "lost update, read skew, write skew, or phantom can break correctness"
+      ],
+      "avoid_this_when": [
+        "weak anomalies only affect noncritical analytics and are accepted"
+      ],
+      "risk_of_wrong_choice": [
+        "subtle invariant violations",
+        "inconsistent reads"
+      ],
+      "system_examples": [
+        "booking system",
+        "inventory reservation"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 7, Weak Isolation Levels"
+      ],
+      "related_record_ids": [
+        "ddia_concept_read_committed_prevents_dirty_reads_and_writes",
+        "ddia_concept_snapshot_isolation_prevents_read_skew",
+        "ddia_concept_write_skew_under_snapshot_isolation"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "Weak Isolation Levels",
+        "page_or_anchor": "MOBI_TEXT_CHAR_488682",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Isolation level choice."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_serializability_versus_performance",
+      "decision_name": "Serializability versus performance",
+      "decision_context": "Chapter 7 reasoning about Serializability.",
+      "default_low_complexity_choice": "Use serializable isolation when correctness depends on cross-row predicates or complex invariants.",
+      "choose_this_when": [
+        "concurrency anomalies are costly or hard to detect"
+      ],
+      "avoid_this_when": [
+        "contention or latency cost is too high and weaker controls suffice"
+      ],
+      "risk_of_wrong_choice": [
+        "write skew",
+        "abort storms"
+      ],
+      "system_examples": [
+        "shift scheduling",
+        "uniqueness by predicate"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 7, Serializability"
+      ],
+      "related_record_ids": [
+        "ddia_concept_serializability_as_strongest_isolation_model"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "Serializability",
+        "page_or_anchor": "MOBI_TEXT_CHAR_479711",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Serializability versus performance."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_timeout_and_retry_policy",
+      "decision_name": "Timeout and retry policy",
+      "decision_context": "Chapter 8 reasoning about Unreliable Networks.",
+      "default_low_complexity_choice": "Treat timeouts as uncertain outcomes and pair retries with idempotency or reconciliation.",
+      "choose_this_when": [
+        "remote operation has side effects and may have succeeded"
+      ],
+      "avoid_this_when": [
+        "operation is read-only or inherently idempotent and documented"
+      ],
+      "risk_of_wrong_choice": [
+        "duplicate state",
+        "retry storm"
+      ],
+      "system_examples": [
+        "external payment API",
+        "job dispatch"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 8, Unreliable Networks"
+      ],
+      "related_record_ids": [
+        "ddia_concept_timeouts_are_suspicion_not_proof",
+        "ddia_concept_idempotent_operations_enable_safe_retries"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "8",
+        "chapter_title": "The Trouble with Distributed Systems",
+        "section_heading": "Unreliable Networks",
+        "page_or_anchor": "MOBI_TEXT_CHAR_343001",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Timeout and retry policy."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_lease_and_leader_safety",
+      "decision_name": "Lease and leader safety",
+      "decision_context": "Chapter 8 reasoning about Knowledge, Truth, and Lies.",
+      "default_low_complexity_choice": "Use fencing tokens when an old leader could continue acting after pause or partition.",
+      "choose_this_when": [
+        "shared resource accepts writes from leader-like actors"
+      ],
+      "avoid_this_when": [
+        "the resource itself rejects stale epochs"
+      ],
+      "risk_of_wrong_choice": [
+        "split brain writes",
+        "corrupt shared storage"
+      ],
+      "system_examples": [
+        "distributed lock protecting storage"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 8, Knowledge, Truth, and Lies"
+      ],
+      "related_record_ids": [
+        "ddia_concept_fencing_tokens_protect_shared_resources"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "8",
+        "chapter_title": "The Trouble with Distributed Systems",
+        "section_heading": "Knowledge, Truth, and Lies",
+        "page_or_anchor": "MOBI_TEXT_CHAR_595301",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Lease and leader safety."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_linearizable_operation_selection",
+      "decision_name": "Linearizable operation selection",
+      "decision_context": "Chapter 9 reasoning about Linearizability.",
+      "default_low_complexity_choice": "Reserve linearizability for operations that truly require single-copy current behavior.",
+      "choose_this_when": [
+        "uniqueness, locks, leader election, or immediate visibility matters"
+      ],
+      "avoid_this_when": [
+        "session-level or eventual behavior is enough"
+      ],
+      "risk_of_wrong_choice": [
+        "stale decisions",
+        "availability loss"
+      ],
+      "system_examples": [
+        "username claim",
+        "lock acquisition"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 9, Linearizability"
+      ],
+      "related_record_ids": [
+        "ddia_concept_linearizability_makes_operations_appear_atomic_and_current"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "9",
+        "chapter_title": "Consistency and Consensus",
+        "section_heading": "Linearizability",
+        "page_or_anchor": "MOBI_TEXT_CHAR_394288",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Linearizable operation selection."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_consensus_introduction",
+      "decision_name": "Consensus introduction",
+      "decision_context": "Chapter 9 reasoning about Distributed Transactions and Consensus.",
+      "default_low_complexity_choice": "Introduce consensus through a well-understood coordination service when shared decisions must survive faults.",
+      "choose_this_when": [
+        "leader election, membership, or config must be agreed"
+      ],
+      "avoid_this_when": [
+        "the problem can be solved with one database transaction or static config"
+      ],
+      "risk_of_wrong_choice": [
+        "split brain",
+        "operational complexity"
+      ],
+      "system_examples": [
+        "coordination metadata",
+        "replicated state machine"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 9, Distributed Transactions and Consensus"
+      ],
+      "related_record_ids": [
+        "ddia_concept_consensus_chooses_one_value_despite_faults"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "9",
+        "chapter_title": "Consistency and Consensus",
+        "section_heading": "Distributed Transactions and Consensus",
+        "page_or_anchor": "MOBI_TEXT_CHAR_711547",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Consensus introduction."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_distributed_transaction_decision",
+      "decision_name": "Distributed transaction decision",
+      "decision_context": "Chapter 9 reasoning about Distributed Transactions and Consensus.",
+      "default_low_complexity_choice": "Avoid distributed transactions unless atomic commit across resources is the core requirement.",
+      "choose_this_when": [
+        "participants must commit or abort together and blocking risk is acceptable"
+      ],
+      "avoid_this_when": [
+        "saga, outbox, reconciliation, or single database boundary is enough"
+      ],
+      "risk_of_wrong_choice": [
+        "blocked participants",
+        "coordinator dependence"
+      ],
+      "system_examples": [
+        "bank transfer across resource managers"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 9, Distributed Transactions and Consensus"
+      ],
+      "related_record_ids": [
+        "ddia_concept_two_phase_commit_coordinates_atomic_commit"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "9",
+        "chapter_title": "Consistency and Consensus",
+        "section_heading": "Distributed Transactions and Consensus",
+        "page_or_anchor": "MOBI_TEXT_CHAR_711547",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Distributed transaction decision."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_batch_versus_streaming",
+      "decision_name": "Batch versus streaming",
+      "decision_context": "Chapter 10 reasoning about Batch Processing with Unix Tools.",
+      "default_low_complexity_choice": "Use batch when bounded, repeatable input can meet freshness needs; use streaming when latency or continuous reaction matters.",
+      "choose_this_when": [
+        "freshness requirements exceed batch interval",
+        "replay is needed"
+      ],
+      "avoid_this_when": [
+        "batch output is simpler and timely enough"
+      ],
+      "risk_of_wrong_choice": [
+        "late data mistakes",
+        "unnecessary streaming complexity"
+      ],
+      "system_examples": [
+        "daily report",
+        "fraud alert"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 10, Batch Processing with Unix Tools"
+      ],
+      "related_record_ids": [
+        "ddia_concept_batch_jobs_process_bounded_input",
+        "ddia_concept_event_streams_model_unbounded_data"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "10",
+        "chapter_title": "Batch Processing",
+        "section_heading": "Batch Processing with Unix Tools",
+        "page_or_anchor": "MOBI_TEXT_CHAR_876395",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Batch versus streaming."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_batch_output_publication",
+      "decision_name": "Batch output publication",
+      "decision_context": "Chapter 10 reasoning about Beyond MapReduce.",
+      "default_low_complexity_choice": "Publish batch results atomically or by complete generation replacement.",
+      "choose_this_when": [
+        "readers depend on coherent output"
+      ],
+      "avoid_this_when": [
+        "partial intermediate output is never visible"
+      ],
+      "risk_of_wrong_choice": [
+        "mixed generations",
+        "double-counted backfill"
+      ],
+      "system_examples": [
+        "daily warehouse table"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 10, Beyond MapReduce"
+      ],
+      "related_record_ids": [
+        "ddia_concept_batch_outputs_should_be_atomic_or_replaceable"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "10",
+        "chapter_title": "Batch Processing",
+        "section_heading": "Beyond MapReduce",
+        "page_or_anchor": "MOBI_TEXT_CHAR_940512",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Batch output publication."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_event_log_versus_mutable_table",
+      "decision_name": "Event log versus mutable table",
+      "decision_context": "Chapter 11 reasoning about Databases and Streams.",
+      "default_low_complexity_choice": "Use an event log when order, replay, and integration are first-class needs; use mutable tables for direct current-state queries.",
+      "choose_this_when": [
+        "multiple consumers need durable change history"
+      ],
+      "avoid_this_when": [
+        "only current state is needed and change history adds confusion"
+      ],
+      "risk_of_wrong_choice": [
+        "log-as-magic-source",
+        "hard reconstruction"
+      ],
+      "system_examples": [
+        "CDC log",
+        "domain event stream"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 11, Databases and Streams"
+      ],
+      "related_record_ids": [
+        "ddia_concept_event_sourcing_stores_facts_as_events",
+        "ddia_concept_immutability_supports_audit_and_reprocessing"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "11",
+        "chapter_title": "Stream Processing",
+        "section_heading": "Databases and Streams",
+        "page_or_anchor": "MOBI_TEXT_CHAR_997262",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Event log versus mutable table."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_cdc_versus_polling",
+      "decision_name": "CDC versus polling",
+      "decision_context": "Chapter 11 reasoning about Databases and Streams.",
+      "default_low_complexity_choice": "Prefer CDC when changes must be complete and ordered from the database log.",
+      "choose_this_when": [
+        "polling can miss changes or overload the database"
+      ],
+      "avoid_this_when": [
+        "rough freshness is enough and missed intermediate states are acceptable"
+      ],
+      "risk_of_wrong_choice": [
+        "missed update",
+        "duplicate extraction"
+      ],
+      "system_examples": [
+        "search index update from DB"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 11, Databases and Streams"
+      ],
+      "related_record_ids": [
+        "ddia_concept_change_data_capture_links_databases_to_streams"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "11",
+        "chapter_title": "Stream Processing",
+        "section_heading": "Databases and Streams",
+        "page_or_anchor": "MOBI_TEXT_CHAR_997262",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for CDC versus polling."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_stream_partitioning_and_ordering",
+      "decision_name": "Stream partitioning and ordering",
+      "decision_context": "Chapter 11 reasoning about Transmitting Event Streams.",
+      "default_low_complexity_choice": "Partition streams by the entity that requires ordered processing.",
+      "choose_this_when": [
+        "per-entity order matters",
+        "throughput needs partitions"
+      ],
+      "avoid_this_when": [
+        "global order is required and cannot be approximated"
+      ],
+      "risk_of_wrong_choice": [
+        "out-of-order state machine",
+        "hot partition"
+      ],
+      "system_examples": [
+        "account events by account ID"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 11, Transmitting Event Streams"
+      ],
+      "related_record_ids": [
+        "ddia_concept_partitioned_logs_preserve_order_only_within_partitions"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "11",
+        "chapter_title": "Stream Processing",
+        "section_heading": "Transmitting Event Streams",
+        "page_or_anchor": "MOBI_TEXT_CHAR_997523",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Stream partitioning and ordering."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_idempotent_processing",
+      "decision_name": "Idempotent processing",
+      "decision_context": "Chapter 12 reasoning about Aiming for Correctness.",
+      "default_low_complexity_choice": "Make every retryable or replayable side effect idempotent or deduplicated by durable identity.",
+      "choose_this_when": [
+        "timeouts, replays, redelivery, or backfills are expected"
+      ],
+      "avoid_this_when": [
+        "the operation is provably read-only"
+      ],
+      "risk_of_wrong_choice": [
+        "duplicate charges",
+        "repeated emails"
+      ],
+      "system_examples": [
+        "message consumer",
+        "API retry"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 12, Aiming for Correctness"
+      ],
+      "related_record_ids": [
+        "ddia_concept_idempotent_operations_enable_safe_retries",
+        "ddia_concept_duplicate_suppression_needs_durable_identifiers"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "12",
+        "chapter_title": "The Future of Data Systems",
+        "section_heading": "Aiming for Correctness",
+        "page_or_anchor": "MOBI_TEXT_CHAR_1126164",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Idempotent processing."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_derived_data_strategy",
+      "decision_name": "Derived data strategy",
+      "decision_context": "Chapter 12 reasoning about Data Integration.",
+      "default_low_complexity_choice": "Treat caches, indexes, warehouses, and materialized views as derived unless explicitly authoritative.",
+      "choose_this_when": [
+        "data can be rebuilt from source",
+        "views serve specialized queries"
+      ],
+      "avoid_this_when": [
+        "the projection is the only record of business truth"
+      ],
+      "risk_of_wrong_choice": [
+        "report mismatch",
+        "stale cache"
+      ],
+      "system_examples": [
+        "search index",
+        "materialized aggregate"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 12, Data Integration"
+      ],
+      "related_record_ids": [
+        "ddia_concept_derived_data_needs_clear_authority_boundaries"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "12",
+        "chapter_title": "The Future of Data Systems",
+        "section_heading": "Data Integration",
+        "page_or_anchor": "MOBI_TEXT_CHAR_1118309",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Derived data strategy."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    },
+    {
+      "id": "ddia_decision_simplicity_before_distributed_coordination",
+      "decision_name": "Simplicity before distributed coordination",
+      "decision_context": "Chapter 1 reasoning about Maintainability.",
+      "default_low_complexity_choice": "Prefer the least distributed design that meets measured correctness and load requirements.",
+      "choose_this_when": [
+        "current evidence does not require multi-node coordination"
+      ],
+      "avoid_this_when": [
+        "a clear requirement demands fault-tolerant shared decisions"
+      ],
+      "risk_of_wrong_choice": [
+        "overengineered outages",
+        "unclear ownership"
+      ],
+      "system_examples": [
+        "single database service vs event mesh"
+      ],
+      "source_basis": [
+        "Designing Data-Intensive Applications, Chapter 1, Maintainability"
+      ],
+      "related_record_ids": [
+        "ddia_concept_simplicity_against_accidental_complexity",
+        "ddia_concept_load_parameters_before_solutions"
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "1",
+        "chapter_title": "Reliable, Scalable, and Maintainable Applications",
+        "section_heading": "Maintainability",
+        "page_or_anchor": "MOBI_TEXT_CHAR_12314",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports the tradeoff behind the decision rule for Simplicity before distributed coordination."
+        ],
+        "inferred_claims": [
+          "The rule is phrased as practical architecture guidance for current engineering use."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "This rule operationalizes a DDIA tradeoff into a review heuristic; current system evidence remains higher authority.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      }
+    }
+  ]
+}

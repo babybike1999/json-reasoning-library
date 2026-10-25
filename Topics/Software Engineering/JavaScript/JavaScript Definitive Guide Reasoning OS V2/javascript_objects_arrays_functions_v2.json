@@ -1,0 +1,568 @@
+{
+  "package_metadata": {
+    "package_name": "JavaScript Language, Runtime, and Code-Quality Reasoning OS V2",
+    "module_name": "objects_arrays_functions",
+    "repair_type": "focused_v2_repair_not_full_rebuild",
+    "generated_at": "2026-06-21T05:00:11.155979+00:00",
+    "primary_source": {
+      "title": "JavaScript: The Definitive Guide",
+      "edition": "Seventh Edition",
+      "author": "David Flanagan",
+      "publisher": "O'Reilly Media",
+      "release_year": 2020,
+      "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+      "source_sha256": "b511aca2b98ae4eec4966c87d5e6b6c1704cbafe7dd076b924db46cb8d20ae07"
+    },
+    "v1_package_reference": {
+      "source_zip": "Javascript Reasoning.zip",
+      "source_zip_sha256": "60242e2ad2cfcc9bdf79f2fc73b392b7f149339dc95d6234f00db683f368d98d",
+      "not_overwritten": true
+    },
+    "authority_order": [
+      "Original uploaded book source",
+      "Current generated JavaScript Reasoning OS package",
+      "User repair prompt",
+      "Current official documentation only if available",
+      "General engineering reasoning"
+    ],
+    "source_limitation_warning": "Current browser, Node, npm, bundler, tool, framework, and Google Apps Script behavior is not asserted unless explicitly verified. V2 flags such items for current documentation checks.",
+    "purpose": "V2 records for objects, arrays, functions, closures, this, mutation, and array-like values."
+  },
+  "language_semantics_records": [
+    {
+      "id": "js-sem-object-references",
+      "concept_name": "object references and mutability",
+      "language_area": "objects_arrays_functions",
+      "plain_language_meaning": "Primitive values are immutable, while object values are mutable and assigned by reference.",
+      "precise_behavior": "Assigning an object or array copies the reference, not the object. Mutating through any reference changes the shared object. const protects binding reassignment, not object contents.",
+      "syntax_or_api_shape": "const a = {}; const b = a; b.x = 1; Object.freeze(obj)",
+      "why_it_matters": "Shared references are central to state bugs, safe refactors, and API design.",
+      "common_use": [
+        "Pass objects as structured state",
+        "Mutate local working objects intentionally",
+        "Share identity when identity matters"
+      ],
+      "common_misuse": [
+        "Assuming assignment clones",
+        "Mutating input parameters without documenting",
+        "Using shallow clone for nested state"
+      ],
+      "debugging_symptoms": [
+        "Caller data changes after function call",
+        "Two tests interfere",
+        "Nested object still shared after spread"
+      ],
+      "tests_or_checks": [
+        "Check every mutation method and property write",
+        "Test aliasing by keeping original reference",
+        "Distinguish shallow and deep copy needs"
+      ],
+      "safe_refactor_notes": [
+        "Document ownership of objects",
+        "Use copies at boundaries when caller-owned data must be preserved",
+        "Do not replace mutation with copying if identity observers rely on it"
+      ],
+      "related_risk_ids": [
+        "js-risk-shared-object-mutation"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.8 Immutable Primitive Values and Mutable Object References",
+          "6 Objects",
+          "7 Arrays"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-property-lookup-prototype",
+      "concept_name": "prototype property lookup",
+      "language_area": "objects_arrays_functions",
+      "plain_language_meaning": "Objects can inherit properties from a prototype chain.",
+      "precise_behavior": "Property reads search own properties first, then prototypes. Property writes usually create or set own properties unless accessors or special cases apply. Classes use prototypes for methods.",
+      "syntax_or_api_shape": "Object.create(proto), obj.__proto__ legacy, Object.getPrototypeOf(obj), class C { method(){} }",
+      "why_it_matters": "Prototype lookup explains method sharing, inheritance, shadowing, and many confusing ownership checks.",
+      "common_use": [
+        "Share methods across instances",
+        "Implement inheritance",
+        "Use Object.create for controlled prototypes"
+      ],
+      "common_misuse": [
+        "Using in when own-property check is required",
+        "Mutating built-in prototypes",
+        "Assuming class fields and prototype methods are equivalent"
+      ],
+      "debugging_symptoms": [
+        "Method exists but not as own property",
+        "Enumeration includes inherited key with for/in",
+        "Shadowed method not called"
+      ],
+      "tests_or_checks": [
+        "Use Object.hasOwn or hasOwnProperty carefully",
+        "Inspect Object.getPrototypeOf",
+        "Check for prototype mutation"
+      ],
+      "safe_refactor_notes": [
+        "Moving methods between instance and prototype changes identity and memory behavior",
+        "Preserve accessors and super behavior"
+      ],
+      "related_risk_ids": [
+        "js-risk-prototype-shadowing"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 6,
+        "chapter_title": "Objects",
+        "sections": [
+          "6.1 Introduction to Objects",
+          "6.3 Querying and Setting Properties",
+          "9.1 Classes and Prototypes"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-enumeration-ownership",
+      "concept_name": "property ownership and enumeration",
+      "language_area": "objects_arrays_functions",
+      "plain_language_meaning": "Different reflection APIs report different sets of properties.",
+      "precise_behavior": "Own versus inherited, enumerable versus non-enumerable, string-keyed versus symbol-keyed properties determine what Object.keys, for/in, JSON.stringify, spread, Object.getOwnPropertyNames, Object.getOwnPropertySymbols, and Reflect.ownKeys see.",
+      "syntax_or_api_shape": "Object.keys(obj), for (let k in obj), Object.hasOwn(obj,k), Reflect.ownKeys(obj)",
+      "why_it_matters": "Copying, serialization, validation, and review tools can miss properties if they use the wrong reflection API.",
+      "common_use": [
+        "Copy plain data objects",
+        "Inspect object shape",
+        "Validate allowed fields"
+      ],
+      "common_misuse": [
+        "Using for/in without ownership filter",
+        "Expecting JSON/spread to preserve non-enumerable or symbol keys",
+        "Ignoring getters during spread/copy"
+      ],
+      "debugging_symptoms": [
+        "Property missing from clone",
+        "Inherited field accepted as input",
+        "Getter side effect during copy"
+      ],
+      "tests_or_checks": [
+        "Compare Object.keys and Reflect.ownKeys",
+        "Check descriptors",
+        "Filter inherited keys explicitly"
+      ],
+      "safe_refactor_notes": [
+        "Choose reflection API intentionally before refactoring copies",
+        "Preserve descriptors when required"
+      ],
+      "related_risk_ids": [
+        "js-risk-prototype-shadowing",
+        "js-risk-metaprogramming-opacity"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 6,
+        "chapter_title": "Objects",
+        "sections": [
+          "6.5 Testing Properties",
+          "6.6 Enumerating Properties",
+          "14.1 Property Attributes"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-arrays-length-sparse",
+      "concept_name": "arrays length and sparse arrays",
+      "language_area": "objects_arrays_functions",
+      "plain_language_meaning": "Arrays are objects with special indexed properties and a length property; they may have holes.",
+      "precise_behavior": "length is one greater than the largest array index and can be set directly. Sparse arrays have missing elements rather than present undefined values. Methods differ in how they handle holes.",
+      "syntax_or_api_shape": "arr.length, arr[i], Array(n), delete arr[i], arr.push(x), arr.splice(i,1)",
+      "why_it_matters": "List-like code breaks when length is treated as proof every element exists.",
+      "common_use": [
+        "Represent ordered lists",
+        "Append/remove elements",
+        "Use dense arrays for collections"
+      ],
+      "common_misuse": [
+        "Creating Array(n) and expecting values",
+        "delete for removal instead of splice",
+        "Assuming map/forEach callbacks visit holes"
+      ],
+      "debugging_symptoms": [
+        "Skipped callback invocation",
+        "Unexpected JSON nulls for holes",
+        "Length larger than count of present elements"
+      ],
+      "tests_or_checks": [
+        "Test dense, sparse, and explicit undefined arrays",
+        "Inspect indexes with Object.keys",
+        "Avoid delete on arrays"
+      ],
+      "safe_refactor_notes": [
+        "Do not refactor loops/methods across sparse arrays without hole tests",
+        "Normalize to dense arrays when list semantics are needed"
+      ],
+      "related_risk_ids": [
+        "js-risk-sparse-array-assumption"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 7,
+        "chapter_title": "Arrays",
+        "sections": [
+          "7.3 Sparse Arrays",
+          "7.4 Array Length",
+          "7.8 Array Methods"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-array-iteration-methods",
+      "concept_name": "array iteration methods",
+      "language_area": "objects_arrays_functions",
+      "plain_language_meaning": "Array methods encode common traversal and transformation patterns.",
+      "precise_behavior": "forEach, map, filter, reduce, find, some, every, sort and related methods call callbacks with element, index, and array. Mutating during iteration or relying on sparse behavior can surprise.",
+      "syntax_or_api_shape": "arr.map(fn), arr.filter(fn), arr.reduce(fn, init), arr.sort(compare), for...of",
+      "why_it_matters": "Array method choice directly affects returned value, mutation, order, and edge cases.",
+      "common_use": [
+        "Transform dense arrays",
+        "Filter values",
+        "Reduce with explicit initial value",
+        "Sort with comparator"
+      ],
+      "common_misuse": [
+        "Using forEach expecting a returned array",
+        "Using sort without numeric comparator",
+        "Mutating the iterated array in callback",
+        "Omitting reduce initial value for possible empty array"
+      ],
+      "debugging_symptoms": [
+        "undefined returned from helper",
+        "Lexicographic numeric sort",
+        "Skipped or duplicated effects",
+        "TypeError on empty reduce"
+      ],
+      "tests_or_checks": [
+        "Test empty, one-element, sparse, and mixed-type arrays",
+        "Review callback return values",
+        "Check comparator contract"
+      ],
+      "safe_refactor_notes": [
+        "Switch between loops and methods only with tests for holes and mutation",
+        "Keep sort mutation visible"
+      ],
+      "related_risk_ids": [
+        "js-risk-sparse-array-assumption",
+        "js-risk-shared-object-mutation"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 7,
+        "chapter_title": "Arrays",
+        "sections": [
+          "7.6 Iterating Arrays",
+          "7.8 Array Methods"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-array-like-objects",
+      "concept_name": "array-like objects",
+      "language_area": "objects_arrays_functions",
+      "plain_language_meaning": "Some objects look like arrays because they have length and numeric properties but are not arrays.",
+      "precise_behavior": "Array-like objects may not inherit Array.prototype methods. They can often be converted with Array.from or spread if iterable, but length-only array-like and iterable are distinct concepts.",
+      "syntax_or_api_shape": "Array.from(obj), [...iterable], arguments, NodeList-like values",
+      "why_it_matters": "Browser and legacy APIs often return list-like values where array methods or live/static behavior matter.",
+      "common_use": [
+        "Normalize external collection APIs",
+        "Handle arguments-like values",
+        "Review DOM collections"
+      ],
+      "common_misuse": [
+        "Calling array methods directly on non-arrays",
+        "Assuming spread works on every length object",
+        "Assuming DOM collection liveness without checking"
+      ],
+      "debugging_symptoms": [
+        "method is not a function",
+        "List changes while iterating",
+        "Missing elements after conversion"
+      ],
+      "tests_or_checks": [
+        "Check Array.isArray",
+        "Check typeof obj[Symbol.iterator]",
+        "Use Array.from with mapping when needed"
+      ],
+      "safe_refactor_notes": [
+        "Normalize once at boundary",
+        "Do not change live collection behavior without browser tests"
+      ],
+      "related_risk_ids": [
+        "js-risk-sparse-array-assumption",
+        "js-risk-browser-node-api-confusion"
+      ],
+      "runtime_or_environment": "ECMAScript plus host APIs",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 7,
+        "chapter_title": "Arrays",
+        "sections": [
+          "7.9 Array-Like Objects",
+          "15.3 Scripting Documents"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-functions-as-values",
+      "concept_name": "functions as values",
+      "language_area": "objects_arrays_functions",
+      "plain_language_meaning": "Functions can be stored, passed, returned, and invoked like other values.",
+      "precise_behavior": "Function declarations, function expressions, and arrow functions create callable objects. Functions may have properties, close over scope, and differ in this/arguments/new behavior.",
+      "syntax_or_api_shape": "function f(){}, const f = function(){}, const f = x => x, callback(fn)",
+      "why_it_matters": "Callbacks, higher-order APIs, modules, and event handlers depend on functions as first-class values.",
+      "common_use": [
+        "Pass callbacks",
+        "Return specialized functions",
+        "Store behavior in objects or maps"
+      ],
+      "common_misuse": [
+        "Invoking when a reference is needed",
+        "Passing this-dependent method without binding",
+        "Assuming arrow and function are interchangeable"
+      ],
+      "debugging_symptoms": [
+        "Callback runs too early",
+        "this is undefined",
+        "Function cannot be used as constructor"
+      ],
+      "tests_or_checks": [
+        "Check call site parentheses",
+        "Check this, arguments, and new requirements",
+        "Test callback invocation timing"
+      ],
+      "safe_refactor_notes": [
+        "Preserve function form when this/arguments/constructor behavior matters",
+        "Name functions when stack traces matter"
+      ],
+      "related_risk_ids": [
+        "js-risk-this-binding",
+        "js-risk-closure-state"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 8,
+        "chapter_title": "Functions",
+        "sections": [
+          "8.1 Defining Functions",
+          "8.4 Functions as Values"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-closures",
+      "concept_name": "closures",
+      "language_area": "objects_arrays_functions",
+      "plain_language_meaning": "A function can remember variables from the lexical scope where it was created.",
+      "precise_behavior": "Nested functions and returned callbacks retain access to outer lexical bindings. They observe the variable binding, not an automatic deep snapshot of every value.",
+      "syntax_or_api_shape": "function outer(){ let x=0; return () => ++x; }",
+      "why_it_matters": "Closures power callbacks, modules, private state patterns, and many asynchronous bugs.",
+      "common_use": [
+        "Keep private state",
+        "Create specialized callbacks",
+        "Build module-like namespaces"
+      ],
+      "common_misuse": [
+        "Expecting captured variable to reset automatically",
+        "Capturing mutable loop/state by accident",
+        "Leaking memory through long-lived closures over large objects"
+      ],
+      "debugging_symptoms": [
+        "Callbacks see updated value",
+        "State persists between tests",
+        "Unexpected retained data"
+      ],
+      "tests_or_checks": [
+        "List captured variables",
+        "Check mutation after capture",
+        "Test repeated calls and concurrent callbacks"
+      ],
+      "safe_refactor_notes": [
+        "Pass explicit parameters when snapshot is intended",
+        "Reset closure state in test setup",
+        "Avoid capturing broad objects unnecessarily"
+      ],
+      "related_risk_ids": [
+        "js-risk-closure-state"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 8,
+        "chapter_title": "Functions",
+        "sections": [
+          "8.6 Closures",
+          "10.1 Modules with Classes Objects and Closures"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-this-binding",
+      "concept_name": "this binding",
+      "language_area": "objects_arrays_functions",
+      "plain_language_meaning": "The value of this depends on how a function is invoked, not only where it is defined.",
+      "precise_behavior": "Method calls set this to the receiver. Plain function calls, constructor calls, call/apply/bind, event callbacks, and arrow functions differ. Arrow functions capture lexical this and cannot be used as ordinary methods requiring dynamic this.",
+      "syntax_or_api_shape": "obj.m(), f(), new C(), f.call(obj), f.bind(obj), () => this.x",
+      "why_it_matters": "this bugs are uniquely common in methods, callbacks, classes, event handlers, and extracted functions.",
+      "common_use": [
+        "Define methods",
+        "Bind callbacks",
+        "Use lexical this inside nested arrows"
+      ],
+      "common_misuse": [
+        "Passing obj.method directly as callback",
+        "Using arrow for prototype method needing receiver",
+        "Forgetting strict-mode plain-call this"
+      ],
+      "debugging_symptoms": [
+        "Cannot read this.prop",
+        "Method works in object call but not event/timer callback",
+        "Shared global/object state modified"
+      ],
+      "tests_or_checks": [
+        "Identify every this use and invocation form",
+        "Test extracted method call",
+        "Check bind/call/apply and arrow use"
+      ],
+      "safe_refactor_notes": [
+        "Refactor methods to arrows only when receiver semantics are irrelevant",
+        "Bind at construction or call boundary, not randomly inside logic"
+      ],
+      "related_risk_ids": [
+        "js-risk-this-binding"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 8,
+        "chapter_title": "Functions",
+        "sections": [
+          "8.2 Invoking Functions",
+          "8.7 Function Properties Methods and Constructor"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    }
+  ]
+}

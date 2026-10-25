@@ -1,0 +1,2879 @@
+{
+  "file_metadata": {
+    "file_name": "data_structures_algorithms_js_internal_tool_patterns_v1.json",
+    "package_id": "data_structures_algorithms_js_reasoning_os_v1",
+    "package_version": "1.0",
+    "generated_at_utc": "2026-08-25T17:45:26.946739+00:00",
+    "purpose": "Applied R365, review, upload, form, scorecard, dashboard, email, config, mapping, audit, retry, and coverage patterns.",
+    "record_count": 21,
+    "source_title": "Data Structures and Algorithms with JavaScript",
+    "source_author": "Michael McMillan",
+    "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+    "source_boundary": "Source-supported concepts are separated from low-confidence Apps Script, spreadsheet, internal-tool, and AI-agent extensions. Current platform behavior must be verified.",
+    "copyright_safety": "Concepts and implementation logic are paraphrased. No long source passages, long code listings, full algorithm implementations, or exercise solutions are reproduced."
+  },
+  "internal_tool_pattern_records": [
+    {
+      "id": "dsa-tool-r365-report-processor",
+      "record_type": "internal_tool_pattern_record",
+      "name": "R365 report processor",
+      "summary": "A guarded processor should parse a source report into provenance-preserving records, validate report type and mappings, transform to a destination schema, preview results, and export idempotently.",
+      "source_concept": "R365 report processor",
+      "programming_problem_addressed": "R365 report processor",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Inspect the current R365 import contract and sample exports; separate parsing from validation and side effects; block live mode on fatal errors; assign stable export keys; return structured per-row outcomes.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "Wrong report type accepted",
+        "Header drift",
+        "Unmapped values",
+        "Duplicate live export",
+        "Partial write",
+        "Source row cannot be traced"
+      ],
+      "tests_or_checks": [
+        "Golden-file fixture",
+        "Missing/renamed header",
+        "Duplicate row",
+        "Unmapped location/account",
+        "Malformed date/number",
+        "Interrupted export and safe retry"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-workflow-parse-validate-transform-export",
+        "dsa-sheet-object-to-export-row",
+        "dsa-tool-dry-run-live"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Arrays of Objects",
+        "page_or_anchor": "OEBPS/ch02.html#idp18891520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source supports arrays of objects, dictionaries, sets, searching, and sorting as reusable data-handling concepts."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch07.html",
+            "chapter_number": "7",
+            "chapter_title": "Dictionaries",
+            "section_heading": "The Dictionary Class",
+            "page_or_anchor": "OEBPS/ch07.html#idp29229184"
+          },
+          {
+            "source_file": "ch09.html",
+            "chapter_number": "9",
+            "chapter_title": "Sets",
+            "section_heading": "Fundamental Set Definitions, Operations, and Properties",
+            "page_or_anchor": "OEBPS/ch09.html#idp34336432"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "R365 report processor",
+      "data_structure_or_algorithm_applied": [
+        "array-of-arrays",
+        "row objects",
+        "header index map",
+        "mapping dictionaries",
+        "sets",
+        "structured result lists"
+      ],
+      "workflow_shape": "parse → identify report type → validate structure and semantics → transform → preview → export → audit",
+      "input_data": [
+        "Uploaded report file",
+        "Current report schema",
+        "Location/account/config mappings",
+        "Destination import contract"
+      ],
+      "intermediate_data_structure": "Ordered row records keyed by source row index and logical export key; lookup maps for headers and mappings; error collections grouped by severity.",
+      "validation_needed": [
+        "File/report identity",
+        "Required headers",
+        "Row width",
+        "Dates/numbers",
+        "Location/account mappings",
+        "Duplicate export keys",
+        "Destination constraints"
+      ],
+      "transformation_needed": [
+        "Normalize headers and values",
+        "Map source fields to destination fields",
+        "Derive destination rows only from valid records",
+        "Preserve source provenance"
+      ],
+      "output_or_side_effect": [
+        "Dry-run preview",
+        "Destination import rows or file",
+        "Validation report",
+        "Run history with counts and keys"
+      ],
+      "failure_modes": [
+        "Wrong report type accepted",
+        "Header drift",
+        "Unmapped values",
+        "Duplicate live export",
+        "Partial write",
+        "Source row cannot be traced"
+      ],
+      "safe_design_pattern": "Inspect the current R365 import contract and sample exports; separate parsing from validation and side effects; block live mode on fatal errors; assign stable export keys; return structured per-row outcomes.",
+      "current_verification_needed": [
+        "Current R365 import schema and accepted formats",
+        "Current project code and logs",
+        "Current Apps Script file and spreadsheet APIs",
+        "Current SOP approval rules"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    },
+    {
+      "id": "dsa-tool-uber-eats-reviews",
+      "record_type": "internal_tool_pattern_record",
+      "name": "Uber Eats Reviews transformation",
+      "summary": "Treat each review as a keyed source record, validate identity and date/rating fields, normalize to the current historical-import schema, and prevent re-export of archived review IDs.",
+      "source_concept": "Uber Eats Reviews transformation",
+      "programming_problem_addressed": "Uber Eats Reviews transformation",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Confirm the current export and destination schemas; use a deterministic review key; stage the archive update with the export outcome; preserve original source fields in the audit record.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "No stable source ID",
+        "Same review exported twice",
+        "Location mismatch",
+        "Timezone/date shift",
+        "Archive update succeeds before export or vice versa"
+      ],
+      "tests_or_checks": [
+        "Duplicate within one file",
+        "Previously archived review",
+        "Missing review ID",
+        "Boundary dates/timezones",
+        "Unknown location",
+        "Retry after partial side effect"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-tool-duplicate-detection",
+        "dsa-sheet-idempotent-export-keys",
+        "dsa-risk-idempotency-missing"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "7",
+        "chapter_title": "Dictionaries",
+        "section_heading": "The Dictionary Class",
+        "page_or_anchor": "OEBPS/ch07.html#idp29229184",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source supports dictionaries for key-value access and sets for uniqueness; the review workflow is an applied extension."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch09.html",
+            "chapter_number": "9",
+            "chapter_title": "Sets",
+            "section_heading": "Fundamental Set Definitions, Operations, and Properties",
+            "page_or_anchor": "OEBPS/ch09.html#idp34336432"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "Uber Eats Reviews transformation",
+      "data_structure_or_algorithm_applied": [
+        "dictionary lookup",
+        "set of seen review IDs",
+        "ordered arrays",
+        "structured errors"
+      ],
+      "workflow_shape": "ingest review rows → normalize identifiers → validate → deduplicate → map fields → preview/export → archive key set",
+      "input_data": [
+        "Current Uber Eats review export",
+        "Historical archive keys",
+        "Location mapping",
+        "Current R365 destination schema"
+      ],
+      "intermediate_data_structure": "Review objects keyed by normalized source ID, plus an ordered result list preserving source order and row provenance.",
+      "validation_needed": [
+        "Stable review ID",
+        "Location mapping",
+        "Date/time parse",
+        "Rating range",
+        "Required text/fields",
+        "Duplicate in file or archive"
+      ],
+      "transformation_needed": [
+        "Normalize dates and text",
+        "Map location identifiers",
+        "Project accepted fields into destination order"
+      ],
+      "output_or_side_effect": [
+        "Validated import rows",
+        "Duplicate/skipped list",
+        "Archive update proposal",
+        "Run summary"
+      ],
+      "failure_modes": [
+        "No stable source ID",
+        "Same review exported twice",
+        "Location mismatch",
+        "Timezone/date shift",
+        "Archive update succeeds before export or vice versa"
+      ],
+      "safe_design_pattern": "Confirm the current export and destination schemas; use a deterministic review key; stage the archive update with the export outcome; preserve original source fields in the audit record.",
+      "current_verification_needed": [
+        "Current Uber Eats export fields and retention window",
+        "Current R365 historical import fields",
+        "Current project archive behavior"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    },
+    {
+      "id": "dsa-tool-sevenrooms-guest-satisfaction",
+      "record_type": "internal_tool_pattern_record",
+      "name": "SevenRooms Guest Satisfaction transformation",
+      "summary": "Represent each response as a provenance-preserving record, validate survey identity and metric mappings, normalize fields, and export only rows compatible with the current destination contract.",
+      "source_concept": "SevenRooms Guest Satisfaction transformation",
+      "programming_problem_addressed": "SevenRooms Guest Satisfaction transformation",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Version the question mapping, compare expected versus actual headers before row processing, distinguish blank from valid zero, and require review when unseen questions appear.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "Survey question renamed",
+        "Response key not unique",
+        "Blank versus zero conflated",
+        "Unknown rating scale",
+        "Unmapped location"
+      ],
+      "tests_or_checks": [
+        "Question renamed/added/removed",
+        "Blank and zero scores",
+        "Duplicate response",
+        "Unknown location",
+        "Malformed date",
+        "Mixed-language labels"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-tool-expected-actual-headers",
+        "dsa-sheet-header-index-map",
+        "dsa-tool-location-mapping"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Arrays of Objects",
+        "page_or_anchor": "OEBPS/ch02.html#idp18891520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source demonstrates arrays of objects and dictionary-style keyed access; the survey workflow is an applied extension."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch07.html",
+            "chapter_number": "7",
+            "chapter_title": "Dictionaries",
+            "section_heading": "The Dictionary Class",
+            "page_or_anchor": "OEBPS/ch07.html#idp29229184"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "SevenRooms Guest Satisfaction transformation",
+      "data_structure_or_algorithm_applied": [
+        "array of response objects",
+        "header map",
+        "metric dictionary",
+        "set of response keys",
+        "error list"
+      ],
+      "workflow_shape": "parse survey export → map headers/metrics → validate identity and values → deduplicate → transform → preview/export",
+      "input_data": [
+        "Current SevenRooms export",
+        "Question/metric mapping",
+        "Location mapping",
+        "Destination schema"
+      ],
+      "intermediate_data_structure": "Response records with source row, normalized response key, location, date, mapped metric values, and validation status.",
+      "validation_needed": [
+        "Required headers",
+        "Response ID/key",
+        "Question mapping",
+        "Score/rating domain",
+        "Location/date fields",
+        "Duplicates"
+      ],
+      "transformation_needed": [
+        "Normalize labels and ratings",
+        "Flatten or project survey fields",
+        "Map location and metric names",
+        "Order destination columns"
+      ],
+      "output_or_side_effect": [
+        "Import-ready rows",
+        "Unmapped-question report",
+        "Duplicate report",
+        "Run summary"
+      ],
+      "failure_modes": [
+        "Survey question renamed",
+        "Response key not unique",
+        "Blank versus zero conflated",
+        "Unknown rating scale",
+        "Unmapped location"
+      ],
+      "safe_design_pattern": "Version the question mapping, compare expected versus actual headers before row processing, distinguish blank from valid zero, and require review when unseen questions appear.",
+      "current_verification_needed": [
+        "Current SevenRooms export schema",
+        "Current destination schema",
+        "Current business interpretation of ratings/questions"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    },
+    {
+      "id": "dsa-tool-csv-xlsx-upload-validation",
+      "record_type": "internal_tool_pattern_record",
+      "name": "CSV/XLSX upload validation",
+      "summary": "Parse uploaded tabular data into a neutral shape, identify the workbook/sheet/header contract, collect structural and semantic errors, and block transformations that would rely on guessed columns or types.",
+      "source_concept": "CSV/XLSX upload validation",
+      "programming_problem_addressed": "CSV/XLSX upload validation",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Inspect format and sheet structure before interpreting rows; never infer an unseen schema; preserve cell coordinates; make type conversions explicit and reversible in the preview.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "Wrong sheet selected",
+        "Merged/multirow headers",
+        "Date serial misread",
+        "Formula/error cells ignored",
+        "Duplicate headers",
+        "Silent truncation"
+      ],
+      "tests_or_checks": [
+        "Multiple sheets",
+        "Blank leading rows",
+        "Duplicate/renamed headers",
+        "Jagged CSV",
+        "Date/number/text ambiguity",
+        "Very large file",
+        "Formula/error values"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-data-shape-validation",
+        "dsa-sheet-required-header-validation",
+        "dsa-risk-row-shape-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Two-Dimensional and Multidimensional Arrays",
+        "page_or_anchor": "OEBPS/ch02.html#idp17846512",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source covers multidimensional arrays, jagged arrays, arrays of objects, and iteration; file parsing behavior is outside the source."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch02.html",
+            "chapter_number": "2",
+            "chapter_title": "Arrays",
+            "section_heading": "Jagged Arrays",
+            "page_or_anchor": "OEBPS/ch02.html#idp18528176"
+          },
+          {
+            "source_file": "ch02.html",
+            "chapter_number": "2",
+            "chapter_title": "Arrays",
+            "section_heading": "Arrays of Objects",
+            "page_or_anchor": "OEBPS/ch02.html#idp18891520"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "CSV/XLSX upload validation",
+      "data_structure_or_algorithm_applied": [
+        "two-dimensional arrays",
+        "header dictionary",
+        "row objects",
+        "sets",
+        "validation issue list"
+      ],
+      "workflow_shape": "receive file → identify format/sheet → parse cells → validate shape/schema → normalize → preview → downstream transform",
+      "input_data": [
+        "Uploaded file bytes/reference",
+        "Expected file variants",
+        "Sheet and header rules",
+        "Type and key constraints"
+      ],
+      "intermediate_data_structure": "Workbook/sheet metadata plus row arrays converted to typed candidate records with source sheet, row, and column provenance.",
+      "validation_needed": [
+        "Supported format",
+        "Expected sheet",
+        "Header aliases and duplicates",
+        "Rectangular row shape",
+        "Required fields",
+        "Types",
+        "Unique keys",
+        "Formula/error cells if relevant"
+      ],
+      "transformation_needed": [
+        "Normalize header names",
+        "Convert cells with explicit rules",
+        "Create row objects",
+        "Classify fatal versus row-level issues"
+      ],
+      "output_or_side_effect": [
+        "Validation report",
+        "Normalized preview",
+        "Accepted records",
+        "Rejected rows with coordinates"
+      ],
+      "failure_modes": [
+        "Wrong sheet selected",
+        "Merged/multirow headers",
+        "Date serial misread",
+        "Formula/error cells ignored",
+        "Duplicate headers",
+        "Silent truncation"
+      ],
+      "safe_design_pattern": "Inspect format and sheet structure before interpreting rows; never infer an unseen schema; preserve cell coordinates; make type conversions explicit and reversible in the preview.",
+      "current_verification_needed": [
+        "Current Apps Script upload behavior",
+        "Current CSV/XLSX parser behavior",
+        "Current file-size/execution limits",
+        "Actual file samples"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    },
+    {
+      "id": "dsa-tool-sheets-import-export",
+      "record_type": "internal_tool_pattern_record",
+      "name": "Google Sheets import/export workflow",
+      "summary": "Use bounded batch reads, row provenance, lookup maps, full validation, and rectangular batch writes to keep spreadsheet transformations understandable and recoverable.",
+      "source_concept": "Google Sheets import/export workflow",
+      "programming_problem_addressed": "Google Sheets import/export workflow",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Read the smallest required range once, avoid service calls during row iteration, keep source and output separate, validate the whole proposed write, then commit a bounded batch with recovery evidence.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "Repeated service calls",
+        "Index drift",
+        "In-place source mutation",
+        "Partial write",
+        "Destination overwritten unexpectedly"
+      ],
+      "tests_or_checks": [
+        "Header reorder",
+        "Extra blank rows",
+        "Output width mismatch",
+        "Duplicate key",
+        "No-op run",
+        "Interrupted write simulation on copy"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-sheet-read-once",
+        "dsa-sheet-row-array-to-object",
+        "dsa-sheet-batch-write-after-validation"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Processing Two-Dimensional Array Elements",
+        "page_or_anchor": "OEBPS/ch02.html#idp18183376",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source demonstrates multidimensional arrays, array iteration, objects, dictionaries, sets, searching, and sorting that conceptually support tabular workflows."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch02.html",
+            "chapter_number": "2",
+            "chapter_title": "Arrays",
+            "section_heading": "Arrays of Objects",
+            "page_or_anchor": "OEBPS/ch02.html#idp18891520"
+          },
+          {
+            "source_file": "ch07.html",
+            "chapter_number": "7",
+            "chapter_title": "Dictionaries",
+            "section_heading": "The Dictionary Class",
+            "page_or_anchor": "OEBPS/ch07.html#idp29229184"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "Google Sheets import/export workflow",
+      "data_structure_or_algorithm_applied": [
+        "array-of-arrays",
+        "header index map",
+        "row objects",
+        "lookup dictionaries",
+        "sets",
+        "structured run result"
+      ],
+      "workflow_shape": "read once → map headers → create records → validate/join/group/sort → preview → batch write → audit",
+      "input_data": [
+        "Current source range",
+        "Destination schema/range",
+        "Mappings and business rules"
+      ],
+      "intermediate_data_structure": "Immutable-ish source records with original row index and separate transformed output rows.",
+      "validation_needed": [
+        "Bounds and headers",
+        "Row width",
+        "Required values",
+        "Unique keys",
+        "Mappings",
+        "Output width and count",
+        "Destination preconditions"
+      ],
+      "transformation_needed": [
+        "Record conversion",
+        "Normalization",
+        "Join/group/filter/sort",
+        "Destination projection"
+      ],
+      "output_or_side_effect": [
+        "Preview table",
+        "Batch output",
+        "Error report",
+        "Run metadata"
+      ],
+      "failure_modes": [
+        "Repeated service calls",
+        "Index drift",
+        "In-place source mutation",
+        "Partial write",
+        "Destination overwritten unexpectedly"
+      ],
+      "safe_design_pattern": "Read the smallest required range once, avoid service calls during row iteration, keep source and output separate, validate the whole proposed write, then commit a bounded batch with recovery evidence.",
+      "current_verification_needed": [
+        "Current SpreadsheetApp behavior and quotas",
+        "Current project sheet sizes/formulas/protection",
+        "Current destination write contract"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    },
+    {
+      "id": "dsa-tool-manager-qr-form",
+      "record_type": "internal_tool_pattern_record",
+      "name": "Manager QR form workflow",
+      "summary": "Model a form submission as a stable keyed record, validate required structured fields and free-text boundaries, route notifications from explicit mappings, and preserve an audit trail without turning the form into a punitive data trap.",
+      "source_concept": "Manager QR form workflow",
+      "programming_problem_addressed": "Manager QR form workflow",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Keep structured choices minimal and explicit, retain original comments, validate routing before notification, separate persistence from notification status, and make retries idempotent.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "Unknown location",
+        "Recipient map missing",
+        "Duplicate notification",
+        "Free text loses original meaning",
+        "Submission stored but email fails"
+      ],
+      "tests_or_checks": [
+        "Known/unknown location",
+        "Missing optional/required field",
+        "Duplicate retry",
+        "Long multilingual comment",
+        "Email failure after persistence"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-tool-location-mapping",
+        "dsa-tool-email-report-generation",
+        "dsa-tool-retry-idempotency"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Arrays of Objects",
+        "page_or_anchor": "OEBPS/ch02.html#idp18891520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source supports arrays of objects, dictionary lookup, set membership, and queues; the trust-centered form design is an applied workflow requirement."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch07.html",
+            "chapter_number": "7",
+            "chapter_title": "Dictionaries",
+            "section_heading": "The Dictionary Class",
+            "page_or_anchor": "OEBPS/ch07.html#idp29229184"
+          },
+          {
+            "source_file": "ch09.html",
+            "chapter_number": "9",
+            "chapter_title": "Sets",
+            "section_heading": "Fundamental Set Definitions, Operations, and Properties",
+            "page_or_anchor": "OEBPS/ch09.html#idp34336432"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "Manager QR form workflow",
+      "data_structure_or_algorithm_applied": [
+        "record object",
+        "required-field set",
+        "location/routing dictionary",
+        "processing result list",
+        "idempotency key"
+      ],
+      "workflow_shape": "submit → normalize → validate → map location/recipients → persist → notify → audit",
+      "input_data": [
+        "Form response",
+        "Location/recipient mapping",
+        "Current required-field rules",
+        "Notification template"
+      ],
+      "intermediate_data_structure": "Submission record with source timestamp/ID, normalized structured fields, original free text, validation status, and routing outcome.",
+      "validation_needed": [
+        "Stable submission ID",
+        "Required fields",
+        "Known location",
+        "Allowed category values",
+        "Privacy/content gates if required",
+        "Duplicate submission"
+      ],
+      "transformation_needed": [
+        "Normalize labels/language fields",
+        "Map recipients",
+        "Create human-readable summary while retaining original response"
+      ],
+      "output_or_side_effect": [
+        "Stored submission",
+        "Notification",
+        "Validation/follow-up status",
+        "Audit entry"
+      ],
+      "failure_modes": [
+        "Unknown location",
+        "Recipient map missing",
+        "Duplicate notification",
+        "Free text loses original meaning",
+        "Submission stored but email fails"
+      ],
+      "safe_design_pattern": "Keep structured choices minimal and explicit, retain original comments, validate routing before notification, separate persistence from notification status, and make retries idempotent.",
+      "current_verification_needed": [
+        "Current form schema",
+        "Current routing list and privacy rules",
+        "Current trigger/email behavior",
+        "Current SOP expectations"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    },
+    {
+      "id": "dsa-tool-warehouse-pickup-form",
+      "record_type": "internal_tool_pattern_record",
+      "name": "Warehouse pickup form workflow",
+      "summary": "Represent each pickup request as a keyed operational event with ordered items, structured cause, location mapping, original-language context, translation metadata, notification status, and follow-up state.",
+      "source_concept": "Warehouse pickup form workflow",
+      "programming_problem_addressed": "Warehouse pickup form workflow",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Preserve the original response, treat translation as derived and reviewable, validate routing and item shape, assign a stable event key, and record each side effect and status transition.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "Item count disagrees with items",
+        "Unknown location",
+        "Translation presented as original",
+        "Notification duplicated",
+        "Status overwritten without history"
+      ],
+      "tests_or_checks": [
+        "Multiple items",
+        "Spanish/English comments",
+        "Translation unavailable",
+        "Unknown product/category",
+        "Retry after notification failure",
+        "Repeated submission ID"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-list-ordered-validation-extension",
+        "dsa-tool-location-mapping",
+        "dsa-risk-partial-failure-unstructured"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Arrays of Objects",
+        "page_or_anchor": "OEBPS/ch02.html#idp18891520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source supports arrays of objects, lists, dictionaries, sets, and queues; the warehouse event schema is an applied extension."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch03.html",
+            "chapter_number": "3",
+            "chapter_title": "Lists",
+            "section_heading": "A List ADT",
+            "page_or_anchor": "OEBPS/ch03.html#idp19348032"
+          },
+          {
+            "source_file": "ch05.html",
+            "chapter_number": "5",
+            "chapter_title": "Queues",
+            "section_heading": "Queue Operations",
+            "page_or_anchor": "OEBPS/ch05.html#idp23142720"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "Warehouse pickup form workflow",
+      "data_structure_or_algorithm_applied": [
+        "event record",
+        "ordered item list",
+        "location/recipient dictionary",
+        "set of submission IDs",
+        "status queue"
+      ],
+      "workflow_shape": "capture request → validate location/items/cause → preserve original text → translate as a separate derived field → route → notify → log follow-up state",
+      "input_data": [
+        "QR form response",
+        "Location and recipient mappings",
+        "Product/category values",
+        "Optional translation output"
+      ],
+      "intermediate_data_structure": "Pickup event object with immutable source fields, normalized fields, derived translation, item list, routing result, and status history.",
+      "validation_needed": [
+        "Submission ID",
+        "Known restaurant location",
+        "At least one item",
+        "Quantity/item consistency",
+        "Cause category",
+        "Recipient coverage",
+        "Translation does not replace original"
+      ],
+      "transformation_needed": [
+        "Normalize structured values",
+        "Create item records",
+        "Attach translation separately",
+        "Generate summary and routing plan"
+      ],
+      "output_or_side_effect": [
+        "Warehouse pickup record",
+        "Operational notification",
+        "Follow-up/review status",
+        "Audit history"
+      ],
+      "failure_modes": [
+        "Item count disagrees with items",
+        "Unknown location",
+        "Translation presented as original",
+        "Notification duplicated",
+        "Status overwritten without history"
+      ],
+      "safe_design_pattern": "Preserve the original response, treat translation as derived and reviewable, validate routing and item shape, assign a stable event key, and record each side effect and status transition.",
+      "current_verification_needed": [
+        "Current form fields and response IDs",
+        "Current translation service behavior",
+        "Current notification recipients",
+        "Current warehouse SOP"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    },
+    {
+      "id": "dsa-tool-scorecard-sync",
+      "record_type": "internal_tool_pattern_record",
+      "name": "Scorecard synchronization helper scripts",
+      "summary": "Treat each source metric/date/location combination as a stable key, index configuration and destination cells, validate period alignment, and make create-or-update behavior explicit and repeatable.",
+      "source_concept": "Scorecard synchronization helper scripts",
+      "programming_problem_addressed": "Scorecard synchronization helper scripts",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Make the sync registry authoritative, preserve source and destination identifiers, validate all proposed actions first, use deterministic keys, and record before/after values for each committed change.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "Composite key collision",
+        "Fiscal-week mismatch",
+        "Duplicate source value",
+        "Wrong destination cell",
+        "Partial live update"
+      ],
+      "tests_or_checks": [
+        "Duplicate metric-period",
+        "Missing location mapping",
+        "53-week/boundary period",
+        "No-op rerun",
+        "Retroactive correction",
+        "Interrupted commit"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-tool-date-fiscal-week",
+        "dsa-sheet-join-by-key",
+        "dsa-tool-audit-run-history"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "7",
+        "chapter_title": "Dictionaries",
+        "section_heading": "The Dictionary Class",
+        "page_or_anchor": "OEBPS/ch07.html#idp29229184",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source supports dictionary indexing, sets, searching, sorting, and graph dependency reasoning; scorecard synchronization is an applied extension."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch09.html",
+            "chapter_number": "9",
+            "chapter_title": "Sets",
+            "section_heading": "Fundamental Set Definitions, Operations, and Properties",
+            "page_or_anchor": "OEBPS/ch09.html#idp34336432"
+          },
+          {
+            "source_file": "ch11.html",
+            "chapter_number": "11",
+            "chapter_title": "Graphs and Graph Algorithms",
+            "section_heading": "Graph Definitions",
+            "page_or_anchor": "OEBPS/ch11.html#idp38726848"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "Scorecard synchronization helper scripts",
+      "data_structure_or_algorithm_applied": [
+        "composite-key dictionary",
+        "set of synchronized keys",
+        "ordered update list",
+        "dependency graph for source refreshes",
+        "run result"
+      ],
+      "workflow_shape": "load configuration and source metrics → normalize keys/periods → validate coverage → compare destination → stage create/update/no-op → commit → audit",
+      "input_data": [
+        "Source metric rows",
+        "Location/metric configuration",
+        "Fiscal week/date rules",
+        "Destination scorecard structure"
+      ],
+      "intermediate_data_structure": "Metric records keyed by normalized location + metric + period, with provenance and proposed destination action.",
+      "validation_needed": [
+        "Unique composite keys",
+        "Known metric/location",
+        "Date/week alignment",
+        "Destination target exists or creation is permitted",
+        "Duplicate/conflicting source values"
+      ],
+      "transformation_needed": [
+        "Normalize keys",
+        "Resolve date periods",
+        "Join source metrics to destination definitions",
+        "Classify create/update/no-op/error"
+      ],
+      "output_or_side_effect": [
+        "Staged updates",
+        "Committed scorecard values",
+        "Coverage and conflict report",
+        "Run history"
+      ],
+      "failure_modes": [
+        "Composite key collision",
+        "Fiscal-week mismatch",
+        "Duplicate source value",
+        "Wrong destination cell",
+        "Partial live update"
+      ],
+      "safe_design_pattern": "Make the sync registry authoritative, preserve source and destination identifiers, validate all proposed actions first, use deterministic keys, and record before/after values for each committed change.",
+      "current_verification_needed": [
+        "Current source APIs/files",
+        "Current scorecard workbook structure",
+        "Current period logic",
+        "Current API authentication/rate limits"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    },
+    {
+      "id": "dsa-tool-dashboard-preparation",
+      "record_type": "internal_tool_pattern_record",
+      "name": "Dashboard data preparation",
+      "summary": "Prepare dashboards from validated typed records using explicit grouping keys, stable sort rules, aggregation definitions, and completeness checks before rendering or publishing.",
+      "source_concept": "Dashboard data preparation",
+      "programming_problem_addressed": "Dashboard data preparation",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Define grain before aggregation, validate keys and coverage, preserve counts and provenance, separate missing from zero, and publish only from a versioned metric contract.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "Wrong grouping key",
+        "Duplicate facts counted twice",
+        "Blank treated as zero",
+        "Denominator mismatch",
+        "Unstable category order"
+      ],
+      "tests_or_checks": [
+        "One-row known aggregate",
+        "Duplicate fact key",
+        "Missing period/location",
+        "Zero and blank denominators",
+        "Tie ordering",
+        "Backfilled period"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-sheet-group-rows",
+        "dsa-tool-required-field-coverage",
+        "dsa-decision-built-in-versus-custom-sort"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "7",
+        "chapter_title": "Dictionaries",
+        "section_heading": "The Dictionary Class",
+        "page_or_anchor": "OEBPS/ch07.html#idp29229184",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source supports dictionary key-value organization, sets, arrays, and sorting; dashboard metrics and business formulas are external requirements."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch09.html",
+            "chapter_number": "9",
+            "chapter_title": "Sets",
+            "section_heading": "Fundamental Set Definitions, Operations, and Properties",
+            "page_or_anchor": "OEBPS/ch09.html#idp34336432"
+          },
+          {
+            "source_file": "ch02.html",
+            "chapter_number": "2",
+            "chapter_title": "Arrays",
+            "section_heading": "Putting Array Elements in Order",
+            "page_or_anchor": "OEBPS/ch02.html#idp16088928"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "Dashboard data preparation",
+      "data_structure_or_algorithm_applied": [
+        "grouping dictionary",
+        "set of expected dimensions",
+        "ordered output arrays",
+        "summary records"
+      ],
+      "workflow_shape": "ingest validated records → group by dimensions → aggregate → compare expected coverage → sort → emit dashboard-ready dataset",
+      "input_data": [
+        "Validated fact rows",
+        "Dimension definitions",
+        "Metric formulas",
+        "Expected periods/locations/categories"
+      ],
+      "intermediate_data_structure": "Groups keyed by explicit composite dimensions with accumulators and source-row counts.",
+      "validation_needed": [
+        "Unique dimension labels",
+        "Metric input types",
+        "No double-counted keys",
+        "Expected coverage",
+        "Denominator rules",
+        "Stable time ordering"
+      ],
+      "transformation_needed": [
+        "Group and aggregate",
+        "Calculate metrics according to current business rules",
+        "Fill or flag missing combinations",
+        "Sort for presentation"
+      ],
+      "output_or_side_effect": [
+        "Dashboard-ready table/JSON",
+        "Coverage gaps",
+        "Metric lineage counts",
+        "Refresh metadata"
+      ],
+      "failure_modes": [
+        "Wrong grouping key",
+        "Duplicate facts counted twice",
+        "Blank treated as zero",
+        "Denominator mismatch",
+        "Unstable category order"
+      ],
+      "safe_design_pattern": "Define grain before aggregation, validate keys and coverage, preserve counts and provenance, separate missing from zero, and publish only from a versioned metric contract.",
+      "current_verification_needed": [
+        "Current metric definitions",
+        "Current dashboard consumer contract",
+        "Current source refresh timing",
+        "Current workbook/API data shape"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    },
+    {
+      "id": "dsa-tool-email-report-generation",
+      "record_type": "internal_tool_pattern_record",
+      "name": "Email/report generation",
+      "summary": "Build a report from a validated immutable-ish view model, separate recipient routing from content rendering, and record send outcomes per recipient or logical message key.",
+      "source_concept": "Email/report generation",
+      "programming_problem_addressed": "Email/report generation",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Construct a view model rather than rendering directly from raw rows, run privacy and recipient checks, preview exact variants, make send keys idempotent, and return per-recipient results.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "Wrong recipient",
+        "Private field leaks",
+        "Duplicate send",
+        "Rendering differs from preview",
+        "One recipient failure hides other outcomes"
+      ],
+      "tests_or_checks": [
+        "Leadership/store variant",
+        "Unknown location",
+        "Reviewer/private name in comments",
+        "Long multilingual text",
+        "One invalid email",
+        "Retry after partial send"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-tool-manager-qr-form",
+        "dsa-tool-partial-failure-reporting",
+        "dsa-gas-idempotency"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Arrays of Objects",
+        "page_or_anchor": "OEBPS/ch02.html#idp18891520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source supports structured objects, lists, dictionaries, and sets; email delivery and privacy rules are applied extensions."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch03.html",
+            "chapter_number": "3",
+            "chapter_title": "Lists",
+            "section_heading": "A List ADT",
+            "page_or_anchor": "OEBPS/ch03.html#idp19348032"
+          },
+          {
+            "source_file": "ch07.html",
+            "chapter_number": "7",
+            "chapter_title": "Dictionaries",
+            "section_heading": "The Dictionary Class",
+            "page_or_anchor": "OEBPS/ch07.html#idp29229184"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "Email/report generation",
+      "data_structure_or_algorithm_applied": [
+        "report view-model object",
+        "recipient dictionary",
+        "ordered sections",
+        "set of message keys",
+        "per-recipient result list"
+      ],
+      "workflow_shape": "validate source data → build view model → resolve recipients → render → preview → send → record outcomes",
+      "input_data": [
+        "Validated report records",
+        "Template/version",
+        "Recipient routing",
+        "Language/privacy rules"
+      ],
+      "intermediate_data_structure": "View model containing only approved fields plus a send plan keyed by logical message identity.",
+      "validation_needed": [
+        "Required display fields",
+        "Recipient coverage",
+        "Privacy gates",
+        "Language/translation labeling",
+        "Message uniqueness",
+        "HTML/text size and rendering assumptions"
+      ],
+      "transformation_needed": [
+        "Aggregate and format values",
+        "Render leadership/store variants",
+        "Resolve language and labels",
+        "Create stable send keys"
+      ],
+      "output_or_side_effect": [
+        "Preview",
+        "Rendered report",
+        "Per-recipient send result",
+        "Audit record"
+      ],
+      "failure_modes": [
+        "Wrong recipient",
+        "Private field leaks",
+        "Duplicate send",
+        "Rendering differs from preview",
+        "One recipient failure hides other outcomes"
+      ],
+      "safe_design_pattern": "Construct a view model rather than rendering directly from raw rows, run privacy and recipient checks, preview exact variants, make send keys idempotent, and return per-recipient results.",
+      "current_verification_needed": [
+        "Current recipient lists",
+        "Current privacy and communication rules",
+        "Current MailApp/GmailApp or other sending behavior",
+        "Current template/client rendering"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    },
+    {
+      "id": "dsa-tool-dry-run-live",
+      "record_type": "internal_tool_pattern_record",
+      "name": "Dry-run/live execution pattern",
+      "summary": "Use one deterministic transformation pipeline for both modes; dry-run returns the exact proposed side effects, while live mode performs them only after the same validations pass.",
+      "source_concept": "Dry-run/live execution pattern",
+      "programming_problem_addressed": "Dry-run/live execution pattern",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Default to dry-run, make mode explicit, generate actions without side effects, checksum or revalidate critical inputs before commit, and log every live action outcome.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "Dry-run and live use different code paths",
+        "Preview omits a side effect",
+        "Data changes between preview and commit",
+        "Live mode inferred from missing flag"
+      ],
+      "tests_or_checks": [
+        "Dry/live action equivalence",
+        "Fatal validation blocks live",
+        "Destination changes after preview",
+        "No-op rerun",
+        "Partial commit result"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-sheet-dry-run-preview",
+        "dsa-risk-live-write-before-validation",
+        "dsa-decision-validate-all-versus-write-as-you-go"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "Preface",
+        "chapter_title": "Preface",
+        "section_heading": "Why Study Data Structures and Algorithms",
+        "page_or_anchor": "OEBPS/preface01.html#idp7339520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source emphasizes choosing and testing transformations; dry-run/live separation is an internal-tool safety extension."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "Dry-run/live execution pattern",
+      "data_structure_or_algorithm_applied": [
+        "proposed-action list",
+        "validation issue list",
+        "stable action keys",
+        "structured run result"
+      ],
+      "workflow_shape": "parse/validate/transform once → construct proposed actions → dry-run displays actions OR live commits approved actions → audit",
+      "input_data": [
+        "Same source data and configuration for both modes",
+        "Explicit execution mode",
+        "Current destination state"
+      ],
+      "intermediate_data_structure": "Action objects containing type, key, target, before/after values, preconditions, and provenance.",
+      "validation_needed": [
+        "Mode is explicit",
+        "Proposed action set is deterministic",
+        "No fatal errors",
+        "Destination preconditions still hold at commit",
+        "Action keys unique"
+      ],
+      "transformation_needed": [
+        "Create side-effect-free proposed actions",
+        "Render preview",
+        "Commit verified action list in live mode"
+      ],
+      "output_or_side_effect": [
+        "Dry-run action preview",
+        "Live commit results",
+        "Validation report",
+        "Run comparison metadata"
+      ],
+      "failure_modes": [
+        "Dry-run and live use different code paths",
+        "Preview omits a side effect",
+        "Data changes between preview and commit",
+        "Live mode inferred from missing flag"
+      ],
+      "safe_design_pattern": "Default to dry-run, make mode explicit, generate actions without side effects, checksum or revalidate critical inputs before commit, and log every live action outcome.",
+      "current_verification_needed": [
+        "Current destination API semantics",
+        "Current concurrency behavior",
+        "Current approval and audit requirements"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    },
+    {
+      "id": "dsa-tool-partial-failure-reporting",
+      "record_type": "internal_tool_pattern_record",
+      "name": "Partial failure reporting",
+      "summary": "Represent run-level and item-level states explicitly so users can distinguish validation failures, successful side effects, retryable failures, terminal failures, skipped items, and unprocessed items.",
+      "source_concept": "Partial failure reporting",
+      "programming_problem_addressed": "Partial failure reporting",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Return a complete partition of input keys by status, preserve side-effect evidence and source location, and build retries only from explicitly retryable failures.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "Only one aggregate error",
+        "Unprocessed rows labeled failed",
+        "Retries include already successful items",
+        "No provenance"
+      ],
+      "tests_or_checks": [
+        "Multiple row errors",
+        "One API failure among successes",
+        "Exception before processing begins",
+        "Timeout with unknown tail",
+        "Retry of prior partial run"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-partial-failure",
+        "dsa-risk-partial-failure-unstructured",
+        "dsa-sheet-partial-failure-report"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "A List ADT",
+        "page_or_anchor": "OEBPS/ch03.html#idp19348032",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source supplies ordered list and queue abstractions; the status model is an applied extension."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch05.html",
+            "chapter_number": "5",
+            "chapter_title": "Queues",
+            "section_heading": "Queue Operations",
+            "page_or_anchor": "OEBPS/ch05.html#idp23142720"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "Partial failure reporting",
+      "data_structure_or_algorithm_applied": [
+        "ordered result list",
+        "status dictionary",
+        "retry queue",
+        "sets of successful/failed keys"
+      ],
+      "workflow_shape": "process item → capture status and provenance → continue or stop by policy → summarize counts and next actions",
+      "input_data": [
+        "Candidate action list",
+        "Failure policy",
+        "Retryability rules"
+      ],
+      "intermediate_data_structure": "Per-item result record with key, source row, stage, status, error code/message, side-effect outcome, attempt count, and next action.",
+      "validation_needed": [
+        "Status vocabulary",
+        "Every input key accounted for",
+        "Success cannot coexist with unconfirmed side effect",
+        "Retryable classification is explicit"
+      ],
+      "transformation_needed": [
+        "Map exceptions/API outcomes to structured statuses",
+        "Aggregate run summary",
+        "Build retry subset"
+      ],
+      "output_or_side_effect": [
+        "Per-item results",
+        "Run summary",
+        "Retry queue",
+        "Human-review list"
+      ],
+      "failure_modes": [
+        "Only one aggregate error",
+        "Unprocessed rows labeled failed",
+        "Retries include already successful items",
+        "No provenance"
+      ],
+      "safe_design_pattern": "Return a complete partition of input keys by status, preserve side-effect evidence and source location, and build retries only from explicitly retryable failures.",
+      "current_verification_needed": [
+        "Current destination error responses",
+        "Current execution/logging behavior",
+        "Business rules for continue-versus-stop"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    },
+    {
+      "id": "dsa-tool-webapp-status-state",
+      "record_type": "internal_tool_pattern_record",
+      "name": "User-facing Web App status state",
+      "summary": "Model client-visible status as an explicit state machine or record keyed to a run, while treating browser state, server execution state, persistence, polling, and authorization as separate current boundaries.",
+      "source_concept": "User-facing Web App status state",
+      "programming_problem_addressed": "User-facing Web App status state",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Verify the current Apps Script Web App client/server and persistence behavior, use stable run IDs, separate status reads from work creation, and update state only after evidence of each transition.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "Client assumes server memory persists",
+        "Polling duplicates work",
+        "Status says success before side effect commits",
+        "Sensitive errors exposed"
+      ],
+      "tests_or_checks": [
+        "Page refresh",
+        "Two browser tabs",
+        "Expired authorization",
+        "Server failure",
+        "Partial result",
+        "Run ID access by wrong user"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-verify-web-app-boundary",
+        "dsa-tool-audit-run-history",
+        "dsa-gas-state-persistence"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "1",
+        "chapter_title": "The JavaScript Programming Environment and Model",
+        "section_heading": "Objects and Object-Oriented Programming",
+        "page_or_anchor": "OEBPS/ch01.html#idp12945408",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source covers objects and data structures but not Apps Script Web App lifecycle; this is a current-platform extension."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "User-facing Web App status state",
+      "data_structure_or_algorithm_applied": [
+        "status record",
+        "allowed-transition map",
+        "run-ID dictionary",
+        "ordered event history"
+      ],
+      "workflow_shape": "create run → persist initial state → perform/queue work → update state through allowed transitions → client reads/polls → terminal result",
+      "input_data": [
+        "Client request",
+        "Authenticated run identity",
+        "Server-side processing result",
+        "Allowed state transitions"
+      ],
+      "intermediate_data_structure": "Run status object containing state, progress evidence, timestamps, error summary, and result reference—not raw transient memory only.",
+      "validation_needed": [
+        "Run ID ownership",
+        "Allowed transition",
+        "No terminal-state regression",
+        "Progress meaning",
+        "Result/error redaction"
+      ],
+      "transformation_needed": [
+        "Map internal processing stages to user-facing states",
+        "Persist and retrieve status",
+        "Render actionable messages"
+      ],
+      "output_or_side_effect": [
+        "Pending/running/succeeded/failed/partial status",
+        "Progress details where reliable",
+        "Result or recovery action"
+      ],
+      "failure_modes": [
+        "Client assumes server memory persists",
+        "Polling duplicates work",
+        "Status says success before side effect commits",
+        "Sensitive errors exposed"
+      ],
+      "safe_design_pattern": "Verify the current Apps Script Web App client/server and persistence behavior, use stable run IDs, separate status reads from work creation, and update state only after evidence of each transition.",
+      "current_verification_needed": [
+        "Current Apps Script Web App execution model",
+        "Authorization/deployment behavior",
+        "Persistence API behavior",
+        "Client polling/callback behavior"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    },
+    {
+      "id": "dsa-tool-config-driven-report-types",
+      "record_type": "internal_tool_pattern_record",
+      "name": "Config-driven report types",
+      "summary": "Represent each supported report type as a validated configuration record containing identification rules, required headers, mappings, transformers, output schema, and tests instead of branching on scattered strings.",
+      "source_concept": "Config-driven report types",
+      "programming_problem_addressed": "Config-driven report types",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Make unknown and ambiguous types fatal, validate the configuration registry at startup, version each config, and keep business-specific transformations testable outside live writes.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "Two configs match",
+        "Unknown report accepted by fallback",
+        "Config references missing transformer",
+        "Header alias collision"
+      ],
+      "tests_or_checks": [
+        "Every known fixture identifies exactly one type",
+        "Unknown file",
+        "Ambiguous headers",
+        "Config missing mapping",
+        "Version migration"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-dict-key-value",
+        "dsa-tool-expected-actual-headers",
+        "dsa-workflow-review-row-shape"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "7",
+        "chapter_title": "Dictionaries",
+        "section_heading": "The Dictionary Class",
+        "page_or_anchor": "OEBPS/ch07.html#idp29229184",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source supports key-value dictionaries and object-based abstractions; config-driven report dispatch is an applied architecture pattern."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch01.html",
+            "chapter_number": "1",
+            "chapter_title": "The JavaScript Programming Environment and Model",
+            "section_heading": "Objects and Object-Oriented Programming",
+            "page_or_anchor": "OEBPS/ch01.html#idp12945408"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "Config-driven report types",
+      "data_structure_or_algorithm_applied": [
+        "configuration dictionary",
+        "set of required headers",
+        "ordered output schema",
+        "function/strategy reference where current runtime permits"
+      ],
+      "workflow_shape": "inspect file → identify one report configuration → validate against config → run configured transformation → emit configured output",
+      "input_data": [
+        "Versioned report-type configurations",
+        "Uploaded file metadata/headers",
+        "Transformation registry"
+      ],
+      "intermediate_data_structure": "Selected config plus normalized input records and explicit config validation result.",
+      "validation_needed": [
+        "Unique report type ID",
+        "Unambiguous identification rules",
+        "Required/optional headers",
+        "Mapping completeness",
+        "Output schema width",
+        "Config version"
+      ],
+      "transformation_needed": [
+        "Apply aliases",
+        "Select parser/transformer",
+        "Project fields in configured order"
+      ],
+      "output_or_side_effect": [
+        "Identified report type",
+        "Validation result",
+        "Transformed output",
+        "Unknown/ambiguous type error"
+      ],
+      "failure_modes": [
+        "Two configs match",
+        "Unknown report accepted by fallback",
+        "Config references missing transformer",
+        "Header alias collision"
+      ],
+      "safe_design_pattern": "Make unknown and ambiguous types fatal, validate the configuration registry at startup, version each config, and keep business-specific transformations testable outside live writes.",
+      "current_verification_needed": [
+        "Current report variants",
+        "Current destination contracts",
+        "Current Apps Script module/function organization"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    },
+    {
+      "id": "dsa-tool-location-mapping",
+      "record_type": "internal_tool_pattern_record",
+      "name": "Location mapping",
+      "summary": "Normalize external location labels or IDs into an authoritative internal location key through one validated dictionary with explicit aliases, duplicate detection, and unmapped-value reporting.",
+      "source_concept": "Location mapping",
+      "programming_problem_addressed": "Location mapping",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Prefer stable IDs; keep normalization deterministic; reject ambiguous aliases; surface unmapped values with source rows; require reviewed mapping changes.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "Silent fuzzy match",
+        "Alias collision",
+        "Location rename breaks history",
+        "Unknown value mapped to default"
+      ],
+      "tests_or_checks": [
+        "Case/spacing variants",
+        "Accents/punctuation",
+        "Old alias",
+        "Two locations with similar names",
+        "Blank value",
+        "Unknown location"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-dict-key-value",
+        "dsa-risk-missing-lookup-map",
+        "dsa-sheet-validate-mappings-before-export"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "7",
+        "chapter_title": "Dictionaries",
+        "section_heading": "The Dictionary Class",
+        "page_or_anchor": "OEBPS/ch07.html#idp29229184",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines dictionaries as key-value storage and hashing as key-directed retrieval; location mapping is an applied use case."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch08.html",
+            "chapter_number": "8",
+            "chapter_title": "Hashing",
+            "section_heading": "An Overview of Hashing",
+            "page_or_anchor": "OEBPS/ch08.html#idp30907488"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "Location mapping",
+      "data_structure_or_algorithm_applied": [
+        "dictionary/map",
+        "set of normalized aliases",
+        "list of unmapped rows"
+      ],
+      "workflow_shape": "normalize source label → lookup authoritative mapping → attach internal key → collect unmapped/ambiguous evidence",
+      "input_data": [
+        "External location value",
+        "Authoritative location registry",
+        "Approved aliases"
+      ],
+      "intermediate_data_structure": "Lookup keyed by normalized alias with destination ID and display metadata; reverse index for collision checks.",
+      "validation_needed": [
+        "No two locations share a normalized alias",
+        "Every active source location is covered",
+        "Inactive/renamed locations handled",
+        "Blank and unknown differentiated"
+      ],
+      "transformation_needed": [
+        "Trim/case/character normalization according to policy",
+        "Resolve alias",
+        "Attach canonical ID/name"
+      ],
+      "output_or_side_effect": [
+        "Canonical location key",
+        "Unmapped/ambiguous report",
+        "Coverage summary"
+      ],
+      "failure_modes": [
+        "Silent fuzzy match",
+        "Alias collision",
+        "Location rename breaks history",
+        "Unknown value mapped to default"
+      ],
+      "safe_design_pattern": "Prefer stable IDs; keep normalization deterministic; reject ambiguous aliases; surface unmapped values with source rows; require reviewed mapping changes.",
+      "current_verification_needed": [
+        "Current location registry and active status",
+        "Current source labels/IDs",
+        "Current business rule for historical names"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    },
+    {
+      "id": "dsa-tool-date-fiscal-week",
+      "record_type": "internal_tool_pattern_record",
+      "name": "Date parsing and fiscal-week logic",
+      "summary": "Parse raw date values separately from business-period assignment, use a versioned fiscal-calendar lookup or rule, and test year boundaries instead of relying on implicit week conventions.",
+      "source_concept": "Date parsing and fiscal-week logic",
+      "programming_problem_addressed": "Date parsing and fiscal-week logic",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Treat the calendar as authoritative data when possible, version the rule, never infer ambiguous date strings, and maintain boundary fixtures across years and timezones.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "Locale-dependent parse",
+        "Calendar year confused with fiscal year",
+        "Week 53 omitted",
+        "Timezone shifts date",
+        "Rule changed without backfill plan"
+      ],
+      "tests_or_checks": [
+        "Year start/end",
+        "Leap day",
+        "Week 52/53",
+        "DST/timezone boundary if relevant",
+        "Ambiguous numeric date",
+        "Out-of-range date"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-tool-scorecard-sync",
+        "dsa-risk-row-shape-assumption",
+        "dsa-workflow-test-plan-transformation"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "7",
+        "chapter_title": "Dictionaries",
+        "section_heading": "The Dictionary Class",
+        "page_or_anchor": "OEBPS/ch07.html#idp29229184",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source supports dictionary lookup and ordered arrays; fiscal-calendar semantics are business and runtime extensions."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "Date parsing and fiscal-week logic",
+      "data_structure_or_algorithm_applied": [
+        "date record",
+        "calendar lookup dictionary",
+        "ordered period table",
+        "set of valid period keys"
+      ],
+      "workflow_shape": "parse source date/time → normalize timezone/date semantics → resolve fiscal period from authoritative calendar → validate coverage → attach period key",
+      "input_data": [
+        "Raw date/time value",
+        "Source timezone/format",
+        "Authoritative fiscal calendar or rule",
+        "Target period schema"
+      ],
+      "intermediate_data_structure": "Record containing original value, parsed instant/local date, normalized date, fiscal year/week/period key, and rule version.",
+      "validation_needed": [
+        "Parse success",
+        "Timezone assumption",
+        "Date within supported calendar",
+        "One date maps to one period",
+        "Boundary/53-week handling",
+        "No hidden locale dependence"
+      ],
+      "transformation_needed": [
+        "Explicit parse",
+        "Timezone/date normalization",
+        "Lookup or calculate period according to current rule"
+      ],
+      "output_or_side_effect": [
+        "Canonical date",
+        "Fiscal period key",
+        "Boundary error/report",
+        "Rule-version audit"
+      ],
+      "failure_modes": [
+        "Locale-dependent parse",
+        "Calendar year confused with fiscal year",
+        "Week 53 omitted",
+        "Timezone shifts date",
+        "Rule changed without backfill plan"
+      ],
+      "safe_design_pattern": "Treat the calendar as authoritative data when possible, version the rule, never infer ambiguous date strings, and maintain boundary fixtures across years and timezones.",
+      "current_verification_needed": [
+        "Current fiscal calendar and business rules",
+        "Current Apps Script date/timezone behavior",
+        "Current source formats and timezone settings"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    },
+    {
+      "id": "dsa-tool-audit-run-history",
+      "record_type": "internal_tool_pattern_record",
+      "name": "Audit log and run history",
+      "summary": "Store an append-oriented run record with configuration version, input identity, counts, proposed/committed action keys, errors, timing, and operator/mode evidence sufficient to reconstruct what happened.",
+      "source_concept": "Audit log and run history",
+      "programming_problem_addressed": "Audit log and run history",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Use structured fields and stable IDs, append rather than mutate critical history, minimize sensitive data, record exact mode and config version, and reconcile action-key sets at finalization.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "Logs overwritten",
+        "Success asserted without action evidence",
+        "No link to input/config version",
+        "Secrets or personal data logged",
+        "Timezone ambiguity"
+      ],
+      "tests_or_checks": [
+        "No-op run",
+        "Validation-only failure",
+        "Partial live failure",
+        "Retry linked to prior run",
+        "Concurrent run IDs",
+        "Redaction check"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-sheet-audit-run-history",
+        "dsa-tool-partial-failure-reporting",
+        "dsa-gas-idempotency"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "A List ADT",
+        "page_or_anchor": "OEBPS/ch03.html#idp19348032",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source provides lists, dictionaries, and sets that support ordered event and keyed-state reasoning; audit governance is an applied extension."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch07.html",
+            "chapter_number": "7",
+            "chapter_title": "Dictionaries",
+            "section_heading": "The Dictionary Class",
+            "page_or_anchor": "OEBPS/ch07.html#idp29229184"
+          },
+          {
+            "source_file": "ch09.html",
+            "chapter_number": "9",
+            "chapter_title": "Sets",
+            "section_heading": "Fundamental Set Definitions, Operations, and Properties",
+            "page_or_anchor": "OEBPS/ch09.html#idp34336432"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "Audit log and run history",
+      "data_structure_or_algorithm_applied": [
+        "ordered event list",
+        "run dictionary keyed by run ID",
+        "sets of action keys",
+        "summary object"
+      ],
+      "workflow_shape": "start run → capture immutable metadata → append stage/item outcomes → finalize summary and terminal status",
+      "input_data": [
+        "Run ID/mode/operator",
+        "Input file or range identity",
+        "Configuration/version",
+        "Per-item processing outcomes"
+      ],
+      "intermediate_data_structure": "Structured run object plus ordered events; references to detailed row/action results rather than one free-text message.",
+      "validation_needed": [
+        "Unique run ID",
+        "Every live action has outcome",
+        "Terminal status consistent with item statuses",
+        "Sensitive fields redacted",
+        "Timestamps/timezones explicit"
+      ],
+      "transformation_needed": [
+        "Aggregate counts",
+        "Partition outcomes",
+        "Link source keys to destination keys",
+        "Compute input/output checksums where appropriate"
+      ],
+      "output_or_side_effect": [
+        "Run summary",
+        "Detailed audit events",
+        "Retry subset",
+        "Human-review evidence"
+      ],
+      "failure_modes": [
+        "Logs overwritten",
+        "Success asserted without action evidence",
+        "No link to input/config version",
+        "Secrets or personal data logged",
+        "Timezone ambiguity"
+      ],
+      "safe_design_pattern": "Use structured fields and stable IDs, append rather than mutate critical history, minimize sensitive data, record exact mode and config version, and reconcile action-key sets at finalization.",
+      "current_verification_needed": [
+        "Current storage retention/capacity",
+        "Current logging and identity behavior",
+        "Company audit/privacy requirements"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    },
+    {
+      "id": "dsa-tool-retry-idempotency",
+      "record_type": "internal_tool_pattern_record",
+      "name": "Retry and idempotency boundary",
+      "summary": "Classify failures before retry, queue only retryable items, preserve stable logical action keys, and make successful effects detectable so retries cannot duplicate them.",
+      "source_concept": "Retry and idempotency boundary",
+      "programming_problem_addressed": "Retry and idempotency boundary",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Use a durable verified queue, deterministic keys, bounded attempts, revalidation, explicit terminal status, and concurrency-safe claim/commit behavior.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "Immediate tight retry loop",
+        "Duplicate side effect",
+        "Poison item never removed",
+        "Stale payload retried after rule change",
+        "Two workers claim same retry"
+      ],
+      "tests_or_checks": [
+        "Transient versus permanent error",
+        "Already committed key",
+        "Attempt limit",
+        "Concurrent claim",
+        "Rule/config changed",
+        "Side effect succeeds but response is lost"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-queues-staged-processing",
+        "dsa-gas-idempotency",
+        "dsa-risk-queue-retry-duplication"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "5",
+        "chapter_title": "Queues",
+        "section_heading": "Queue Operations",
+        "page_or_anchor": "OEBPS/ch05.html#idp23142720",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines queue and set semantics; durable retry, idempotency, and concurrency controls are applied extensions."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch09.html",
+            "chapter_number": "9",
+            "chapter_title": "Sets",
+            "section_heading": "Fundamental Set Definitions, Operations, and Properties",
+            "page_or_anchor": "OEBPS/ch09.html#idp34336432"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "Retry and idempotency boundary",
+      "data_structure_or_algorithm_applied": [
+        "retry queue",
+        "set/dictionary of committed keys",
+        "attempt history list",
+        "status records"
+      ],
+      "workflow_shape": "classify failure → enqueue retryable item with key/attempt → claim safely → recheck commit state → execute idempotently → record outcome",
+      "input_data": [
+        "Failed item result",
+        "Retryability policy",
+        "Commit-state store",
+        "Attempt limits/backoff policy"
+      ],
+      "intermediate_data_structure": "Retry item with original key, payload reference, failure class, attempt count, next eligible time, and prior side-effect evidence.",
+      "validation_needed": [
+        "Stable key",
+        "Retryable category",
+        "Attempt limit",
+        "Payload/version still valid",
+        "Not already committed",
+        "Dependency still satisfied"
+      ],
+      "transformation_needed": [
+        "Build retry queue",
+        "Rehydrate item",
+        "Revalidate before side effect",
+        "Update attempt/commit state"
+      ],
+      "output_or_side_effect": [
+        "Successful retry",
+        "Terminal failure",
+        "Deferred item",
+        "Attempt audit"
+      ],
+      "failure_modes": [
+        "Immediate tight retry loop",
+        "Duplicate side effect",
+        "Poison item never removed",
+        "Stale payload retried after rule change",
+        "Two workers claim same retry"
+      ],
+      "safe_design_pattern": "Use a durable verified queue, deterministic keys, bounded attempts, revalidation, explicit terminal status, and concurrency-safe claim/commit behavior.",
+      "current_verification_needed": [
+        "Current trigger and persistence behavior",
+        "Current destination idempotency/error semantics",
+        "Current LockService behavior",
+        "Business retry policy"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    },
+    {
+      "id": "dsa-tool-duplicate-detection",
+      "record_type": "internal_tool_pattern_record",
+      "name": "Duplicate detection",
+      "summary": "Define duplicate identity before processing, normalize key components, detect duplicates both within the current input and against prior committed records, and preserve every duplicate row for explanation.",
+      "source_concept": "Duplicate detection",
+      "programming_problem_addressed": "Duplicate detection",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Keep both a membership set for speed and a key-to-occurrences map for explanation; never discard source provenance; decide fail/skip/group/merge explicitly.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "Wrong key definition",
+        "Case/spacing variation bypasses detection",
+        "Composite key collision",
+        "Set discards evidence of repeated rows"
+      ],
+      "tests_or_checks": [
+        "Exact duplicate",
+        "Normalized duplicate",
+        "Same fields but different true identity",
+        "Missing key component",
+        "Historical duplicate",
+        "Composite-key collision case"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-set-duplicate-detection-extension",
+        "dsa-sheet-duplicate-id-detection",
+        "dsa-risk-duplicate-not-detected"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "9",
+        "chapter_title": "Sets",
+        "section_heading": "Fundamental Set Definitions, Operations, and Properties",
+        "page_or_anchor": "OEBPS/ch09.html#idp34336432",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines sets through non-duplication and membership and distinguishes them from general lists."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch09.html",
+            "chapter_number": "9",
+            "chapter_title": "Sets",
+            "section_heading": "The Set Class Implementation",
+            "page_or_anchor": "OEBPS/ch09.html#idp34357584"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "Duplicate detection",
+      "data_structure_or_algorithm_applied": [
+        "set of seen keys",
+        "dictionary from key to all source rows",
+        "duplicate issue list"
+      ],
+      "workflow_shape": "derive normalized key → test membership → store first/all occurrences → classify in-file versus historical duplicate → enforce policy",
+      "input_data": [
+        "Candidate records",
+        "Unique-key definition",
+        "Prior committed key set if relevant"
+      ],
+      "intermediate_data_structure": "Map from logical key to source record references and status.",
+      "validation_needed": [
+        "Key components present",
+        "Normalization unambiguous",
+        "Composite key delimiter/encoding safe",
+        "Duplicate policy explicit"
+      ],
+      "transformation_needed": [
+        "Normalize key fields",
+        "Generate deterministic key",
+        "Group occurrences",
+        "Compare with historical keys"
+      ],
+      "output_or_side_effect": [
+        "Unique accepted records",
+        "Duplicate groups with provenance",
+        "Historical duplicate/skipped list"
+      ],
+      "failure_modes": [
+        "Wrong key definition",
+        "Case/spacing variation bypasses detection",
+        "Composite key collision",
+        "Set discards evidence of repeated rows"
+      ],
+      "safe_design_pattern": "Keep both a membership set for speed and a key-to-occurrences map for explanation; never discard source provenance; decide fail/skip/group/merge explicitly.",
+      "current_verification_needed": [
+        "Current business identity rule",
+        "Current historical commit store",
+        "Current source field quality"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    },
+    {
+      "id": "dsa-tool-required-field-coverage",
+      "record_type": "internal_tool_pattern_record",
+      "name": "Required field coverage",
+      "summary": "Compare each record’s present/valid field set with the required schema and compare aggregate submitted dimensions with expected coverage, keeping missing, blank, invalid, and not-applicable distinct.",
+      "source_concept": "Required field coverage",
+      "programming_problem_addressed": "Required field coverage",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Return exact missing and invalid identifiers with provenance; make conditional requirements explicit; report counts and named gaps rather than only a percentage.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "Blank counted as present",
+        "Optional field treated required",
+        "Unexpected field silently ignored",
+        "Coverage percentage hides which items are missing"
+      ],
+      "tests_or_checks": [
+        "Missing field",
+        "Blank value",
+        "Conditional requirement true/false",
+        "Unexpected field",
+        "All expected locations",
+        "One missing category"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-set-difference",
+        "dsa-sheet-required-header-validation",
+        "dsa-tool-expected-actual-headers"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "9",
+        "chapter_title": "Sets",
+        "section_heading": "Set Operations",
+        "page_or_anchor": "OEBPS/ch09.html#idp34347536",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines set difference and subset-style relationships, which support expected-versus-actual coverage reasoning."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "Required field coverage",
+      "data_structure_or_algorithm_applied": [
+        "set difference",
+        "required-field dictionary",
+        "per-row issue list",
+        "coverage summary"
+      ],
+      "workflow_shape": "build expected set → derive actual valid set → compute missing/unexpected → apply conditional rules → summarize coverage",
+      "input_data": [
+        "Required/conditional field schema",
+        "Candidate records",
+        "Expected locations/categories/periods if aggregate coverage matters"
+      ],
+      "intermediate_data_structure": "Per-record sets of present and valid fields plus aggregate expected/actual dimension sets.",
+      "validation_needed": [
+        "Required schema has unique names",
+        "Conditional rules are deterministic",
+        "Blank and missing distinguished",
+        "Not-applicable evidence recorded"
+      ],
+      "transformation_needed": [
+        "Normalize field names",
+        "Evaluate presence/type/content",
+        "Compute set differences and coverage percentages only from valid denominators"
+      ],
+      "output_or_side_effect": [
+        "Missing/invalid fields by row",
+        "Unexpected fields",
+        "Coverage gaps by dimension",
+        "Pass/fail/warning summary"
+      ],
+      "failure_modes": [
+        "Blank counted as present",
+        "Optional field treated required",
+        "Unexpected field silently ignored",
+        "Coverage percentage hides which items are missing"
+      ],
+      "safe_design_pattern": "Return exact missing and invalid identifiers with provenance; make conditional requirements explicit; report counts and named gaps rather than only a percentage.",
+      "current_verification_needed": [
+        "Current schema and conditional rules",
+        "Current SOP definitions of required versus optional",
+        "Actual source field representations"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    },
+    {
+      "id": "dsa-tool-expected-actual-headers",
+      "record_type": "internal_tool_pattern_record",
+      "name": "Expected-versus-actual header comparison",
+      "summary": "Normalize and index actual headers, reject duplicate normalized names, compare required and allowed sets, and map columns by name rather than hard-coded position.",
+      "source_concept": "Expected-versus-actual header comparison",
+      "programming_problem_addressed": "Expected-versus-actual header comparison",
+      "data_shape_assumption": "No current project code or schema is assumed; the input and output contracts must be inspected.",
+      "algorithmic_role": "Applied parse, validate, transform, index, order, and side-effect pattern.",
+      "runtime_context": "Internal tool, often in Google Apps Script; current project code, logs, data, SOPs, and platform documentation are authoritative.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Do not parse data rows until header validation succeeds; preserve raw names and positions; require explicit aliases; surface unknown columns for review.",
+      "complexity_or_scale_note": "Measure expected and maximum files, rows, mappings, retries, service calls, and output volume.",
+      "use_when": [
+        "The named workflow exists and its current schema and business rules are available for review."
+      ],
+      "do_not_use_when": [
+        "The pattern would be mistaken for a description of current project code.",
+        "Business rules or destination contracts are unknown."
+      ],
+      "common_failure_modes": [
+        "Hard-coded column offsets",
+        "Duplicate header overwrites index",
+        "Wrong row selected as header",
+        "Fuzzy alias maps to wrong field"
+      ],
+      "tests_or_checks": [
+        "Reordered headers",
+        "Missing required header",
+        "Duplicate header",
+        "Extra optional/unknown header",
+        "Whitespace/case variation",
+        "Multirow header"
+      ],
+      "diagnostic_questions": [
+        "What is the authoritative input schema?",
+        "What makes an output idempotent?",
+        "Which side effects can be safely retried?"
+      ],
+      "related_record_ids": [
+        "dsa-sheet-header-index-map",
+        "dsa-sheet-required-header-validation",
+        "dsa-risk-header-index-drift"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "9",
+        "chapter_title": "Sets",
+        "section_heading": "Set Operations",
+        "page_or_anchor": "OEBPS/ch09.html#idp34347536",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines set comparison and dictionary key lookup; header validation is an applied spreadsheet pattern."
+        ],
+        "inferred_claims": [
+          "The named internal-tool workflow and its controls are applied extensions, not direct content from the book."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch07.html",
+            "chapter_number": "7",
+            "chapter_title": "Dictionaries",
+            "section_heading": "The Dictionary Class",
+            "page_or_anchor": "OEBPS/ch07.html#idp29229184"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "internal-tool",
+        "workflow",
+        "apps-script"
+      ],
+      "internal_tool_use_case": "Expected-versus-actual header comparison",
+      "data_structure_or_algorithm_applied": [
+        "set of expected headers",
+        "set of actual headers",
+        "header-to-index dictionary",
+        "duplicate-header map"
+      ],
+      "workflow_shape": "extract header row → normalize → detect duplicates → compare required/allowed sets → build index → gate row parsing",
+      "input_data": [
+        "Actual header row",
+        "Required headers",
+        "Optional/allowed headers",
+        "Approved aliases"
+      ],
+      "intermediate_data_structure": "Header analysis object containing raw and normalized headers, index map, duplicates, missing, unexpected, and alias resolutions.",
+      "validation_needed": [
+        "No duplicate normalized headers",
+        "All required headers present",
+        "Aliases unambiguous",
+        "Header row correctly identified",
+        "Unexpected headers classified"
+      ],
+      "transformation_needed": [
+        "Trim/normalize names",
+        "Resolve approved aliases",
+        "Build index map",
+        "Compute set differences"
+      ],
+      "output_or_side_effect": [
+        "Header index map",
+        "Missing/duplicate/unexpected header report",
+        "Schema version match or review flag"
+      ],
+      "failure_modes": [
+        "Hard-coded column offsets",
+        "Duplicate header overwrites index",
+        "Wrong row selected as header",
+        "Fuzzy alias maps to wrong field"
+      ],
+      "safe_design_pattern": "Do not parse data rows until header validation succeeds; preserve raw names and positions; require explicit aliases; surface unknown columns for review.",
+      "current_verification_needed": [
+        "Current source header variants",
+        "Current report configuration",
+        "Current workbook layout"
+      ],
+      "source_boundary_note": "This applies source-supported data-structure and algorithm concepts to internal tools. It is not a direct claim from the book or a description of current project code."
+    }
+  ],
+  "project_boundary": "Patterns describe evidence and safe design; they do not invent or describe current unseen project code."
+}

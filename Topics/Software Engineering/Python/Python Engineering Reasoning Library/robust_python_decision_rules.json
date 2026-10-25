@@ -1,0 +1,291 @@
+{
+  "source_domain": "robust_python",
+  "rules": [
+    {
+      "id": "rule-001",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "A value has a limited valid set.",
+      "recommended_response": "Use an Enum for a shared named concept, Literal for a tiny local set, or a validated domain type for richer behavior.",
+      "reason": "Free-form strings and numbers allow unsupported states and typos.",
+      "exceptions": [
+        "The value is open-ended user content.",
+        "The set is externally versioned and must remain tolerant at the edge."
+      ],
+      "misuse_warning": "Do not create enums for every boolean or one-off branch.",
+      "source_basis": {
+        "source_domains": [
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-014",
+          "rp-028",
+          "rp-113",
+          "cb-030"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Closed sets require boundary conversion and migration handling."
+    },
+    {
+      "id": "rule-002",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "Two implementations share required behavior but not ancestry.",
+      "recommended_response": "Use a small Protocol or callable type rather than forcing inheritance.",
+      "reason": "Structural ports communicate the behavior consumers need and make fakes easy.",
+      "exceptions": [
+        "Nominal registration, shared base lifecycle, or runtime subclass checks are required."
+      ],
+      "misuse_warning": "Do not copy an entire concrete class into a protocol.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-041",
+          "rp-073",
+          "ap-012",
+          "cb-013"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Protocols have limited runtime semantic enforcement."
+    },
+    {
+      "id": "rule-003",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "External I/O is mixed with core decisions.",
+      "recommended_response": "Isolate I/O behind an adapter/port and keep the decision in a domain function, entity, aggregate, or service.",
+      "reason": "Pure decisions are easier to test and change.",
+      "exceptions": [
+        "The program is a small single-purpose script whose value is the side effect."
+      ],
+      "misuse_warning": "Do not introduce a port for every harmless helper import.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "ap-002",
+          "ap-017",
+          "rp-048",
+          "cb-018"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Explicit boundaries add files and wiring."
+    },
+    {
+      "id": "rule-004",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "Refactoring behavior is risky or poorly understood.",
+      "recommended_response": "Add characterization tests around observed behavior before material structural changes.",
+      "reason": "Tests separate behavior preservation from design improvement.",
+      "exceptions": [
+        "The code is dead, unused, or can be safely deleted."
+      ],
+      "misuse_warning": "Do not freeze known bugs forever; mark them explicitly if characterized.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "ap-051",
+          "ap-105",
+          "rp-122",
+          "cb-023"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Characterization tests may temporarily preserve undesirable behavior."
+    },
+    {
+      "id": "rule-005",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "A pattern introduces more concepts than the current problem needs.",
+      "recommended_response": "Prefer the simpler design and record what evidence would justify escalation.",
+      "reason": "Patterns have costs and should solve demonstrated forces.",
+      "exceptions": [
+        "The requirement already includes multiple implementations, consistency boundaries, or independent reactions."
+      ],
+      "misuse_warning": "Do not reject patterns dogmatically when evidence exists.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "ap-053",
+          "ap-091",
+          "ap-092",
+          "ap-093",
+          "ap-094",
+          "ap-095",
+          "rp-125",
+          "cb-015"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Simple designs may require later extraction."
+    },
+    {
+      "id": "rule-006",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "An error is expected and recoverable.",
+      "recommended_response": "Represent it distinctly from programming defects: explicit result, Optional absence, or named domain exception.",
+      "reason": "Callers need a contract for recovery and reporting.",
+      "exceptions": [
+        "The error indicates a violated invariant or impossible condition."
+      ],
+      "misuse_warning": "Do not return None for many unrelated failures.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-010",
+          "rp-011",
+          "ap-039",
+          "cb-014",
+          "cb-031"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Result/exception hierarchies require consistent handling."
+    },
+    {
+      "id": "rule-007",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "An object’s validity depends on multiple fields.",
+      "recommended_response": "Enforce the invariant at construction or transition method, not by scattered caller checks.",
+      "reason": "Invalid states should be hard or impossible to represent.",
+      "exceptions": [
+        "The object is a transient DTO validated elsewhere and never used as domain state."
+      ],
+      "misuse_warning": "Do not use dataclass field annotations as a substitute for multi-field validation.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-033",
+          "rp-035",
+          "ap-027",
+          "cb-037"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Constructors/factories gain validation code."
+    },
+    {
+      "id": "rule-011",
+      "source_domain": "robust_python",
+      "trigger": "A type annotation does not communicate a meaningful constraint.",
+      "recommended_response": "Omit or simplify it rather than adding ceremonial typing.",
+      "reason": "Typing should improve correctness, communication, or tooling feedback.",
+      "exceptions": [
+        "A project-wide consistency rule requires explicit annotations for tooling."
+      ],
+      "misuse_warning": "Do not use Any or redundant annotations to create fake coverage.",
+      "source_basis": {
+        "source_domains": [
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-009",
+          "rp-125"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Fewer annotations leave some dynamic errors to tests/runtime."
+    },
+    {
+      "id": "rule-012",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "Code has hidden side effects.",
+      "recommended_response": "Make side effects visible in the function name, return contract, object boundary, or command handler.",
+      "reason": "Callers and tests need to know what can change.",
+      "exceptions": [
+        "The side effect is the sole obvious purpose, such as send_email."
+      ],
+      "misuse_warning": "Do not hide writes behind getters, properties, or dunder methods.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-098",
+          "ap-073",
+          "cb-008"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Explicit naming can be more verbose."
+    },
+    {
+      "id": "rule-017",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "A bug is reported.",
+      "recommended_response": "Reproduce it, convert the reproduction into a failing test, then patch the smallest boundary that explains the failure.",
+      "reason": "A failing test protects the fix and clarifies the contract.",
+      "exceptions": [
+        "Security incident mitigation may require immediate containment before full reproduction."
+      ],
+      "misuse_warning": "Do not patch symptoms without finding the failing path.",
+      "source_basis": {
+        "source_domains": [
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-115",
+          "rp-117",
+          "rp-122",
+          "cb-023"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Reproduction can take longer than a quick patch but reduces regressions."
+    },
+    {
+      "id": "rule-018",
+      "source_domain": "general_operational_extension",
+      "trigger": "A coding assistant suggests exact behavior of a current library/tool.",
+      "recommended_response": "Verify against current project version and official docs before relying on source-era examples.",
+      "reason": "Typing, pydantic, packaging, frameworks, and security guidance change over time.",
+      "exceptions": [
+        "The project pins the exact source-era version and behavior is confirmed."
+      ],
+      "misuse_warning": "Do not silently modernize or fossilize book examples.",
+      "source_basis": {
+        "source_domains": [
+          "robust_python",
+          "cross_book_synthesis",
+          "general_operational_extension"
+        ],
+        "record_ids": [
+          "rp-062",
+          "rp-123",
+          "rp-124",
+          "cb-045"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Verification adds time but prevents stale patches."
+    }
+  ],
+  "generated_at": "2026-06-16T06:13:43+00:00"
+}

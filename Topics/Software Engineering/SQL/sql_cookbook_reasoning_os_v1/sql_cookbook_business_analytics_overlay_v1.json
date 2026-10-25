@@ -1,0 +1,2654 @@
+{
+  "package_id": "sql-cookbook-reasoning-os-v1",
+  "section_key": "business_analytics_extensions",
+  "record_count": 19,
+  "unique_record_count": 19,
+  "source_boundary": "Uploaded second edition only. Derivation and source anchors are carried on every substantive record.",
+  "usage_note": "These are canonical records reused across topical modules. Count distinct IDs across the package, not module totals.",
+  "records": [
+    {
+      "id": "sql-business-sales-period",
+      "record_type": "business_analytics",
+      "name": "Sales by period",
+      "summary": "Aggregate eligible sales at period grain; attach a complete period domain.",
+      "source_recipe_or_concept": "7.3 Summing the Values in a Column; supporting source units: 7.3, 9.3, 9.10",
+      "sql_problem_addressed": "Aggregate eligible sales at period grain; attach a complete period domain.",
+      "query_intent": "Sales by period",
+      "input_tables_or_rowsets": [
+        "Supplied sales observations and approved period calendar (conceptual inputs, not asserted database names)."
+      ],
+      "required_grain": "Define source observation grain first; output grain is the approved grouping for sales by period.",
+      "key_columns_or_join_conditions": [
+        "Sales-observation identity and period key; actual column names and constraints must be supplied."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Aggregate eligible sales at period grain; attach a complete period domain.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Sales by period is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Reconcile to the approved sales control total; distinguish missing extracts from zero sales."
+      ],
+      "diagnostic_questions": [
+        "How does the approved sales measure vary by reporting period?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-03",
+        "sql-recipe-09-03",
+        "sql-recipe-09-10"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.3 Summing the Values in a Column",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3.3",
+          "See Also": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3.4"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "Only the linked SQL transformation patterns are source-derived."
+        ],
+        "inferred_claims": [
+          "Aggregate eligible sales at period grain; attach a complete period domain.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "How does the approved sales measure vary by reporting period?",
+          "Aggregate eligible sales at period grain; attach a complete period domain.",
+          "All business inputs and definitions are placeholders; no company data was inspected."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.3 Summing the Values in a Column",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "9.3 Extracting Units of Time from a Date",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-3",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "9.10 Filling in Missing Dates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-10",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL Cookbook patterns to business analytics. It is not a direct claim from the book."
+      },
+      "tags": [
+        "business_analytics"
+      ],
+      "analytics_use_case": "Sales by period",
+      "business_question": "How does the approved sales measure vary by reporting period?",
+      "sql_patterns_applied": [
+        "Use SUM at the requested grouping grain.",
+        "Use the dialect’s extraction or formatting functions for the needed date components.",
+        "Generate the complete period rowset, then outer join facts at matching period grain and aggregate matched records."
+      ],
+      "required_tables_or_exports": [
+        "Supplied sales observations and approved period calendar"
+      ],
+      "required_keys": [
+        "Sales-observation identity and period key"
+      ],
+      "metric_definition_needed": [
+        "Net/gross basis, exclusions, currency, posting or business date"
+      ],
+      "query_shape": "Aggregate eligible sales at period grain; attach a complete period domain.",
+      "validation_checks": [
+        "Reconcile to the approved sales control total; distinguish missing extracts from zero sales."
+      ],
+      "common_wrong_answers": [
+        "A plausible result using an invented definition or repeated source measure."
+      ],
+      "dashboard_or_report_use": "A descriptive report component for sales by period, subject to the approved definitions.",
+      "current_data_needed": [
+        "Supplied sales observations and approved period calendar",
+        "Net/gross basis, exclusions, currency, posting or business date",
+        "Actual schema, dialect/version, and a signed-off expected-output sample."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-07-03",
+        "sql-recipe-09-03",
+        "sql-recipe-09-10"
+      ],
+      "source_issue_ids": [
+        "source-issue-date-fixtures"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics"
+      ]
+    },
+    {
+      "id": "sql-business-sales-location",
+      "record_type": "business_analytics",
+      "name": "Sales by location",
+      "summary": "Validate location mapping cardinality, then group eligible sales by location and period.",
+      "source_recipe_or_concept": "3.2 Combining Related Rows; supporting source units: 3.2, 7.3",
+      "sql_problem_addressed": "Validate location mapping cardinality, then group eligible sales by location and period.",
+      "query_intent": "Sales by location",
+      "input_tables_or_rowsets": [
+        "Supplied sales export and verified location mapping (conceptual inputs, not asserted database names)."
+      ],
+      "required_grain": "Define source observation grain first; output grain is the approved grouping for sales by location.",
+      "key_columns_or_join_conditions": [
+        "Sales-observation identity and complete location key; actual column names and constraints must be supplied."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Validate location mapping cardinality, then group eligible sales by location and period.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Sales by location is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Check unmatched locations and reconcile location totals to the same eligible population."
+      ],
+      "diagnostic_questions": [
+        "How does the approved sales measure compare across verified locations?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-02",
+        "sql-recipe-07-03"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.2 Combining Related Rows",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "Only the linked SQL transformation patterns are source-derived."
+        ],
+        "inferred_claims": [
+          "Validate location mapping cardinality, then group eligible sales by location and period.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "How does the approved sales measure compare across verified locations?",
+          "Validate location mapping cardinality, then group eligible sales by location and period.",
+          "All business inputs and definitions are placeholders; no company data was inspected."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.2 Combining Related Rows",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.3 Summing the Values in a Column",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL Cookbook patterns to business analytics. It is not a direct claim from the book."
+      },
+      "tags": [
+        "business_analytics"
+      ],
+      "analytics_use_case": "Sales by location",
+      "business_question": "How does the approved sales measure compare across verified locations?",
+      "sql_patterns_applied": [
+        "Join using the established matching columns, separating relationship conditions from population filters.",
+        "Use SUM at the requested grouping grain."
+      ],
+      "required_tables_or_exports": [
+        "Supplied sales export and verified location mapping"
+      ],
+      "required_keys": [
+        "Sales-observation identity and complete location key"
+      ],
+      "metric_definition_needed": [
+        "Sales definition, location scope, intercompany or void exclusions"
+      ],
+      "query_shape": "Validate location mapping cardinality, then group eligible sales by location and period.",
+      "validation_checks": [
+        "Check unmatched locations and reconcile location totals to the same eligible population."
+      ],
+      "common_wrong_answers": [
+        "A plausible result using an invented definition or repeated source measure."
+      ],
+      "dashboard_or_report_use": "A descriptive report component for sales by location, subject to the approved definitions.",
+      "current_data_needed": [
+        "Supplied sales export and verified location mapping",
+        "Sales definition, location scope, intercompany or void exclusions",
+        "Actual schema, dialect/version, and a signed-off expected-output sample."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-03-02",
+        "sql-recipe-07-03"
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics"
+      ]
+    },
+    {
+      "id": "sql-business-labor-cost",
+      "record_type": "business_analytics",
+      "name": "Labor cost by period",
+      "summary": "Bring time and pay sources to compatible approved grains before comparison.",
+      "source_recipe_or_concept": "3.9 Performing Joins When Using Aggregates; supporting source units: 3.9, 7.3, 9.13",
+      "sql_problem_addressed": "Bring time and pay sources to compatible approved grains before comparison.",
+      "query_intent": "Labor cost by period",
+      "input_tables_or_rowsets": [
+        "Supplied payroll/time observations and period mappings (conceptual inputs, not asserted database names)."
+      ],
+      "required_grain": "Define source observation grain first; output grain is the approved grouping for labor cost by period.",
+      "key_columns_or_join_conditions": [
+        "Employee/pay-line identity, entity/location, period; actual column names and constraints must be supplied."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Bring time and pay sources to compatible approved grains before comparison.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Labor cost by period is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Reconcile payroll totals and prevent hours/pay-line cross multiplication."
+      ],
+      "diagnostic_questions": [
+        "What labor cost belongs to each approved period?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-09",
+        "sql-recipe-07-03",
+        "sql-recipe-09-13"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.9 Performing Joins When Using Aggregates",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "Only the linked SQL transformation patterns are source-derived."
+        ],
+        "inferred_claims": [
+          "Bring time and pay sources to compatible approved grains before comparison.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What labor cost belongs to each approved period?",
+          "Bring time and pay sources to compatible approved grains before comparison.",
+          "All business inputs and definitions are placeholders; no company data was inspected."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.9 Performing Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.3 Summing the Values in a Column",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "9.13 Identifying Overlapping Date Ranges",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-13",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL Cookbook patterns to business analytics. It is not a direct claim from the book."
+      },
+      "tags": [
+        "business_analytics"
+      ],
+      "analytics_use_case": "Labor cost by period",
+      "business_question": "What labor cost belongs to each approved period?",
+      "sql_patterns_applied": [
+        "Aggregate the parent measure at its own grain before joining; the book’s DISTINCT-aggregate shortcut is conditional on value uniqueness.",
+        "Use SUM at the requested grouping grain.",
+        "Self-join intervals within the entity and identify starts that fall inside another interval under the source’s inclusive boundary rule."
+      ],
+      "required_tables_or_exports": [
+        "Supplied payroll/time observations and period mappings"
+      ],
+      "required_keys": [
+        "Employee/pay-line identity, entity/location, period"
+      ],
+      "metric_definition_needed": [
+        "Included pay components, service versus pay date, burden, allocation policy"
+      ],
+      "query_shape": "Bring time and pay sources to compatible approved grains before comparison.",
+      "validation_checks": [
+        "Reconcile payroll totals and prevent hours/pay-line cross multiplication."
+      ],
+      "common_wrong_answers": [
+        "A plausible result using an invented definition or repeated source measure."
+      ],
+      "dashboard_or_report_use": "A descriptive report component for labor cost by period, subject to the approved definitions.",
+      "current_data_needed": [
+        "Supplied payroll/time observations and period mappings",
+        "Included pay components, service versus pay date, burden, allocation policy",
+        "Actual schema, dialect/version, and a signed-off expected-output sample."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-03-09",
+        "sql-recipe-07-03",
+        "sql-recipe-09-13"
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics"
+      ]
+    },
+    {
+      "id": "sql-business-food-cost",
+      "record_type": "business_analytics",
+      "name": "Food cost analysis",
+      "summary": "Aggregate each required component separately, then combine only at approved compatible grain.",
+      "source_recipe_or_concept": "3.9 Performing Joins When Using Aggregates; supporting source units: 3.9, 7.11",
+      "sql_problem_addressed": "Aggregate each required component separately, then combine only at approved compatible grain.",
+      "query_intent": "Food cost analysis",
+      "input_tables_or_rowsets": [
+        "Supplied purchasing, inventory, or accounting inputs required by the approved definition (conceptual inputs, not asserted database names)."
+      ],
+      "required_grain": "Define source observation grain first; output grain is the approved grouping for food cost analysis.",
+      "key_columns_or_join_conditions": [
+        "Item/location/period and source transaction identity; actual column names and constraints must be supplied."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Aggregate each required component separately, then combine only at approved compatible grain.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Food cost analysis is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Reconcile component totals and units; leave the food-cost formula unresolved until provided."
+      ],
+      "diagnostic_questions": [
+        "What does the approved food-cost definition yield for the selected period?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-09",
+        "sql-recipe-07-11"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.9 Performing Joins When Using Aggregates",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "Only the linked SQL transformation patterns are source-derived."
+        ],
+        "inferred_claims": [
+          "Aggregate each required component separately, then combine only at approved compatible grain.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What does the approved food-cost definition yield for the selected period?",
+          "Aggregate each required component separately, then combine only at approved compatible grain.",
+          "All business inputs and definitions are placeholders; no company data was inspected."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.9 Performing Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.11 Determining the Percentage of a Total",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL Cookbook patterns to business analytics. It is not a direct claim from the book."
+      },
+      "tags": [
+        "business_analytics"
+      ],
+      "analytics_use_case": "Food cost analysis",
+      "business_question": "What does the approved food-cost definition yield for the selected period?",
+      "sql_patterns_applied": [
+        "Aggregate the parent measure at its own grain before joining; the book’s DISTINCT-aggregate shortcut is conditional on value uniqueness.",
+        "Calculate numerator and denominator over their explicitly defined populations before division."
+      ],
+      "required_tables_or_exports": [
+        "Supplied purchasing, inventory, or accounting inputs required by the approved definition"
+      ],
+      "required_keys": [
+        "Item/location/period and source transaction identity"
+      ],
+      "metric_definition_needed": [
+        "Cost method, units, inclusions, transfers, denominator if a percentage is requested"
+      ],
+      "query_shape": "Aggregate each required component separately, then combine only at approved compatible grain.",
+      "validation_checks": [
+        "Reconcile component totals and units; leave the food-cost formula unresolved until provided."
+      ],
+      "common_wrong_answers": [
+        "A plausible result using an invented definition or repeated source measure."
+      ],
+      "dashboard_or_report_use": "A descriptive report component for food cost analysis, subject to the approved definitions.",
+      "current_data_needed": [
+        "Supplied purchasing, inventory, or accounting inputs required by the approved definition",
+        "Cost method, units, inclusions, transfers, denominator if a percentage is requested",
+        "Actual schema, dialect/version, and a signed-off expected-output sample."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-03-09",
+        "sql-recipe-07-11"
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics"
+      ]
+    },
+    {
+      "id": "sql-business-management-cost",
+      "record_type": "business_analytics",
+      "name": "Management cost analysis",
+      "summary": "Map cost lines through a verified classification and aggregate at the desired reporting grain.",
+      "source_recipe_or_concept": "1.8 Using Conditional Logic in a SELECT Statement; supporting source units: 1.8, 3.2, 7.3",
+      "sql_problem_addressed": "Map cost lines through a verified classification and aggregate at the desired reporting grain.",
+      "query_intent": "Management cost analysis",
+      "input_tables_or_rowsets": [
+        "Supplied cost lines and approved account/role allocation mapping (conceptual inputs, not asserted database names)."
+      ],
+      "required_grain": "Define source observation grain first; output grain is the approved grouping for management cost analysis.",
+      "key_columns_or_join_conditions": [
+        "Cost-line identity and allocation key; actual column names and constraints must be supplied."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Map cost lines through a verified classification and aggregate at the desired reporting grain.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Management cost analysis is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Check unmapped lines and allocation weights against approved controls."
+      ],
+      "diagnostic_questions": [
+        "Which approved management-cost amounts belong to each reporting group?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-08",
+        "sql-recipe-03-02",
+        "sql-recipe-07-03"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.8 Using Conditional Logic in a SELECT Statement",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "Only the linked SQL transformation patterns are source-derived."
+        ],
+        "inferred_claims": [
+          "Map cost lines through a verified classification and aggregate at the desired reporting grain.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Which approved management-cost amounts belong to each reporting group?",
+          "Map cost lines through a verified classification and aggregate at the desired reporting grain.",
+          "All business inputs and definitions are placeholders; no company data was inspected."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.8 Using Conditional Logic in a SELECT Statement",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "3.2 Combining Related Rows",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.3 Summing the Values in a Column",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL Cookbook patterns to business analytics. It is not a direct claim from the book."
+      },
+      "tags": [
+        "business_analytics"
+      ],
+      "analytics_use_case": "Management cost analysis",
+      "business_question": "Which approved management-cost amounts belong to each reporting group?",
+      "sql_patterns_applied": [
+        "Use ordered CASE branches and an explicit ELSE when unmatched rows need a defined outcome.",
+        "Join using the established matching columns, separating relationship conditions from population filters.",
+        "Use SUM at the requested grouping grain."
+      ],
+      "required_tables_or_exports": [
+        "Supplied cost lines and approved account/role allocation mapping"
+      ],
+      "required_keys": [
+        "Cost-line identity and allocation key"
+      ],
+      "metric_definition_needed": [
+        "Account/role membership, shared-cost allocation, period basis"
+      ],
+      "query_shape": "Map cost lines through a verified classification and aggregate at the desired reporting grain.",
+      "validation_checks": [
+        "Check unmapped lines and allocation weights against approved controls."
+      ],
+      "common_wrong_answers": [
+        "A plausible result using an invented definition or repeated source measure."
+      ],
+      "dashboard_or_report_use": "A descriptive report component for management cost analysis, subject to the approved definitions.",
+      "current_data_needed": [
+        "Supplied cost lines and approved account/role allocation mapping",
+        "Account/role membership, shared-cost allocation, period basis",
+        "Actual schema, dialect/version, and a signed-off expected-output sample."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-01-08",
+        "sql-recipe-03-02",
+        "sql-recipe-07-03"
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics"
+      ]
+    },
+    {
+      "id": "sql-business-budget-actual",
+      "record_type": "business_analytics",
+      "name": "Budget versus actual",
+      "summary": "Aggregate actuals and budget independently to a common key; preserve unmatched groups.",
+      "source_recipe_or_concept": "3.9 Performing Joins When Using Aggregates; supporting source units: 3.9, 3.11, 9.10",
+      "sql_problem_addressed": "Aggregate actuals and budget independently to a common key; preserve unmatched groups.",
+      "query_intent": "Budget versus actual",
+      "input_tables_or_rowsets": [
+        "Supplied actual transactions and versioned budget (conceptual inputs, not asserted database names)."
+      ],
+      "required_grain": "Define source observation grain first; output grain is the approved grouping for budget versus actual.",
+      "key_columns_or_join_conditions": [
+        "Account/location/period plus budget version; actual column names and constraints must be supplied."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Aggregate actuals and budget independently to a common key; preserve unmatched groups.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Budget versus actual is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Check multiple budget versions and prevent repeating period budgets per actual transaction."
+      ],
+      "diagnostic_questions": [
+        "How do comparable actuals differ from the approved budget?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-09",
+        "sql-recipe-03-11",
+        "sql-recipe-09-10"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.9 Performing Joins When Using Aggregates",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "Only the linked SQL transformation patterns are source-derived."
+        ],
+        "inferred_claims": [
+          "Aggregate actuals and budget independently to a common key; preserve unmatched groups.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "How do comparable actuals differ from the approved budget?",
+          "Aggregate actuals and budget independently to a common key; preserve unmatched groups.",
+          "All business inputs and definitions are placeholders; no company data was inspected."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.9 Performing Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "3.11 Returning Missing Data from Multiple Tables",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-11",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "9.10 Filling in Missing Dates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-10",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL Cookbook patterns to business analytics. It is not a direct claim from the book."
+      },
+      "tags": [
+        "business_analytics"
+      ],
+      "analytics_use_case": "Budget versus actual",
+      "business_question": "How do comparable actuals differ from the approved budget?",
+      "sql_patterns_applied": [
+        "Aggregate the parent measure at its own grain before joining; the book’s DISTINCT-aggregate shortcut is conditional on value uniqueness.",
+        "Use a supported full outer join or the source’s combination of opposite outer joins.",
+        "Generate the complete period rowset, then outer join facts at matching period grain and aggregate matched records."
+      ],
+      "required_tables_or_exports": [
+        "Supplied actual transactions and versioned budget"
+      ],
+      "required_keys": [
+        "Account/location/period plus budget version"
+      ],
+      "metric_definition_needed": [
+        "Amount basis, sign convention, period mapping, variance presentation"
+      ],
+      "query_shape": "Aggregate actuals and budget independently to a common key; preserve unmatched groups.",
+      "validation_checks": [
+        "Check multiple budget versions and prevent repeating period budgets per actual transaction."
+      ],
+      "common_wrong_answers": [
+        "A plausible result using an invented definition or repeated source measure."
+      ],
+      "dashboard_or_report_use": "A descriptive report component for budget versus actual, subject to the approved definitions.",
+      "current_data_needed": [
+        "Supplied actual transactions and versioned budget",
+        "Amount basis, sign convention, period mapping, variance presentation",
+        "Actual schema, dialect/version, and a signed-off expected-output sample."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-03-09",
+        "sql-recipe-03-11",
+        "sql-recipe-09-10"
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct",
+        "source-issue-full-join-heading",
+        "source-issue-date-fixtures"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics"
+      ]
+    },
+    {
+      "id": "sql-business-marketing-spend",
+      "record_type": "business_analytics",
+      "name": "Marketing spend by channel",
+      "summary": "Classify verified lines, apply explicit exclusions, and group at channel-period grain.",
+      "source_recipe_or_concept": "3.2 Combining Related Rows; supporting source units: 3.2, 3.9, 7.3",
+      "sql_problem_addressed": "Classify verified lines, apply explicit exclusions, and group at channel-period grain.",
+      "query_intent": "Marketing spend by channel",
+      "input_tables_or_rowsets": [
+        "Supplied accounting/ad-platform lines and verified channel mapping (conceptual inputs, not asserted database names)."
+      ],
+      "required_grain": "Define source observation grain first; output grain is the approved grouping for marketing spend by channel.",
+      "key_columns_or_join_conditions": [
+        "Source transaction and campaign/channel keys; actual column names and constraints must be supplied."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Classify verified lines, apply explicit exclusions, and group at channel-period grain.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Marketing spend by channel is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Reconcile to accounting controls and show excluded or unmapped adjustments separately."
+      ],
+      "diagnostic_questions": [
+        "What approved marketing spend is attributable to each channel and period?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-02",
+        "sql-recipe-03-09",
+        "sql-recipe-07-03"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.2 Combining Related Rows",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "Only the linked SQL transformation patterns are source-derived."
+        ],
+        "inferred_claims": [
+          "Classify verified lines, apply explicit exclusions, and group at channel-period grain.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What approved marketing spend is attributable to each channel and period?",
+          "Classify verified lines, apply explicit exclusions, and group at channel-period grain.",
+          "All business inputs and definitions are placeholders; no company data was inspected."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.2 Combining Related Rows",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "3.9 Performing Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.3 Summing the Values in a Column",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL Cookbook patterns to business analytics. It is not a direct claim from the book."
+      },
+      "tags": [
+        "business_analytics"
+      ],
+      "analytics_use_case": "Marketing spend by channel",
+      "business_question": "What approved marketing spend is attributable to each channel and period?",
+      "sql_patterns_applied": [
+        "Join using the established matching columns, separating relationship conditions from population filters.",
+        "Aggregate the parent measure at its own grain before joining; the book’s DISTINCT-aggregate shortcut is conditional on value uniqueness.",
+        "Use SUM at the requested grouping grain."
+      ],
+      "required_tables_or_exports": [
+        "Supplied accounting/ad-platform lines and verified channel mapping"
+      ],
+      "required_keys": [
+        "Source transaction and campaign/channel keys"
+      ],
+      "metric_definition_needed": [
+        "Cash/accrual basis, adjustments, credits, transfers, taxes, included accounts"
+      ],
+      "query_shape": "Classify verified lines, apply explicit exclusions, and group at channel-period grain.",
+      "validation_checks": [
+        "Reconcile to accounting controls and show excluded or unmapped adjustments separately."
+      ],
+      "common_wrong_answers": [
+        "A plausible result using an invented definition or repeated source measure."
+      ],
+      "dashboard_or_report_use": "A descriptive report component for marketing spend by channel, subject to the approved definitions.",
+      "current_data_needed": [
+        "Supplied accounting/ad-platform lines and verified channel mapping",
+        "Cash/accrual basis, adjustments, credits, transfers, taxes, included accounts",
+        "Actual schema, dialect/version, and a signed-off expected-output sample."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-03-02",
+        "sql-recipe-03-09",
+        "sql-recipe-07-03"
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics"
+      ]
+    },
+    {
+      "id": "sql-business-campaign-ratio",
+      "record_type": "business_analytics",
+      "name": "Campaign and cost-per-click reporting",
+      "summary": "Align source grains and definitions before applying the approved ratio.",
+      "source_recipe_or_concept": "7.11 Determining the Percentage of a Total; supporting source units: 7.11, 3.9",
+      "sql_problem_addressed": "Align source grains and definitions before applying the approved ratio.",
+      "query_intent": "Campaign and cost-per-click reporting",
+      "input_tables_or_rowsets": [
+        "Supplied campaign spend and click aggregates (conceptual inputs, not asserted database names)."
+      ],
+      "required_grain": "Define source observation grain first; output grain is the approved grouping for campaign and cost-per-click reporting.",
+      "key_columns_or_join_conditions": [
+        "Platform/account/campaign/period; actual column names and constraints must be supplied."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Align source grains and definitions before applying the approved ratio.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Campaign and cost-per-click reporting is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Check duplicated spend, mismatched date windows, and empty click populations."
+      ],
+      "diagnostic_questions": [
+        "What do the supplied campaign definitions say about spend and eligible clicks?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-11",
+        "sql-recipe-03-09"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.11 Determining the Percentage of a Total",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "Only the linked SQL transformation patterns are source-derived."
+        ],
+        "inferred_claims": [
+          "Align source grains and definitions before applying the approved ratio.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What do the supplied campaign definitions say about spend and eligible clicks?",
+          "Align source grains and definitions before applying the approved ratio.",
+          "All business inputs and definitions are placeholders; no company data was inspected."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.11 Determining the Percentage of a Total",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "3.9 Performing Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL Cookbook patterns to business analytics. It is not a direct claim from the book."
+      },
+      "tags": [
+        "business_analytics"
+      ],
+      "analytics_use_case": "Campaign and cost-per-click reporting",
+      "business_question": "What do the supplied campaign definitions say about spend and eligible clicks?",
+      "sql_patterns_applied": [
+        "Calculate numerator and denominator over their explicitly defined populations before division.",
+        "Aggregate the parent measure at its own grain before joining; the book’s DISTINCT-aggregate shortcut is conditional on value uniqueness."
+      ],
+      "required_tables_or_exports": [
+        "Supplied campaign spend and click aggregates"
+      ],
+      "required_keys": [
+        "Platform/account/campaign/period"
+      ],
+      "metric_definition_needed": [
+        "Attribution window, click definition, cost currency, denominator and zero handling"
+      ],
+      "query_shape": "Align source grains and definitions before applying the approved ratio.",
+      "validation_checks": [
+        "Check duplicated spend, mismatched date windows, and empty click populations."
+      ],
+      "common_wrong_answers": [
+        "A plausible result using an invented definition or repeated source measure."
+      ],
+      "dashboard_or_report_use": "A descriptive report component for campaign and cost-per-click reporting, subject to the approved definitions.",
+      "current_data_needed": [
+        "Supplied campaign spend and click aggregates",
+        "Attribution window, click definition, cost currency, denominator and zero handling",
+        "Actual schema, dialect/version, and a signed-off expected-output sample."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-07-11",
+        "sql-recipe-03-09"
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics"
+      ]
+    },
+    {
+      "id": "sql-business-guest-trend",
+      "record_type": "business_analytics",
+      "name": "Guest satisfaction trends",
+      "summary": "Aggregate eligible responses while retaining counts and the missingness policy.",
+      "source_recipe_or_concept": "7.1 Computing an Average; supporting source units: 7.1, 7.12, 9.10",
+      "sql_problem_addressed": "Aggregate eligible responses while retaining counts and the missingness policy.",
+      "query_intent": "Guest satisfaction trends",
+      "input_tables_or_rowsets": [
+        "Supplied guest-feedback observations (conceptual inputs, not asserted database names)."
+      ],
+      "required_grain": "Define source observation grain first; output grain is the approved grouping for guest satisfaction trends.",
+      "key_columns_or_join_conditions": [
+        "Feedback identity, observation date, verified grouping keys; actual column names and constraints must be supplied."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Aggregate eligible responses while retaining counts and the missingness policy.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Guest satisfaction trends is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Report response volume and scale consistency; do not treat missing feedback as a zero rating."
+      ],
+      "diagnostic_questions": [
+        "How does the approved satisfaction measure vary over time?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-01",
+        "sql-recipe-07-12",
+        "sql-recipe-09-10"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.1 Computing an Average",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-1",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-1.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-1.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-1.3",
+          "See Also": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-1.4"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "Only the linked SQL transformation patterns are source-derived."
+        ],
+        "inferred_claims": [
+          "Aggregate eligible responses while retaining counts and the missingness policy.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "How does the approved satisfaction measure vary over time?",
+          "Aggregate eligible responses while retaining counts and the missingness policy.",
+          "All business inputs and definitions are placeholders; no company data was inspected."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.1 Computing an Average",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-1",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.12 Aggregating Nullable Columns",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-12",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "9.10 Filling in Missing Dates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-10",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL Cookbook patterns to business analytics. It is not a direct claim from the book."
+      },
+      "tags": [
+        "business_analytics"
+      ],
+      "analytics_use_case": "Guest satisfaction trends",
+      "business_question": "How does the approved satisfaction measure vary over time?",
+      "sql_patterns_applied": [
+        "Use AVG over the qualifying rowset, with GROUP BY when a separate result is required per group.",
+        "Apply COALESCE before AVG only when every population member should be represented in the denominator.",
+        "Generate the complete period rowset, then outer join facts at matching period grain and aggregate matched records."
+      ],
+      "required_tables_or_exports": [
+        "Supplied guest-feedback observations"
+      ],
+      "required_keys": [
+        "Feedback identity, observation date, verified grouping keys"
+      ],
+      "metric_definition_needed": [
+        "Rating scale, valid responses, weighting, missing scores"
+      ],
+      "query_shape": "Aggregate eligible responses while retaining counts and the missingness policy.",
+      "validation_checks": [
+        "Report response volume and scale consistency; do not treat missing feedback as a zero rating."
+      ],
+      "common_wrong_answers": [
+        "A plausible result using an invented definition or repeated source measure."
+      ],
+      "dashboard_or_report_use": "A descriptive report component for guest satisfaction trends, subject to the approved definitions.",
+      "current_data_needed": [
+        "Supplied guest-feedback observations",
+        "Rating scale, valid responses, weighting, missing scores",
+        "Actual schema, dialect/version, and a signed-off expected-output sample."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-07-01",
+        "sql-recipe-07-12",
+        "sql-recipe-09-10"
+      ],
+      "source_issue_ids": [
+        "source-issue-date-fixtures"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics"
+      ]
+    },
+    {
+      "id": "sql-business-delivery-reviews",
+      "record_type": "business_analytics",
+      "name": "Delivery-platform review analysis",
+      "summary": "Deduplicate by verified review identity, classify under supplied rules, and aggregate.",
+      "source_recipe_or_concept": "1.8 Using Conditional Logic in a SELECT Statement; supporting source units: 1.8, 7.3, 12.2",
+      "sql_problem_addressed": "Deduplicate by verified review identity, classify under supplied rules, and aggregate.",
+      "query_intent": "Delivery-platform review analysis",
+      "input_tables_or_rowsets": [
+        "Supplied delivery reviews and approved issue mapping (conceptual inputs, not asserted database names)."
+      ],
+      "required_grain": "Define source observation grain first; output grain is the approved grouping for delivery-platform review analysis.",
+      "key_columns_or_join_conditions": [
+        "Platform/review identity, location, period; actual column names and constraints must be supplied."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Deduplicate by verified review identity, classify under supplied rules, and aggregate.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Delivery-platform review analysis is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Check cross-platform identifier collisions and multi-label issue multiplicity."
+      ],
+      "diagnostic_questions": [
+        "What review patterns are observable for each platform and period?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-08",
+        "sql-recipe-07-03",
+        "sql-recipe-12-02"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.8 Using Conditional Logic in a SELECT Statement",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "Only the linked SQL transformation patterns are source-derived."
+        ],
+        "inferred_claims": [
+          "Deduplicate by verified review identity, classify under supplied rules, and aggregate.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What review patterns are observable for each platform and period?",
+          "Deduplicate by verified review identity, classify under supplied rules, and aggregate.",
+          "All business inputs and definitions are placeholders; no company data was inspected."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.8 Using Conditional Logic in a SELECT Statement",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.3 Summing the Values in a Column",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "12.2 Pivoting a Result Set into Multiple Rows",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL Cookbook patterns to business analytics. It is not a direct claim from the book."
+      },
+      "tags": [
+        "business_analytics"
+      ],
+      "analytics_use_case": "Delivery-platform review analysis",
+      "business_question": "What review patterns are observable for each platform and period?",
+      "sql_patterns_applied": [
+        "Use ordered CASE branches and an explicit ELSE when unmatched rows need a defined outcome.",
+        "Use SUM at the requested grouping grain.",
+        "Assign ROW_NUMBER within each category, then pivot while grouping by that within-category position."
+      ],
+      "required_tables_or_exports": [
+        "Supplied delivery reviews and approved issue mapping"
+      ],
+      "required_keys": [
+        "Platform/review identity, location, period"
+      ],
+      "metric_definition_needed": [
+        "Review eligibility, scale, issue categories, edits and duplicates"
+      ],
+      "query_shape": "Deduplicate by verified review identity, classify under supplied rules, and aggregate.",
+      "validation_checks": [
+        "Check cross-platform identifier collisions and multi-label issue multiplicity."
+      ],
+      "common_wrong_answers": [
+        "A plausible result using an invented definition or repeated source measure."
+      ],
+      "dashboard_or_report_use": "A descriptive report component for delivery-platform review analysis, subject to the approved definitions.",
+      "current_data_needed": [
+        "Supplied delivery reviews and approved issue mapping",
+        "Review eligibility, scale, issue categories, edits and duplicates",
+        "Actual schema, dialect/version, and a signed-off expected-output sample."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-01-08",
+        "sql-recipe-07-03",
+        "sql-recipe-12-02"
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics"
+      ]
+    },
+    {
+      "id": "sql-business-complaint-categories",
+      "record_type": "business_analytics",
+      "name": "Customer complaint categories",
+      "summary": "Separate complaint counts from category-assignment counts before reporting.",
+      "source_recipe_or_concept": "1.8 Using Conditional Logic in a SELECT Statement; supporting source units: 1.8, 3.9, 12.2",
+      "sql_problem_addressed": "Separate complaint counts from category-assignment counts before reporting.",
+      "query_intent": "Customer complaint categories",
+      "input_tables_or_rowsets": [
+        "Supplied complaints and category assignments (conceptual inputs, not asserted database names)."
+      ],
+      "required_grain": "Define source observation grain first; output grain is the approved grouping for customer complaint categories.",
+      "key_columns_or_join_conditions": [
+        "Complaint identity and assignment identity; actual column names and constraints must be supplied."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Separate complaint counts from category-assignment counts before reporting.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Customer complaint categories is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Test a complaint with two categories; ensure the metric names the counted unit."
+      ],
+      "diagnostic_questions": [
+        "How are eligible complaints distributed among approved categories?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-08",
+        "sql-recipe-03-09",
+        "sql-recipe-12-02"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.8 Using Conditional Logic in a SELECT Statement",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "Only the linked SQL transformation patterns are source-derived."
+        ],
+        "inferred_claims": [
+          "Separate complaint counts from category-assignment counts before reporting.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "How are eligible complaints distributed among approved categories?",
+          "Separate complaint counts from category-assignment counts before reporting.",
+          "All business inputs and definitions are placeholders; no company data was inspected."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.8 Using Conditional Logic in a SELECT Statement",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-8",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "3.9 Performing Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "12.2 Pivoting a Result Set into Multiple Rows",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL Cookbook patterns to business analytics. It is not a direct claim from the book."
+      },
+      "tags": [
+        "business_analytics"
+      ],
+      "analytics_use_case": "Customer complaint categories",
+      "business_question": "How are eligible complaints distributed among approved categories?",
+      "sql_patterns_applied": [
+        "Use ordered CASE branches and an explicit ELSE when unmatched rows need a defined outcome.",
+        "Aggregate the parent measure at its own grain before joining; the book’s DISTINCT-aggregate shortcut is conditional on value uniqueness.",
+        "Assign ROW_NUMBER within each category, then pivot while grouping by that within-category position."
+      ],
+      "required_tables_or_exports": [
+        "Supplied complaints and category assignments"
+      ],
+      "required_keys": [
+        "Complaint identity and assignment identity"
+      ],
+      "metric_definition_needed": [
+        "Single versus multiple categories, classification ownership, denominator"
+      ],
+      "query_shape": "Separate complaint counts from category-assignment counts before reporting.",
+      "validation_checks": [
+        "Test a complaint with two categories; ensure the metric names the counted unit."
+      ],
+      "common_wrong_answers": [
+        "A plausible result using an invented definition or repeated source measure."
+      ],
+      "dashboard_or_report_use": "A descriptive report component for customer complaint categories, subject to the approved definitions.",
+      "current_data_needed": [
+        "Supplied complaints and category assignments",
+        "Single versus multiple categories, classification ownership, denominator",
+        "Actual schema, dialect/version, and a signed-off expected-output sample."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-01-08",
+        "sql-recipe-03-09",
+        "sql-recipe-12-02"
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics"
+      ]
+    },
+    {
+      "id": "sql-business-inventory-discrepancy",
+      "record_type": "business_analytics",
+      "name": "Inventory discrepancy analysis",
+      "summary": "Align comparable inventory keys and preserve missing records on either side.",
+      "source_recipe_or_concept": "3.7 Determining Whether Two Tables Have the Same Data; supporting source units: 3.7, 3.11, 7.3",
+      "sql_problem_addressed": "Align comparable inventory keys and preserve missing records on either side.",
+      "query_intent": "Inventory discrepancy analysis",
+      "input_tables_or_rowsets": [
+        "Supplied physical counts and expected inventory inputs (conceptual inputs, not asserted database names)."
+      ],
+      "required_grain": "Define source observation grain first; output grain is the approved grouping for inventory discrepancy analysis.",
+      "key_columns_or_join_conditions": [
+        "Item/location/lot/unit and observation time; actual column names and constraints must be supplied."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Align comparable inventory keys and preserve missing records on either side.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Inventory discrepancy analysis is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Reconcile units, as-of timestamps, and duplicate counts before interpreting differences."
+      ],
+      "diagnostic_questions": [
+        "Which inventory observations differ from the approved comparison basis?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-07",
+        "sql-recipe-03-11",
+        "sql-recipe-07-03"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.7 Determining Whether Two Tables Have the Same Data",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-7",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-7.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-7.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-7.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "Only the linked SQL transformation patterns are source-derived."
+        ],
+        "inferred_claims": [
+          "Align comparable inventory keys and preserve missing records on either side.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Which inventory observations differ from the approved comparison basis?",
+          "Align comparable inventory keys and preserve missing records on either side.",
+          "All business inputs and definitions are placeholders; no company data was inspected."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.7 Determining Whether Two Tables Have the Same Data",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-7",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "3.11 Returning Missing Data from Multiple Tables",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-11",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.3 Summing the Values in a Column",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL Cookbook patterns to business analytics. It is not a direct claim from the book."
+      },
+      "tags": [
+        "business_analytics"
+      ],
+      "analytics_use_case": "Inventory discrepancy analysis",
+      "business_question": "Which inventory observations differ from the approved comparison basis?",
+      "sql_patterns_applied": [
+        "Compare both directions, including grouped occurrence counts where duplicates matter, and combine discrepancies.",
+        "Use a supported full outer join or the source’s combination of opposite outer joins.",
+        "Use SUM at the requested grouping grain."
+      ],
+      "required_tables_or_exports": [
+        "Supplied physical counts and expected inventory inputs"
+      ],
+      "required_keys": [
+        "Item/location/lot/unit and observation time"
+      ],
+      "metric_definition_needed": [
+        "Expected-balance method, units, count timing, tolerances"
+      ],
+      "query_shape": "Align comparable inventory keys and preserve missing records on either side.",
+      "validation_checks": [
+        "Reconcile units, as-of timestamps, and duplicate counts before interpreting differences."
+      ],
+      "common_wrong_answers": [
+        "A plausible result using an invented definition or repeated source measure."
+      ],
+      "dashboard_or_report_use": "A descriptive report component for inventory discrepancy analysis, subject to the approved definitions.",
+      "current_data_needed": [
+        "Supplied physical counts and expected inventory inputs",
+        "Expected-balance method, units, count timing, tolerances",
+        "Actual schema, dialect/version, and a signed-off expected-output sample."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-03-07",
+        "sql-recipe-03-11",
+        "sql-recipe-07-03"
+      ],
+      "source_issue_ids": [
+        "source-issue-full-join-heading"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics"
+      ]
+    },
+    {
+      "id": "sql-business-vendor-reliability",
+      "record_type": "business_analytics",
+      "name": "Vendor reliability",
+      "summary": "Resolve one-to-many receipts to the approved order-line evaluation grain.",
+      "source_recipe_or_concept": "8.2 Determining the Number of Days Between Two Dates; supporting source units: 8.2, 9.13, 7.3",
+      "sql_problem_addressed": "Resolve one-to-many receipts to the approved order-line evaluation grain.",
+      "query_intent": "Vendor reliability",
+      "input_tables_or_rowsets": [
+        "Supplied purchase commitments and receipt events (conceptual inputs, not asserted database names)."
+      ],
+      "required_grain": "Define source observation grain first; output grain is the approved grouping for vendor reliability.",
+      "key_columns_or_join_conditions": [
+        "Order-line and receipt-event identities; actual column names and constraints must be supplied."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Resolve one-to-many receipts to the approved order-line evaluation grain.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Vendor reliability is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Test partial shipments, changed commitments, and unreceived lines."
+      ],
+      "diagnostic_questions": [
+        "How do supplied deliveries compare with the approved vendor-service criteria?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-08-02",
+        "sql-recipe-09-13",
+        "sql-recipe-07-03"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "8",
+        "chapter_title": "Chapter 8. Date Arithmetic",
+        "section_heading": "8.2 Determining the Number of Days Between Two Dates",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-2",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-2.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-2.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-2.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "Only the linked SQL transformation patterns are source-derived."
+        ],
+        "inferred_claims": [
+          "Resolve one-to-many receipts to the approved order-line evaluation grain.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "How do supplied deliveries compare with the approved vendor-service criteria?",
+          "Resolve one-to-many receipts to the approved order-line evaluation grain.",
+          "All business inputs and definitions are placeholders; no company data was inspected."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "8.2 Determining the Number of Days Between Two Dates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "9.13 Identifying Overlapping Date Ranges",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-13",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.3 Summing the Values in a Column",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL Cookbook patterns to business analytics. It is not a direct claim from the book."
+      },
+      "tags": [
+        "business_analytics"
+      ],
+      "analytics_use_case": "Vendor reliability",
+      "business_question": "How do supplied deliveries compare with the approved vendor-service criteria?",
+      "sql_patterns_applied": [
+        "Resolve each endpoint to one row, then apply the dialect’s subtraction or day-difference function.",
+        "Self-join intervals within the entity and identify starts that fall inside another interval under the source’s inclusive boundary rule.",
+        "Use SUM at the requested grouping grain."
+      ],
+      "required_tables_or_exports": [
+        "Supplied purchase commitments and receipt events"
+      ],
+      "required_keys": [
+        "Order-line and receipt-event identities"
+      ],
+      "metric_definition_needed": [
+        "Promised date revisions, partial deliveries, eligible orders, delay rule"
+      ],
+      "query_shape": "Resolve one-to-many receipts to the approved order-line evaluation grain.",
+      "validation_checks": [
+        "Test partial shipments, changed commitments, and unreceived lines."
+      ],
+      "common_wrong_answers": [
+        "A plausible result using an invented definition or repeated source measure."
+      ],
+      "dashboard_or_report_use": "A descriptive report component for vendor reliability, subject to the approved definitions.",
+      "current_data_needed": [
+        "Supplied purchase commitments and receipt events",
+        "Promised date revisions, partial deliveries, eligible orders, delay rule",
+        "Actual schema, dialect/version, and a signed-off expected-output sample."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-08-02",
+        "sql-recipe-09-13",
+        "sql-recipe-07-03"
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics"
+      ]
+    },
+    {
+      "id": "sql-business-scorecard",
+      "record_type": "business_analytics",
+      "name": "Scorecard metrics",
+      "summary": "Compute each defined metric at its own grain, then publish the approved scorecard shape.",
+      "source_recipe_or_concept": "7.3 Summing the Values in a Column; supporting source units: 7.3, 7.11, 9.10",
+      "sql_problem_addressed": "Compute each defined metric at its own grain, then publish the approved scorecard shape.",
+      "query_intent": "Scorecard metrics",
+      "input_tables_or_rowsets": [
+        "Supplied metric registry and required source exports (conceptual inputs, not asserted database names)."
+      ],
+      "required_grain": "Define source observation grain first; output grain is the approved grouping for scorecard metrics.",
+      "key_columns_or_join_conditions": [
+        "Metric identifier, organizational key, period; actual column names and constraints must be supplied."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Compute each defined metric at its own grain, then publish the approved scorecard shape.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Scorecard metrics is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Reconcile sample measures and prevent combining unlike units."
+      ],
+      "diagnostic_questions": [
+        "Which validated source result supplies each approved scorecard measure?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-03",
+        "sql-recipe-07-11",
+        "sql-recipe-09-10"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.3 Summing the Values in a Column",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3.3",
+          "See Also": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3.4"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "Only the linked SQL transformation patterns are source-derived."
+        ],
+        "inferred_claims": [
+          "Compute each defined metric at its own grain, then publish the approved scorecard shape.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Which validated source result supplies each approved scorecard measure?",
+          "Compute each defined metric at its own grain, then publish the approved scorecard shape.",
+          "All business inputs and definitions are placeholders; no company data was inspected."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.3 Summing the Values in a Column",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.11 Determining the Percentage of a Total",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "9.10 Filling in Missing Dates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-10",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL Cookbook patterns to business analytics. It is not a direct claim from the book."
+      },
+      "tags": [
+        "business_analytics"
+      ],
+      "analytics_use_case": "Scorecard metrics",
+      "business_question": "Which validated source result supplies each approved scorecard measure?",
+      "sql_patterns_applied": [
+        "Use SUM at the requested grouping grain.",
+        "Calculate numerator and denominator over their explicitly defined populations before division.",
+        "Generate the complete period rowset, then outer join facts at matching period grain and aggregate matched records."
+      ],
+      "required_tables_or_exports": [
+        "Supplied metric registry and required source exports"
+      ],
+      "required_keys": [
+        "Metric identifier, organizational key, period"
+      ],
+      "metric_definition_needed": [
+        "Metric version, unit, owner, cutoff, threshold meaning"
+      ],
+      "query_shape": "Compute each defined metric at its own grain, then publish the approved scorecard shape.",
+      "validation_checks": [
+        "Reconcile sample measures and prevent combining unlike units."
+      ],
+      "common_wrong_answers": [
+        "A plausible result using an invented definition or repeated source measure."
+      ],
+      "dashboard_or_report_use": "A descriptive report component for scorecard metrics, subject to the approved definitions.",
+      "current_data_needed": [
+        "Supplied metric registry and required source exports",
+        "Metric version, unit, owner, cutoff, threshold meaning",
+        "Actual schema, dialect/version, and a signed-off expected-output sample."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-07-03",
+        "sql-recipe-07-11",
+        "sql-recipe-09-10"
+      ],
+      "source_issue_ids": [
+        "source-issue-date-fixtures"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics"
+      ]
+    },
+    {
+      "id": "sql-business-executive-weekly",
+      "record_type": "business_analytics",
+      "name": "Weekly executive reporting",
+      "summary": "Align validated metric outputs by the approved weekly calendar without reaggregating unlike measures.",
+      "source_recipe_or_concept": "9.7 Creating a Calendar; supporting source units: 9.7, 12.18, 12.20",
+      "sql_problem_addressed": "Align validated metric outputs by the approved weekly calendar without reaggregating unlike measures.",
+      "query_intent": "Weekly executive reporting",
+      "input_tables_or_rowsets": [
+        "Supplied metric outputs and approved reporting calendar (conceptual inputs, not asserted database names)."
+      ],
+      "required_grain": "Define source observation grain first; output grain is the approved grouping for weekly executive reporting.",
+      "key_columns_or_join_conditions": [
+        "Metric/entity/fiscal-week identity; actual column names and constraints must be supplied."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Align validated metric outputs by the approved weekly calendar without reaggregating unlike measures.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Weekly executive reporting is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Check week completeness, late corrections, and subtotal markers."
+      ],
+      "diagnostic_questions": [
+        "What validated measures should appear for the approved reporting week?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-09-07",
+        "sql-recipe-12-18",
+        "sql-recipe-12-20"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "9",
+        "chapter_title": "Chapter 9. Date Manipulation",
+        "section_heading": "9.7 Creating a Calendar",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "Only the linked SQL transformation patterns are source-derived."
+        ],
+        "inferred_claims": [
+          "Align validated metric outputs by the approved weekly calendar without reaggregating unlike measures.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "What validated measures should appear for the approved reporting week?",
+          "Align validated metric outputs by the approved weekly calendar without reaggregating unlike measures.",
+          "All business inputs and definitions are placeholders; no company data was inspected."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "9.7 Creating a Calendar",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "12.18 Performing Aggregations over Different Groups/Partitions Simultaneously",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-18",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "12.20 Pivoting a Result Set with Subtotals",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-20",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL Cookbook patterns to business analytics. It is not a direct claim from the book."
+      },
+      "tags": [
+        "business_analytics"
+      ],
+      "analytics_use_case": "Weekly executive reporting",
+      "business_question": "What validated measures should appear for the approved reporting week?",
+      "sql_patterns_applied": [
+        "Generate dates, derive week and weekday positions, and pivot day numbers into weekday columns.",
+        "Use multiple window expressions with different PARTITION BY definitions.",
+        "Generate the requested grouped totals first, retain GROUPING markers, and then pivot for presentation."
+      ],
+      "required_tables_or_exports": [
+        "Supplied metric outputs and approved reporting calendar"
+      ],
+      "required_keys": [
+        "Metric/entity/fiscal-week identity"
+      ],
+      "metric_definition_needed": [
+        "Week mapping, restatements, metric versions, subtotal policy"
+      ],
+      "query_shape": "Align validated metric outputs by the approved weekly calendar without reaggregating unlike measures.",
+      "validation_checks": [
+        "Check week completeness, late corrections, and subtotal markers."
+      ],
+      "common_wrong_answers": [
+        "A plausible result using an invented definition or repeated source measure."
+      ],
+      "dashboard_or_report_use": "A descriptive report component for weekly executive reporting, subject to the approved definitions.",
+      "current_data_needed": [
+        "Supplied metric outputs and approved reporting calendar",
+        "Week mapping, restatements, metric versions, subtotal policy",
+        "Actual schema, dialect/version, and a signed-off expected-output sample."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-09-07",
+        "sql-recipe-12-18",
+        "sql-recipe-12-20"
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics",
+        "sql-verify-dates",
+        "sql-verify-timezone"
+      ]
+    },
+    {
+      "id": "sql-business-anomaly-support",
+      "record_type": "business_analytics",
+      "name": "Anomaly-detection query support",
+      "summary": "Compute a validated descriptive flag, preserving the observation and reference statistics.",
+      "source_recipe_or_concept": "7.16 Finding Outliers Using the Median Absolute Deviation; supporting source units: 7.16, 7.17",
+      "sql_problem_addressed": "Compute a validated descriptive flag, preserving the observation and reference statistics.",
+      "query_intent": "Anomaly-detection query support",
+      "input_tables_or_rowsets": [
+        "Supplied numeric observations and reference population (conceptual inputs, not asserted database names)."
+      ],
+      "required_grain": "Define source observation grain first; output grain is the approved grouping for anomaly-detection query support.",
+      "key_columns_or_join_conditions": [
+        "Observation identity and comparison-group key; actual column names and constraints must be supplied."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Compute a validated descriptive flag, preserving the observation and reference statistics.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Anomaly-detection query support is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Use skewed/tied fixtures, MAD=0, and absent Benford categories; no automatic wrongdoing claim."
+      ],
+      "diagnostic_questions": [
+        "Which observations meet an explicitly chosen review criterion?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-16",
+        "sql-recipe-07-17"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.16 Finding Outliers Using the Median Absolute Deviation",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-16",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-16.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-16.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-16.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "Only the linked SQL transformation patterns are source-derived."
+        ],
+        "inferred_claims": [
+          "Compute a validated descriptive flag, preserving the observation and reference statistics.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Which observations meet an explicitly chosen review criterion?",
+          "Compute a validated descriptive flag, preserving the observation and reference statistics.",
+          "All business inputs and definitions are placeholders; no company data was inspected."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.16 Finding Outliers Using the Median Absolute Deviation",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-16",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.17 Finding Anomalies Using Benford’s Law",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-17",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL Cookbook patterns to business analytics. It is not a direct claim from the book."
+      },
+      "tags": [
+        "business_analytics"
+      ],
+      "analytics_use_case": "Anomaly-detection query support",
+      "business_question": "Which observations meet an explicitly chosen review criterion?",
+      "sql_patterns_applied": [
+        "Follow the source prose: compute the median, each absolute deviation from it, and the median of those deviations in stages.",
+        "Build observed digit counts and an expected-digit rowset, then preserve expected digits even when observations are absent."
+      ],
+      "required_tables_or_exports": [
+        "Supplied numeric observations and reference population"
+      ],
+      "required_keys": [
+        "Observation identity and comparison-group key"
+      ],
+      "metric_definition_needed": [
+        "Method suitability, threshold, exclusions, minimum data, review meaning"
+      ],
+      "query_shape": "Compute a validated descriptive flag, preserving the observation and reference statistics.",
+      "validation_checks": [
+        "Use skewed/tied fixtures, MAD=0, and absent Benford categories; no automatic wrongdoing claim."
+      ],
+      "common_wrong_answers": [
+        "A plausible result using an invented definition or repeated source measure."
+      ],
+      "dashboard_or_report_use": "A descriptive report component for anomaly-detection query support, subject to the approved definitions.",
+      "current_data_needed": [
+        "Supplied numeric observations and reference population",
+        "Method suitability, threshold, exclusions, minimum data, review meaning",
+        "Actual schema, dialect/version, and a signed-off expected-output sample."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-07-16",
+        "sql-recipe-07-17"
+      ],
+      "source_issue_ids": [
+        "source-issue-mad",
+        "source-issue-benford-count"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics"
+      ]
+    },
+    {
+      "id": "sql-business-missing-trends",
+      "record_type": "business_analytics",
+      "name": "Missing-date trend reporting",
+      "summary": "Preserve the expected entity/date grid and attach observed aggregates.",
+      "source_recipe_or_concept": "9.10 Filling in Missing Dates; supporting source units: 9.10, 10.4",
+      "sql_problem_addressed": "Preserve the expected entity/date grid and attach observed aggregates.",
+      "query_intent": "Missing-date trend reporting",
+      "input_tables_or_rowsets": [
+        "Supplied observations, expected dates, and extract-completeness evidence (conceptual inputs, not asserted database names)."
+      ],
+      "required_grain": "Define source observation grain first; output grain is the approved grouping for missing-date trend reporting.",
+      "key_columns_or_join_conditions": [
+        "Entity/date identity; actual column names and constraints must be supplied."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Preserve the expected entity/date grid and attach observed aggregates.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Missing-date trend reporting is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Compare expected and received dates by entity; retain missingness indicators."
+      ],
+      "diagnostic_questions": [
+        "Where does the reporting series lack observations?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-09-10",
+        "sql-recipe-10-04"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "9",
+        "chapter_title": "Chapter 9. Date Manipulation",
+        "section_heading": "9.10 Filling in Missing Dates",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-10",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-10.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-10.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-10.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "Only the linked SQL transformation patterns are source-derived."
+        ],
+        "inferred_claims": [
+          "Preserve the expected entity/date grid and attach observed aggregates.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Where does the reporting series lack observations?",
+          "Preserve the expected entity/date grid and attach observed aggregates.",
+          "All business inputs and definitions are placeholders; no company data was inspected."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "9.10 Filling in Missing Dates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-10",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "10.4 Filling in Missing Values in a Range of Values",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch10.html#sqlckbk-CHP-10-SECT-4",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL Cookbook patterns to business analytics. It is not a direct claim from the book."
+      },
+      "tags": [
+        "business_analytics"
+      ],
+      "analytics_use_case": "Missing-date trend reporting",
+      "business_question": "Where does the reporting series lack observations?",
+      "sql_patterns_applied": [
+        "Generate the complete period rowset, then outer join facts at matching period grain and aggregate matched records.",
+        "Supply the complete category range and outer join facts before counting matched observations."
+      ],
+      "required_tables_or_exports": [
+        "Supplied observations, expected dates, and extract-completeness evidence"
+      ],
+      "required_keys": [
+        "Entity/date identity"
+      ],
+      "metric_definition_needed": [
+        "Expected coverage, active dates, zero-versus-unknown policy"
+      ],
+      "query_shape": "Preserve the expected entity/date grid and attach observed aggregates.",
+      "validation_checks": [
+        "Compare expected and received dates by entity; retain missingness indicators."
+      ],
+      "common_wrong_answers": [
+        "A plausible result using an invented definition or repeated source measure."
+      ],
+      "dashboard_or_report_use": "A descriptive report component for missing-date trend reporting, subject to the approved definitions.",
+      "current_data_needed": [
+        "Supplied observations, expected dates, and extract-completeness evidence",
+        "Expected coverage, active dates, zero-versus-unknown policy",
+        "Actual schema, dialect/version, and a signed-off expected-output sample."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-09-10",
+        "sql-recipe-10-04"
+      ],
+      "source_issue_ids": [
+        "source-issue-date-fixtures"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics"
+      ]
+    },
+    {
+      "id": "sql-business-duplicate-transactions",
+      "record_type": "business_analytics",
+      "name": "Duplicate transaction checks",
+      "summary": "Group by the approved duplicate identity and retain detailed candidates for review.",
+      "source_recipe_or_concept": "4.16 Deleting Duplicate Records; supporting source units: 4.16, 11.10",
+      "sql_problem_addressed": "Group by the approved duplicate identity and retain detailed candidates for review.",
+      "query_intent": "Duplicate transaction checks",
+      "input_tables_or_rowsets": [
+        "Supplied transaction lines and identity definitions (conceptual inputs, not asserted database names)."
+      ],
+      "required_grain": "Define source observation grain first; output grain is the approved grouping for duplicate transaction checks.",
+      "key_columns_or_join_conditions": [
+        "Complete transaction or transaction-line key; actual column names and constraints must be supplied."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Group by the approved duplicate identity and retain detailed candidates for review.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Duplicate transaction checks is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Distinguish duplicate keys from equal amounts and avoid deleting candidates automatically."
+      ],
+      "diagnostic_questions": [
+        "Which records repeat under the supplied transaction identity rule?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-16",
+        "sql-recipe-11-10"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.16 Deleting Duplicate Records",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-16",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-16.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-16.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-16.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "Only the linked SQL transformation patterns are source-derived."
+        ],
+        "inferred_claims": [
+          "Group by the approved duplicate identity and retain detailed candidates for review.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Which records repeat under the supplied transaction identity rule?",
+          "Group by the approved duplicate identity and retain detailed candidates for review.",
+          "All business inputs and definitions are placeholders; no company data was inspected."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.16 Deleting Duplicate Records",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-16",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "11.10 Suppressing Duplicates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-10",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL Cookbook patterns to business analytics. It is not a direct claim from the book."
+      },
+      "tags": [
+        "business_analytics"
+      ],
+      "analytics_use_case": "Duplicate transaction checks",
+      "business_question": "Which records repeat under the supplied transaction identity rule?",
+      "sql_patterns_applied": [
+        "Group by the duplicate-defining fields, choose one retained unique identifier, and delete only the other identifiers.",
+        "Use DISTINCT or GROUP BY for a unique-value list, or partitioned ROW_NUMBER when selecting a defined representative row."
+      ],
+      "required_tables_or_exports": [
+        "Supplied transaction lines and identity definitions"
+      ],
+      "required_keys": [
+        "Complete transaction or transaction-line key"
+      ],
+      "metric_definition_needed": [
+        "Revisions, reversals, repeated legitimate events, survivor policy"
+      ],
+      "query_shape": "Group by the approved duplicate identity and retain detailed candidates for review.",
+      "validation_checks": [
+        "Distinguish duplicate keys from equal amounts and avoid deleting candidates automatically."
+      ],
+      "common_wrong_answers": [
+        "A plausible result using an invented definition or repeated source measure."
+      ],
+      "dashboard_or_report_use": "A descriptive report component for duplicate transaction checks, subject to the approved definitions.",
+      "current_data_needed": [
+        "Supplied transaction lines and identity definitions",
+        "Revisions, reversals, repeated legitimate events, survivor policy",
+        "Actual schema, dialect/version, and a signed-off expected-output sample."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-04-16",
+        "sql-recipe-11-10"
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics"
+      ]
+    },
+    {
+      "id": "sql-business-accounting-export",
+      "record_type": "business_analytics",
+      "name": "Accounting export validation",
+      "summary": "Validate schema and identity, reconcile eligible grouped totals, and report exceptions.",
+      "source_recipe_or_concept": "5.2 Listing a Table’s Columns; supporting source units: 5.2, 3.7, 7.3",
+      "sql_problem_addressed": "Validate schema and identity, reconcile eligible grouped totals, and report exceptions.",
+      "query_intent": "Accounting export validation",
+      "input_tables_or_rowsets": [
+        "Supplied accounting export, schema contract, and control totals (conceptual inputs, not asserted database names)."
+      ],
+      "required_grain": "Define source observation grain first; output grain is the approved grouping for accounting export validation.",
+      "key_columns_or_join_conditions": [
+        "Entity/account/journal/line identity; actual column names and constraints must be supplied."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Validate schema and identity, reconcile eligible grouped totals, and report exceptions.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Accounting export validation is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Check missing entities, line duplicates, balance controls, and sign conventions without inventing accounting rules."
+      ],
+      "diagnostic_questions": [
+        "Does the supplied accounting export satisfy its documented structure and control totals?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-05-02",
+        "sql-recipe-03-07",
+        "sql-recipe-07-03"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "5",
+        "chapter_title": "Chapter 5. Metadata Queries",
+        "section_heading": "5.2 Listing a Table’s Columns",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-2",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-2.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-2.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-2.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "Only the linked SQL transformation patterns are source-derived."
+        ],
+        "inferred_claims": [
+          "Validate schema and identity, reconcile eligible grouped totals, and report exceptions.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Does the supplied accounting export satisfy its documented structure and control totals?",
+          "Validate schema and identity, reconcile eligible grouped totals, and report exceptions.",
+          "All business inputs and definitions are placeholders; no company data was inspected."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "5.2 Listing a Table’s Columns",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "3.7 Determining Whether Two Tables Have the Same Data",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-7",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.3 Summing the Values in a Column",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This applies source-supported SQL Cookbook patterns to business analytics. It is not a direct claim from the book."
+      },
+      "tags": [
+        "business_analytics"
+      ],
+      "analytics_use_case": "Accounting export validation",
+      "business_question": "Does the supplied accounting export satisfy its documented structure and control totals?",
+      "sql_patterns_applied": [
+        "Read the selected table’s column metadata from the dialect’s catalog.",
+        "Compare both directions, including grouped occurrence counts where duplicates matter, and combine discrepancies.",
+        "Use SUM at the requested grouping grain."
+      ],
+      "required_tables_or_exports": [
+        "Supplied accounting export, schema contract, and control totals"
+      ],
+      "required_keys": [
+        "Entity/account/journal/line identity"
+      ],
+      "metric_definition_needed": [
+        "Debit-credit or signed-amount convention, period, reversals, adjustments"
+      ],
+      "query_shape": "Validate schema and identity, reconcile eligible grouped totals, and report exceptions.",
+      "validation_checks": [
+        "Check missing entities, line duplicates, balance controls, and sign conventions without inventing accounting rules."
+      ],
+      "common_wrong_answers": [
+        "A plausible result using an invented definition or repeated source measure."
+      ],
+      "dashboard_or_report_use": "A descriptive report component for accounting export validation, subject to the approved definitions.",
+      "current_data_needed": [
+        "Supplied accounting export, schema contract, and control totals",
+        "Debit-credit or signed-amount convention, period, reversals, adjustments",
+        "Actual schema, dialect/version, and a signed-off expected-output sample."
+      ],
+      "related_sql_record_ids": [
+        "sql-recipe-05-02",
+        "sql-recipe-03-07",
+        "sql-recipe-07-03"
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics"
+      ]
+    }
+  ]
+}

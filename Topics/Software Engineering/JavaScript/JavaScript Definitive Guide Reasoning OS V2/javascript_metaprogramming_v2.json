@@ -1,0 +1,206 @@
+{
+  "package_metadata": {
+    "package_name": "JavaScript Language, Runtime, and Code-Quality Reasoning OS V2",
+    "module_name": "metaprogramming",
+    "repair_type": "focused_v2_repair_not_full_rebuild",
+    "generated_at": "2026-06-21T05:00:11.155979+00:00",
+    "primary_source": {
+      "title": "JavaScript: The Definitive Guide",
+      "edition": "Seventh Edition",
+      "author": "David Flanagan",
+      "publisher": "O'Reilly Media",
+      "release_year": 2020,
+      "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+      "source_sha256": "b511aca2b98ae4eec4966c87d5e6b6c1704cbafe7dd076b924db46cb8d20ae07"
+    },
+    "v1_package_reference": {
+      "source_zip": "Javascript Reasoning.zip",
+      "source_zip_sha256": "60242e2ad2cfcc9bdf79f2fc73b392b7f149339dc95d6234f00db683f368d98d",
+      "not_overwritten": true
+    },
+    "authority_order": [
+      "Original uploaded book source",
+      "Current generated JavaScript Reasoning OS package",
+      "User repair prompt",
+      "Current official documentation only if available",
+      "General engineering reasoning"
+    ],
+    "source_limitation_warning": "Current browser, Node, npm, bundler, tool, framework, and Google Apps Script behavior is not asserted unless explicitly verified. V2 flags such items for current documentation checks.",
+    "purpose": "V2 records for descriptors, symbols, proxy, reflect, and metaprogramming opacity."
+  },
+  "language_semantics_records": [
+    {
+      "id": "js-sem-property-descriptors",
+      "concept_name": "property descriptors",
+      "language_area": "metaprogramming",
+      "plain_language_meaning": "Object properties have attributes beyond their value.",
+      "precise_behavior": "Descriptors can be data or accessor descriptors and control writable, enumerable, configurable, get, and set behavior. Reflection/copying APIs may not preserve descriptors by default.",
+      "syntax_or_api_shape": "Object.defineProperty(obj,k,desc), Object.getOwnPropertyDescriptor(obj,k)",
+      "why_it_matters": "Descriptors explain read-only properties, getters/setters, enumeration differences, and clone/refactor surprises.",
+      "common_use": [
+        "Define non-enumerable or read-only properties",
+        "Inspect accessor side effects",
+        "Create library-level object APIs"
+      ],
+      "common_misuse": [
+        "Copying with spread and expecting descriptors preserved",
+        "Assigning to read-only/accessor property without checking strict mode behavior",
+        "Ignoring getter side effects during serialization/copy"
+      ],
+      "debugging_symptoms": [
+        "Assignment fails or is ignored",
+        "Property missing from Object.keys",
+        "Getter runs during copy"
+      ],
+      "tests_or_checks": [
+        "Inspect descriptors",
+        "Test assignment in strict mode",
+        "Use Reflect.ownKeys plus descriptors for faithful clone"
+      ],
+      "safe_refactor_notes": [
+        "Preserve descriptors when exact object behavior matters",
+        "Avoid descriptor tricks in ordinary data objects"
+      ],
+      "related_risk_ids": [
+        "js-risk-metaprogramming-opacity"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 14,
+        "chapter_title": "Metaprogramming",
+        "sections": [
+          "14.1 Property Attributes"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-proxy-reflect",
+      "concept_name": "Proxy and Reflect",
+      "language_area": "metaprogramming",
+      "plain_language_meaning": "Proxy can intercept fundamental object operations; Reflect exposes corresponding operation functions.",
+      "precise_behavior": "A Proxy wraps a target with traps such as get, set, has, ownKeys, apply, and construct. Traps must respect invariants. Reflect methods perform default-like operations and are useful inside traps.",
+      "syntax_or_api_shape": "new Proxy(target, { get(t,k,r){...} }), Reflect.get(target,key,receiver)",
+      "why_it_matters": "Proxy can solve boundary problems but makes property access, debugging, and refactoring opaque.",
+      "common_use": [
+        "Validation/logging wrappers",
+        "Virtual objects",
+        "Library-level membranes or adapters"
+      ],
+      "common_misuse": [
+        "Using Proxy for ordinary property defaults where plain functions suffice",
+        "Violating invariants",
+        "Hiding side effects in get traps"
+      ],
+      "debugging_symptoms": [
+        "Object.keys or in behaves unexpectedly",
+        "Performance/debuggability issues",
+        "TypeError from invariant violation"
+      ],
+      "tests_or_checks": [
+        "List all traps",
+        "Test get/set/has/ownKeys/apply/construct cases",
+        "Check descriptor invariants"
+      ],
+      "safe_refactor_notes": [
+        "Avoid introducing Proxy without clear boundary benefit",
+        "Document traps and add regression tests before changes"
+      ],
+      "related_risk_ids": [
+        "js-risk-metaprogramming-opacity"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 14,
+        "chapter_title": "Metaprogramming",
+        "sections": [
+          "14.6 The Reflect API",
+          "14.7 Proxy Objects"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-well-known-symbols",
+      "concept_name": "well-known symbols",
+      "language_area": "metaprogramming",
+      "plain_language_meaning": "Well-known symbols let objects participate in language protocols.",
+      "precise_behavior": "Symbol.iterator, Symbol.asyncIterator, Symbol.toPrimitive, Symbol.toStringTag, Symbol.hasInstance and others customize iteration, conversion, string tags, instanceof, and related behavior.",
+      "syntax_or_api_shape": "obj[Symbol.iterator], obj[Symbol.toPrimitive], obj[Symbol.toStringTag]",
+      "why_it_matters": "These hooks make ordinary syntax call custom code and therefore matter in debugging and review.",
+      "common_use": [
+        "Implement iterable objects",
+        "Customize conversion or branding",
+        "Build advanced libraries"
+      ],
+      "common_misuse": [
+        "Adding hooks that surprise users of operators",
+        "Forgetting symbol-keyed methods during clone",
+        "Assuming instanceof cannot be customized"
+      ],
+      "debugging_symptoms": [
+        "for/of works or fails unexpectedly",
+        "String output changes",
+        "instanceof result surprises"
+      ],
+      "tests_or_checks": [
+        "Inspect symbol keys with Object.getOwnPropertySymbols",
+        "Probe protocol operations directly",
+        "Test ordinary syntax that triggers hooks"
+      ],
+      "safe_refactor_notes": [
+        "Preserve protocol hooks in refactors",
+        "Prefer explicit methods unless language integration is necessary"
+      ],
+      "related_risk_ids": [
+        "js-risk-metaprogramming-opacity",
+        "js-risk-implicit-coercion"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 14,
+        "chapter_title": "Metaprogramming",
+        "sections": [
+          "14.4 Well-Known Symbols"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    }
+  ]
+}

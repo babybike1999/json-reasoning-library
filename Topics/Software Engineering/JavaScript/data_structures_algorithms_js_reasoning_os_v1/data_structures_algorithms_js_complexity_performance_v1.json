@@ -1,0 +1,1056 @@
+{
+  "file_metadata": {
+    "file_name": "data_structures_algorithms_js_complexity_performance_v1.json",
+    "package_id": "data_structures_algorithms_js_reasoning_os_v1",
+    "package_version": "1.0",
+    "generated_at_utc": "2026-08-25T17:45:26.946739+00:00",
+    "purpose": "Scale, operation-growth, benchmark, service-boundary, timeout, and partial-write reasoning.",
+    "record_count": 12,
+    "source_title": "Data Structures and Algorithms with JavaScript",
+    "source_author": "Michael McMillan",
+    "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+    "source_boundary": "Source-supported concepts are separated from low-confidence Apps Script, spreadsheet, internal-tool, and AI-agent extensions. Current platform behavior must be verified.",
+    "copyright_safety": "Concepts and implementation logic are paraphrased. No long source passages, long code listings, full algorithm implementations, or exercise solutions are reproduced."
+  },
+  "complexity_and_performance_records": [
+    {
+      "id": "dsa-perf-structure-algorithm-interaction",
+      "record_type": "complexity_performance_record",
+      "name": "Representation changes algorithmic cost",
+      "summary": "Performance is not only a property of an algorithm name; it also depends on whether the chosen structure supports the required operation directly.",
+      "source_concept": "Representation changes algorithmic cost",
+      "programming_problem_addressed": "Makes the dominant cost and scaling behavior explicit before implementation.",
+      "data_shape_assumption": "Input size, operation frequency, and required output behavior can be estimated or measured.",
+      "algorithmic_role": "Performance selection and validation rule.",
+      "runtime_context": "Source-era JavaScript shell used for comparative algorithm reasoning.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "A structure that turns a dominant operation into a direct lookup or ordered traversal can avoid repeated full scans.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Repeated scans for the same key",
+        "Complex special-case control flow",
+        "Performance degrades sharply as row count increases"
+      ],
+      "tests_or_checks": [
+        "Count scans and lookups per record",
+        "Benchmark representative smallest, median, and largest datasets"
+      ],
+      "diagnostic_questions": [
+        "What operation dominates total runtime as the input grows?",
+        "What realistic input size was used to verify the claim?"
+      ],
+      "related_record_ids": [
+        "dsa-core-structure-shapes-algorithm",
+        "dsa-decision-array-scan-versus-lookup"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "Preface",
+        "chapter_title": "Preface",
+        "section_heading": "Why Study Data Structures and Algorithms",
+        "page_or_anchor": "OEBPS/preface01.html#idp7339520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source contrasts structures and algorithms whose suitability can make operations such as minimum/maximum search or sorting more efficient."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_complexity_claim",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "complexity",
+        "representation",
+        "selection"
+      ],
+      "performance_concept": "Representation changes algorithmic cost",
+      "plain_language_meaning": "Performance is not only a property of an algorithm name; it also depends on whether the chosen structure supports the required operation directly.",
+      "source_supported_point": "The source contrasts structures and algorithms whose suitability can make operations such as minimum/maximum search or sorting more efficient.",
+      "scale_or_complexity_implication": "A structure that turns a dominant operation into a direct lookup or ordered traversal can avoid repeated full scans.",
+      "apps_script_relevance": "Before optimizing syntax, determine whether rows need positional iteration, key lookup, uniqueness, order, hierarchy, or dependency semantics.",
+      "symptoms_of_problem": [
+        "Repeated scans for the same key",
+        "Complex special-case control flow",
+        "Performance degrades sharply as row count increases"
+      ],
+      "better_design_pattern": "Choose the representation around the dominant operations, then measure the resulting algorithm.",
+      "tests_or_measurements": [
+        "Count scans and lookups per record",
+        "Benchmark representative smallest, median, and largest datasets"
+      ]
+    },
+    {
+      "id": "dsa-perf-basic-sort-scale",
+      "record_type": "complexity_performance_record",
+      "name": "Basic sorts degrade on larger datasets",
+      "summary": "Bubble, selection, and insertion sort are useful teaching tools and may be adequate for small inputs, but their repeated comparisons and movements become costly as data grows.",
+      "source_concept": "Basic sorts degrade on larger datasets",
+      "programming_problem_addressed": "Makes the dominant cost and scaling behavior explicit before implementation.",
+      "data_shape_assumption": "Input size, operation frequency, and required output behavior can be estimated or measured.",
+      "algorithmic_role": "Performance selection and validation rule.",
+      "runtime_context": "Source-era JavaScript shell used for comparative algorithm reasoning.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Repeated passes and comparisons make the simple algorithms increasingly unattractive as element count rises.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Long sort time",
+        "Many comparisons or swaps",
+        "Script spends most time ordering already processable data"
+      ],
+      "tests_or_checks": [
+        "Benchmark sorted, reverse-sorted, duplicate-heavy, and random inputs",
+        "Record row count and elapsed time"
+      ],
+      "diagnostic_questions": [
+        "What operation dominates total runtime as the input grows?",
+        "What realistic input size was used to verify the claim?"
+      ],
+      "related_record_ids": [
+        "dsa-sort-basic-versus-advanced",
+        "dsa-decision-built-in-versus-custom-sort"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "12",
+        "chapter_title": "Sorting Algorithms",
+        "section_heading": "Basic Sorting Algorithms",
+        "page_or_anchor": "OEBPS/ch12.html#idp42067616",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source classifies bubble, selection, and insertion sort as basic algorithms and contrasts their suitability with more advanced sorts for larger data sets."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch12.html",
+            "chapter_number": "12",
+            "chapter_title": "Sorting Algorithms",
+            "section_heading": "Timing Comparisons of the Basic Sorting Algorithms",
+            "page_or_anchor": "OEBPS/ch12.html#idp44057744"
+          },
+          {
+            "source_file": "ch12.html",
+            "chapter_number": "12",
+            "chapter_title": "Sorting Algorithms",
+            "section_heading": "Advanced Sorting Algorithms",
+            "page_or_anchor": "OEBPS/ch12.html#idp44058656"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "source_direct_complexity_claim",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "complexity",
+        "sorting",
+        "scale"
+      ],
+      "performance_concept": "Basic sorts degrade on larger datasets",
+      "plain_language_meaning": "Bubble, selection, and insertion sort are useful teaching tools and may be adequate for small inputs, but their repeated comparisons and movements become costly as data grows.",
+      "source_supported_point": "The source classifies bubble, selection, and insertion sort as basic algorithms and contrasts their suitability with more advanced sorts for larger data sets.",
+      "scale_or_complexity_implication": "Repeated passes and comparisons make the simple algorithms increasingly unattractive as element count rises.",
+      "apps_script_relevance": "Do not hand-implement a basic sort for large report rows merely because the algorithm is easy to understand.",
+      "symptoms_of_problem": [
+        "Long sort time",
+        "Many comparisons or swaps",
+        "Script spends most time ordering already processable data"
+      ],
+      "better_design_pattern": "Use a verified runtime-native sort or a justified advanced algorithm, and sort only when downstream logic requires order.",
+      "tests_or_measurements": [
+        "Benchmark sorted, reverse-sorted, duplicate-heavy, and random inputs",
+        "Record row count and elapsed time"
+      ]
+    },
+    {
+      "id": "dsa-perf-sort-timing-comparison",
+      "record_type": "complexity_performance_record",
+      "name": "Measure competing algorithms under the same test bed",
+      "summary": "Comparative timing is meaningful only when algorithms receive comparable input sizes, distributions, and execution conditions.",
+      "source_concept": "Measure competing algorithms under the same test bed",
+      "programming_problem_addressed": "Makes the dominant cost and scaling behavior explicit before implementation.",
+      "data_shape_assumption": "Input size, operation frequency, and required output behavior can be estimated or measured.",
+      "algorithmic_role": "Performance selection and validation rule.",
+      "runtime_context": "Source-era JavaScript shell used for comparative algorithm reasoning.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "A benchmark on one tiny or unusually ordered input does not establish general suitability.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Performance claim based on one run",
+        "Different algorithms receive different inputs",
+        "Service calls are included for one implementation but not another"
+      ],
+      "tests_or_checks": [
+        "Run repeated trials",
+        "Compare identical input copies",
+        "Separate parse, validate, transform, sort, and write timing"
+      ],
+      "diagnostic_questions": [
+        "What operation dominates total runtime as the input grows?",
+        "What realistic input size was used to verify the claim?"
+      ],
+      "related_record_ids": [
+        "dsa-sort-test-bed",
+        "dsa-perf-realistic-benchmark"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "12",
+        "chapter_title": "Sorting Algorithms",
+        "section_heading": "Timing Comparisons of the Basic Sorting Algorithms",
+        "page_or_anchor": "OEBPS/ch12.html#idp44057744",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source times the basic sorting algorithms using a shared array test bed and repeated random datasets."
+        ],
+        "inferred_claims": [
+          "Separating Apps Script service time from in-memory algorithm time is a platform measurement extension."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_example",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "benchmarking",
+        "sorting",
+        "measurement"
+      ],
+      "performance_concept": "Measure competing algorithms under the same test bed",
+      "plain_language_meaning": "Comparative timing is meaningful only when algorithms receive comparable input sizes, distributions, and execution conditions.",
+      "source_supported_point": "The source times the basic sorting algorithms using a shared array test bed and repeated random datasets.",
+      "scale_or_complexity_implication": "A benchmark on one tiny or unusually ordered input does not establish general suitability.",
+      "apps_script_relevance": "For an Apps Script processor, use realistic copied data and separate in-memory algorithm time from spreadsheet service time.",
+      "symptoms_of_problem": [
+        "Performance claim based on one run",
+        "Different algorithms receive different inputs",
+        "Service calls are included for one implementation but not another"
+      ],
+      "better_design_pattern": "Define a repeatable benchmark matrix and report input characteristics alongside elapsed time.",
+      "tests_or_measurements": [
+        "Run repeated trials",
+        "Compare identical input copies",
+        "Separate parse, validate, transform, sort, and write timing"
+      ]
+    },
+    {
+      "id": "dsa-perf-sequential-versus-binary",
+      "record_type": "complexity_performance_record",
+      "name": "Search cost depends on ordering and reuse",
+      "summary": "Sequential search works on unsorted data, while binary search reduces the search interval repeatedly but requires sorted data.",
+      "source_concept": "Search cost depends on ordering and reuse",
+      "programming_problem_addressed": "Makes the dominant cost and scaling behavior explicit before implementation.",
+      "data_shape_assumption": "Input size, operation frequency, and required output behavior can be estimated or measured.",
+      "algorithmic_role": "Performance selection and validation rule.",
+      "runtime_context": "Source-era JavaScript shell used for comparative algorithm reasoning.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Sorting once may be worthwhile for repeated searches, but sorting for a single lookup can cost more than scanning once.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Binary search returns wrong results on unsorted rows",
+        "Data is resorted before every lookup",
+        "Many repeated full scans"
+      ],
+      "tests_or_checks": [
+        "Verify sort precondition",
+        "Count searches per dataset load",
+        "Compare build-plus-query total time"
+      ],
+      "diagnostic_questions": [
+        "What operation dominates total runtime as the input grows?",
+        "What realistic input size was used to verify the claim?"
+      ],
+      "related_record_ids": [
+        "dsa-search-binary",
+        "dsa-decision-sequential-versus-binary",
+        "dsa-decision-binary-versus-map"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "13",
+        "chapter_title": "Searching Algorithms",
+        "section_heading": "Binary Search",
+        "page_or_anchor": "OEBPS/ch13.html#idp50459344",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source presents binary search as a more efficient search over sorted data and contrasts it with sequential search."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_complexity_claim",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "searching",
+        "binary-search",
+        "complexity"
+      ],
+      "performance_concept": "Search cost depends on ordering and reuse",
+      "plain_language_meaning": "Sequential search works on unsorted data, while binary search reduces the search interval repeatedly but requires sorted data.",
+      "source_supported_point": "The source presents binary search as a more efficient search over sorted data and contrasts it with sequential search.",
+      "scale_or_complexity_implication": "Sorting once may be worthwhile for repeated searches, but sorting for a single lookup can cost more than scanning once.",
+      "apps_script_relevance": "For repeated key search, a lookup map may be clearer than preserving a sorted array solely for binary search.",
+      "symptoms_of_problem": [
+        "Binary search returns wrong results on unsorted rows",
+        "Data is resorted before every lookup",
+        "Many repeated full scans"
+      ],
+      "better_design_pattern": "Choose among one-pass scan, one-time sort plus binary search, or one-time index construction based on query frequency and ordering needs.",
+      "tests_or_measurements": [
+        "Verify sort precondition",
+        "Count searches per dataset load",
+        "Compare build-plus-query total time"
+      ]
+    },
+    {
+      "id": "dsa-perf-hash-lookup-tradeoff",
+      "record_type": "complexity_performance_record",
+      "name": "Hash lookup trades order for key-directed access",
+      "summary": "Hashing computes a storage position from a key to support direct retrieval, but collisions and table design influence actual behavior.",
+      "source_concept": "Hash lookup trades order for key-directed access",
+      "programming_problem_addressed": "Makes the dominant cost and scaling behavior explicit before implementation.",
+      "data_shape_assumption": "Input size, operation frequency, and required output behavior can be estimated or measured.",
+      "algorithmic_role": "Performance selection and validation rule.",
+      "runtime_context": "Source-era JavaScript shell used for comparative algorithm reasoning.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "A lookup index can replace repeated scans, but poor key design or collision handling can reduce the expected benefit.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Keys overwrite unexpectedly",
+        "Multiple records collapse to one entry",
+        "Lookup misses due to inconsistent normalization"
+      ],
+      "tests_or_checks": [
+        "Measure index-build time and query count",
+        "Count duplicate normalized keys",
+        "Test missing and malformed keys"
+      ],
+      "diagnostic_questions": [
+        "What operation dominates total runtime as the input grows?",
+        "What realistic input size was used to verify the claim?"
+      ],
+      "related_record_ids": [
+        "dsa-hash-overview",
+        "dsa-risk-missing-lookup-map",
+        "dsa-risk-native-map-set-verification"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "8",
+        "chapter_title": "Hashing",
+        "section_heading": "An Overview of Hashing",
+        "page_or_anchor": "OEBPS/ch08.html#idp30907488",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source describes hashing as a technique for fast insertion and retrieval and separately treats collision handling."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch08.html",
+            "chapter_number": "8",
+            "chapter_title": "Hashing",
+            "section_heading": "Handling Collisions",
+            "page_or_anchor": "OEBPS/ch08.html#idp33219712"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "source_direct_complexity_claim",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "hashing",
+        "lookup",
+        "complexity"
+      ],
+      "performance_concept": "Hash lookup trades order for key-directed access",
+      "plain_language_meaning": "Hashing computes a storage position from a key to support direct retrieval, but collisions and table design influence actual behavior.",
+      "source_supported_point": "The source describes hashing as a technique for fast insertion and retrieval and separately treats collision handling.",
+      "scale_or_complexity_implication": "A lookup index can replace repeated scans, but poor key design or collision handling can reduce the expected benefit.",
+      "apps_script_relevance": "Use a verified object or Map-like lookup only after defining key normalization, duplicate policy, and missing-key behavior.",
+      "symptoms_of_problem": [
+        "Keys overwrite unexpectedly",
+        "Multiple records collapse to one entry",
+        "Lookup misses due to inconsistent normalization"
+      ],
+      "better_design_pattern": "Define an explicit unique key contract and test duplicate/collision behavior before using the index for live writes.",
+      "tests_or_measurements": [
+        "Measure index-build time and query count",
+        "Count duplicate normalized keys",
+        "Test missing and malformed keys"
+      ]
+    },
+    {
+      "id": "dsa-perf-linked-list-operation-tradeoff",
+      "record_type": "complexity_performance_record",
+      "name": "Insertion and deletion efficiency depends on access needs",
+      "summary": "Linked lists can avoid the element shifting associated with array insertion and deletion, but finding the insertion or removal point may still require traversal.",
+      "source_concept": "Insertion and deletion efficiency depends on access needs",
+      "programming_problem_addressed": "Makes the dominant cost and scaling behavior explicit before implementation.",
+      "data_shape_assumption": "Input size, operation frequency, and required output behavior can be estimated or measured.",
+      "algorithmic_role": "Performance selection and validation rule.",
+      "runtime_context": "Source-era JavaScript shell used for comparative algorithm reasoning.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Fast relinking does not imply fast arbitrary access; total cost includes locating the relevant node.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Custom linked-list class without measured benefit",
+        "Frequent traversal from head",
+        "Harder serialization and debugging"
+      ],
+      "tests_or_checks": [
+        "Count traversed nodes per operation",
+        "Compare with array rebuild or filtered copy at realistic sizes"
+      ],
+      "diagnostic_questions": [
+        "What operation dominates total runtime as the input grows?",
+        "What realistic input size was used to verify the claim?"
+      ],
+      "related_record_ids": [
+        "dsa-list-array-shortcomings",
+        "dsa-decision-custom-versus-native"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "6",
+        "chapter_title": "Linked Lists",
+        "section_heading": "Shortcomings of Arrays",
+        "page_or_anchor": "OEBPS/ch06.html#idp26696752",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source motivates linked lists through the cost of array insertions/deletions and then implements node traversal for list operations."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch06.html",
+            "chapter_number": "6",
+            "chapter_title": "Linked Lists",
+            "section_heading": "Inserting New Nodes",
+            "page_or_anchor": "OEBPS/ch06.html#idp27015488"
+          },
+          {
+            "source_file": "ch06.html",
+            "chapter_number": "6",
+            "chapter_title": "Linked Lists",
+            "section_heading": "Removing Nodes from a Linked List",
+            "page_or_anchor": "OEBPS/ch06.html#idp27016112"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "linked-list",
+        "tradeoff",
+        "complexity"
+      ],
+      "performance_concept": "Insertion and deletion efficiency depends on access needs",
+      "plain_language_meaning": "Linked lists can avoid the element shifting associated with array insertion and deletion, but finding the insertion or removal point may still require traversal.",
+      "source_supported_point": "The source motivates linked lists through the cost of array insertions/deletions and then implements node traversal for list operations.",
+      "scale_or_complexity_implication": "Fast relinking does not imply fast arbitrary access; total cost includes locating the relevant node.",
+      "apps_script_relevance": "Spreadsheet row workflows usually benefit more from arrays and indexes than from custom linked nodes unless mutation semantics are central.",
+      "symptoms_of_problem": [
+        "Custom linked-list class without measured benefit",
+        "Frequent traversal from head",
+        "Harder serialization and debugging"
+      ],
+      "better_design_pattern": "Compare end-to-end operations, including search and persistence, rather than judging only the relink step.",
+      "tests_or_measurements": [
+        "Count traversed nodes per operation",
+        "Compare with array rebuild or filtered copy at realistic sizes"
+      ]
+    },
+    {
+      "id": "dsa-perf-dp-state-growth",
+      "record_type": "complexity_performance_record",
+      "name": "Dynamic programming cost follows the state space",
+      "summary": "Dynamic programming avoids repeated subproblem work by storing results, but the number and shape of stored states determine time and memory cost.",
+      "source_concept": "Dynamic programming cost follows the state space",
+      "programming_problem_addressed": "Makes the dominant cost and scaling behavior explicit before implementation.",
+      "data_shape_assumption": "Input size, operation frequency, and required output behavior can be estimated or measured.",
+      "algorithmic_role": "Performance selection and validation rule.",
+      "runtime_context": "Source-era JavaScript shell used for comparative algorithm reasoning.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "A two-dimensional state table can grow with both dimensions; a recurrence using only recent state may permit substantial simplification.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Large nested arrays",
+        "Timeout before table completion",
+        "Optimal value returned without reconstructable action"
+      ],
+      "tests_or_checks": [
+        "Calculate number of states",
+        "Estimate bytes per state",
+        "Test boundary dimensions",
+        "Verify reconstruction needs"
+      ],
+      "diagnostic_questions": [
+        "What operation dominates total runtime as the input grows?",
+        "What realistic input size was used to verify the claim?"
+      ],
+      "related_record_ids": [
+        "dsa-dp-table-subsolutions",
+        "dsa-dp-fibonacci-constant-state",
+        "dsa-risk-dp-overengineering"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "14",
+        "chapter_title": "Advanced Algorithms",
+        "section_heading": "Dynamic Programming",
+        "page_or_anchor": "OEBPS/ch14.html#idp54524000",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source explains dynamic programming as storing subproblem solutions and demonstrates one- and two-dimensional tables."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch14.html",
+            "chapter_number": "14",
+            "chapter_title": "Advanced Algorithms",
+            "section_heading": "A Dynamic Programming Example: Computing Fibonacci Numbers",
+            "page_or_anchor": "OEBPS/ch14.html#idp54527024"
+          },
+          {
+            "source_file": "ch14.html",
+            "chapter_number": "14",
+            "chapter_title": "Advanced Algorithms",
+            "section_heading": "Finding the Longest Common Substring",
+            "page_or_anchor": "OEBPS/ch14.html#idp54527968"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "dynamic-programming",
+        "state-space",
+        "memory"
+      ],
+      "performance_concept": "Dynamic programming cost follows the state space",
+      "plain_language_meaning": "Dynamic programming avoids repeated subproblem work by storing results, but the number and shape of stored states determine time and memory cost.",
+      "source_supported_point": "The source explains dynamic programming as storing subproblem solutions and demonstrates one- and two-dimensional tables.",
+      "scale_or_complexity_implication": "A two-dimensional state table can grow with both dimensions; a recurrence using only recent state may permit substantial simplification.",
+      "apps_script_relevance": "Estimate state count before attempting scheduling or allocation optimization in a hosted runtime.",
+      "symptoms_of_problem": [
+        "Large nested arrays",
+        "Timeout before table completion",
+        "Optimal value returned without reconstructable action"
+      ],
+      "better_design_pattern": "Write the recurrence and state dimensions, then determine whether memoization, rolling state, greedy approximation, or a simpler lookup suffices.",
+      "tests_or_measurements": [
+        "Calculate number of states",
+        "Estimate bytes per state",
+        "Test boundary dimensions",
+        "Verify reconstruction needs"
+      ]
+    },
+    {
+      "id": "dsa-perf-nested-loop-growth",
+      "record_type": "complexity_performance_record",
+      "name": "Repeated nested scans multiply work",
+      "summary": "When each input row scans another full collection, total work grows as the product of the two collection sizes rather than as a single pass.",
+      "source_concept": "Repeated nested scans multiply work",
+      "programming_problem_addressed": "Makes the dominant cost and scaling behavior explicit before implementation.",
+      "data_shape_assumption": "Input size, operation frequency, and required output behavior can be estimated or measured.",
+      "algorithmic_role": "Performance selection and validation rule.",
+      "runtime_context": "Current Google Apps Script project; service, quota, and execution behavior must be verified.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Joining n rows to m mapping rows by repeated sequential search can require roughly n × m comparisons.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Nested loops used for joins or mappings",
+        "Runtime approximately quadruples when both inputs double",
+        "Same mapping array scanned for every row"
+      ],
+      "tests_or_checks": [
+        "Count rows in both inputs",
+        "Instrument comparison count",
+        "Compare nested-scan and indexed versions on copied data"
+      ],
+      "diagnostic_questions": [
+        "What operation dominates total runtime as the input grows?",
+        "What realistic input size was used to verify the claim?"
+      ],
+      "related_record_ids": [
+        "dsa-decision-array-scan-versus-lookup",
+        "dsa-risk-nested-loop-timeout",
+        "dsa-sheet-join-by-key"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Searching for a Value",
+        "page_or_anchor": "OEBPS/ch02.html#idp14711680",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source presents linear array search as checking elements in sequence; repeating that search for every row repeats the scan."
+        ],
+        "inferred_claims": [
+          "The n × m spreadsheet join analysis is a spreadsheet workflow extension."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "apps-script",
+        "nested-loop",
+        "join",
+        "performance"
+      ],
+      "performance_concept": "Repeated nested scans multiply work",
+      "plain_language_meaning": "When each input row scans another full collection, total work grows as the product of the two collection sizes rather than as a single pass.",
+      "source_supported_point": "The source presents linear array search as checking elements in sequence; repeating that search for every row repeats the scan.",
+      "scale_or_complexity_implication": "Joining n rows to m mapping rows by repeated sequential search can require roughly n × m comparisons.",
+      "apps_script_relevance": "This pattern commonly threatens spreadsheet transformation runtime before service quotas are considered.",
+      "symptoms_of_problem": [
+        "Nested loops used for joins or mappings",
+        "Runtime approximately quadruples when both inputs double",
+        "Same mapping array scanned for every row"
+      ],
+      "better_design_pattern": "Build a key-indexed lookup once, validate duplicate keys, then perform one lookup per input row.",
+      "tests_or_measurements": [
+        "Count rows in both inputs",
+        "Instrument comparison count",
+        "Compare nested-scan and indexed versions on copied data"
+      ]
+    },
+    {
+      "id": "dsa-perf-repeated-search",
+      "record_type": "complexity_performance_record",
+      "name": "Index once for repeated key search",
+      "summary": "A one-time dictionary or hash-like index can replace repeated sequential searches when the same collection is queried many times by key.",
+      "source_concept": "Index once for repeated key search",
+      "programming_problem_addressed": "Makes the dominant cost and scaling behavior explicit before implementation.",
+      "data_shape_assumption": "Input size, operation frequency, and required output behavior can be estimated or measured.",
+      "algorithmic_role": "Performance selection and validation rule.",
+      "runtime_context": "Current Google Apps Script project; service, quota, and execution behavior must be verified.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Index construction adds an upfront pass and memory cost but can make each later lookup direct in ordinary cases.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Repeated find/indexOf/filter calls for stable reference data",
+        "Same missing mapping logged many times",
+        "Slow multi-sheet join"
+      ],
+      "tests_or_checks": [
+        "Count index entries and duplicate keys",
+        "Count lookup queries",
+        "Compare total build-plus-query time"
+      ],
+      "diagnostic_questions": [
+        "What operation dominates total runtime as the input grows?",
+        "What realistic input size was used to verify the claim?"
+      ],
+      "related_record_ids": [
+        "dsa-dict-key-value",
+        "dsa-sheet-header-index-map",
+        "dsa-tool-location-mapping"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "7",
+        "chapter_title": "Dictionaries",
+        "section_heading": "The Dictionary Class",
+        "page_or_anchor": "OEBPS/ch07.html#idp29229184",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source models dictionaries as key-value storage and hash tables as key-directed storage/retrieval."
+        ],
+        "inferred_claims": [
+          "The named Apps Script mappings are applied spreadsheet examples, not source examples."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "lookup-map",
+        "index",
+        "apps-script"
+      ],
+      "performance_concept": "Index once for repeated key search",
+      "plain_language_meaning": "A one-time dictionary or hash-like index can replace repeated sequential searches when the same collection is queried many times by key.",
+      "source_supported_point": "The source models dictionaries as key-value storage and hash tables as key-directed storage/retrieval.",
+      "scale_or_complexity_implication": "Index construction adds an upfront pass and memory cost but can make each later lookup direct in ordinary cases.",
+      "apps_script_relevance": "Useful for location, vendor, account, report-column, menu-item, or employee-role mappings.",
+      "symptoms_of_problem": [
+        "Repeated find/indexOf/filter calls for stable reference data",
+        "Same missing mapping logged many times",
+        "Slow multi-sheet join"
+      ],
+      "better_design_pattern": "Normalize keys, build one lookup with explicit duplicate policy, validate coverage, then transform rows.",
+      "tests_or_measurements": [
+        "Count index entries and duplicate keys",
+        "Count lookup queries",
+        "Compare total build-plus-query time"
+      ]
+    },
+    {
+      "id": "dsa-perf-growth-versus-service-cost",
+      "record_type": "complexity_performance_record",
+      "name": "Separate in-memory growth from hosted-service cost",
+      "summary": "Algorithmic work over arrays and service calls to an external spreadsheet API are different cost categories and should be measured separately.",
+      "source_concept": "Separate in-memory growth from hosted-service cost",
+      "programming_problem_addressed": "Makes the dominant cost and scaling behavior explicit before implementation.",
+      "data_shape_assumption": "Input size, operation frequency, and required output behavior can be estimated or measured.",
+      "algorithmic_role": "Performance selection and validation rule.",
+      "runtime_context": "Current Google Apps Script project; service, quota, and execution behavior must be verified.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "A theoretically efficient in-memory loop may still be slow if it performs a remote service operation for each element.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Spreadsheet service call inside a row loop",
+        "Few rows but high latency",
+        "Algorithm benchmark does not match production runtime"
+      ],
+      "tests_or_checks": [
+        "Count service calls",
+        "Time read, in-memory work, and write separately",
+        "Inspect current execution logs"
+      ],
+      "diagnostic_questions": [
+        "What operation dominates total runtime as the input grows?",
+        "What realistic input size was used to verify the claim?"
+      ],
+      "related_record_ids": [
+        "dsa-risk-repeated-sheet-service-call",
+        "dsa-sheet-read-once",
+        "dsa-sheet-batch-write-after-validation"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "12",
+        "chapter_title": "Sorting Algorithms",
+        "section_heading": "Timing Comparisons of the Basic Sorting Algorithms",
+        "page_or_anchor": "OEBPS/ch12.html#idp44057744",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source demonstrates timing algorithms in a local JavaScript environment; it does not analyze hosted spreadsheet service calls."
+        ],
+        "inferred_claims": [
+          "The hosted-service distinction and batching guidance are Apps Script translation extensions."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "apps-script",
+        "service-calls",
+        "batching"
+      ],
+      "performance_concept": "Separate in-memory growth from hosted-service cost",
+      "plain_language_meaning": "Algorithmic work over arrays and service calls to an external spreadsheet API are different cost categories and should be measured separately.",
+      "source_supported_point": "The source demonstrates timing algorithms in a local JavaScript environment; it does not analyze hosted spreadsheet service calls.",
+      "scale_or_complexity_implication": "A theoretically efficient in-memory loop may still be slow if it performs a remote service operation for each element.",
+      "apps_script_relevance": "Batch reads and writes are an Apps Script translation rule that requires current platform verification.",
+      "symptoms_of_problem": [
+        "Spreadsheet service call inside a row loop",
+        "Few rows but high latency",
+        "Algorithm benchmark does not match production runtime"
+      ],
+      "better_design_pattern": "Load data in batches, transform in memory, validate, and write a bounded batch only after checks pass.",
+      "tests_or_measurements": [
+        "Count service calls",
+        "Time read, in-memory work, and write separately",
+        "Inspect current execution logs"
+      ]
+    },
+    {
+      "id": "dsa-perf-realistic-benchmark",
+      "record_type": "complexity_performance_record",
+      "name": "Benchmark realistic data shapes, not just row counts",
+      "summary": "Performance tests should represent actual ordering, duplicate rates, key distributions, missing mappings, text lengths, and output behavior—not only a nominal number of rows.",
+      "source_concept": "Benchmark realistic data shapes, not just row counts",
+      "programming_problem_addressed": "Makes the dominant cost and scaling behavior explicit before implementation.",
+      "data_shape_assumption": "Input size, operation frequency, and required output behavior can be estimated or measured.",
+      "algorithmic_role": "Performance selection and validation rule.",
+      "runtime_context": "Current Google Apps Script project; service, quota, and execution behavior must be verified.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Different distributions can expose worst cases, collision patterns, unstable ordering, or expensive validation branches.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Benchmark passes on random numbers but fails on real rows",
+        "No duplicate or missing-key cases",
+        "No output write included in end-to-end test"
+      ],
+      "tests_or_checks": [
+        "Repeated elapsed-time trials",
+        "Peak intermediate row count",
+        "Error count",
+        "Service-call count",
+        "Output checksum"
+      ],
+      "diagnostic_questions": [
+        "What operation dominates total runtime as the input grows?",
+        "What realistic input size was used to verify the claim?"
+      ],
+      "related_record_ids": [
+        "dsa-workflow-test-plan-transformation",
+        "dsa-perf-sort-timing-comparison"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "12",
+        "chapter_title": "Sorting Algorithms",
+        "section_heading": "An Array Test Bed",
+        "page_or_anchor": "OEBPS/ch12.html#idp42066992",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source creates an array test bed and generates test data to compare sorting behavior."
+        ],
+        "inferred_claims": [
+          "The expanded benchmark dimensions are an AI-agent and Apps Script workflow extension."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "benchmark",
+        "testing",
+        "apps-script"
+      ],
+      "performance_concept": "Benchmark realistic data shapes, not just row counts",
+      "plain_language_meaning": "Performance tests should represent actual ordering, duplicate rates, key distributions, missing mappings, text lengths, and output behavior—not only a nominal number of rows.",
+      "source_supported_point": "The source creates an array test bed and generates test data to compare sorting behavior.",
+      "scale_or_complexity_implication": "Different distributions can expose worst cases, collision patterns, unstable ordering, or expensive validation branches.",
+      "apps_script_relevance": "Use anonymized copies or synthetic data with the same shape and edge-case distribution as production.",
+      "symptoms_of_problem": [
+        "Benchmark passes on random numbers but fails on real rows",
+        "No duplicate or missing-key cases",
+        "No output write included in end-to-end test"
+      ],
+      "better_design_pattern": "Create a benchmark matrix spanning normal, boundary, malformed, duplicate-heavy, presorted, reverse-sorted, and maximum expected inputs.",
+      "tests_or_measurements": [
+        "Repeated elapsed-time trials",
+        "Peak intermediate row count",
+        "Error count",
+        "Service-call count",
+        "Output checksum"
+      ]
+    },
+    {
+      "id": "dsa-perf-timeout-partial-write",
+      "record_type": "complexity_performance_record",
+      "name": "Timeout risk becomes a correctness risk after side effects begin",
+      "summary": "When a long-running transformation writes incrementally, interruption can leave a partially updated destination even when the in-memory algorithm was logically correct.",
+      "source_concept": "Timeout risk becomes a correctness risk after side effects begin",
+      "programming_problem_addressed": "Makes the dominant cost and scaling behavior explicit before implementation.",
+      "data_shape_assumption": "Input size, operation frequency, and required output behavior can be estimated or measured.",
+      "algorithmic_role": "Performance selection and validation rule.",
+      "runtime_context": "Current Google Apps Script project; service, quota, and execution behavior must be verified.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Runtime growth, service latency, and side effects interact; total elapsed time and recovery semantics matter.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Destination contains only first portion of rows",
+        "Retry duplicates already-written records",
+        "No run identifier or checkpoint"
+      ],
+      "tests_or_checks": [
+        "Force a controlled interruption in a test copy",
+        "Verify retry outcome",
+        "Compare expected versus written key sets"
+      ],
+      "diagnostic_questions": [
+        "What operation dominates total runtime as the input grows?",
+        "What realistic input size was used to verify the claim?"
+      ],
+      "related_record_ids": [
+        "dsa-risk-quota-timeout",
+        "dsa-risk-live-write-before-validation",
+        "dsa-risk-idempotency-missing"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "Preface",
+        "chapter_title": "Preface",
+        "section_heading": "Why Study Data Structures and Algorithms",
+        "page_or_anchor": "OEBPS/preface01.html#idp7339520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source supports selecting structures and algorithms for efficient transformations but does not discuss Apps Script execution interruption."
+        ],
+        "inferred_claims": [
+          "Timeout and partial-write behavior are current-platform and project-specific concerns requiring verification."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "apps-script",
+        "timeout",
+        "partial-write",
+        "correctness"
+      ],
+      "performance_concept": "Timeout risk becomes a correctness risk after side effects begin",
+      "plain_language_meaning": "When a long-running transformation writes incrementally, interruption can leave a partially updated destination even when the in-memory algorithm was logically correct.",
+      "source_supported_point": "The source supports selecting structures and algorithms for efficient transformations but does not discuss Apps Script execution interruption.",
+      "scale_or_complexity_implication": "Runtime growth, service latency, and side effects interact; total elapsed time and recovery semantics matter.",
+      "apps_script_relevance": "Validate and stage results before live writes; define idempotency, resume, or rollback behavior for any unavoidable chunking.",
+      "symptoms_of_problem": [
+        "Destination contains only first portion of rows",
+        "Retry duplicates already-written records",
+        "No run identifier or checkpoint"
+      ],
+      "better_design_pattern": "Use dry-run validation, bounded batch writes, idempotent keys, and structured run history appropriate to current project behavior.",
+      "tests_or_measurements": [
+        "Force a controlled interruption in a test copy",
+        "Verify retry outcome",
+        "Compare expected versus written key sets"
+      ]
+    }
+  ]
+}

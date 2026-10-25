@@ -1,0 +1,2349 @@
+{
+  "file_metadata": {
+    "file_name": "data_structures_algorithms_js_failure_modes_and_pitfalls_v1.json",
+    "package_id": "data_structures_algorithms_js_reasoning_os_v1",
+    "package_version": "1.0",
+    "generated_at_utc": "2026-08-25T17:45:26.946739+00:00",
+    "purpose": "The required 25 reusable source/runtime/workflow failure-mode records.",
+    "record_count": 25,
+    "source_title": "Data Structures and Algorithms with JavaScript",
+    "source_author": "Michael McMillan",
+    "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+    "source_boundary": "Source-supported concepts are separated from low-confidence Apps Script, spreadsheet, internal-tool, and AI-agent extensions. Current platform behavior must be verified.",
+    "copyright_safety": "Concepts and implementation logic are paraphrased. No long source passages, long code listings, full algorithm implementations, or exercise solutions are reproduced."
+  },
+  "failure_modes_and_pitfalls": [
+    {
+      "id": "dsa-risk-array-only-thinking",
+      "record_type": "failure_mode",
+      "name": "Array-only thinking",
+      "summary": "Every problem is represented as one or more positional arrays even when the dominant need is named fields, uniqueness, FIFO/LIFO order, hierarchy, or relationships.",
+      "source_concept": "Array-only thinking",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Source-supported data-structure or algorithm reasoning.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Many magic indexes",
+        "Repeated scans",
+        "Parallel arrays that can drift",
+        "Flags simulate queue/set/map behavior"
+      ],
+      "tests_or_checks": [
+        "Review all repeated scans and magic indexes",
+        "State the dominant operation for each collection"
+      ],
+      "diagnostic_questions": [
+        "Does this problem need position, named fields, direct lookup, uniqueness, processing order, hierarchy, or relationships?"
+      ],
+      "related_record_ids": [
+        "dsa-core-arrays-not-universal",
+        "dsa-decision-array-versus-object-record",
+        "dsa-workflow-choose-data-structure"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "Preface",
+        "chapter_title": "Preface",
+        "section_heading": "Why Study Data Structures and Algorithms",
+        "page_or_anchor": "OEBPS/preface01.html#idp7339520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source explicitly says arrays are useful but insufficient for many complex problems."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_definition",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Array-only thinking",
+      "description": "Every problem is represented as one or more positional arrays even when the dominant need is named fields, uniqueness, FIFO/LIFO order, hierarchy, or relationships.",
+      "where_it_appears": [
+        "Spreadsheet row processors",
+        "Mapping logic",
+        "Workflow state",
+        "Duplicate checks"
+      ],
+      "root_cause": "Familiarity with arrays is substituted for data-structure selection.",
+      "symptoms": [
+        "Many magic indexes",
+        "Repeated scans",
+        "Parallel arrays that can drift",
+        "Flags simulate queue/set/map behavior"
+      ],
+      "why_it_misleads": "The code may work on a small sample, making the representation cost look like an implementation-detail problem rather than a structure mismatch.",
+      "better_question": "Does this problem need position, named fields, direct lookup, uniqueness, processing order, hierarchy, or relationships?",
+      "prevention_or_mitigation": [
+        "Run the data-structure selection gate",
+        "Convert rows to named records when clarity improves",
+        "Use lookup/set/queue semantics only when required",
+        "Do not add custom classes without benefit"
+      ]
+    },
+    {
+      "id": "dsa-risk-wrong-data-structure",
+      "record_type": "failure_mode",
+      "name": "Wrong data structure for the dominant operation",
+      "summary": "The chosen representation makes the most frequent or correctness-critical operation awkward, slow, or error-prone.",
+      "source_concept": "Wrong data structure for the dominant operation",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Source-supported data-structure or algorithm reasoning.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Complex special cases",
+        "Repeated conversion between shapes",
+        "Unexpected scaling",
+        "Invariants enforced only by comments"
+      ],
+      "tests_or_checks": [
+        "Operation-count review",
+        "Scale benchmark",
+        "Invariant violation cases"
+      ],
+      "diagnostic_questions": [
+        "Which structure makes the dominant operation and invariant direct, and what trade-off does that choice introduce?"
+      ],
+      "related_record_ids": [
+        "dsa-core-structure-shapes-algorithm",
+        "dsa-decision-clarity-versus-sophistication",
+        "dsa-workflow-choose-data-structure"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "Preface",
+        "chapter_title": "Preface",
+        "section_heading": "Why Study Data Structures and Algorithms",
+        "page_or_anchor": "OEBPS/preface01.html#idp7339520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source emphasizes choosing structures and algorithms appropriate to the problem and its trade-offs."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_definition",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Wrong data structure for the dominant operation",
+      "description": "The chosen representation makes the most frequent or correctness-critical operation awkward, slow, or error-prone.",
+      "where_it_appears": [
+        "Search-heavy code",
+        "Insert/delete-heavy collections",
+        "Dependency workflows",
+        "Optimization logic"
+      ],
+      "root_cause": "Structure is chosen before input shape, output shape, operation frequency, and invariants are identified.",
+      "symptoms": [
+        "Complex special cases",
+        "Repeated conversion between shapes",
+        "Unexpected scaling",
+        "Invariants enforced only by comments"
+      ],
+      "why_it_misleads": "Developers may optimize loops around a representation that cannot naturally express the required invariant.",
+      "better_question": "Which structure makes the dominant operation and invariant direct, and what trade-off does that choice introduce?",
+      "prevention_or_mitigation": [
+        "List required operations and their frequency",
+        "Compare at least two candidate structures",
+        "Measure end-to-end behavior",
+        "Prefer clarity over theoretical sophistication"
+      ]
+    },
+    {
+      "id": "dsa-risk-nested-loop-timeout",
+      "record_type": "failure_mode",
+      "name": "Nested-loop timeout from repeated full scans",
+      "summary": "Each source row scans a mapping or second dataset from beginning to end, multiplying work and threatening hosted execution completion.",
+      "source_concept": "Nested-loop timeout from repeated full scans",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Current project/runtime requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Nested loops over two large row arrays",
+        "Runtime grows sharply when both datasets grow",
+        "Timeout near largest reporting periods"
+      ],
+      "tests_or_checks": [
+        "Double both input sizes and compare growth",
+        "Benchmark indexed join",
+        "Duplicate/missing-key cases"
+      ],
+      "diagnostic_questions": [
+        "Are we scanning the same reference collection repeatedly, and can a validated lookup map replace those scans?"
+      ],
+      "related_record_ids": [
+        "dsa-perf-nested-loop-growth",
+        "dsa-sheet-join-by-key",
+        "dsa-workflow-diagnose-timeout"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Searching for a Value",
+        "page_or_anchor": "OEBPS/ch02.html#idp14711680",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source describes sequential search as checking elements in order; repeating it per input row repeats the work."
+        ],
+        "inferred_claims": [
+          "Timeout impact in Apps Script is a current-platform extension requiring verification."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Nested-loop timeout from repeated full scans",
+      "description": "Each source row scans a mapping or second dataset from beginning to end, multiplying work and threatening hosted execution completion.",
+      "where_it_appears": [
+        "Sheet joins",
+        "Location/vendor/account mappings",
+        "Duplicate comparison",
+        "Cross-report reconciliation"
+      ],
+      "root_cause": "Sequential search is repeated for every row instead of building an index once.",
+      "symptoms": [
+        "Nested loops over two large row arrays",
+        "Runtime grows sharply when both datasets grow",
+        "Timeout near largest reporting periods"
+      ],
+      "why_it_misleads": "Small fixtures hide multiplicative growth; attention may focus on syntax or API quotas before counting comparisons.",
+      "better_question": "Are we scanning the same reference collection repeatedly, and can a validated lookup map replace those scans?",
+      "prevention_or_mitigation": [
+        "Build a key-indexed reference map once",
+        "Validate duplicate reference keys",
+        "Instrument operation counts",
+        "Test maximum realistic row counts"
+      ]
+    },
+    {
+      "id": "dsa-risk-repeated-sheet-service-call",
+      "record_type": "failure_mode",
+      "name": "Repeated spreadsheet service calls inside loops",
+      "summary": "Row-by-row reads or writes cross the hosted spreadsheet service boundary on every iteration instead of using in-memory batches.",
+      "source_concept": "Repeated spreadsheet service calls inside loops",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Current project/runtime requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "get/set-style call inside loops",
+        "High latency on few rows",
+        "Partial writes",
+        "Quota or trigger failures"
+      ],
+      "tests_or_checks": [
+        "Instrument service-call count",
+        "Compare cell-by-cell and batch versions on a copy",
+        "Force a mid-run failure"
+      ],
+      "diagnostic_questions": [
+        "Which spreadsheet calls can move outside the loop into one bounded read and one validated write?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-batch-operations",
+        "dsa-sheet-read-once",
+        "dsa-sheet-batch-write-after-validation"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Processing Two-Dimensional Array Elements",
+        "page_or_anchor": "OEBPS/ch02.html#idp18183376",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source demonstrates in-memory multidimensional array processing; spreadsheet service-call behavior is outside the source."
+        ],
+        "inferred_claims": [
+          "Batching guidance is a Google Apps Script translation extension."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Repeated spreadsheet service calls inside loops",
+      "description": "Row-by-row reads or writes cross the hosted spreadsheet service boundary on every iteration instead of using in-memory batches.",
+      "where_it_appears": [
+        "Google Sheets imports/exports",
+        "Cell validation",
+        "Dashboard refresh",
+        "Scorecard sync"
+      ],
+      "root_cause": "The sheet is treated like a local array rather than an external service with separate call cost and failure behavior.",
+      "symptoms": [
+        "get/set-style call inside loops",
+        "High latency on few rows",
+        "Partial writes",
+        "Quota or trigger failures"
+      ],
+      "why_it_misleads": "The algorithm may appear linear while the dominant cost is repeated remote interaction.",
+      "better_question": "Which spreadsheet calls can move outside the loop into one bounded read and one validated write?",
+      "prevention_or_mitigation": [
+        "Read bounded range once",
+        "Transform in memory",
+        "Batch-write after validation",
+        "Count service calls and verify current limits"
+      ]
+    },
+    {
+      "id": "dsa-risk-missing-lookup-map",
+      "record_type": "failure_mode",
+      "name": "Missing lookup map for repeated key retrieval",
+      "summary": "Stable reference data is searched repeatedly by key instead of being normalized and indexed once.",
+      "source_concept": "Missing lookup map for repeated key retrieval",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Current project/runtime requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Repeated indexOf/find/filter",
+        "Nested joins",
+        "Same missing key handled repeatedly",
+        "Scattered mapping conditionals"
+      ],
+      "tests_or_checks": [
+        "Duplicate reference key",
+        "Missing mapping",
+        "Normalization variants",
+        "Build-plus-query benchmark"
+      ],
+      "diagnostic_questions": [
+        "Can this reference collection be indexed once by a validated unique key?"
+      ],
+      "related_record_ids": [
+        "dsa-perf-repeated-search",
+        "dsa-sheet-header-index-map",
+        "dsa-tool-location-mapping"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "7",
+        "chapter_title": "Dictionaries",
+        "section_heading": "The Dictionary Class",
+        "page_or_anchor": "OEBPS/ch07.html#idp29229184",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines dictionaries as key-value storage and hashing as key-directed retrieval."
+        ],
+        "inferred_claims": [
+          "The named spreadsheet lookups are applied extensions."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Missing lookup map for repeated key retrieval",
+      "description": "Stable reference data is searched repeatedly by key instead of being normalized and indexed once.",
+      "where_it_appears": [
+        "Header lookup",
+        "Location mapping",
+        "GL/vendor/menu mapping",
+        "Repeated ID search"
+      ],
+      "root_cause": "Dictionary/hash-style access is not recognized as the actual need, or duplicate-key policy is undefined.",
+      "symptoms": [
+        "Repeated indexOf/find/filter",
+        "Nested joins",
+        "Same missing key handled repeatedly",
+        "Scattered mapping conditionals"
+      ],
+      "why_it_misleads": "Each individual search is easy to read, but total work and inconsistent missing-key behavior accumulate across rows.",
+      "better_question": "Can this reference collection be indexed once by a validated unique key?",
+      "prevention_or_mitigation": [
+        "Define normalized key",
+        "Build one dictionary/Map-like index",
+        "Reject or group duplicate keys",
+        "Validate coverage before export"
+      ]
+    },
+    {
+      "id": "dsa-risk-duplicate-not-detected",
+      "record_type": "failure_mode",
+      "name": "Duplicate identity is not detected or is defined incorrectly",
+      "summary": "Repeated logical records pass through because uniqueness is not modeled, the key is incomplete, or normalization differs across runs.",
+      "source_concept": "Duplicate identity is not detected or is defined incorrectly",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Source-supported data-structure or algorithm reasoning.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Duplicate rows/emails/exports",
+        "Counts inflate",
+        "Retry creates another record",
+        "Same entity appears under formatting variants"
+      ],
+      "tests_or_checks": [
+        "Exact and normalized duplicates",
+        "Missing key component",
+        "Historical duplicate",
+        "Composite-key collision"
+      ],
+      "diagnostic_questions": [
+        "What exact normalized fields identify one logical record or side effect, and where must uniqueness hold?"
+      ],
+      "related_record_ids": [
+        "dsa-tool-duplicate-detection",
+        "dsa-sheet-duplicate-id-detection",
+        "dsa-risk-idempotency-missing"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "9",
+        "chapter_title": "Sets",
+        "section_heading": "Fundamental Set Definitions, Operations, and Properties",
+        "page_or_anchor": "OEBPS/ch09.html#idp34336432",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines sets as collections that do not contain duplicate members."
+        ],
+        "inferred_claims": [
+          "Durable cross-run duplicate detection is an applied extension."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Duplicate identity is not detected or is defined incorrectly",
+      "description": "Repeated logical records pass through because uniqueness is not modeled, the key is incomplete, or normalization differs across runs.",
+      "where_it_appears": [
+        "Uploads",
+        "Transactions",
+        "Reviews",
+        "Form submissions",
+        "Exports"
+      ],
+      "root_cause": "A list is used without a uniqueness invariant, or the business identity key is unspecified.",
+      "symptoms": [
+        "Duplicate rows/emails/exports",
+        "Counts inflate",
+        "Retry creates another record",
+        "Same entity appears under formatting variants"
+      ],
+      "why_it_misleads": "A technical ID can look unique while failing to represent the true logical action, and a set can hide which rows duplicated.",
+      "better_question": "What exact normalized fields identify one logical record or side effect, and where must uniqueness hold?",
+      "prevention_or_mitigation": [
+        "Define identity with business owners",
+        "Use set membership plus occurrence map",
+        "Check current input and committed history",
+        "Preserve duplicate provenance"
+      ]
+    },
+    {
+      "id": "dsa-risk-header-index-drift",
+      "record_type": "failure_mode",
+      "name": "Header/index drift",
+      "summary": "Code assumes fixed column positions, so a reordered, inserted, renamed, duplicated, or missing header causes values to be read from the wrong columns.",
+      "source_concept": "Header/index drift",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Current project/runtime requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Valid-looking but wrong values",
+        "Dates appear in amount fields",
+        "Mapping failures after column reorder",
+        "Off-by-one errors after adding a column"
+      ],
+      "tests_or_checks": [
+        "Reorder/insert/remove/duplicate/rename columns",
+        "Blank header",
+        "Header row offset"
+      ],
+      "diagnostic_questions": [
+        "Are columns resolved from a validated header map, and what happens when headers are reordered, duplicated, or renamed?"
+      ],
+      "related_record_ids": [
+        "dsa-sheet-header-index-map",
+        "dsa-tool-expected-actual-headers",
+        "dsa-sheet-preserve-original-row-index"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Accessing and Writing Array Elements",
+        "page_or_anchor": "OEBPS/ch02.html#idp13336880",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source explains indexed array access; schema drift across spreadsheet columns is an applied risk."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Header/index drift",
+      "description": "Code assumes fixed column positions, so a reordered, inserted, renamed, duplicated, or missing header causes values to be read from the wrong columns.",
+      "where_it_appears": [
+        "CSV/XLSX parsers",
+        "Google Sheets transformations",
+        "R365 imports",
+        "Dashboard preparation"
+      ],
+      "root_cause": "Positional array indexes are treated as stable schema identifiers.",
+      "symptoms": [
+        "Valid-looking but wrong values",
+        "Dates appear in amount fields",
+        "Mapping failures after column reorder",
+        "Off-by-one errors after adding a column"
+      ],
+      "why_it_misleads": "The script may not throw; it can produce plausible corrupted output.",
+      "better_question": "Are columns resolved from a validated header map, and what happens when headers are reordered, duplicated, or renamed?",
+      "prevention_or_mitigation": [
+        "Validate expected versus actual headers",
+        "Build one canonical header index map",
+        "Reject duplicates",
+        "Preserve raw header positions"
+      ]
+    },
+    {
+      "id": "dsa-risk-row-shape-assumption",
+      "record_type": "failure_mode",
+      "name": "Unvalidated row-shape assumption",
+      "summary": "Code assumes every row has the same width, field types, key components, and header interpretation even when uploads or sheets contain jagged, blank, merged, or malformed data.",
+      "source_concept": "Unvalidated row-shape assumption",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Current project/runtime requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Undefined fields",
+        "Shifted columns",
+        "Type coercion surprises",
+        "Errors only on certain rows"
+      ],
+      "tests_or_checks": [
+        "Short/long row",
+        "Blank cell",
+        "Merged/multirow header",
+        "Mixed types",
+        "Formula/error value"
+      ],
+      "diagnostic_questions": [
+        "What exact physical and semantic schema is required, and how are blank, missing, malformed, and extra values represented?"
+      ],
+      "related_record_ids": [
+        "dsa-array-jagged",
+        "dsa-gas-data-shape-validation",
+        "dsa-workflow-review-row-shape"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Jagged Arrays",
+        "page_or_anchor": "OEBPS/ch02.html#idp18528176",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source distinguishes multidimensional and jagged arrays and demonstrates arrays of objects."
+        ],
+        "inferred_claims": [
+          "Uploaded spreadsheet failure patterns are applied extensions."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch02.html",
+            "chapter_number": "2",
+            "chapter_title": "Arrays",
+            "section_heading": "Arrays of Objects",
+            "page_or_anchor": "OEBPS/ch02.html#idp18891520"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Unvalidated row-shape assumption",
+      "description": "Code assumes every row has the same width, field types, key components, and header interpretation even when uploads or sheets contain jagged, blank, merged, or malformed data.",
+      "where_it_appears": [
+        "CSV/XLSX uploads",
+        "Sheet exports",
+        "Form responses",
+        "API result tables"
+      ],
+      "root_cause": "The transformation begins before the physical and semantic row schema is inspected and validated.",
+      "symptoms": [
+        "Undefined fields",
+        "Shifted columns",
+        "Type coercion surprises",
+        "Errors only on certain rows"
+      ],
+      "why_it_misleads": "Rectangular happy-path samples conceal that real tabular data can be jagged or semantically inconsistent.",
+      "better_question": "What exact physical and semantic schema is required, and how are blank, missing, malformed, and extra values represented?",
+      "prevention_or_mitigation": [
+        "Validate row width and header map first",
+        "Convert to typed records with provenance",
+        "Collect structural and semantic issues separately",
+        "Reject ambiguous parses"
+      ]
+    },
+    {
+      "id": "dsa-risk-mutation-during-iteration",
+      "record_type": "failure_mode",
+      "name": "Mutation during iteration changes traversal semantics",
+      "summary": "Elements are added, removed, reordered, or rewritten while the same collection is being traversed, causing skips, duplicates, stale indexes, or hard-to-reason side effects.",
+      "source_concept": "Mutation during iteration changes traversal semantics",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Source-supported data-structure or algorithm reasoning.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Every other invalid row remains",
+        "Index jumps",
+        "Newly added work is processed unexpectedly",
+        "Original order/provenance lost"
+      ],
+      "tests_or_checks": [
+        "Adjacent removable items",
+        "First/last item",
+        "All/none removed",
+        "Items added during loop",
+        "Duplicate values"
+      ],
+      "diagnostic_questions": [
+        "Should this stage construct a new collection, iterate in a safe direction, or separate discovery from mutation?"
+      ],
+      "related_record_ids": [
+        "dsa-array-splice-middle",
+        "dsa-sheet-preserve-original-row-index",
+        "dsa-decision-clarity-versus-sophistication"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Mutator Functions",
+        "page_or_anchor": "OEBPS/ch02.html#idp15074672",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source distinguishes mutator functions from iterator functions and demonstrates insertions/removals that shift array positions."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch02.html",
+            "chapter_number": "2",
+            "chapter_title": "Arrays",
+            "section_heading": "Removing Elements from an Array",
+            "page_or_anchor": "OEBPS/ch02.html#idp15312064"
+          },
+          {
+            "source_file": "ch02.html",
+            "chapter_number": "2",
+            "chapter_title": "Arrays",
+            "section_heading": "Iterator Functions",
+            "page_or_anchor": "OEBPS/ch02.html#idp16113168"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Mutation during iteration changes traversal semantics",
+      "description": "Elements are added, removed, reordered, or rewritten while the same collection is being traversed, causing skips, duplicates, stale indexes, or hard-to-reason side effects.",
+      "where_it_appears": [
+        "Array filtering/removal loops",
+        "Queue processing",
+        "Validation fixes",
+        "Sort/search preprocessing"
+      ],
+      "root_cause": "Mutation and traversal are interleaved without an explicit invariant or direction.",
+      "symptoms": [
+        "Every other invalid row remains",
+        "Index jumps",
+        "Newly added work is processed unexpectedly",
+        "Original order/provenance lost"
+      ],
+      "why_it_misleads": "The loop body can look locally correct while collection length and index meaning change underneath it.",
+      "better_question": "Should this stage construct a new collection, iterate in a safe direction, or separate discovery from mutation?",
+      "prevention_or_mitigation": [
+        "Prefer filter/map/new output arrays for transformations",
+        "Separate validation from mutation",
+        "Document queue drain behavior",
+        "Preserve original row index"
+      ]
+    },
+    {
+      "id": "dsa-risk-unstable-sort-assumption",
+      "record_type": "failure_mode",
+      "name": "Unverified sort stability or comparator behavior",
+      "summary": "Code assumes equal-key rows preserve prior order or that the current runtime compares values as intended without defining tie-breakers and types.",
+      "source_concept": "Unverified sort stability or comparator behavior",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Current project/runtime requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Equal-key rows reorder",
+        "Numeric strings sort incorrectly",
+        "Blank/date values appear in unexpected positions",
+        "Results differ across runtimes"
+      ],
+      "tests_or_checks": [
+        "Equal keys",
+        "Numeric strings",
+        "Dates",
+        "Blank/null",
+        "Presorted and reverse-sorted input"
+      ],
+      "diagnostic_questions": [
+        "What comparator, null policy, and tie-breaker define the required order, and has current sort behavior been verified?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-sorting-built-in-boundary",
+        "dsa-sheet-sort-output-rows",
+        "dsa-verify-array-sort-runtime"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "12",
+        "chapter_title": "Sorting Algorithms",
+        "section_heading": "Basic Sorting Algorithms",
+        "page_or_anchor": "OEBPS/ch12.html#idp42067616",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source teaches multiple sorting algorithms but is not authoritative for current Apps Script built-in sort behavior."
+        ],
+        "inferred_claims": [
+          "Current sort stability and comparator semantics require current documentation/runtime verification."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "current_verification_flag",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Unverified sort stability or comparator behavior",
+      "description": "Code assumes equal-key rows preserve prior order or that the current runtime compares values as intended without defining tie-breakers and types.",
+      "where_it_appears": [
+        "User-facing reports",
+        "Dashboard rows",
+        "Grouped exports",
+        "Binary-search preparation"
+      ],
+      "root_cause": "Educational sorting concepts are conflated with current runtime-native sort semantics.",
+      "symptoms": [
+        "Equal-key rows reorder",
+        "Numeric strings sort incorrectly",
+        "Blank/date values appear in unexpected positions",
+        "Results differ across runtimes"
+      ],
+      "why_it_misleads": "Output can remain globally sorted while violating user-visible tie order or type expectations.",
+      "better_question": "What comparator, null policy, and tie-breaker define the required order, and has current sort behavior been verified?",
+      "prevention_or_mitigation": [
+        "Define typed comparator",
+        "Add deterministic tie-breakers or original index",
+        "Verify current runtime stability/behavior",
+        "Test duplicates and mixed values"
+      ]
+    },
+    {
+      "id": "dsa-risk-binary-search-unsorted-data",
+      "record_type": "failure_mode",
+      "name": "Binary search applied to unsorted or inconsistently ordered data",
+      "summary": "Binary search discards half of the candidate interval based on an ordering precondition that the data does not actually satisfy.",
+      "source_concept": "Binary search applied to unsorted or inconsistently ordered data",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Source-supported data-structure or algorithm reasoning.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Existing values reported missing",
+        "Intermittent failures after inserts",
+        "Search works only on some datasets"
+      ],
+      "tests_or_checks": [
+        "Unsorted input",
+        "Reverse order",
+        "Duplicate keys",
+        "First/last/missing value",
+        "Comparator mismatch"
+      ],
+      "diagnostic_questions": [
+        "What proves the data is sorted by the same comparator used by binary search immediately before the search?"
+      ],
+      "related_record_ids": [
+        "dsa-search-binary",
+        "dsa-decision-sequential-versus-binary",
+        "dsa-decision-binary-versus-map"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "13",
+        "chapter_title": "Searching Algorithms",
+        "section_heading": "Binary Search",
+        "page_or_anchor": "OEBPS/ch13.html#idp50459344",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source presents binary search over sorted data."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Binary search applied to unsorted or inconsistently ordered data",
+      "description": "Binary search discards half of the candidate interval based on an ordering precondition that the data does not actually satisfy.",
+      "where_it_appears": [
+        "Sorted report arrays",
+        "ID lookup",
+        "Date-range search",
+        "Post-filter data"
+      ],
+      "root_cause": "Sortedness is assumed, changed by later mutation, or defined with a comparator different from the search comparator.",
+      "symptoms": [
+        "Existing values reported missing",
+        "Intermittent failures after inserts",
+        "Search works only on some datasets"
+      ],
+      "why_it_misleads": "The algorithm terminates normally and can pass tests that happen to use sorted fixtures.",
+      "better_question": "What proves the data is sorted by the same comparator used by binary search immediately before the search?",
+      "prevention_or_mitigation": [
+        "Assert or construct sorted order",
+        "Use same comparator for sort and search",
+        "Prefer map lookup for repeated unique-key access when appropriate",
+        "Test after mutations"
+      ]
+    },
+    {
+      "id": "dsa-risk-set-versus-list-confusion",
+      "record_type": "failure_mode",
+      "name": "Set and list semantics are confused",
+      "summary": "A set is used when order, duplicates, or counts matter, or a list is used when uniqueness and membership are the primary invariant.",
+      "source_concept": "Set and list semantics are confused",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Source-supported data-structure or algorithm reasoning.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Duplicate evidence disappears",
+        "Unexpected ordering assumptions",
+        "O(n) membership scans",
+        "Counts cannot be reconstructed"
+      ],
+      "tests_or_checks": [
+        "Repeated values",
+        "Order-sensitive output",
+        "Membership-only query",
+        "Count occurrences"
+      ],
+      "diagnostic_questions": [
+        "Do we need uniqueness, order, occurrence counts, or all three—and which structure preserves each requirement?"
+      ],
+      "related_record_ids": [
+        "dsa-set-uniqueness",
+        "dsa-list-adt",
+        "dsa-decision-set-versus-list"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "9",
+        "chapter_title": "Sets",
+        "section_heading": "Fundamental Set Definitions, Operations, and Properties",
+        "page_or_anchor": "OEBPS/ch09.html#idp34336432",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines lists as ordered collections and sets as collections without duplicates."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch03.html",
+            "chapter_number": "3",
+            "chapter_title": "Lists",
+            "section_heading": "A List ADT",
+            "page_or_anchor": "OEBPS/ch03.html#idp19348032"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Set and list semantics are confused",
+      "description": "A set is used when order, duplicates, or counts matter, or a list is used when uniqueness and membership are the primary invariant.",
+      "where_it_appears": [
+        "Duplicate detection",
+        "Required coverage",
+        "Ordered validation messages",
+        "Category counts"
+      ],
+      "root_cause": "The collection requirement is described only as “store values” rather than order, uniqueness, membership, or multiplicity.",
+      "symptoms": [
+        "Duplicate evidence disappears",
+        "Unexpected ordering assumptions",
+        "O(n) membership scans",
+        "Counts cannot be reconstructed"
+      ],
+      "why_it_misleads": "Both structures can appear to hold the same sample values, while enforcing different invariants.",
+      "better_question": "Do we need uniqueness, order, occurrence counts, or all three—and which structure preserves each requirement?",
+      "prevention_or_mitigation": [
+        "Use set for uniqueness/membership",
+        "Use list/array for ordered occurrences",
+        "Use dictionary for counts",
+        "Combine structures when speed and explanation both matter"
+      ]
+    },
+    {
+      "id": "dsa-risk-queue-retry-duplication",
+      "record_type": "failure_mode",
+      "name": "Retry queue duplicates work or never drains",
+      "summary": "Failed items are re-enqueued without stable identity, bounded attempts, terminal classification, or proof of whether the prior side effect committed.",
+      "source_concept": "Retry queue duplicates work or never drains",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Current project/runtime requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Same email/export repeated",
+        "Poison item cycles forever",
+        "Queue length grows",
+        "Two workers process same item"
+      ],
+      "tests_or_checks": [
+        "Lost response after success",
+        "Permanent failure",
+        "Concurrent workers",
+        "Attempt limit",
+        "Restart between dequeue and commit"
+      ],
+      "diagnostic_questions": [
+        "What uniquely identifies the work, what proves it committed, which failures are retryable, and how are concurrent claims prevented?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-queues-staged-processing",
+        "dsa-tool-retry-idempotency",
+        "dsa-decision-retry-queue-versus-immediate"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "5",
+        "chapter_title": "Queues",
+        "section_heading": "Queue Operations",
+        "page_or_anchor": "OEBPS/ch05.html#idp23142720",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines FIFO and priority queue behavior; durable retries and exactly-once effects are outside the source."
+        ],
+        "inferred_claims": [
+          "Retry duplication is an applied internal-tool risk."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Retry queue duplicates work or never drains",
+      "description": "Failed items are re-enqueued without stable identity, bounded attempts, terminal classification, or proof of whether the prior side effect committed.",
+      "where_it_appears": [
+        "Upload processors",
+        "Email/report sending",
+        "API exports",
+        "Trigger-based work queues"
+      ],
+      "root_cause": "FIFO mechanics are implemented without durable state, idempotency, retry policy, and concurrency controls.",
+      "symptoms": [
+        "Same email/export repeated",
+        "Poison item cycles forever",
+        "Queue length grows",
+        "Two workers process same item"
+      ],
+      "why_it_misleads": "The queue data structure organizes order but does not by itself guarantee exactly-once processing or durable progress.",
+      "better_question": "What uniquely identifies the work, what proves it committed, which failures are retryable, and how are concurrent claims prevented?",
+      "prevention_or_mitigation": [
+        "Stable item/action key",
+        "Bounded attempts",
+        "Terminal status",
+        "Durable verified queue",
+        "Concurrency-safe claim",
+        "Idempotent side effect"
+      ]
+    },
+    {
+      "id": "dsa-risk-stack-queue-order-confusion",
+      "record_type": "failure_mode",
+      "name": "Stack used where FIFO is required, or queue used where LIFO is required",
+      "summary": "Processing order is implemented with the wrong end-removal rule, reversing fairness, nesting, history, or dependency expectations.",
+      "source_concept": "Stack used where FIFO is required, or queue used where LIFO is required",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Source-supported data-structure or algorithm reasoning.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Newest request processed before oldest",
+        "Undo removes oldest action",
+        "Nested close/open pairing fails"
+      ],
+      "tests_or_checks": [
+        "Add A/B/C and assert removal order",
+        "Mixed add/remove sequence",
+        "Dependency exception"
+      ],
+      "diagnostic_questions": [
+        "Must the next item be the oldest enqueued or the most recently added?"
+      ],
+      "related_record_ids": [
+        "dsa-stack-lifo",
+        "dsa-queue-fifo",
+        "dsa-decision-stack-versus-queue"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "4",
+        "chapter_title": "Stacks",
+        "section_heading": "Stack Operations",
+        "page_or_anchor": "OEBPS/ch04.html#idp21554816",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines stacks as LIFO and queues as FIFO."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch05.html",
+            "chapter_number": "5",
+            "chapter_title": "Queues",
+            "section_heading": "Queue Operations",
+            "page_or_anchor": "OEBPS/ch05.html#idp23142720"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "source_direct_definition",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Stack used where FIFO is required, or queue used where LIFO is required",
+      "description": "Processing order is implemented with the wrong end-removal rule, reversing fairness, nesting, history, or dependency expectations.",
+      "where_it_appears": [
+        "Undo/history",
+        "Task worklists",
+        "Nested parsing",
+        "Submission processing"
+      ],
+      "root_cause": "The ordering invariant is not stated as oldest-first or newest-first.",
+      "symptoms": [
+        "Newest request processed before oldest",
+        "Undo removes oldest action",
+        "Nested close/open pairing fails"
+      ],
+      "why_it_misleads": "Both structures expose add/remove operations, so the semantic difference can be hidden by generic collection names.",
+      "better_question": "Must the next item be the oldest enqueued or the most recently added?",
+      "prevention_or_mitigation": [
+        "Name operations enqueue/dequeue or push/pop",
+        "Document order invariant",
+        "Test three distinguishable items",
+        "Use dependency graph if simple order is insufficient"
+      ]
+    },
+    {
+      "id": "dsa-risk-tree-overengineering",
+      "record_type": "failure_mode",
+      "name": "Tree overengineering in a flat or small workflow",
+      "summary": "A custom tree or BST is introduced for a hierarchy or lookup that a table, path, sorted array, or dictionary can represent more simply.",
+      "source_concept": "Tree overengineering in a flat or small workflow",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Current project/runtime requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Complex node mutation code",
+        "Serialization difficulty",
+        "Orphans/cycles not handled",
+        "No measured improvement"
+      ],
+      "tests_or_checks": [
+        "Orphan/cycle/duplicate node",
+        "Flat table solution comparison",
+        "Maximum depth and traversal need"
+      ],
+      "diagnostic_questions": [
+        "What operation requires a tree, and can a parent-ID table plus lookup index answer it more safely?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-trees-hierarchy-caution",
+        "dsa-decision-sorted-array-versus-tree",
+        "dsa-decision-custom-versus-native"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "10",
+        "chapter_title": "Binary Trees and Binary Search Trees",
+        "section_heading": "Trees Defined",
+        "page_or_anchor": "OEBPS/ch10.html#idp36001232",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines trees and BST operations; it does not claim every hierarchy needs a custom tree in Apps Script."
+        ],
+        "inferred_claims": [
+          "The overengineering warning is an internal-tool extension."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Tree overengineering in a flat or small workflow",
+      "description": "A custom tree or BST is introduced for a hierarchy or lookup that a table, path, sorted array, or dictionary can represent more simply.",
+      "where_it_appears": [
+        "Account/category hierarchies",
+        "Menu structures",
+        "Org charts",
+        "Sorted lookup"
+      ],
+      "root_cause": "The presence of parent-child language is treated as proof that a custom tree class is necessary.",
+      "symptoms": [
+        "Complex node mutation code",
+        "Serialization difficulty",
+        "Orphans/cycles not handled",
+        "No measured improvement"
+      ],
+      "why_it_misleads": "A conceptually hierarchical domain does not automatically require an in-memory tree implementation.",
+      "better_question": "What operation requires a tree, and can a parent-ID table plus lookup index answer it more safely?",
+      "prevention_or_mitigation": [
+        "State required traversal/query",
+        "Validate hierarchy data first",
+        "Prefer table/adjacency map for simple cases",
+        "Implement tree only with demonstrated benefit"
+      ]
+    },
+    {
+      "id": "dsa-risk-graph-overengineering",
+      "record_type": "failure_mode",
+      "name": "Graph overengineering without a graph question",
+      "summary": "Nodes and edges are modeled even though the workflow only needs a flat mapping, ordered list, or simple parent-child table, adding complexity without answering path or dependency questions.",
+      "source_concept": "Graph overengineering without a graph question",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Current project/runtime requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Graph class with no traversal query",
+        "Direction/weight semantics vague",
+        "Cycles surprise topological logic",
+        "Table could answer all reports"
+      ],
+      "tests_or_checks": [
+        "Cycle",
+        "Disconnected node",
+        "Duplicate edge",
+        "Directed versus undirected interpretation",
+        "Flat-table alternative"
+      ],
+      "diagnostic_questions": [
+        "What are the nodes and edges, and what exact path, reachability, dependency, or ordering question must be answered?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-graphs-dependency-model",
+        "dsa-decision-graph-versus-table",
+        "dsa-workflow-review-dependency-graph"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "11",
+        "chapter_title": "Graphs and Graph Algorithms",
+        "section_heading": "Graph Definitions",
+        "page_or_anchor": "OEBPS/ch11.html#idp38726848",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines graphs and graph algorithms for network, path, and ordering problems; operational use is an extension."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Graph overengineering without a graph question",
+      "description": "Nodes and edges are modeled even though the workflow only needs a flat mapping, ordered list, or simple parent-child table, adding complexity without answering path or dependency questions.",
+      "where_it_appears": [
+        "Approval flows",
+        "Supplier networks",
+        "Escalation routes",
+        "Report dependencies"
+      ],
+      "root_cause": "Relationships exist, but the specific reachability, path, traversal, or ordering question is undefined.",
+      "symptoms": [
+        "Graph class with no traversal query",
+        "Direction/weight semantics vague",
+        "Cycles surprise topological logic",
+        "Table could answer all reports"
+      ],
+      "why_it_misleads": "Most operational data contains relationships, but not every relational table benefits from graph algorithms.",
+      "better_question": "What are the nodes and edges, and what exact path, reachability, dependency, or ordering question must be answered?",
+      "prevention_or_mitigation": [
+        "State graph question first",
+        "Define direction/weight",
+        "Compare with flat table",
+        "Validate cycles and missing nodes",
+        "Avoid graph if no traversal is required"
+      ]
+    },
+    {
+      "id": "dsa-risk-greedy-local-optimum",
+      "record_type": "failure_mode",
+      "name": "Greedy local choice mistaken for a global optimum",
+      "summary": "A locally best-looking choice is assumed to maximize the final result even though the problem’s constraints or item structure admit counterexamples.",
+      "source_concept": "Greedy local choice mistaken for a global optimum",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Source-supported data-structure or algorithm reasoning.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Outcome depends strongly on item order",
+        "Small counterexample beats heuristic",
+        "Fractional rule applied to indivisible units"
+      ],
+      "tests_or_checks": [
+        "Adversarial denominations/items",
+        "Reordered input",
+        "Exact brute-force comparison on small set",
+        "Constraint boundary"
+      ],
+      "diagnostic_questions": [
+        "What property makes the greedy choice safe here, and what smallest counterexample defeats it?"
+      ],
+      "related_record_ids": [
+        "dsa-greedy-local-choice",
+        "dsa-decision-greedy-versus-exact",
+        "dsa-gas-greedy-heuristics"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "14",
+        "chapter_title": "Advanced Algorithms",
+        "section_heading": "Greedy Algorithms",
+        "page_or_anchor": "OEBPS/ch14.html#idp56742640",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source states that greedy algorithms can produce suboptimal solutions and shows denomination-sensitive and fractional/discrete boundaries."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch14.html",
+            "chapter_number": "14",
+            "chapter_title": "Advanced Algorithms",
+            "section_heading": "A First Greedy Algorithm Example: The Coin-Changing Problem",
+            "page_or_anchor": "OEBPS/ch14.html#idp57193264"
+          },
+          {
+            "source_file": "ch14.html",
+            "chapter_number": "14",
+            "chapter_title": "Advanced Algorithms",
+            "section_heading": "A Greedy Algorithm Solution to the Knapsack Problem",
+            "page_or_anchor": "OEBPS/ch14.html#idp57348928"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "source_direct_algorithm",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Greedy local choice mistaken for a global optimum",
+      "description": "A locally best-looking choice is assumed to maximize the final result even though the problem’s constraints or item structure admit counterexamples.",
+      "where_it_appears": [
+        "Scheduling",
+        "Routing",
+        "Inventory allocation",
+        "Priority batching",
+        "Knapsack-like choices"
+      ],
+      "root_cause": "Greedy correctness is generalized from one successful example without proof or counterexample testing.",
+      "symptoms": [
+        "Outcome depends strongly on item order",
+        "Small counterexample beats heuristic",
+        "Fractional rule applied to indivisible units"
+      ],
+      "why_it_misleads": "The heuristic is simple, fast, and plausible, and may perform well on typical cases while failing exactly where optimality matters.",
+      "better_question": "What property makes the greedy choice safe here, and what smallest counterexample defeats it?",
+      "prevention_or_mitigation": [
+        "Define objective/constraints",
+        "Test against exact small cases",
+        "Distinguish fractional and discrete choices",
+        "Document acceptable suboptimality"
+      ]
+    },
+    {
+      "id": "dsa-risk-dp-overengineering",
+      "record_type": "failure_mode",
+      "name": "Dynamic programming overengineering or state explosion",
+      "summary": "A routine workflow is recast as a large optimization table without a clear recurrence, overlapping subproblems, bounded state space, or need for an exact result.",
+      "source_concept": "Dynamic programming overengineering or state explosion",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Source-supported data-structure or algorithm reasoning.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Huge multidimensional arrays",
+        "Unclear state definition",
+        "Timeout/memory pressure",
+        "Value returned without actionable reconstruction"
+      ],
+      "tests_or_checks": [
+        "State-count calculation",
+        "Known small optimum",
+        "Boundary dimensions",
+        "Reconstruction",
+        "Simpler baseline comparison"
+      ],
+      "diagnostic_questions": [
+        "Which subproblems repeat, how many states exist, and why is a simpler cache or heuristic insufficient?"
+      ],
+      "related_record_ids": [
+        "dsa-dp-apps-script-boundary",
+        "dsa-decision-dp-versus-cached-lookup",
+        "dsa-perf-dp-state-growth"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "14",
+        "chapter_title": "Advanced Algorithms",
+        "section_heading": "Dynamic Programming",
+        "page_or_anchor": "OEBPS/ch14.html#idp54524000",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines dynamic programming through stored subproblem solutions and also simplifies Fibonacci storage when the full table is unnecessary."
+        ],
+        "inferred_claims": [
+          "Routine Apps Script overengineering is an applied boundary."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch14.html",
+            "chapter_number": "14",
+            "chapter_title": "Advanced Algorithms",
+            "section_heading": "A Dynamic Programming Example: Computing Fibonacci Numbers",
+            "page_or_anchor": "OEBPS/ch14.html#idp54527024"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "medium",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Dynamic programming overengineering or state explosion",
+      "description": "A routine workflow is recast as a large optimization table without a clear recurrence, overlapping subproblems, bounded state space, or need for an exact result.",
+      "where_it_appears": [
+        "Scheduling/allocation ideas",
+        "Spreadsheet batching",
+        "Inventory prioritization",
+        "Memoization proposals"
+      ],
+      "root_cause": "Advanced algorithm vocabulary is used before a simpler scan, lookup cache, or greedy baseline is evaluated.",
+      "symptoms": [
+        "Huge multidimensional arrays",
+        "Unclear state definition",
+        "Timeout/memory pressure",
+        "Value returned without actionable reconstruction"
+      ],
+      "why_it_misleads": "The method can sound theoretically rigorous while solving a more complex problem than users actually have.",
+      "better_question": "Which subproblems repeat, how many states exist, and why is a simpler cache or heuristic insufficient?",
+      "prevention_or_mitigation": [
+        "Write recurrence/base cases",
+        "Estimate state count",
+        "Define reconstruction output",
+        "Compare simpler baseline",
+        "Use rolling state when valid"
+      ]
+    },
+    {
+      "id": "dsa-risk-source-era-js-runtime-assumption",
+      "record_type": "failure_mode",
+      "name": "Source-era JavaScript presented as current runtime best practice",
+      "summary": "Book code or language behavior is copied into a current project without separating enduring algorithmic concepts from source-era syntax, objects, shell functions, or conventions.",
+      "source_concept": "Source-era JavaScript presented as current runtime best practice",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Current project/runtime requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Undefined shell functions",
+        "Prototype-era custom classes copied unnecessarily",
+        "Native structures ignored or assumed",
+        "Syntax/environment errors"
+      ],
+      "tests_or_checks": [
+        "Run minimal compatibility probes",
+        "Compare current native APIs",
+        "Check repository/update notes without assuming currency"
+      ],
+      "diagnostic_questions": [
+        "Which claims are algorithmic and which depend on the 2014/2015 SpiderMonkey-oriented implementation environment?"
+      ],
+      "related_record_ids": [
+        "dsa-core-runtime-boundary",
+        "dsa-workflow-verify-source-era-runtime",
+        "dsa-verify-source-repository-errata"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "Preface",
+        "chapter_title": "Preface",
+        "section_heading": "What You Need for This Book",
+        "page_or_anchor": "OEBPS/preface01.html#idp84784",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source says it uses a SpiderMonkey-based JavaScript shell and that Node.js requires translations."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "current_verification_flag",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Source-era JavaScript presented as current runtime best practice",
+      "description": "Book code or language behavior is copied into a current project without separating enduring algorithmic concepts from source-era syntax, objects, shell functions, or conventions.",
+      "where_it_appears": [
+        "Code generation",
+        "Modernization",
+        "Apps Script review",
+        "Node translation"
+      ],
+      "root_cause": "The authority of the algorithm explanation is incorrectly extended to current runtime behavior.",
+      "symptoms": [
+        "Undefined shell functions",
+        "Prototype-era custom classes copied unnecessarily",
+        "Native structures ignored or assumed",
+        "Syntax/environment errors"
+      ],
+      "why_it_misleads": "The conceptual algorithm can remain correct even when the literal implementation is outdated or environment-specific.",
+      "better_question": "Which claims are algorithmic and which depend on the 2014/2015 SpiderMonkey-oriented implementation environment?",
+      "prevention_or_mitigation": [
+        "Label source era",
+        "Verify current runtime documentation",
+        "Translate concept rather than copy listing",
+        "Test current project behavior"
+      ]
+    },
+    {
+      "id": "dsa-risk-node-spidermonkey-appsscript-confusion",
+      "record_type": "failure_mode",
+      "name": "SpiderMonkey, Node.js, browser, and Apps Script runtimes are conflated",
+      "summary": "Code, globals, modules, I/O, persistence, or client/server assumptions from one environment are treated as transferable to another without verification.",
+      "source_concept": "SpiderMonkey, Node.js, browser, and Apps Script runtimes are conflated",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Current project/runtime requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Missing globals/modules",
+        "Server code expects DOM",
+        "Client code calls server APIs directly",
+        "File I/O or print/read functions unavailable"
+      ],
+      "tests_or_checks": [
+        "Minimal runtime probe",
+        "Client/server integration fixture",
+        "Authorization/deployment test",
+        "Unsupported-global scan"
+      ],
+      "diagnostic_questions": [
+        "Which runtime executes this code, which host APIs exist there, and what data crosses each boundary?"
+      ],
+      "related_record_ids": [
+        "dsa-core-runtime-boundary",
+        "dsa-verify-web-app-boundary",
+        "dsa-workflow-verify-source-era-runtime"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "Preface",
+        "chapter_title": "Preface",
+        "section_heading": "What You Need for This Book",
+        "page_or_anchor": "OEBPS/preface01.html#idp84784",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source explicitly distinguishes its SpiderMonkey shell from Node.js and says translations may be needed."
+        ],
+        "inferred_claims": [
+          "Apps Script and browser boundaries are current-platform extensions."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "current_verification_flag",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "SpiderMonkey, Node.js, browser, and Apps Script runtimes are conflated",
+      "description": "Code, globals, modules, I/O, persistence, or client/server assumptions from one environment are treated as transferable to another without verification.",
+      "where_it_appears": [
+        "Apps Script .gs files",
+        "HTMLService client code",
+        "Node scripts",
+        "Book examples"
+      ],
+      "root_cause": "JavaScript language similarity is mistaken for runtime and host-API equivalence.",
+      "symptoms": [
+        "Missing globals/modules",
+        "Server code expects DOM",
+        "Client code calls server APIs directly",
+        "File I/O or print/read functions unavailable"
+      ],
+      "why_it_misleads": "Shared syntax hides major differences in host objects, lifecycle, permissions, services, and deployment boundaries.",
+      "better_question": "Which runtime executes this code, which host APIs exist there, and what data crosses each boundary?",
+      "prevention_or_mitigation": [
+        "Label runtime per file/function",
+        "Verify host APIs",
+        "Separate browser/client and Apps Script/server contracts",
+        "Use adapters and tests"
+      ]
+    },
+    {
+      "id": "dsa-risk-native-map-set-verification",
+      "record_type": "failure_mode",
+      "name": "Native Map or Set behavior assumed without current Apps Script verification",
+      "summary": "A modern native structure is recommended or serialized/persisted based on generic JavaScript expectations rather than current Apps Script runtime and boundary behavior.",
+      "source_concept": "Native Map or Set behavior assumed without current Apps Script verification",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Current project/runtime requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Serialization loses entries",
+        "Equality/key semantics surprise",
+        "Unsupported method/runtime behavior",
+        "Object and Map access mixed"
+      ],
+      "tests_or_checks": [
+        "String/object keys",
+        "Iteration order if relied upon",
+        "JSON serialization",
+        "Persistence round trip",
+        "Client/server transfer"
+      ],
+      "diagnostic_questions": [
+        "Does the current Apps Script runtime and every serialization/persistence boundary support the exact Map/Set behavior required?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-hash-lookup-map",
+        "dsa-gas-sets-duplicate-coverage",
+        "dsa-verify-map-set-runtime"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "9",
+        "chapter_title": "Sets",
+        "section_heading": "The Set Class Implementation",
+        "page_or_anchor": "OEBPS/ch09.html#idp34357584",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source implements its own Set and hash structures and predates reliance on current Apps Script native behavior."
+        ],
+        "inferred_claims": [
+          "Current native Map/Set support and boundary behavior require verification."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch08.html",
+            "chapter_number": "8",
+            "chapter_title": "Hashing",
+            "section_heading": "A Hash Table Class",
+            "page_or_anchor": "OEBPS/ch08.html#idp30919136"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "current_verification_flag",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Native Map or Set behavior assumed without current Apps Script verification",
+      "description": "A modern native structure is recommended or serialized/persisted based on generic JavaScript expectations rather than current Apps Script runtime and boundary behavior.",
+      "where_it_appears": [
+        "Lookup indexes",
+        "Duplicate detection",
+        "Web App responses",
+        "Properties/cache persistence"
+      ],
+      "root_cause": "The source’s custom data-structure implementations and modern runtime-native structures are silently reconciled.",
+      "symptoms": [
+        "Serialization loses entries",
+        "Equality/key semantics surprise",
+        "Unsupported method/runtime behavior",
+        "Object and Map access mixed"
+      ],
+      "why_it_misleads": "The conceptual set/map choice can be sound while the chosen native representation fails at a runtime or serialization boundary.",
+      "better_question": "Does the current Apps Script runtime and every serialization/persistence boundary support the exact Map/Set behavior required?",
+      "prevention_or_mitigation": [
+        "Verify current runtime documentation",
+        "Test minimal examples in project",
+        "Define object-versus-Map/Set criteria",
+        "Convert explicitly at JSON/service boundaries"
+      ]
+    },
+    {
+      "id": "dsa-risk-quota-timeout",
+      "record_type": "failure_mode",
+      "name": "Quota or execution timeout treated as only a performance issue",
+      "summary": "A long-running script exceeds a current hosted limit or trigger window and leaves work incomplete, state uncertain, or side effects partially committed.",
+      "source_concept": "Quota or execution timeout treated as only a performance issue",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Current project/runtime requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Execution terminated",
+        "Partial output",
+        "Scheduled trigger repeatedly fails",
+        "Retry duplicates prior effects"
+      ],
+      "tests_or_checks": [
+        "Maximum-period fixture",
+        "Forced interruption",
+        "Resume/retry",
+        "Quota/error simulation where possible",
+        "No duplicate effects"
+      ],
+      "diagnostic_questions": [
+        "What is the current verified execution/quota boundary, what work unit fits inside it, and what happens after interruption?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-complexity-timeout-design",
+        "dsa-perf-timeout-partial-write",
+        "dsa-workflow-diagnose-timeout"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "Preface",
+        "chapter_title": "Preface",
+        "section_heading": "Why Study Data Structures and Algorithms",
+        "page_or_anchor": "OEBPS/preface01.html#idp7339520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source discusses algorithm efficiency but is not authoritative for current Apps Script quotas or execution limits."
+        ],
+        "inferred_claims": [
+          "All current quota and timeout behavior must be verified from authoritative current sources and logs."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "current_verification_flag",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Quota or execution timeout treated as only a performance issue",
+      "description": "A long-running script exceeds a current hosted limit or trigger window and leaves work incomplete, state uncertain, or side effects partially committed.",
+      "where_it_appears": [
+        "Large sheet transformations",
+        "API pagination",
+        "Email batches",
+        "Trigger-driven queues",
+        "Web Apps"
+      ],
+      "root_cause": "Current limits are not verified and the workflow has no bounded work unit, checkpoint, or recovery contract.",
+      "symptoms": [
+        "Execution terminated",
+        "Partial output",
+        "Scheduled trigger repeatedly fails",
+        "Retry duplicates prior effects"
+      ],
+      "why_it_misleads": "Optimizing runtime without restructuring side effects may still leave correctness and recovery unresolved.",
+      "better_question": "What is the current verified execution/quota boundary, what work unit fits inside it, and what happens after interruption?",
+      "prevention_or_mitigation": [
+        "Verify current limits",
+        "Benchmark maximum data",
+        "Batch service calls",
+        "Bound work units",
+        "Persist/reconcile state",
+        "Use idempotent keys"
+      ]
+    },
+    {
+      "id": "dsa-risk-live-write-before-validation",
+      "record_type": "failure_mode",
+      "name": "Live write begins before complete validation",
+      "summary": "The processor writes or sends outputs while still discovering structural, mapping, duplicate, or row-level errors.",
+      "source_concept": "Live write begins before complete validation",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Current project/runtime requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Partial output after later error",
+        "Users must manually clean destination",
+        "Retry duplicates earlier rows",
+        "Dry-run cannot match live behavior"
+      ],
+      "tests_or_checks": [
+        "Fatal error late in file",
+        "Unmapped value after many valid rows",
+        "Duplicate near end",
+        "Interrupted live run"
+      ],
+      "diagnostic_questions": [
+        "Which validations can be completed for the entire input before any irreversible side effect?"
+      ],
+      "related_record_ids": [
+        "dsa-sheet-dry-run-preview",
+        "dsa-sheet-batch-write-after-validation",
+        "dsa-decision-validate-all-versus-write-as-you-go"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "Preface",
+        "chapter_title": "Preface",
+        "section_heading": "Why Study Data Structures and Algorithms",
+        "page_or_anchor": "OEBPS/preface01.html#idp7339520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source supports deliberate representation and algorithm selection; live-write staging is an applied safety extension."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Live write begins before complete validation",
+      "description": "The processor writes or sends outputs while still discovering structural, mapping, duplicate, or row-level errors.",
+      "where_it_appears": [
+        "Sheet imports/exports",
+        "Email reports",
+        "R365 uploads",
+        "API synchronization"
+      ],
+      "root_cause": "Parsing, validation, transformation, and side effects are interleaved instead of staged.",
+      "symptoms": [
+        "Partial output after later error",
+        "Users must manually clean destination",
+        "Retry duplicates earlier rows",
+        "Dry-run cannot match live behavior"
+      ],
+      "why_it_misleads": "Writing each valid row immediately can appear memory-efficient and responsive while destroying batch-level correctness.",
+      "better_question": "Which validations can be completed for the entire input before any irreversible side effect?",
+      "prevention_or_mitigation": [
+        "Separate parse/validate/transform/export stages",
+        "Accumulate errors",
+        "Create dry-run action list",
+        "Batch-write after fatal checks",
+        "Define recovery for unavoidable chunking"
+      ]
+    },
+    {
+      "id": "dsa-risk-partial-failure-unstructured",
+      "record_type": "failure_mode",
+      "name": "Partial failure is represented only as an exception or Boolean",
+      "summary": "A batch returns “failed” or throws one error without accounting for which items succeeded, failed validation, failed during side effects, were skipped, or were never processed.",
+      "source_concept": "Partial failure is represented only as an exception or Boolean",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Current project/runtime requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Unknown destination state",
+        "Manual row-by-row investigation",
+        "Unsafe full rerun",
+        "Counts do not reconcile"
+      ],
+      "tests_or_checks": [
+        "Mixed success/failure",
+        "Timeout mid-batch",
+        "Lost response",
+        "Retry subset",
+        "Unknown outcome"
+      ],
+      "diagnostic_questions": [
+        "Can every input key be assigned an explicit status with source location, side-effect evidence, retryability, and next action?"
+      ],
+      "related_record_ids": [
+        "dsa-tool-partial-failure-reporting",
+        "dsa-sheet-structured-processing-results",
+        "dsa-workflow-review-partial-failure"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "A List ADT",
+        "page_or_anchor": "OEBPS/ch03.html#idp19348032",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source provides list, queue, and object structures; structured partial-failure reporting is an applied extension."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch05.html",
+            "chapter_number": "5",
+            "chapter_title": "Queues",
+            "section_heading": "Queue Operations",
+            "page_or_anchor": "OEBPS/ch05.html#idp23142720"
+          },
+          {
+            "source_file": "ch01.html",
+            "chapter_number": "1",
+            "chapter_title": "The JavaScript Programming Environment and Model",
+            "section_heading": "Objects and Object-Oriented Programming",
+            "page_or_anchor": "OEBPS/ch01.html#idp12945408"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Partial failure is represented only as an exception or Boolean",
+      "description": "A batch returns “failed” or throws one error without accounting for which items succeeded, failed validation, failed during side effects, were skipped, or were never processed.",
+      "where_it_appears": [
+        "Batch transforms",
+        "Email/API sending",
+        "Retry queues",
+        "Multi-sheet exports"
+      ],
+      "root_cause": "The output contract models run status but not per-item state and provenance.",
+      "symptoms": [
+        "Unknown destination state",
+        "Manual row-by-row investigation",
+        "Unsafe full rerun",
+        "Counts do not reconcile"
+      ],
+      "why_it_misleads": "A single error message can be accurate yet operationally useless for recovery and trust.",
+      "better_question": "Can every input key be assigned an explicit status with source location, side-effect evidence, retryability, and next action?",
+      "prevention_or_mitigation": [
+        "Structured run/item results",
+        "Preserve source row and logical key",
+        "Separate validation and side-effect failures",
+        "Partition retryable and terminal outcomes",
+        "Reconcile counts"
+      ]
+    },
+    {
+      "id": "dsa-risk-idempotency-missing",
+      "record_type": "failure_mode",
+      "name": "Idempotency boundary is missing",
+      "summary": "The same logical input can create another live write, export, email, or API action on rerun because no stable key and commit-state check exist.",
+      "source_concept": "Idempotency boundary is missing",
+      "programming_problem_addressed": "Identifies a recurring representation, algorithm, runtime-boundary, or side-effect failure.",
+      "data_shape_assumption": "The current input, key, ordering, scale, and runtime evidence are inspectable.",
+      "algorithmic_role": "Risk detection and prevention.",
+      "runtime_context": "Current project/runtime requiring verification.",
+      "transfers_to_google_apps_script": "current_verification_required",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "Evaluate the failure at expected and maximum scale, not only on a small happy-path sample.",
+      "use_when": [],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Duplicate records/messages",
+        "Retry fear",
+        "Manual deduplication",
+        "Run history cannot prove prior commit"
+      ],
+      "tests_or_checks": [
+        "Same run repeated",
+        "Concurrent runs",
+        "Destination succeeds but response lost",
+        "Key version change",
+        "Partial commit"
+      ],
+      "diagnostic_questions": [
+        "What deterministic key identifies one logical side effect, where is committed state stored, and how are check/claim/commit made safe?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-idempotency",
+        "dsa-sheet-idempotent-export-keys",
+        "dsa-decision-idempotency-key-versus-after-detection"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "9",
+        "chapter_title": "Sets",
+        "section_heading": "Fundamental Set Definitions, Operations, and Properties",
+        "page_or_anchor": "OEBPS/ch09.html#idp34336432",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines uniqueness through sets; durable idempotency and concurrency are applied system concerns."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "failure-mode",
+        "risk"
+      ],
+      "failure_mode": "Idempotency boundary is missing",
+      "description": "The same logical input can create another live write, export, email, or API action on rerun because no stable key and commit-state check exist.",
+      "where_it_appears": [
+        "Retries",
+        "Scheduled syncs",
+        "Form notifications",
+        "Historical imports",
+        "Email reports"
+      ],
+      "root_cause": "Uniqueness is checked only within one in-memory run or after side effects occur.",
+      "symptoms": [
+        "Duplicate records/messages",
+        "Retry fear",
+        "Manual deduplication",
+        "Run history cannot prove prior commit"
+      ],
+      "why_it_misleads": "A clean source file can still repeat across runs, and “check then write” can race without a verified concurrency boundary.",
+      "better_question": "What deterministic key identifies one logical side effect, where is committed state stored, and how are check/claim/commit made safe?",
+      "prevention_or_mitigation": [
+        "Stable normalized key",
+        "Durable committed-key record",
+        "Concurrency-safe claim",
+        "Destination idempotency when available",
+        "Reconciliation after uncertain outcomes"
+      ]
+    }
+  ]
+}

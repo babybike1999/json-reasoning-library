@@ -1,0 +1,4034 @@
+{
+  "package_id": "sql-cookbook-reasoning-os-v1",
+  "section_key": "grouping_aggregate_null_records",
+  "record_count": 24,
+  "unique_record_count": 24,
+  "source_boundary": "Uploaded second edition only. Derivation and source anchors are carried on every substantive record.",
+  "usage_note": "These are canonical records reused across topical modules. Count distinct IDs across the package, not module totals.",
+  "records": [
+    {
+      "id": "sql-recipe-01-11",
+      "record_type": "recipe_pattern",
+      "name": "1.11 Finding Null Values",
+      "summary": "Use IS NULL rather than equality to NULL.",
+      "source_recipe_or_concept": "1.11 Finding Null Values; supporting source units: 1.11",
+      "sql_problem_addressed": "Find missing values explicitly.",
+      "query_intent": "Find missing values explicitly.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One row per source record with a NULL in the tested column.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One row per source record with a NULL in the tested column.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Find missing values explicitly."
+      ],
+      "aggregation_or_windowing": "Use IS NULL rather than equality to NULL.",
+      "result_shape": "Rows with missing values in the chosen field.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Use IS NULL or IS NOT NULL for the intended missingness test.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Find missing values explicitly."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one row per source record with a null in the tested column."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Test NULL, zero, and an empty string as distinct inputs subject to the target dialect."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.11 Finding Null Values",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-11",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-11.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-11.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-11.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Find missing values explicitly.",
+          "Use IS NULL rather than equality to NULL.",
+          "A NULL marker is not an ordinary comparable value."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.11 Finding Null Values",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-11",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch01"
+      ],
+      "recipe_name": "1.11 Finding Null Values",
+      "problem_paraphrase": "Find missing values explicitly.",
+      "solution_pattern": "Use IS NULL rather than equality to NULL.",
+      "discussion_reasoning": "A NULL marker is not an ordinary comparable value.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One row per source record with a NULL in the tested column.",
+      "output_shape": "Rows with missing values in the chosen field.",
+      "assumptions": [
+        "One row per source record with a NULL in the tested column.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Test NULL, zero, and an empty string as distinct inputs subject to the target dialect.",
+      "when_to_use": [
+        "Find missing values explicitly."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one row per source record with a null in the tested column."
+      ],
+      "related_records": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-11",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-01-12",
+      "record_type": "recipe_pattern",
+      "name": "1.12 Transforming Nulls into Real Values",
+      "summary": "Use COALESCE to select the first non-NULL expression.",
+      "source_recipe_or_concept": "1.12 Transforming Nulls into Real Values; supporting source units: 1.12",
+      "sql_problem_addressed": "Show a replacement when a selected value is missing.",
+      "query_intent": "Show a replacement when a selected value is missing.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "Detail grain retained.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "Detail grain retained.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Show a replacement when a selected value is missing."
+      ],
+      "aggregation_or_windowing": "Use COALESCE to select the first non-NULL expression.",
+      "result_shape": "Rows with a fallback in a selected expression.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "A fallback of zero is an explicit semantic choice, not a universal meaning of missing data.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Show a replacement when a selected value is missing."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from detail grain retained."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Verify that replacing missing with zero or text is justified and that types are compatible."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.12 Transforming Nulls into Real Values",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-12",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-12.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-12.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-12.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Show a replacement when a selected value is missing.",
+          "Use COALESCE to select the first non-NULL expression.",
+          "Replacement changes the interpreted output value, not the stored source value."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.12 Transforming Nulls into Real Values",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-12",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch01"
+      ],
+      "recipe_name": "1.12 Transforming Nulls into Real Values",
+      "problem_paraphrase": "Show a replacement when a selected value is missing.",
+      "solution_pattern": "Use COALESCE to select the first non-NULL expression.",
+      "discussion_reasoning": "Replacement changes the interpreted output value, not the stored source value.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "Detail grain retained.",
+      "output_shape": "Rows with a fallback in a selected expression.",
+      "assumptions": [
+        "Detail grain retained.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Verify that replacing missing with zero or text is justified and that types are compatible.",
+      "when_to_use": [
+        "Show a replacement when a selected value is missing."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from detail grain retained."
+      ],
+      "related_records": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-12",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-02-05",
+      "record_type": "recipe_pattern",
+      "name": "2.5 Dealing with Nulls When Sorting",
+      "summary": "Sort first on a CASE-derived missingness flag and then on the actual value, or use a source-documented NULL placement clause.",
+      "source_recipe_or_concept": "2.5 Dealing with Nulls When Sorting; supporting source units: 2.5",
+      "sql_problem_addressed": "Control where NULLs appear without reversing non-NULL values.",
+      "query_intent": "Control where NULLs appear without reversing non-NULL values.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "Detail grain unchanged.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "Detail grain unchanged.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Control where NULLs appear without reversing non-NULL values."
+      ],
+      "aggregation_or_windowing": "Sort first on a CASE-derived missingness flag and then on the actual value, or use a source-documented NULL placement clause.",
+      "result_shape": "Rows with explicit NULL-first or NULL-last behavior.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "Oracle NULLS FIRST/LAST and the book’s DB2 scope statements are source-era descriptions, not a complete current support matrix.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "NULL placement is explicit rather than inferred from database defaults.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Control where NULLs appear without reversing non-NULL values."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from detail grain unchanged."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-unstable-order-by"
+      ],
+      "tests_or_checks": [
+        "Test both sort directions with NULL, zero, and tied non-NULL values."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-02-01",
+        "sql-recipe-02-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-unstable-order-by"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "2",
+        "chapter_title": "Chapter 2. Sorting Query Results",
+        "section_heading": "2.5 Dealing with Nulls When Sorting",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch02.html#sqlckbk-CHP-2-SECT-5",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch02.html#sqlckbk-CHP-2-SECT-5.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch02.html#sqlckbk-CHP-2-SECT-5.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch02.html#sqlckbk-CHP-2-SECT-5.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Control where NULLs appear without reversing non-NULL values.",
+          "Sort first on a CASE-derived missingness flag and then on the actual value, or use a source-documented NULL placement clause.",
+          "Separating missingness from value ordering gives independent control of both."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "2.5 Dealing with Nulls When Sorting",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch02.html#sqlckbk-CHP-2-SECT-5",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch02"
+      ],
+      "recipe_name": "2.5 Dealing with Nulls When Sorting",
+      "problem_paraphrase": "Control where NULLs appear without reversing non-NULL values.",
+      "solution_pattern": "Sort first on a CASE-derived missingness flag and then on the actual value, or use a source-documented NULL placement clause.",
+      "discussion_reasoning": "Separating missingness from value ordering gives independent control of both.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2, MySQL, PostgreSQL, and SQL Server",
+          "dialects": [
+            "DB2",
+            "PostgreSQL",
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch02.html#sqlckbk-CHP-2-SECT-5.2.1",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch02.html#sqlckbk-CHP-2-SECT-5.2.2",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "Detail grain unchanged.",
+      "output_shape": "Rows with explicit NULL-first or NULL-last behavior.",
+      "assumptions": [
+        "Detail grain unchanged.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Oracle NULLS FIRST/LAST and the book’s DB2 scope statements are source-era descriptions, not a complete current support matrix."
+      ],
+      "test_query_or_validation_shape": "Test both sort directions with NULL, zero, and tied non-NULL values.",
+      "when_to_use": [
+        "Control where NULLs appear without reversing non-NULL values."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from detail grain unchanged."
+      ],
+      "related_records": [
+        "sql-recipe-02-01",
+        "sql-recipe-02-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-unstable-order-by"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch02.html#sqlckbk-CHP-2-SECT-5",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-03-05",
+      "record_type": "recipe_pattern",
+      "name": "3.5 Retrieving Rows from One Table That Do Not Correspond to Rows in Another",
+      "summary": "Preserve the source with a left join and keep rows where a reliable target match column is NULL.",
+      "source_recipe_or_concept": "3.5 Retrieving Rows from One Table That Do Not Correspond to Rows in Another; supporting source units: 3.5",
+      "sql_problem_addressed": "Return full source rows lacking a corresponding related row.",
+      "query_intent": "Return full source rows lacking a corresponding related row.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One row per unmatched source entity.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "DEPT",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "SALES",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One row per unmatched source entity.",
+      "key_columns_or_join_conditions": [
+        "DEPT.DEPTNO = EMP.DEPTNO; test the joined match key in the book example."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Return full source rows lacking a corresponding related row."
+      ],
+      "aggregation_or_windowing": "Preserve the source with a left join and keep rows where a reliable target match column is NULL.",
+      "result_shape": "Source entities without related records.",
+      "dialects_covered": [
+        "DB2",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "A nullable descriptive field is not automatically a valid no-match indicator.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Return full source rows lacking a corresponding related row."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one row per unmatched source entity."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-not-in-null-trap"
+      ],
+      "tests_or_checks": [
+        "Verify the tested target column cannot be NULL on a genuine match; compare with a correlated absence test."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-01",
+        "sql-recipe-03-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-not-in-null-trap"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.5 Retrieving Rows from One Table That Do Not Correspond to Rows in Another",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-5",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-5.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-5.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-5.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Return full source rows lacking a corresponding related row.",
+          "Preserve the source with a left join and keep rows where a reliable target match column is NULL.",
+          "The unmatched outer-join row identifies absence in the target."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.5 Retrieving Rows from One Table That Do Not Correspond to Rows in Another",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-5",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch03"
+      ],
+      "recipe_name": "3.5 Retrieving Rows from One Table That Do Not Correspond to Rows in Another",
+      "problem_paraphrase": "Return full source rows lacking a corresponding related row.",
+      "solution_pattern": "Preserve the source with a left join and keep rows where a reliable target match column is NULL.",
+      "discussion_reasoning": "The unmatched outer-join row identifies absence in the target.",
+      "dialects_supported": [
+        "DB2",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2, MySQL, PostgreSQL, and SQL Server",
+          "dialects": [
+            "DB2",
+            "PostgreSQL",
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-5.2.1",
+          "function_tokens_detected": [
+            "NULLS"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "One row per unmatched source entity.",
+      "output_shape": "Source entities without related records.",
+      "assumptions": [
+        "One row per unmatched source entity.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Verify the tested target column cannot be NULL on a genuine match; compare with a correlated absence test.",
+      "when_to_use": [
+        "Return full source rows lacking a corresponding related row."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one row per unmatched source entity."
+      ],
+      "related_records": [
+        "sql-recipe-03-01",
+        "sql-recipe-03-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-not-in-null-trap"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "One row per unmatched source entity.",
+      "join_key_assumptions": [
+        "Correlate using the complete intended relationship; right-side duplication must not change existence."
+      ],
+      "expected_cardinality": "At most one output copy per candidate when using an existence/absence test.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Verify the tested target column cannot be NULL on a genuine match; compare with a correlated absence test.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-5",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "DEPT",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-5",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "SALES",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-5",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-03-09",
+      "record_type": "recipe_pattern",
+      "name": "3.9 Performing Joins When Using Aggregates",
+      "summary": "Aggregate the parent measure at its own grain before joining; the book’s DISTINCT-aggregate shortcut is conditional on value uniqueness.",
+      "source_recipe_or_concept": "3.9 Performing Joins When Using Aggregates; supporting source units: 3.9",
+      "sql_problem_addressed": "Avoid counting a parent measure multiple times after a detail join.",
+      "query_intent": "Avoid counting a parent measure multiple times after a detail join.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "Employee salary grain versus employee-bonus row grain, then requested department summary.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP_BONUS",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "Employee salary grain versus employee-bonus row grain, then requested department summary.",
+      "key_columns_or_join_conditions": [
+        "EMP.EMPNO to EMP_BONUS.EMPNO; salary belongs to employee, bonus to related detail."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Avoid counting a parent measure multiple times after a detail join."
+      ],
+      "aggregation_or_windowing": "Aggregate the parent measure at its own grain before joining; the book’s DISTINCT-aggregate shortcut is conditional on value uniqueness.",
+      "result_shape": "Totals that respect each measure’s originating grain.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "The source’s DISTINCT window examples are not a validated cross-dialect implementation.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Review missing measures independently of duplicate expansion.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Avoid counting a parent measure multiple times after a detail join."
+      ],
+      "do_not_use_when": [
+        "The required grain or output shape differs from totals that respect each measure’s originating grain.",
+        "An unresolved source issue would be treated as production-ready SQL."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-aggregate-inflated-after-join"
+      ],
+      "tests_or_checks": [
+        "Add two employees with equal salaries and one employee with multiple bonuses; reconcile against independent source totals."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-02",
+        "sql-recipe-03-08",
+        "sql-recipe-07-03",
+        "sql-recipe-12-18",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-aggregate-inflated-after-join"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.9 Performing Joins When Using Aggregates",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Avoid counting a parent measure multiple times after a detail join.",
+          "Aggregate the parent measure at its own grain before joining; the book’s DISTINCT-aggregate shortcut is conditional on value uniqueness.",
+          "Distinct amounts are not distinct entities: two employees may legitimately have the same salary."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.9 Performing Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "recipe",
+        "ch03"
+      ],
+      "recipe_name": "3.9 Performing Joins When Using Aggregates",
+      "problem_paraphrase": "Avoid counting a parent measure multiple times after a detail join.",
+      "solution_pattern": "Aggregate the parent measure at its own grain before joining; the book’s DISTINCT-aggregate shortcut is conditional on value uniqueness.",
+      "discussion_reasoning": "Distinct amounts are not distinct entities: two employees may legitimately have the same salary.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "MySQL and PostgreSQL",
+          "dialects": [
+            "PostgreSQL",
+            "MySQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.2.1",
+          "function_tokens_detected": [
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2, Oracle, and SQL Server",
+          "dialects": [
+            "DB2",
+            "Oracle",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.2.2",
+          "function_tokens_detected": [
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL and PostgreSQL",
+          "dialects": [
+            "PostgreSQL",
+            "MySQL"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.3.1",
+          "function_tokens_detected": [
+            "EMP.SAL",
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2, Oracle, and SQL Server",
+          "dialects": [
+            "DB2",
+            "Oracle",
+            "SQL Server"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.3.2",
+          "function_tokens_detected": [
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "Employee salary grain versus employee-bonus row grain, then requested department summary.",
+      "output_shape": "Totals that respect each measure’s originating grain.",
+      "assumptions": [
+        "Employee salary grain versus employee-bonus row grain, then requested department summary.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The source’s DISTINCT window examples are not a validated cross-dialect implementation.",
+        "Deduplicating salaries by value cannot preserve two different employees with the same salary. The discussion also describes aggregation before the join."
+      ],
+      "test_query_or_validation_shape": "Add two employees with equal salaries and one employee with multiple bonuses; reconcile against independent source totals.",
+      "when_to_use": [
+        "Avoid counting a parent measure multiple times after a detail join."
+      ],
+      "when_not_to_use": [
+        "The required grain or output shape differs from totals that respect each measure’s originating grain.",
+        "An unresolved source issue would be treated as production-ready SQL."
+      ],
+      "related_records": [
+        "sql-recipe-03-02",
+        "sql-recipe-03-08",
+        "sql-recipe-07-03",
+        "sql-recipe-12-18",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-aggregate-inflated-after-join"
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "Employee salary grain versus employee-bonus row grain, then requested department summary.",
+      "join_key_assumptions": [
+        "Preserve employee identity; salary equality is not employee identity."
+      ],
+      "expected_cardinality": "An employee with several bonuses appears at bonus-event grain after joining.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Add two employees with equal salaries and one employee with multiple bonuses; reconcile against independent source totals.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "EMP_BONUS",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-03-10",
+      "record_type": "recipe_pattern",
+      "name": "3.10 Performing Outer Joins When Using Aggregates",
+      "summary": "Preserve the required parent population with an outer join and protect parent-grain aggregates from detail duplication.",
+      "source_recipe_or_concept": "3.10 Performing Outer Joins When Using Aggregates; supporting source units: 3.10",
+      "sql_problem_addressed": "Include parents without detail while computing correct totals.",
+      "query_intent": "Include parents without detail while computing correct totals.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "All qualifying employees, with bonus detail aggregated appropriately.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP_BONUS",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "All qualifying employees, with bonus detail aggregated appropriately.",
+      "key_columns_or_join_conditions": [
+        "Employee key and department key must retain their separate roles."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Include parents without detail while computing correct totals."
+      ],
+      "aggregation_or_windowing": "Preserve the required parent population with an outer join and protect parent-grain aggregates from detail duplication.",
+      "result_shape": "Summary including employees who have no bonus.",
+      "dialects_covered": [
+        "DB2",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "Review preaggregation before relying on SUM(DISTINCT measure) or DISTINCT windows.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "The source explicitly gives the missing bonus branch zero contribution; that is example-specific semantics.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Include parents without detail while computing correct totals."
+      ],
+      "do_not_use_when": [
+        "The required grain or output shape differs from summary including employees who have no bonus.",
+        "An unresolved source issue would be treated as production-ready SQL."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-outer-join-filtered-in-where",
+        "sql-risk-aggregate-inflated-after-join"
+      ],
+      "tests_or_checks": [
+        "Test a department with no bonuses, repeated bonuses, and two equal salaries."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-02",
+        "sql-recipe-03-08",
+        "sql-recipe-07-03",
+        "sql-recipe-12-18",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-outer-join-filtered-in-where",
+        "sql-risk-aggregate-inflated-after-join"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.10 Performing Outer Joins When Using Aggregates",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Include parents without detail while computing correct totals.",
+          "Preserve the required parent population with an outer join and protect parent-grain aggregates from detail duplication.",
+          "A missing bonus and a repeated employee salary are separate problems and must be handled separately."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.10 Performing Outer Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "recipe",
+        "ch03"
+      ],
+      "recipe_name": "3.10 Performing Outer Joins When Using Aggregates",
+      "problem_paraphrase": "Include parents without detail while computing correct totals.",
+      "solution_pattern": "Preserve the required parent population with an outer join and protect parent-grain aggregates from detail duplication.",
+      "discussion_reasoning": "A missing bonus and a repeated employee salary are separate problems and must be handled separately.",
+      "dialects_supported": [
+        "DB2",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2, MySQL, PostgreSQL, and SQL Server",
+          "dialects": [
+            "DB2",
+            "PostgreSQL",
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10.2.1",
+          "function_tokens_detected": [
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "All qualifying employees, with bonus detail aggregated appropriately.",
+      "output_shape": "Summary including employees who have no bonus.",
+      "assumptions": [
+        "All qualifying employees, with bonus detail aggregated appropriately.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Review preaggregation before relying on SUM(DISTINCT measure) or DISTINCT windows.",
+        "Deduplicating salaries by value cannot preserve two different employees with the same salary. The discussion also describes aggregation before the join."
+      ],
+      "test_query_or_validation_shape": "Test a department with no bonuses, repeated bonuses, and two equal salaries.",
+      "when_to_use": [
+        "Include parents without detail while computing correct totals."
+      ],
+      "when_not_to_use": [
+        "The required grain or output shape differs from summary including employees who have no bonus.",
+        "An unresolved source issue would be treated as production-ready SQL."
+      ],
+      "related_records": [
+        "sql-recipe-03-02",
+        "sql-recipe-03-08",
+        "sql-recipe-07-03",
+        "sql-recipe-12-18",
+        "sql-risk-current-version-assumption",
+        "sql-risk-wrong-grain",
+        "sql-risk-missing-key",
+        "sql-risk-many-to-many-join",
+        "sql-risk-outer-join-filtered-in-where",
+        "sql-risk-aggregate-inflated-after-join"
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "All qualifying employees, with bonus detail aggregated appropriately.",
+      "join_key_assumptions": [
+        "Preaggregate compatible rowsets and test absence using a reliable child identifier."
+      ],
+      "expected_cardinality": "An employee with no bonus is preserved once; multiple bonuses still repeat the employee measure.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Test a department with no bonuses, repeated bonuses, and two equal salaries.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "EMP_BONUS",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-07-01",
+      "record_type": "recipe_pattern",
+      "name": "7.1 Computing an Average",
+      "summary": "Use AVG over the qualifying rowset, with GROUP BY when a separate result is required per group.",
+      "source_recipe_or_concept": "7.1 Computing an Average; supporting source units: 7.1",
+      "sql_problem_addressed": "Compute an average over the intended population.",
+      "query_intent": "Compute an average over the intended population.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One overall or group-level aggregate.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One overall or group-level aggregate.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Compute an average over the intended population."
+      ],
+      "aggregation_or_windowing": "Use AVG over the qualifying rowset, with GROUP BY when a separate result is required per group.",
+      "result_shape": "Mean value per selected group.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "AVG of a nullable column and AVG of its zero-filled form answer different questions.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Compute an average over the intended population."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one overall or group-level aggregate."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Compare sum and contributing count; include NULL and empty-group cases."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.1 Computing an Average",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-1",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-1.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-1.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-1.3",
+          "See Also": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-1.4"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Compute an average over the intended population.",
+          "Use AVG over the qualifying rowset, with GROUP BY when a separate result is required per group.",
+          "The denominator follows contributing non-NULL values unless the input is explicitly transformed."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.1 Computing an Average",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-1",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch07"
+      ],
+      "recipe_name": "7.1 Computing an Average",
+      "problem_paraphrase": "Compute an average over the intended population.",
+      "solution_pattern": "Use AVG over the qualifying rowset, with GROUP BY when a separate result is required per group.",
+      "discussion_reasoning": "The denominator follows contributing non-NULL values unless the input is explicitly transformed.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One overall or group-level aggregate.",
+      "output_shape": "Mean value per selected group.",
+      "assumptions": [
+        "One overall or group-level aggregate.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Compare sum and contributing count; include NULL and empty-group cases.",
+      "when_to_use": [
+        "Compute an average over the intended population."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one overall or group-level aggregate."
+      ],
+      "related_records": [
+        "sql-recipe-07-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-1",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-07-02",
+      "record_type": "recipe_pattern",
+      "name": "7.2 Finding the Min/Max Value in a Column",
+      "summary": "Use MIN and MAX over the intended rowset or grouping.",
+      "source_recipe_or_concept": "7.2 Finding the Min/Max Value in a Column; supporting source units: 7.2",
+      "sql_problem_addressed": "Find extreme values in a population.",
+      "query_intent": "Find extreme values in a population.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One extreme-value pair per group or population.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One extreme-value pair per group or population.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Find extreme values in a population."
+      ],
+      "aggregation_or_windowing": "Use MIN and MAX over the intended rowset or grouping.",
+      "result_shape": "Minimum and/or maximum values.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Review how missing values affect the aggregate and the all-missing result.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Find extreme values in a population."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one extreme-value pair per group or population."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Test tied extrema, all-NULL groups, and a single-row group."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-01",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.2 Finding the Min/Max Value in a Column",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-2",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-2.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-2.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-2.3",
+          "See Also": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-2.4"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Find extreme values in a population.",
+          "Use MIN and MAX over the intended rowset or grouping.",
+          "An extreme value does not by itself identify which detailed rows own that value."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.2 Finding the Min/Max Value in a Column",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-2",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch07"
+      ],
+      "recipe_name": "7.2 Finding the Min/Max Value in a Column",
+      "problem_paraphrase": "Find extreme values in a population.",
+      "solution_pattern": "Use MIN and MAX over the intended rowset or grouping.",
+      "discussion_reasoning": "An extreme value does not by itself identify which detailed rows own that value.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One extreme-value pair per group or population.",
+      "output_shape": "Minimum and/or maximum values.",
+      "assumptions": [
+        "One extreme-value pair per group or population.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Test tied extrema, all-NULL groups, and a single-row group.",
+      "when_to_use": [
+        "Find extreme values in a population."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one extreme-value pair per group or population."
+      ],
+      "related_records": [
+        "sql-recipe-07-01",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-2",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-07-03",
+      "record_type": "recipe_pattern",
+      "name": "7.3 Summing the Values in a Column",
+      "summary": "Use SUM at the requested grouping grain.",
+      "source_recipe_or_concept": "7.3 Summing the Values in a Column; supporting source units: 7.3",
+      "sql_problem_addressed": "Add the values belonging to a defined population.",
+      "query_intent": "Add the values belonging to a defined population.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One sum per defined group.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One sum per defined group.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Add the values belonging to a defined population."
+      ],
+      "aggregation_or_windowing": "Use SUM at the requested grouping grain.",
+      "result_shape": "Numeric totals.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Decide whether an empty or all-missing contribution should remain missing or be displayed as zero.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Add the values belonging to a defined population."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one sum per defined group."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Reconcile group totals to an independently computed population total; test duplicates introduced by joins."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-01",
+        "sql-recipe-07-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.3 Summing the Values in a Column",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3.3",
+          "See Also": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3.4"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Add the values belonging to a defined population.",
+          "Use SUM at the requested grouping grain.",
+          "Changing the input rowset or grouping changes the amount being summed."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.3 Summing the Values in a Column",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch07"
+      ],
+      "recipe_name": "7.3 Summing the Values in a Column",
+      "problem_paraphrase": "Add the values belonging to a defined population.",
+      "solution_pattern": "Use SUM at the requested grouping grain.",
+      "discussion_reasoning": "Changing the input rowset or grouping changes the amount being summed.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One sum per defined group.",
+      "output_shape": "Numeric totals.",
+      "assumptions": [
+        "One sum per defined group.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Reconcile group totals to an independently computed population total; test duplicates introduced by joins.",
+      "when_to_use": [
+        "Add the values belonging to a defined population."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one sum per defined group."
+      ],
+      "related_records": [
+        "sql-recipe-07-01",
+        "sql-recipe-07-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-07-04",
+      "record_type": "recipe_pattern",
+      "name": "7.4 Counting Rows in a Table",
+      "summary": "Use COUNT(*) over the rowset or grouped rowset.",
+      "source_recipe_or_concept": "7.4 Counting Rows in a Table; supporting source units: 7.4",
+      "sql_problem_addressed": "Count rows rather than values in one field.",
+      "query_intent": "Count rows rather than values in one field.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One count per group or whole input.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One count per group or whole input.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Count rows rather than values in one field."
+      ],
+      "aggregation_or_windowing": "Use COUNT(*) over the rowset or grouped rowset.",
+      "result_shape": "A row-count measure.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "COUNT(*) is not a count of non-NULL values in a particular column.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Count rows rather than values in one field."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one count per group or whole input."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Compare the count before and after every join and distinguish source rows from NULL-extended rows."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-11",
+        "sql-recipe-01-12",
+        "sql-recipe-03-10",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.4 Counting Rows in a Table",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4.3",
+          "See Also": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4.4"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Count rows rather than values in one field.",
+          "Use COUNT(*) over the rowset or grouped rowset.",
+          "Every surviving row is part of the count even when some fields are NULL."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.4 Counting Rows in a Table",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch07"
+      ],
+      "recipe_name": "7.4 Counting Rows in a Table",
+      "problem_paraphrase": "Count rows rather than values in one field.",
+      "solution_pattern": "Use COUNT(*) over the rowset or grouped rowset.",
+      "discussion_reasoning": "Every surviving row is part of the count even when some fields are NULL.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One count per group or whole input.",
+      "output_shape": "A row-count measure.",
+      "assumptions": [
+        "One count per group or whole input.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Compare the count before and after every join and distinguish source rows from NULL-extended rows.",
+      "when_to_use": [
+        "Count rows rather than values in one field."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one count per group or whole input."
+      ],
+      "related_records": [
+        "sql-recipe-01-11",
+        "sql-recipe-01-12",
+        "sql-recipe-03-10",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-07-05",
+      "record_type": "recipe_pattern",
+      "name": "7.5 Counting Values in a Column",
+      "summary": "Use COUNT(column) when the question is how many rows have a non-NULL value in that expression.",
+      "source_recipe_or_concept": "7.5 Counting Values in a Column; supporting source units: 7.5",
+      "sql_problem_addressed": "Count populated values in a particular column.",
+      "query_intent": "Count populated values in a particular column.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One populated-value count per group.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One populated-value count per group.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Count populated values in a particular column."
+      ],
+      "aggregation_or_windowing": "Use COUNT(column) when the question is how many rows have a non-NULL value in that expression.",
+      "result_shape": "A count of non-NULL expression values.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Zero and empty text are not automatically equivalent to NULL.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Count populated values in a particular column."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one populated-value count per group."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Compare COUNT(*) and COUNT(column); account for their difference using an explicit missingness count."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-11",
+        "sql-recipe-01-12",
+        "sql-recipe-03-10",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.5 Counting Values in a Column",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-5",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-5.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-5.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-5.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Count populated values in a particular column.",
+          "Use COUNT(column) when the question is how many rows have a non-NULL value in that expression.",
+          "The count’s population is narrowed by the expression’s missingness."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.5 Counting Values in a Column",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-5",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch07"
+      ],
+      "recipe_name": "7.5 Counting Values in a Column",
+      "problem_paraphrase": "Count populated values in a particular column.",
+      "solution_pattern": "Use COUNT(column) when the question is how many rows have a non-NULL value in that expression.",
+      "discussion_reasoning": "The count’s population is narrowed by the expression’s missingness.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One populated-value count per group.",
+      "output_shape": "A count of non-NULL expression values.",
+      "assumptions": [
+        "One populated-value count per group.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Compare COUNT(*) and COUNT(column); account for their difference using an explicit missingness count.",
+      "when_to_use": [
+        "Count populated values in a particular column."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one populated-value count per group."
+      ],
+      "related_records": [
+        "sql-recipe-01-11",
+        "sql-recipe-01-12",
+        "sql-recipe-03-10",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-5",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-07-11",
+      "record_type": "recipe_pattern",
+      "name": "7.11 Determining the Percentage of a Total",
+      "summary": "Calculate numerator and denominator over their explicitly defined populations before division.",
+      "source_recipe_or_concept": "7.11 Determining the Percentage of a Total; supporting source units: 7.11",
+      "sql_problem_addressed": "Compute a subset’s share of a broader total.",
+      "query_intent": "Compute a subset’s share of a broader total.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One percentage per selected subset or reporting group.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One percentage per selected subset or reporting group.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Compute a subset’s share of a broader total."
+      ],
+      "aggregation_or_windowing": "Calculate numerator and denominator over their explicitly defined populations before division.",
+      "result_shape": "A share-of-total value.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "Numeric casts may be needed to avoid unintended integer division; actual precision is a live-schema question.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "The source uses CASE without ELSE so nonselected amounts do not contribute to the numerator.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Compute a subset’s share of a broader total."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one percentage per selected subset or reporting group."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-aggregate-inflated-after-join"
+      ],
+      "tests_or_checks": [
+        "Expose numerator and denominator separately; test a zero denominator and integer-typed inputs."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-01",
+        "sql-recipe-07-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-aggregate-inflated-after-join"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.11 Determining the Percentage of a Total",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Compute a subset’s share of a broader total.",
+          "Calculate numerator and denominator over their explicitly defined populations before division.",
+          "Filtering away the denominator population too early changes the percentage being answered."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.11 Determining the Percentage of a Total",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch07"
+      ],
+      "recipe_name": "7.11 Determining the Percentage of a Total",
+      "problem_paraphrase": "Compute a subset’s share of a broader total.",
+      "solution_pattern": "Calculate numerator and denominator over their explicitly defined populations before division.",
+      "discussion_reasoning": "Filtering away the denominator population too early changes the percentage being answered.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "MySQL and PostgreSQL",
+          "dialects": [
+            "PostgreSQL",
+            "MySQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.2.1",
+          "function_tokens_detected": [
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2, Oracle, and SQL Server",
+          "dialects": [
+            "DB2",
+            "Oracle",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.2.2",
+          "function_tokens_detected": [
+            "DISTINCT",
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL and PostgreSQL",
+          "dialects": [
+            "PostgreSQL",
+            "MySQL"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.3.1",
+          "function_tokens_detected": [
+            "CAST",
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2, Oracle, and SQL Server",
+          "dialects": [
+            "DB2",
+            "Oracle",
+            "SQL Server"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.3.2",
+          "function_tokens_detected": [
+            "CAST",
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "One percentage per selected subset or reporting group.",
+      "output_shape": "A share-of-total value.",
+      "assumptions": [
+        "One percentage per selected subset or reporting group.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Numeric casts may be needed to avoid unintended integer division; actual precision is a live-schema question."
+      ],
+      "test_query_or_validation_shape": "Expose numerator and denominator separately; test a zero denominator and integer-typed inputs.",
+      "when_to_use": [
+        "Compute a subset’s share of a broader total."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one percentage per selected subset or reporting group."
+      ],
+      "related_records": [
+        "sql-recipe-07-01",
+        "sql-recipe-07-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-aggregate-inflated-after-join"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-07-12",
+      "record_type": "recipe_pattern",
+      "name": "7.12 Aggregating Nullable Columns",
+      "summary": "Apply COALESCE before AVG only when every population member should be represented in the denominator.",
+      "source_recipe_or_concept": "7.12 Aggregating Nullable Columns; supporting source units: 7.12",
+      "sql_problem_addressed": "Average a nullable measure under a deliberate missing-as-zero interpretation.",
+      "query_intent": "Average a nullable measure under a deliberate missing-as-zero interpretation.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One average per defined population or group.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One average per defined population or group.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Average a nullable measure under a deliberate missing-as-zero interpretation."
+      ],
+      "aggregation_or_windowing": "Apply COALESCE before AVG only when every population member should be represented in the denominator.",
+      "result_shape": "A measure with an explicit missingness convention.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Do not silently substitute zero merely because an aggregate ignores NULL.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Average a nullable measure under a deliberate missing-as-zero interpretation."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one average per defined population or group."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Compute both raw and zero-filled averages and explain which denominator answers the question."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-11",
+        "sql-recipe-01-12",
+        "sql-recipe-03-10",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.12 Aggregating Nullable Columns",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-12",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-12.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-12.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-12.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Average a nullable measure under a deliberate missing-as-zero interpretation.",
+          "Apply COALESCE before AVG only when every population member should be represented in the denominator.",
+          "The source contrasts average commission among populated values with average commission across all selected employees."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.12 Aggregating Nullable Columns",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-12",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch07"
+      ],
+      "recipe_name": "7.12 Aggregating Nullable Columns",
+      "problem_paraphrase": "Average a nullable measure under a deliberate missing-as-zero interpretation.",
+      "solution_pattern": "Apply COALESCE before AVG only when every population member should be represented in the denominator.",
+      "discussion_reasoning": "The source contrasts average commission among populated values with average commission across all selected employees.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One average per defined population or group.",
+      "output_shape": "A measure with an explicit missingness convention.",
+      "assumptions": [
+        "One average per defined population or group.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Compute both raw and zero-filled averages and explain which denominator answers the question.",
+      "when_to_use": [
+        "Average a nullable measure under a deliberate missing-as-zero interpretation."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one average per defined population or group."
+      ],
+      "related_records": [
+        "sql-recipe-01-11",
+        "sql-recipe-01-12",
+        "sql-recipe-03-10",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-12",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-12-11",
+      "record_type": "recipe_pattern",
+      "name": "12.11 Returning Non-GROUP BY Columns",
+      "summary": "Use window aggregates to expose reference values, then filter the detail rows by those values.",
+      "source_recipe_or_concept": "12.11 Returning Non-GROUP BY Columns; supporting source units: 12.11",
+      "sql_problem_addressed": "Retain detailed attributes while selecting rows using group aggregates.",
+      "query_intent": "Retain detailed attributes while selecting rows using group aggregates.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One detail row with its relevant group extrema.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "DEPT",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One detail row with its relevant group extrema.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Retain detailed attributes while selecting rows using group aggregates."
+      ],
+      "aggregation_or_windowing": "Use window aggregates to expose reference values, then filter the detail rows by those values.",
+      "result_shape": "Detailed records meeting group-level conditions.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "The source’s solution uses windows instead of pretending non-GROUP BY attributes have a unique value.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "NULL conditions and all-missing groups need explicit treatment.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Retain detailed attributes while selecting rows using group aggregates."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one detail row with its relevant group extrema."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Test two rows tied at an extreme and columns that differ between those rows."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-12-02",
+        "sql-recipe-12-14",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "12",
+        "chapter_title": "Chapter 12. Reporting and Reshaping",
+        "section_heading": "12.11 Returning Non-GROUP BY Columns",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-11",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-11.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-11.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-11.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Retain detailed attributes while selecting rows using group aggregates.",
+          "Use window aggregates to expose reference values, then filter the detail rows by those values.",
+          "Adding arbitrary non-grouped columns to a reduced aggregate is not the same as retaining correctly associated detail."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "12.11 Returning Non-GROUP BY Columns",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-11",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch12"
+      ],
+      "recipe_name": "12.11 Returning Non-GROUP BY Columns",
+      "problem_paraphrase": "Retain detailed attributes while selecting rows using group aggregates.",
+      "solution_pattern": "Use window aggregates to expose reference values, then filter the detail rows by those values.",
+      "discussion_reasoning": "Adding arbitrary non-grouped columns to a reduced aggregate is not the same as retaining correctly associated detail.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One detail row with its relevant group extrema.",
+      "output_shape": "Detailed records meeting group-level conditions.",
+      "assumptions": [
+        "One detail row with its relevant group extrema.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The source’s solution uses windows instead of pretending non-GROUP BY attributes have a unique value."
+      ],
+      "test_query_or_validation_shape": "Test two rows tied at an extreme and columns that differ between those rows.",
+      "when_to_use": [
+        "Retain detailed attributes while selecting rows using group aggregates."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one detail row with its relevant group extrema."
+      ],
+      "related_records": [
+        "sql-recipe-12-02",
+        "sql-recipe-12-14",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-11",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "DEPT",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-11",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-12-12",
+      "record_type": "recipe_pattern",
+      "name": "12.12 Calculating Simple Subtotals",
+      "summary": "Use the source’s ROLLUP form or explicit aggregate branches, and label the aggregate level reliably.",
+      "source_recipe_or_concept": "12.12 Calculating Simple Subtotals; supporting source units: 12.12",
+      "sql_problem_addressed": "Add a grand total to grouped summaries.",
+      "query_intent": "Add a grand total to grouped summaries.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One category subtotal plus a grand-total row.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One category subtotal plus a grand-total row.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Add a grand total to grouped summaries."
+      ],
+      "aggregation_or_windowing": "Use the source’s ROLLUP form or explicit aggregate branches, and label the aggregate level reliably.",
+      "result_shape": "Grouped values and overall total.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "ROLLUP syntax and grouping-marker availability are source-era; verify current support.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "COALESCE on a group label alone can conflate a real NULL category with a total.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Add a grand total to grouped summaries."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one category subtotal plus a grand-total row."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Verify grand total equals independently summed detail and distinguish source NULL categories from the generated total."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-12-02",
+        "sql-recipe-12-11",
+        "sql-recipe-12-14",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "12",
+        "chapter_title": "Chapter 12. Reporting and Reshaping",
+        "section_heading": "12.12 Calculating Simple Subtotals",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-12",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-12.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-12.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-12.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Add a grand total to grouped summaries.",
+          "Use the source’s ROLLUP form or explicit aggregate branches, and label the aggregate level reliably.",
+          "The report contains more than one aggregation level."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "12.12 Calculating Simple Subtotals",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-12",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch12"
+      ],
+      "recipe_name": "12.12 Calculating Simple Subtotals",
+      "problem_paraphrase": "Add a grand total to grouped summaries.",
+      "solution_pattern": "Use the source’s ROLLUP form or explicit aggregate branches, and label the aggregate level reliably.",
+      "discussion_reasoning": "The report contains more than one aggregation level.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2 and Oracle",
+          "dialects": [
+            "DB2",
+            "Oracle"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-12.2.1",
+          "function_tokens_detected": [
+            "GROUPING",
+            "ROLLUP",
+            "SUBTOTALS",
+            "SUM",
+            "TOTAL"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "SQL Server and MySQL",
+          "dialects": [
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-12.2.2",
+          "function_tokens_detected": [
+            "COALESCE",
+            "ROW",
+            "SUBTOTALS",
+            "SUM",
+            "TOTAL"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "PostgreSQL",
+          "dialects": [
+            "PostgreSQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-12.2.3",
+          "function_tokens_detected": [
+            "COALESCE",
+            "ROLLUP",
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2 and Oracle",
+          "dialects": [
+            "DB2",
+            "Oracle"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-12.3.1",
+          "function_tokens_detected": [
+            "GROUPING",
+            "ROLLUP",
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "SQL Server and MySQL",
+          "dialects": [
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-12.3.2",
+          "function_tokens_detected": [
+            "COALESCE",
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "PostgreSQL",
+          "dialects": [
+            "PostgreSQL"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-12.3.3",
+          "function_tokens_detected": [
+            "ROLLUP"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "One category subtotal plus a grand-total row.",
+      "output_shape": "Grouped values and overall total.",
+      "assumptions": [
+        "One category subtotal plus a grand-total row.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "ROLLUP syntax and grouping-marker availability are source-era; verify current support."
+      ],
+      "test_query_or_validation_shape": "Verify grand total equals independently summed detail and distinguish source NULL categories from the generated total.",
+      "when_to_use": [
+        "Add a grand total to grouped summaries."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one category subtotal plus a grand-total row."
+      ],
+      "related_records": [
+        "sql-recipe-12-02",
+        "sql-recipe-12-11",
+        "sql-recipe-12-14",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-12",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-12-13",
+      "record_type": "recipe_pattern",
+      "name": "12.13 Calculating Subtotals for All Possible Expression Combinations",
+      "summary": "Use CUBE or separate aggregate branches matching each required grouping level.",
+      "source_recipe_or_concept": "12.13 Calculating Subtotals for All Possible Expression Combinations; supporting source units: 12.13",
+      "sql_problem_addressed": "Produce subtotals for every requested combination of dimensions.",
+      "query_intent": "Produce subtotals for every requested combination of dimensions.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One row per grouping combination and level.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "DEPT",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One row per grouping combination and level.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Produce subtotals for every requested combination of dimensions."
+      ],
+      "aggregation_or_windowing": "Use CUBE or separate aggregate branches matching each required grouping level.",
+      "result_shape": "Detail-level groups, marginal subtotals, and grand total.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "CUBE support and alternatives are dialect-specific and may differ from the source’s version claims.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "NULL dimension values and generated subtotal NULLs need separate level markers.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Produce subtotals for every requested combination of dimensions."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one row per grouping combination and level."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Validate every grouping level independently; do not sum the mixed-level output as one fact table."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-12-02",
+        "sql-recipe-12-11",
+        "sql-recipe-12-14",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "12",
+        "chapter_title": "Chapter 12. Reporting and Reshaping",
+        "section_heading": "12.13 Calculating Subtotals for All Possible Expression Combinations",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-13",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-13.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-13.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-13.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Produce subtotals for every requested combination of dimensions.",
+          "Use CUBE or separate aggregate branches matching each required grouping level.",
+          "Each subtotal represents a different projection of the grouping dimensions."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "12.13 Calculating Subtotals for All Possible Expression Combinations",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-13",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch12"
+      ],
+      "recipe_name": "12.13 Calculating Subtotals for All Possible Expression Combinations",
+      "problem_paraphrase": "Produce subtotals for every requested combination of dimensions.",
+      "solution_pattern": "Use CUBE or separate aggregate branches matching each required grouping level.",
+      "discussion_reasoning": "Each subtotal represents a different projection of the grouping dimensions.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2",
+          "dialects": [
+            "DB2"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-13.2.1",
+          "function_tokens_detected": [
+            "CAST",
+            "CHAR",
+            "CUBE",
+            "GROUPING",
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-13.2.2",
+          "function_tokens_detected": [
+            "CUBE",
+            "GROUPING",
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "SQL Server",
+          "dialects": [
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-13.2.3",
+          "function_tokens_detected": [
+            "CAST",
+            "CHAR",
+            "CONCATENATION",
+            "GROUPING",
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "PostgreSQL",
+          "dialects": [
+            "PostgreSQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-13.2.4",
+          "function_tokens_detected": [
+            "CAST",
+            "CHAR",
+            "CONCAT",
+            "CUBE",
+            "GROUPING",
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL",
+          "dialects": [
+            "MySQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#idm45247229647464",
+          "function_tokens_detected": [
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle, DB2, and SQL Server",
+          "dialects": [
+            "DB2",
+            "Oracle",
+            "SQL Server"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-13.3.1",
+          "function_tokens_detected": [
+            "CHAR",
+            "CUBE",
+            "GROUPING",
+            "HERE",
+            "OMITTING",
+            "SETS",
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL",
+          "dialects": [
+            "MySQL"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-13.3.2",
+          "function_tokens_detected": [
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "One row per grouping combination and level.",
+      "output_shape": "Detail-level groups, marginal subtotals, and grand total.",
+      "assumptions": [
+        "One row per grouping combination and level.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "CUBE support and alternatives are dialect-specific and may differ from the source’s version claims."
+      ],
+      "test_query_or_validation_shape": "Validate every grouping level independently; do not sum the mixed-level output as one fact table.",
+      "when_to_use": [
+        "Produce subtotals for every requested combination of dimensions."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one row per grouping combination and level."
+      ],
+      "related_records": [
+        "sql-recipe-12-02",
+        "sql-recipe-12-11",
+        "sql-recipe-12-14",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-13",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "DEPT",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-13",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-12-14",
+      "record_type": "recipe_pattern",
+      "name": "12.14 Identifying Rows That Are Not Subtotals",
+      "summary": "Use GROUPING indicators to mark dimensions rolled out of the current aggregate level.",
+      "source_recipe_or_concept": "12.14 Identifying Rows That Are Not Subtotals; supporting source units: 12.14",
+      "sql_problem_addressed": "Identify which output rows are generated subtotals.",
+      "query_intent": "Identify which output rows are generated subtotals.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One aggregate output row with level indicators.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One aggregate output row with level indicators.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Identify which output rows are generated subtotals."
+      ],
+      "aggregation_or_windowing": "Use GROUPING indicators to mark dimensions rolled out of the current aggregate level.",
+      "result_shape": "Subtotals distinguishable from ordinary grouped rows.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "The source’s MySQL GROUPING/CUBE statement is historical and must not be assumed current.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Preserve grouping markers alongside nullable labels.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Identify which output rows are generated subtotals."
+      ],
+      "do_not_use_when": [
+        "The required grain or output shape differs from subtotals distinguishable from ordinary grouped rows.",
+        "An unresolved source issue would be treated as production-ready SQL."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Insert a genuine NULL dimension value and verify it is distinct from the all-dimensions total."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-12-02",
+        "sql-recipe-12-11",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "12",
+        "chapter_title": "Chapter 12. Reporting and Reshaping",
+        "section_heading": "12.14 Identifying Rows That Are Not Subtotals",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-14",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-14.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-14.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-14.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Identify which output rows are generated subtotals.",
+          "Use GROUPING indicators to mark dimensions rolled out of the current aggregate level.",
+          "A displayed NULL in a dimension cannot by itself explain whether the row is a subtotal."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "12.14 Identifying Rows That Are Not Subtotals",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-14",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "recipe",
+        "ch12"
+      ],
+      "recipe_name": "12.14 Identifying Rows That Are Not Subtotals",
+      "problem_paraphrase": "Identify which output rows are generated subtotals.",
+      "solution_pattern": "Use GROUPING indicators to mark dimensions rolled out of the current aggregate level.",
+      "discussion_reasoning": "A displayed NULL in a dimension cannot by itself explain whether the row is a subtotal.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One aggregate output row with level indicators.",
+      "output_shape": "Subtotals distinguishable from ordinary grouped rows.",
+      "assumptions": [
+        "One aggregate output row with level indicators.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The source’s MySQL GROUPING/CUBE statement is historical and must not be assumed current.",
+        "The discussion makes historical database support statements for grouping metadata and cube operations."
+      ],
+      "test_query_or_validation_shape": "Insert a genuine NULL dimension value and verify it is distinct from the all-dimensions total.",
+      "when_to_use": [
+        "Identify which output rows are generated subtotals."
+      ],
+      "when_not_to_use": [
+        "The required grain or output shape differs from subtotals distinguishable from ordinary grouped rows.",
+        "An unresolved source issue would be treated as production-ready SQL."
+      ],
+      "related_records": [
+        "sql-recipe-12-02",
+        "sql-recipe-12-11",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [
+        "source-issue-grouping-era"
+      ],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-14",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-12-18",
+      "record_type": "recipe_pattern",
+      "name": "12.18 Performing Aggregations over Different Groups/Partitions Simultaneously",
+      "summary": "Use multiple window expressions with different PARTITION BY definitions.",
+      "source_recipe_or_concept": "12.18 Performing Aggregations over Different Groups/Partitions Simultaneously; supporting source units: 12.18",
+      "sql_problem_addressed": "Attach several differently grouped aggregates to each detail row.",
+      "query_intent": "Attach several differently grouped aggregates to each detail row.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One detail record with several reference scopes.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One detail record with several reference scopes.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Attach several differently grouped aggregates to each detail row."
+      ],
+      "aggregation_or_windowing": "Use multiple window expressions with different PARTITION BY definitions.",
+      "result_shape": "A detailed report containing multiple aggregate contexts.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Do not add repeated window totals across detail rows as if they were independent amounts.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Use the appropriate COUNT(*) or COUNT(expression) for each scope.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Attach several differently grouped aggregates to each detail row."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one detail record with several reference scopes."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-aggregate-inflated-after-join"
+      ],
+      "tests_or_checks": [
+        "Reconcile each partition’s value independently and verify the detail row count remains unchanged."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-12-02",
+        "sql-recipe-12-11",
+        "sql-recipe-12-14",
+        "sql-risk-current-version-assumption",
+        "sql-risk-aggregate-inflated-after-join"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "12",
+        "chapter_title": "Chapter 12. Reporting and Reshaping",
+        "section_heading": "12.18 Performing Aggregations over Different Groups/Partitions Simultaneously",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-18",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-18.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-18.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-18.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Attach several differently grouped aggregates to each detail row.",
+          "Use multiple window expressions with different PARTITION BY definitions.",
+          "The same detail row can carry a department aggregate, a job aggregate, and an overall aggregate without being collapsed."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "12.18 Performing Aggregations over Different Groups/Partitions Simultaneously",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-18",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch12"
+      ],
+      "recipe_name": "12.18 Performing Aggregations over Different Groups/Partitions Simultaneously",
+      "problem_paraphrase": "Attach several differently grouped aggregates to each detail row.",
+      "solution_pattern": "Use multiple window expressions with different PARTITION BY definitions.",
+      "discussion_reasoning": "The same detail row can carry a department aggregate, a job aggregate, and an overall aggregate without being collapsed.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One detail record with several reference scopes.",
+      "output_shape": "A detailed report containing multiple aggregate contexts.",
+      "assumptions": [
+        "One detail record with several reference scopes.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Do not add repeated window totals across detail rows as if they were independent amounts."
+      ],
+      "test_query_or_validation_shape": "Reconcile each partition’s value independently and verify the detail row count remains unchanged.",
+      "when_to_use": [
+        "Attach several differently grouped aggregates to each detail row."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one detail record with several reference scopes."
+      ],
+      "related_records": [
+        "sql-recipe-12-02",
+        "sql-recipe-12-11",
+        "sql-recipe-12-14",
+        "sql-risk-current-version-assumption",
+        "sql-risk-aggregate-inflated-after-join"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-18",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-14-12",
+      "record_type": "recipe_pattern",
+      "name": "14.12 Calculating Percent Relative to Total",
+      "summary": "Use Oracle RATIO_TO_REPORT for the source example or the separately sourced numerator/denominator pattern from Recipe 7.11.",
+      "source_recipe_or_concept": "14.12 Calculating Percent Relative to Total; supporting source units: 14.12",
+      "sql_problem_addressed": "Show contributions as a share of their reporting total.",
+      "query_intent": "Show contributions as a share of their reporting total.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One contributing detail or grouped item within its denominator scope.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One contributing detail or grouped item within its denominator scope.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Show contributions as a share of their reporting total."
+      ],
+      "aggregation_or_windowing": "Use Oracle RATIO_TO_REPORT for the source example or the separately sourced numerator/denominator pattern from Recipe 7.11.",
+      "result_shape": "Values paired with report-relative shares.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "The source’s preference for Oracle is not a claim that other current databases cannot calculate percentages.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Review missing measures and whether they belong to the denominator population.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Show contributions as a share of their reporting total."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one contributing detail or grouped item within its denominator scope."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Expose the denominator, reconcile shares where valid, and test zero totals and rounding."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-14-01",
+        "sql-recipe-14-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "14",
+        "chapter_title": "Chapter 14. Odds ’n’ Ends",
+        "section_heading": "14.12 Calculating Percent Relative to Total",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-12",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-12.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-12.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-12.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Show contributions as a share of their reporting total.",
+          "Use Oracle RATIO_TO_REPORT for the source example or the separately sourced numerator/denominator pattern from Recipe 7.11.",
+          "The chosen report population defines what whole each contribution is compared with."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "14.12 Calculating Percent Relative to Total",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-12",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch14"
+      ],
+      "recipe_name": "14.12 Calculating Percent Relative to Total",
+      "problem_paraphrase": "Show contributions as a share of their reporting total.",
+      "solution_pattern": "Use Oracle RATIO_TO_REPORT for the source example or the separately sourced numerator/denominator pattern from Recipe 7.11.",
+      "discussion_reasoning": "The chosen report population defines what whole each contribution is compared with.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One contributing detail or grouped item within its denominator scope.",
+      "output_shape": "Values paired with report-relative shares.",
+      "assumptions": [
+        "One contributing detail or grouped item within its denominator scope.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The source’s preference for Oracle is not a claim that other current databases cannot calculate percentages."
+      ],
+      "test_query_or_validation_shape": "Expose the denominator, reconcile shares where valid, and test zero totals and rounding.",
+      "when_to_use": [
+        "Show contributions as a share of their reporting total."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one contributing detail or grouped item within its denominator scope."
+      ],
+      "related_records": [
+        "sql-recipe-14-01",
+        "sql-recipe-14-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-12",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-14-13",
+      "record_type": "recipe_pattern",
+      "name": "14.13 Testing for Existence of a Value Within a Group",
+      "summary": "Convert the condition to a clear indicator and use a partitioned MAX or equivalent group-existence aggregate.",
+      "source_recipe_or_concept": "14.13 Testing for Existence of a Value Within a Group; supporting source units: 14.13",
+      "sql_problem_addressed": "Flag every row when any member of its group satisfies a condition.",
+      "query_intent": "Flag every row when any member of its group satisfies a condition.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One detail row within the full student/period-like grouping key.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        }
+      ],
+      "required_grain": "One detail row within the full student/period-like grouping key.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Flag every row when any member of its group satisfies a condition."
+      ],
+      "aggregation_or_windowing": "Convert the condition to a clear indicator and use a partitioned MAX or equivalent group-existence aggregate.",
+      "result_shape": "Details carrying a shared group-existence flag.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "The source’s 0/1 example supports MAX as existence; arbitrary category values require a different reviewed mapping.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Define how unknown condition values affect the group flag.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Flag every row when any member of its group satisfies a condition."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one detail row within the full student/period-like grouping key."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Test one passing row among failures, all failures, multiple periods, and missing indicators."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-14-01",
+        "sql-recipe-14-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "14",
+        "chapter_title": "Chapter 14. Odds ’n’ Ends",
+        "section_heading": "14.13 Testing for Existence of a Value Within a Group",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-13",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-13.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-13.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-13.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Flag every row when any member of its group satisfies a condition.",
+          "Convert the condition to a clear indicator and use a partitioned MAX or equivalent group-existence aggregate.",
+          "Group-level existence must be broadcast to the group, not reevaluated as an independent row-level fact."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "14.13 Testing for Existence of a Value Within a Group",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-13",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch14"
+      ],
+      "recipe_name": "14.13 Testing for Existence of a Value Within a Group",
+      "problem_paraphrase": "Flag every row when any member of its group satisfies a condition.",
+      "solution_pattern": "Convert the condition to a clear indicator and use a partitioned MAX or equivalent group-existence aggregate.",
+      "discussion_reasoning": "Group-level existence must be broadcast to the group, not reevaluated as an independent row-level fact.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One detail row within the full student/period-like grouping key.",
+      "output_shape": "Details carrying a shared group-existence flag.",
+      "assumptions": [
+        "One detail row within the full student/period-like grouping key.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The source’s 0/1 example supports MAX as existence; arbitrary category values require a different reviewed mapping."
+      ],
+      "test_query_or_validation_shape": "Test one passing row among failures, all failures, multiple periods, and missing indicators.",
+      "when_to_use": [
+        "Flag every row when any member of its group satisfies a condition."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one detail row within the full student/period-like grouping key."
+      ],
+      "related_records": [
+        "sql-recipe-14-01",
+        "sql-recipe-14-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-concept-grouping",
+      "record_type": "core_sql_pattern",
+      "name": "Grouping reduces rows to declared groups",
+      "summary": "An explicit GROUP BY returns a representative group row for each observed combination of the grouping expressions.",
+      "source_recipe_or_concept": "Grouping; supporting source units: app01#sqlckbk-APP-A-SECT-1, 7.3",
+      "sql_problem_addressed": "An explicit GROUP BY returns a representative group row for each observed combination of the grouping expressions.",
+      "query_intent": "Grouping reduces rows to declared groups",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "One output row per observed grouping combination.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Group identifiers and aggregate values.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Grouping reduces rows to declared groups is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Test duplicate inputs and an empty input; distinguish explicit groups from a scalar aggregate."
+      ],
+      "diagnostic_questions": [
+        "Which concrete output row would demonstrate that this design answers the intended question?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-03"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "A",
+        "chapter_title": "Appendix A. Window Function Refresher",
+        "section_heading": "Grouping",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/app01.html#sqlckbk-APP-A-SECT-1",
+        "problem_solution_discussion_reference": {
+          "Definition of an SQL Group": "SQL Cookbook.epub/OEBPS/app01.html#sqlckbk-APP-A-SECT-1.1",
+          "Paradoxes": "SQL Cookbook.epub/OEBPS/app01.html#sqlckbk-APP-A-SECT-1.2",
+          "Relationship Between SELECT and GROUP BY": "SQL Cookbook.epub/OEBPS/app01.html#sqlckbk-APP-A-SECT-1.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "An explicit GROUP BY returns a representative group row for each observed combination of the grouping expressions."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "Grouping",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/app01.html#sqlckbk-APP-A-SECT-1",
+            "support_role": "direct source pattern"
+          },
+          {
+            "section_heading": "7.3 Summing the Values in a Column",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-3",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_sql_pattern",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "core_sql_pattern"
+      ],
+      "source_issue_ids": [
+        "source-issue-group-count"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-grouping",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-pivot",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-concept-count-contract",
+      "record_type": "core_sql_pattern",
+      "name": "COUNT expressions encode different missingness questions",
+      "summary": "COUNT(*) counts rows whereas COUNT(column) omits rows whose selected expression is NULL.",
+      "source_recipe_or_concept": "7.4 Counting Rows in a Table; supporting source units: 7.4, 7.5, 7.12",
+      "sql_problem_addressed": "COUNT(*) counts rows whereas COUNT(column) omits rows whose selected expression is NULL.",
+      "query_intent": "COUNT expressions encode different missingness questions",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "One count per declared group or window partition.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A row count or non-NULL observation count, as explicitly chosen.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "COUNT expressions encode different missingness questions is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Use an all-NULL group and an outer-joined group with no matching child."
+      ],
+      "diagnostic_questions": [
+        "Which concrete output row would demonstrate that this design answers the intended question?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-04",
+        "sql-recipe-07-05",
+        "sql-recipe-07-12"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.4 Counting Rows in a Table",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4.3",
+          "See Also": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4.4"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "COUNT(*) counts rows whereas COUNT(column) omits rows whose selected expression is NULL."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.4 Counting Rows in a Table",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4",
+            "support_role": "direct source pattern"
+          },
+          {
+            "section_heading": "7.5 Counting Values in a Column",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-5",
+            "support_role": "direct source pattern"
+          },
+          {
+            "section_heading": "7.12 Aggregating Nullable Columns",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-12",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_sql_pattern",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "core_sql_pattern"
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-concept-empty-versus-zero",
+      "record_type": "core_sql_pattern",
+      "name": "Missing observation and numeric zero must not be conflated",
+      "summary": "Replacing NULL with zero before averaging changes which observations contribute to the average and therefore changes its interpretation.",
+      "source_recipe_or_concept": "1.12 Transforming Nulls into Real Values; supporting source units: 1.12, 7.12",
+      "sql_problem_addressed": "Replacing NULL with zero before averaging changes which observations contribute to the average and therefore changes its interpretation.",
+      "query_intent": "Missing observation and numeric zero must not be conflated",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "One aggregate over a stated population.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A result with a documented missingness policy.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Missing observation and numeric zero must not be conflated is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Compare NULL-bearing inputs with zero-bearing inputs and record the intended denominator."
+      ],
+      "diagnostic_questions": [
+        "Which concrete output row would demonstrate that this design answers the intended question?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-12",
+        "sql-recipe-07-12"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.12 Transforming Nulls into Real Values",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-12",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-12.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-12.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-12.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Replacing NULL with zero before averaging changes which observations contribute to the average and therefore changes its interpretation."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.12 Transforming Nulls into Real Values",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-12",
+            "support_role": "direct source pattern"
+          },
+          {
+            "section_heading": "7.12 Aggregating Nullable Columns",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-12",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_sql_pattern",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "core_sql_pattern"
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-concept-row-value-distinct",
+      "record_type": "core_sql_pattern",
+      "name": "Entity identity is not measure equality",
+      "summary": "Two entities may have equal measure values, so DISTINCT on a measure cannot generally repair duplicated entities after a join.",
+      "source_recipe_or_concept": "3.9 Performing Joins When Using Aggregates; supporting source units: 3.9, 3.10",
+      "sql_problem_addressed": "Two entities may have equal measure values, so DISTINCT on a measure cannot generally repair duplicated entities after a join.",
+      "query_intent": "Entity identity is not measure equality",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Preserve employee identity separately from bonus-event grain.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Correct entity total and separately aggregated bonus total.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Entity identity is not measure equality is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Use two employees with the same salary and multiple bonus rows."
+      ],
+      "diagnostic_questions": [
+        "Which concrete output row would demonstrate that this design answers the intended question?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-09",
+        "sql-recipe-03-10"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.9 Performing Joins When Using Aggregates",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "Two entities may have equal measure values, so DISTINCT on a measure cannot generally repair duplicated entities after a join.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.9 Performing Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "3.10 Performing Outer Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "medium",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "core_sql_pattern"
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "table_grain": "Preserve employee identity separately from bonus-event grain.",
+      "join_key_assumptions": [
+        "Entity identifiers, not measure values, control the relationship."
+      ],
+      "expected_cardinality": "One total per entity grouping after separating parent and child grains.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Use two employees with the same salary and multiple bonus rows.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    }
+  ]
+}

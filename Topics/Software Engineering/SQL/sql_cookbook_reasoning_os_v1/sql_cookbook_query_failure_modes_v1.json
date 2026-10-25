@@ -1,0 +1,3762 @@
+{
+  "package_id": "sql-cookbook-reasoning-os-v1",
+  "section_key": "query_failure_modes",
+  "record_count": 32,
+  "unique_record_count": 32,
+  "source_boundary": "Uploaded second edition only. Derivation and source anchors are carried on every substantive record.",
+  "usage_note": "These are canonical records reused across topical modules. Count distinct IDs across the package, not module totals.",
+  "records": [
+    {
+      "id": "sql-risk-schema-invented",
+      "record_type": "failure_mode",
+      "name": "Invented schema",
+      "summary": "A plausible object or column name has replaced inspected metadata.",
+      "source_recipe_or_concept": "5.1 Listing Tables in a Schema; supporting source units: 5.1, 5.2",
+      "sql_problem_addressed": "A plausible object or column name has replaced inspected metadata.",
+      "query_intent": "Invented schema",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Invented schema is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Resolve every object against the actual schema before producing executable SQL."
+      ],
+      "diagnostic_questions": [
+        "Which catalog or supplied schema proves each table and column exists?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-05-01",
+        "sql-recipe-05-02"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "5",
+        "chapter_title": "Chapter 5. Metadata Queries",
+        "section_heading": "5.1 Listing Tables in a Schema",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-1",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-1.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-1.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-1.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "A plausible object or column name has replaced inspected metadata.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "5.1 Listing Tables in a Schema",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-1",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "5.2 Listing a Table’s Columns",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Invented schema",
+      "description": "A plausible object or column name has replaced inspected metadata.",
+      "where_it_appears": [
+        "5.1 Listing Tables in a Schema",
+        "5.2 Listing a Table’s Columns"
+      ],
+      "root_cause": "A plausible object or column name has replaced inspected metadata.",
+      "symptoms": [
+        "The query refers to missing objects or a familiar name with a different meaning."
+      ],
+      "why_it_misleads": "The query refers to missing objects or a familiar name with a different meaning. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Which catalog or supplied schema proves each table and column exists?",
+      "prevention_or_mitigation": [
+        "Inspect qualified objects and column types; keep unknown mappings explicit."
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-catalogs",
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-wrong-grain",
+      "record_type": "failure_mode",
+      "name": "Wrong row grain",
+      "summary": "The unit represented by a row is different from the unit the metric requires.",
+      "source_recipe_or_concept": "3.9 Performing Joins When Using Aggregates; supporting source units: 3.9, 12.11",
+      "sql_problem_addressed": "The unit represented by a row is different from the unit the metric requires.",
+      "query_intent": "Wrong row grain",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Wrong row grain is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Compare output keys and counts with the stated grain."
+      ],
+      "diagnostic_questions": [
+        "What is one input row and one output row supposed to represent?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-09",
+        "sql-recipe-12-11"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.9 Performing Joins When Using Aggregates",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "The unit represented by a row is different from the unit the metric requires.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.9 Performing Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "12.11 Returning Non-GROUP BY Columns",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-11",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "medium",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Wrong row grain",
+      "description": "The unit represented by a row is different from the unit the metric requires.",
+      "where_it_appears": [
+        "3.9 Performing Joins When Using Aggregates",
+        "12.11 Returning Non-GROUP BY Columns"
+      ],
+      "root_cause": "The unit represented by a row is different from the unit the metric requires.",
+      "symptoms": [
+        "Totals change when unrelated detail columns are added."
+      ],
+      "why_it_misleads": "Totals change when unrelated detail columns are added. Successful execution alone cannot establish the intended answer.",
+      "better_question": "What is one input row and one output row supposed to represent?",
+      "prevention_or_mitigation": [
+        "Write both grains; aggregate or deduplicate by entity identity at the appropriate stage."
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-missing-key",
+      "record_type": "failure_mode",
+      "name": "Missing relationship key",
+      "summary": "A join omits part of a composite key or assumes uniqueness without evidence.",
+      "source_recipe_or_concept": "3.2 Combining Related Rows; supporting source units: 3.2, 5.4",
+      "sql_problem_addressed": "A join omits part of a composite key or assumes uniqueness without evidence.",
+      "query_intent": "Missing relationship key",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Missing relationship key is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Group both sides by the proposed complete key and inspect counts above the expected cardinality."
+      ],
+      "diagnostic_questions": [
+        "Which complete columns identify the relationship, and which side is unique?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-02",
+        "sql-recipe-05-04"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.2 Combining Related Rows",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "A join omits part of a composite key or assumes uniqueness without evidence.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.2 Combining Related Rows",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "5.4 Listing Constraints on a Table",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-4",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "medium",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Missing relationship key",
+      "description": "A join omits part of a composite key or assumes uniqueness without evidence.",
+      "where_it_appears": [
+        "3.2 Combining Related Rows",
+        "5.4 Listing Constraints on a Table"
+      ],
+      "root_cause": "A join omits part of a composite key or assumes uniqueness without evidence.",
+      "symptoms": [
+        "Rows match across unrelated groups or locations."
+      ],
+      "why_it_misleads": "Rows match across unrelated groups or locations. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Which complete columns identify the relationship, and which side is unique?",
+      "prevention_or_mitigation": [
+        "Inspect declared keys and run duplicate-key checks before joining."
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-many-to-many-join",
+      "record_type": "failure_mode",
+      "name": "Unintended many-to-many match",
+      "summary": "Both sides repeat the proposed key, producing all matching combinations.",
+      "source_recipe_or_concept": "3.8 Identifying and Avoiding Cartesian Products; supporting source units: 3.8, 3.9",
+      "sql_problem_addressed": "Both sides repeat the proposed key, producing all matching combinations.",
+      "query_intent": "Unintended many-to-many match",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Unintended many-to-many match is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Use a key with two rows on one side and three on the other; explain all six matches."
+      ],
+      "diagnostic_questions": [
+        "How many matches can each input row find on the opposite side?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-08",
+        "sql-recipe-03-09"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.8 Identifying and Avoiding Cartesian Products",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "Both sides repeat the proposed key, producing all matching combinations.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.8 Identifying and Avoiding Cartesian Products",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "3.9 Performing Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "medium",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Unintended many-to-many match",
+      "description": "Both sides repeat the proposed key, producing all matching combinations.",
+      "where_it_appears": [
+        "3.8 Identifying and Avoiding Cartesian Products",
+        "3.9 Performing Joins When Using Aggregates"
+      ],
+      "root_cause": "Both sides repeat the proposed key, producing all matching combinations.",
+      "symptoms": [
+        "Measures multiply after a seemingly harmless enrichment join."
+      ],
+      "why_it_misleads": "Measures multiply after a seemingly harmless enrichment join. Successful execution alone cannot establish the intended answer.",
+      "better_question": "How many matches can each input row find on the opposite side?",
+      "prevention_or_mitigation": [
+        "Bring inputs to compatible grains or model the intended many-to-many relationship explicitly."
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-cartesian-product",
+      "record_type": "failure_mode",
+      "name": "Unbounded Cartesian product",
+      "summary": "A relationship predicate is absent or row generation is not bounded.",
+      "source_recipe_or_concept": "3.8 Identifying and Avoiding Cartesian Products; supporting source units: 3.8, 6.1",
+      "sql_problem_addressed": "A relationship predicate is absent or row generation is not bounded.",
+      "query_intent": "Unbounded Cartesian product",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Unbounded Cartesian product is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Calculate input-count products and compare with intended expansion."
+      ],
+      "diagnostic_questions": [
+        "Is every combination intentional, and what bounds it?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-08",
+        "sql-recipe-06-01"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.8 Identifying and Avoiding Cartesian Products",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "A relationship predicate is absent or row generation is not bounded."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.8 Identifying and Avoiding Cartesian Products",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-8",
+            "support_role": "direct source pattern"
+          },
+          {
+            "section_heading": "6.1 Walking a String",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-1",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_warning",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Unbounded Cartesian product",
+      "description": "A relationship predicate is absent or row generation is not bounded.",
+      "where_it_appears": [
+        "3.8 Identifying and Avoiding Cartesian Products",
+        "6.1 Walking a String"
+      ],
+      "root_cause": "A relationship predicate is absent or row generation is not bounded.",
+      "symptoms": [
+        "The output approaches the product of input row counts."
+      ],
+      "why_it_misleads": "The output approaches the product of input row counts. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Is every combination intentional, and what bounds it?",
+      "prevention_or_mitigation": [
+        "Supply the missing predicate or explicitly limit the generated domain."
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-outer-join-filtered-in-where",
+      "record_type": "failure_mode",
+      "name": "Outer-join preservation defeated",
+      "summary": "A predicate on the nullable joined side is applied after row preservation.",
+      "source_recipe_or_concept": "3.6 Adding Joins to a Query Without Interfering with Other Joins; supporting source units: 3.6, 3.10",
+      "sql_problem_addressed": "A predicate on the nullable joined side is applied after row preservation.",
+      "query_intent": "Outer-join preservation defeated",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Outer-join preservation defeated is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Include a parent with no child and a parent with only nonqualifying children."
+      ],
+      "diagnostic_questions": [
+        "Should this condition restrict matching children or reject entire parent rows?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-06",
+        "sql-recipe-03-10"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.6 Adding Joins to a Query Without Interfering with Other Joins",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-6",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-6.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-6.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-6.3",
+          "See Also": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-6.4"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "A predicate on the nullable joined side is applied after row preservation.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.6 Adding Joins to a Query Without Interfering with Other Joins",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-6",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "3.10 Performing Outer Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "medium",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Outer-join preservation defeated",
+      "description": "A predicate on the nullable joined side is applied after row preservation.",
+      "where_it_appears": [
+        "3.6 Adding Joins to a Query Without Interfering with Other Joins",
+        "3.10 Performing Outer Joins When Using Aggregates"
+      ],
+      "root_cause": "A predicate on the nullable joined side is applied after row preservation.",
+      "symptoms": [
+        "Parent rows with no matching child disappear."
+      ],
+      "why_it_misleads": "Parent rows with no matching child disappear. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Should this condition restrict matching children or reject entire parent rows?",
+      "prevention_or_mitigation": [
+        "Place the condition at the stage matching its intent; do not mechanically relocate every filter."
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-aggregate-inflated-after-join",
+      "record_type": "failure_mode",
+      "name": "Aggregate inflated by join multiplicity",
+      "summary": "A parent measure is repeated at child-event grain before summation.",
+      "source_recipe_or_concept": "3.9 Performing Joins When Using Aggregates; supporting source units: 3.9, 3.10",
+      "sql_problem_addressed": "A parent measure is repeated at child-event grain before summation.",
+      "query_intent": "Aggregate inflated by join multiplicity",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Aggregate inflated by join multiplicity is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Reconcile each input total before and after joining; use equal-valued different entities."
+      ],
+      "diagnostic_questions": [
+        "At what grain was each measure recorded?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-09",
+        "sql-recipe-03-10"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.9 Performing Joins When Using Aggregates",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "A parent measure is repeated at child-event grain before summation."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.9 Performing Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+            "support_role": "direct source pattern"
+          },
+          {
+            "section_heading": "3.10 Performing Outer Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-10",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_warning",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Aggregate inflated by join multiplicity",
+      "description": "A parent measure is repeated at child-event grain before summation.",
+      "where_it_appears": [
+        "3.9 Performing Joins When Using Aggregates",
+        "3.10 Performing Outer Joins When Using Aggregates"
+      ],
+      "root_cause": "A parent measure is repeated at child-event grain before summation.",
+      "symptoms": [
+        "The sum grows with the number of related events."
+      ],
+      "why_it_misleads": "The sum grows with the number of related events. Successful execution alone cannot establish the intended answer.",
+      "better_question": "At what grain was each measure recorded?",
+      "prevention_or_mitigation": [
+        "Aggregate each measure at its natural grain before combining compatible summaries."
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-count-star-vs-count-column",
+      "record_type": "failure_mode",
+      "name": "Wrong count population",
+      "summary": "A row count is substituted for a count of observed non-NULL values, or conversely.",
+      "source_recipe_or_concept": "7.4 Counting Rows in a Table; supporting source units: 7.4, 7.5, 7.12",
+      "sql_problem_addressed": "A row count is substituted for a count of observed non-NULL values, or conversely.",
+      "query_intent": "Wrong count population",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Wrong count population is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Test an all-NULL group and a preserved parent with no child."
+      ],
+      "diagnostic_questions": [
+        "Are we counting rows, matched children, or observed values?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-04",
+        "sql-recipe-07-05",
+        "sql-recipe-07-12"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.4 Counting Rows in a Table",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4.3",
+          "See Also": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4.4"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "A row count is substituted for a count of observed non-NULL values, or conversely."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.4 Counting Rows in a Table",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-4",
+            "support_role": "direct source pattern"
+          },
+          {
+            "section_heading": "7.5 Counting Values in a Column",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-5",
+            "support_role": "direct source pattern"
+          },
+          {
+            "section_heading": "7.12 Aggregating Nullable Columns",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-12",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_warning",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Wrong count population",
+      "description": "A row count is substituted for a count of observed non-NULL values, or conversely.",
+      "where_it_appears": [
+        "7.4 Counting Rows in a Table",
+        "7.5 Counting Values in a Column",
+        "7.12 Aggregating Nullable Columns"
+      ],
+      "root_cause": "A row count is substituted for a count of observed non-NULL values, or conversely.",
+      "symptoms": [
+        "Empty categories appear to have one observation or missing values vanish from counts."
+      ],
+      "why_it_misleads": "Empty categories appear to have one observation or missing values vanish from counts. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Are we counting rows, matched children, or observed values?",
+      "prevention_or_mitigation": [
+        "Choose the count expression matching the intended population."
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-null-comparison",
+      "record_type": "failure_mode",
+      "name": "NULL treated as ordinary equality",
+      "summary": "Equality or inequality is used as though NULL were an ordinary comparable value.",
+      "source_recipe_or_concept": "1.11 Finding Null Values; supporting source units: 1.11",
+      "sql_problem_addressed": "Equality or inequality is used as though NULL were an ordinary comparable value.",
+      "query_intent": "NULL treated as ordinary equality",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "NULL treated as ordinary equality is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Check NULL, zero, empty string, and a real value separately."
+      ],
+      "diagnostic_questions": [
+        "Is missingness itself the condition being tested?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-11"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.11 Finding Null Values",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-11",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-11.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-11.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-11.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Equality or inequality is used as though NULL were an ordinary comparable value."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.11 Finding Null Values",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-11",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_warning",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "NULL treated as ordinary equality",
+      "description": "Equality or inequality is used as though NULL were an ordinary comparable value.",
+      "where_it_appears": [
+        "1.11 Finding Null Values"
+      ],
+      "root_cause": "Equality or inequality is used as though NULL were an ordinary comparable value.",
+      "symptoms": [
+        "Expected missing-value rows are absent."
+      ],
+      "why_it_misleads": "Expected missing-value rows are absent. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Is missingness itself the condition being tested?",
+      "prevention_or_mitigation": [
+        "Use explicit missingness predicates and decide NULL semantics before comparison."
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-not-in-null-trap",
+      "record_type": "failure_mode",
+      "name": "NOT IN exclusion contaminated by NULL",
+      "summary": "The exclusion set contains NULL, changing the truth of membership negation.",
+      "source_recipe_or_concept": "3.4 Retrieving Values from One Table That Do Not Exist in Another; supporting source units: 3.4, 3.5",
+      "sql_problem_addressed": "The exclusion set contains NULL, changing the truth of membership negation.",
+      "query_intent": "NOT IN exclusion contaminated by NULL",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "NOT IN exclusion contaminated by NULL is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Add one NULL to the right-hand set and verify the desired unmatched rows remain."
+      ],
+      "diagnostic_questions": [
+        "Can the exclusion expression or outer candidate be NULL?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-04",
+        "sql-recipe-03-05"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.4 Retrieving Values from One Table That Do Not Exist in Another",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-4",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-4.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-4.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-4.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The exclusion set contains NULL, changing the truth of membership negation."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.4 Retrieving Values from One Table That Do Not Exist in Another",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-4",
+            "support_role": "direct source pattern"
+          },
+          {
+            "section_heading": "3.5 Retrieving Rows from One Table That Do Not Correspond to Rows in Another",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-5",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_warning",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "NOT IN exclusion contaminated by NULL",
+      "description": "The exclusion set contains NULL, changing the truth of membership negation.",
+      "where_it_appears": [
+        "3.4 Retrieving Values from One Table That Do Not Exist in Another",
+        "3.5 Retrieving Rows from One Table That Do Not Correspond to Rows in Another"
+      ],
+      "root_cause": "The exclusion set contains NULL, changing the truth of membership negation.",
+      "symptoms": [
+        "An anti-join unexpectedly returns no rows."
+      ],
+      "why_it_misleads": "An anti-join unexpectedly returns no rows. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Can the exclusion expression or outer candidate be NULL?",
+      "prevention_or_mitigation": [
+        "Use a deliberately correlated absence test or a justified NULL-filtered exclusion set."
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-distinct-hides-problem",
+      "record_type": "failure_mode",
+      "name": "DISTINCT masks the wrong relationship",
+      "summary": "Value deduplication is used to conceal unexplained row multiplication.",
+      "source_recipe_or_concept": "3.9 Performing Joins When Using Aggregates; supporting source units: 3.9, 4.16, 11.10",
+      "sql_problem_addressed": "Value deduplication is used to conceal unexplained row multiplication.",
+      "query_intent": "DISTINCT masks the wrong relationship",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "DISTINCT masks the wrong relationship is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Use two legitimate entities sharing the same displayed values."
+      ],
+      "diagnostic_questions": [
+        "Which entity is duplicated, and which identifier distinguishes it?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-03-09",
+        "sql-recipe-04-16",
+        "sql-recipe-11-10"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "3",
+        "chapter_title": "Chapter 3. Working with Multiple Tables",
+        "section_heading": "3.9 Performing Joins When Using Aggregates",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "Value deduplication is used to conceal unexplained row multiplication.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "3.9 Performing Joins When Using Aggregates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch03.html#sqlckbk-CHP-3-SECT-9",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "4.16 Deleting Duplicate Records",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-16",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "11.10 Suppressing Duplicates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-10",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "medium",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "DISTINCT masks the wrong relationship",
+      "description": "Value deduplication is used to conceal unexplained row multiplication.",
+      "where_it_appears": [
+        "3.9 Performing Joins When Using Aggregates",
+        "4.16 Deleting Duplicate Records",
+        "11.10 Suppressing Duplicates"
+      ],
+      "root_cause": "Value deduplication is used to conceal unexplained row multiplication.",
+      "symptoms": [
+        "A plausible total depends on whether different entities share equal values."
+      ],
+      "why_it_misleads": "A plausible total depends on whether different entities share equal values. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Which entity is duplicated, and which identifier distinguishes it?",
+      "prevention_or_mitigation": [
+        "Fix relationship or survivor logic before considering projection deduplication."
+      ],
+      "source_issue_ids": [
+        "source-issue-join-distinct"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-unstable-order-by",
+      "record_type": "failure_mode",
+      "name": "Tied ordering is under-specified",
+      "summary": "The specified ordering does not uniquely determine rows where a stable sequence matters.",
+      "source_recipe_or_concept": "2.2 Sorting by Multiple Fields; supporting source units: 2.2, 11.6, 7.6",
+      "sql_problem_addressed": "The specified ordering does not uniquely determine rows where a stable sequence matters.",
+      "query_intent": "Tied ordering is under-specified",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Tied ordering is under-specified is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Include equal primary sort values with different identifiers."
+      ],
+      "diagnostic_questions": [
+        "What tie-breaker is meaningful and unique for this task?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-02-02",
+        "sql-recipe-11-06",
+        "sql-recipe-07-06"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "2",
+        "chapter_title": "Chapter 2. Sorting Query Results",
+        "section_heading": "2.2 Sorting by Multiple Fields",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch02.html#sqlckbk-CHP-2-SECT-2",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch02.html#sqlckbk-CHP-2-SECT-2.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch02.html#sqlckbk-CHP-2-SECT-2.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch02.html#sqlckbk-CHP-2-SECT-2.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "The specified ordering does not uniquely determine rows where a stable sequence matters.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "2.2 Sorting by Multiple Fields",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch02.html#sqlckbk-CHP-2-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "11.6 Finding Records with the Highest and Lowest Values",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-6",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.6 Generating a Running Total",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-6",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "medium",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Tied ordering is under-specified",
+      "description": "The specified ordering does not uniquely determine rows where a stable sequence matters.",
+      "where_it_appears": [
+        "2.2 Sorting by Multiple Fields",
+        "11.6 Finding Records with the Highest and Lowest Values",
+        "7.6 Generating a Running Total"
+      ],
+      "root_cause": "The specified ordering does not uniquely determine rows where a stable sequence matters.",
+      "symptoms": [
+        "Pages, survivor rows, or cumulative results change among ties."
+      ],
+      "why_it_misleads": "Pages, survivor rows, or cumulative results change among ties. Successful execution alone cannot establish the intended answer.",
+      "better_question": "What tie-breaker is meaningful and unique for this task?",
+      "prevention_or_mitigation": [
+        "Specify the intended tie policy and use verified identity when a unique order is required."
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-limit-without-order",
+      "record_type": "failure_mode",
+      "name": "A row cap is mistaken for a top-N rule",
+      "summary": "A limiting operator selects an arbitrary subset where a ranked subset was intended.",
+      "source_recipe_or_concept": "1.9 Limiting the Number of Rows Returned; supporting source units: 1.9, 11.5",
+      "sql_problem_addressed": "A limiting operator selects an arbitrary subset where a ranked subset was intended.",
+      "query_intent": "A row cap is mistaken for a top-N rule",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "A row cap is mistaken for a top-N rule is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Test tied cutoff values and state whether exactly N rows or N rank levels are needed."
+      ],
+      "diagnostic_questions": [
+        "Is any sample acceptable, or must the selected rows be the first under a defined ordering?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-09",
+        "sql-recipe-11-05"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.9 Limiting the Number of Rows Returned",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-9",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-9.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-9.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-9.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "A limiting operator selects an arbitrary subset where a ranked subset was intended.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.9 Limiting the Number of Rows Returned",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-9",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "11.5 Selecting the Top n Records",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-5",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "medium",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "A row cap is mistaken for a top-N rule",
+      "description": "A limiting operator selects an arbitrary subset where a ranked subset was intended.",
+      "where_it_appears": [
+        "1.9 Limiting the Number of Rows Returned",
+        "11.5 Selecting the Top n Records"
+      ],
+      "root_cause": "A limiting operator selects an arbitrary subset where a ranked subset was intended.",
+      "symptoms": [
+        "Repeated runs or alternative plans can return a different subset."
+      ],
+      "why_it_misleads": "Repeated runs or alternative plans can return a different subset. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Is any sample acceptable, or must the selected rows be the first under a defined ordering?",
+      "prevention_or_mitigation": [
+        "Use the source’s arbitrary cap only for arbitrary selection; order before selecting a ranked result."
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-window-frame-default",
+      "record_type": "failure_mode",
+      "name": "Implicit frame changes the question",
+      "summary": "Default window bounds are accepted without checking the intended cumulative or moving population.",
+      "source_recipe_or_concept": "Windowing; supporting source units: app01#sqlckbk-APP-A-SECT-2, 12.19",
+      "sql_problem_addressed": "Default window bounds are accepted without checking the intended cumulative or moving population.",
+      "query_intent": "Implicit frame changes the question",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Implicit frame changes the question is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Compare peer ties, the first row, and the final row with hand-calculated frame membership."
+      ],
+      "diagnostic_questions": [
+        "Which rows belong in the frame for this exact current row?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-12-19"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "A",
+        "chapter_title": "Appendix A. Window Function Refresher",
+        "section_heading": "Windowing",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/app01.html#sqlckbk-APP-A-SECT-2",
+        "problem_solution_discussion_reference": {
+          "A Simple Example": "SQL Cookbook.epub/OEBPS/app01.html#sqlckbk-APP-A-SECT-2.1",
+          "Order of Evaluation": "SQL Cookbook.epub/OEBPS/app01.html#sqlckbk-APP-A-SECT-2.2",
+          "Partitions": "SQL Cookbook.epub/OEBPS/app01.html#sqlckbk-APP-A-SECT-2.3",
+          "Effect of NULLs": "SQL Cookbook.epub/OEBPS/app01.html#sqlckbk-APP-A-SECT-2.4",
+          "When Order Matters": "SQL Cookbook.epub/OEBPS/app01.html#sqlckbk-APP-A-SECT-2.5",
+          "The Framing Clause": "SQL Cookbook.epub/OEBPS/app01.html#sqlckbk-APP-A-SECT-2.6",
+          "A Framing Finale": "SQL Cookbook.epub/OEBPS/app01.html#sqlckbk-APP-A-SECT-2.7",
+          "Readability + Performance = Power": "SQL Cookbook.epub/OEBPS/app01.html#sqlckbk-APP-A-SECT-2.8",
+          "Providing a Base": "SQL Cookbook.epub/OEBPS/app01.html#sqlckbk-APP-A-SECT-2.9"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Default window bounds are accepted without checking the intended cumulative or moving population."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "Windowing",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/app01.html#sqlckbk-APP-A-SECT-2",
+            "support_role": "direct source pattern"
+          },
+          {
+            "section_heading": "12.19 Performing Aggregations over a Moving Range of Values",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-19",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_warning",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Implicit frame changes the question",
+      "description": "Default window bounds are accepted without checking the intended cumulative or moving population.",
+      "where_it_appears": [
+        "Windowing",
+        "12.19 Performing Aggregations over a Moving Range of Values"
+      ],
+      "root_cause": "Default window bounds are accepted without checking the intended cumulative or moving population.",
+      "symptoms": [
+        "Tied values receive surprising totals or a full-partition measure becomes cumulative."
+      ],
+      "why_it_misleads": "Tied values receive surprising totals or a full-partition measure becomes cumulative. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Which rows belong in the frame for this exact current row?",
+      "prevention_or_mitigation": [
+        "Write the intended frame explicitly after checking dialect and data type support."
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version",
+        "sql-verify-window"
+      ]
+    },
+    {
+      "id": "sql-risk-running-total-order",
+      "record_type": "failure_mode",
+      "name": "Running total lacks a defined sequence",
+      "summary": "A cumulative calculation has ambiguous ordering or incorrect partition reset.",
+      "source_recipe_or_concept": "7.6 Generating a Running Total; supporting source units: 7.6, app01#sqlckbk-APP-A-SECT-2",
+      "sql_problem_addressed": "A cumulative calculation has ambiguous ordering or incorrect partition reset.",
+      "query_intent": "Running total lacks a defined sequence",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Running total lacks a defined sequence is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Use ties and two partitions; reconcile the final cumulative amount with each partition total."
+      ],
+      "diagnostic_questions": [
+        "Which event order and partition boundary define accumulation?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-06"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.6 Generating a Running Total",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-6",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-6.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-6.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-6.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "A cumulative calculation has ambiguous ordering or incorrect partition reset.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.6 Generating a Running Total",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-6",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "Windowing",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/app01.html#sqlckbk-APP-A-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "medium",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Running total lacks a defined sequence",
+      "description": "A cumulative calculation has ambiguous ordering or incorrect partition reset.",
+      "where_it_appears": [
+        "7.6 Generating a Running Total",
+        "Windowing"
+      ],
+      "root_cause": "A cumulative calculation has ambiguous ordering or incorrect partition reset.",
+      "symptoms": [
+        "The same transactions acquire different intermediate balances."
+      ],
+      "why_it_misleads": "The same transactions acquire different intermediate balances. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Which event order and partition boundary define accumulation?",
+      "prevention_or_mitigation": [
+        "Declare ordering and reset keys independently of presentation order."
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version",
+        "sql-verify-window"
+      ]
+    },
+    {
+      "id": "sql-risk-date-boundary",
+      "record_type": "failure_mode",
+      "name": "Period boundaries include or exclude the wrong rows",
+      "summary": "Inclusive endpoints, timestamps, or calendar-unit conversions are not specified.",
+      "source_recipe_or_concept": "8.2 Determining the Number of Days Between Two Dates; supporting source units: 8.2, 9.13",
+      "sql_problem_addressed": "Inclusive endpoints, timestamps, or calendar-unit conversions are not specified.",
+      "query_intent": "Period boundaries include or exclude the wrong rows",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Period boundaries include or exclude the wrong rows is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Test an event exactly at each endpoint and adjacent intervals."
+      ],
+      "diagnostic_questions": [
+        "Does each interval include its start and end, and are values dates or timestamps?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-08-02",
+        "sql-recipe-09-13"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "8",
+        "chapter_title": "Chapter 8. Date Arithmetic",
+        "section_heading": "8.2 Determining the Number of Days Between Two Dates",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-2",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-2.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-2.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-2.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "Inclusive endpoints, timestamps, or calendar-unit conversions are not specified.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "8.2 Determining the Number of Days Between Two Dates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "9.13 Identifying Overlapping Date Ranges",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-13",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "medium",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Period boundaries include or exclude the wrong rows",
+      "description": "Inclusive endpoints, timestamps, or calendar-unit conversions are not specified.",
+      "where_it_appears": [
+        "8.2 Determining the Number of Days Between Two Dates",
+        "9.13 Identifying Overlapping Date Ranges"
+      ],
+      "root_cause": "Inclusive endpoints, timestamps, or calendar-unit conversions are not specified.",
+      "symptoms": [
+        "Boundary events are counted twice or omitted."
+      ],
+      "why_it_misleads": "Boundary events are counted twice or omitted. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Does each interval include its start and end, and are values dates or timestamps?",
+      "prevention_or_mitigation": [
+        "Specify boundary semantics before choosing date expressions."
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-dates",
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version",
+        "sql-verify-timezone"
+      ]
+    },
+    {
+      "id": "sql-risk-week-definition",
+      "record_type": "failure_mode",
+      "name": "Calendar week mistaken for fiscal or operational week",
+      "summary": "A database week expression is used without confirming the required calendar.",
+      "source_recipe_or_concept": "9.7 Creating a Calendar; supporting source units: 9.7, 9.12",
+      "sql_problem_addressed": "A database week expression is used without confirming the required calendar.",
+      "query_intent": "Calendar week mistaken for fiscal or operational week",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Calendar week mistaken for fiscal or operational week is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Check year-end, the first days of January, and any nonstandard business week."
+      ],
+      "diagnostic_questions": [
+        "What exact week start, week-year, and fiscal mapping does the report require?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-09-07",
+        "sql-recipe-09-12"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "9",
+        "chapter_title": "Chapter 9. Date Manipulation",
+        "section_heading": "9.7 Creating a Calendar",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "A database week expression is used without confirming the required calendar.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "9.7 Creating a Calendar",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "9.12 Comparing Records Using Specific Parts of a Date",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-12",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Calendar week mistaken for fiscal or operational week",
+      "description": "A database week expression is used without confirming the required calendar.",
+      "where_it_appears": [
+        "9.7 Creating a Calendar",
+        "9.12 Comparing Records Using Specific Parts of a Date"
+      ],
+      "root_cause": "A database week expression is used without confirming the required calendar.",
+      "symptoms": [
+        "Rows around year-end or week start appear in the wrong reporting period."
+      ],
+      "why_it_misleads": "Rows around year-end or week start appear in the wrong reporting period. Successful execution alone cannot establish the intended answer.",
+      "better_question": "What exact week start, week-year, and fiscal mapping does the report require?",
+      "prevention_or_mitigation": [
+        "Use an approved calendar mapping rather than guessing from a function name."
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics",
+        "sql-verify-dates",
+        "sql-verify-timezone"
+      ]
+    },
+    {
+      "id": "sql-risk-timezone-ignored",
+      "record_type": "failure_mode",
+      "name": "Timestamp zone or business-day cutoff omitted",
+      "summary": "A source date example is extended to live timestamps without a zone and cutoff contract.",
+      "source_recipe_or_concept": "8.1 Adding and Subtracting Days, Months, and Years; supporting source units: 8.1, 9.10",
+      "sql_problem_addressed": "A source date example is extended to live timestamps without a zone and cutoff contract.",
+      "query_intent": "Timestamp zone or business-day cutoff omitted",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Timestamp zone or business-day cutoff omitted is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Test events near midnight and any relevant clock transition using verified target behavior."
+      ],
+      "diagnostic_questions": [
+        "Which zone and business-day cutoff assign an event to a reporting day?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-08-01",
+        "sql-recipe-09-10"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "8",
+        "chapter_title": "Chapter 8. Date Arithmetic",
+        "section_heading": "8.1 Adding and Subtracting Days, Months, and Years",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-1",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-1.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-1.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-1.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "A source date example is extended to live timestamps without a zone and cutoff contract.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "8.1 Adding and Subtracting Days, Months, and Years",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-1",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "9.10 Filling in Missing Dates",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-10",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Timestamp zone or business-day cutoff omitted",
+      "description": "A source date example is extended to live timestamps without a zone and cutoff contract.",
+      "where_it_appears": [
+        "8.1 Adding and Subtracting Days, Months, and Years",
+        "9.10 Filling in Missing Dates"
+      ],
+      "root_cause": "A source date example is extended to live timestamps without a zone and cutoff contract.",
+      "symptoms": [
+        "Daily totals shift when different systems interpret the same timestamp."
+      ],
+      "why_it_misleads": "Daily totals shift when different systems interpret the same timestamp. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Which zone and business-day cutoff assign an event to a reporting day?",
+      "prevention_or_mitigation": [
+        "Obtain the timestamp and reporting-calendar definitions; the book does not supply them."
+      ],
+      "source_issue_ids": [
+        "source-issue-date-fixtures"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics",
+        "sql-verify-dates",
+        "sql-verify-timezone"
+      ]
+    },
+    {
+      "id": "sql-risk-string-parsing-brittle",
+      "record_type": "failure_mode",
+      "name": "Parser assumes a cleaner format than the data has",
+      "summary": "Fixed token positions, delimiters, or character classes do not cover actual inputs.",
+      "source_recipe_or_concept": "6.14 Extracting the nth Delimited Substring; supporting source units: 6.14, 6.15, 14.11",
+      "sql_problem_addressed": "Fixed token positions, delimiters, or character classes do not cover actual inputs.",
+      "query_intent": "Parser assumes a cleaner format than the data has",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Parser assumes a cleaner format than the data has is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Test empty tokens, extra delimiters, long strings, and repeated source values."
+      ],
+      "diagnostic_questions": [
+        "Which delimiters, escaping rules, and missing-token cases are allowed?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-06-14",
+        "sql-recipe-06-15",
+        "sql-recipe-14-11"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "6",
+        "chapter_title": "Chapter 6. Working with Strings",
+        "section_heading": "6.14 Extracting the nth Delimited Substring",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-14",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-14.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-14.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-14.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "Fixed token positions, delimiters, or character classes do not cover actual inputs.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "6.14 Extracting the nth Delimited Substring",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-14",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "6.15 Parsing an IP Address",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-15",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "14.11 Parsing Serialized Data into Rows",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-11",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "medium",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Parser assumes a cleaner format than the data has",
+      "description": "Fixed token positions, delimiters, or character classes do not cover actual inputs.",
+      "where_it_appears": [
+        "6.14 Extracting the nth Delimited Substring",
+        "6.15 Parsing an IP Address",
+        "14.11 Parsing Serialized Data into Rows"
+      ],
+      "root_cause": "Fixed token positions, delimiters, or character classes do not cover actual inputs.",
+      "symptoms": [
+        "Valid rows are truncated or malformed tokens silently become plausible values."
+      ],
+      "why_it_misleads": "Valid rows are truncated or malformed tokens silently become plausible values. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Which delimiters, escaping rules, and missing-token cases are allowed?",
+      "prevention_or_mitigation": [
+        "Define a parser contract and quarantine cases it does not establish."
+      ],
+      "source_issue_ids": [
+        "source-issue-token-order"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-regex",
+        "sql-verify-sql-server-version",
+        "sql-verify-strings"
+      ]
+    },
+    {
+      "id": "sql-risk-regex-overmatch",
+      "record_type": "failure_mode",
+      "name": "Pattern matching admits unintended strings",
+      "summary": "A broad pattern finds a substring rather than validating the intended complete format.",
+      "source_recipe_or_concept": "1.13 Searching for Patterns; supporting source units: 1.13, 6.6, 6.17",
+      "sql_problem_addressed": "A broad pattern finds a substring rather than validating the intended complete format.",
+      "query_intent": "Pattern matching admits unintended strings",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Pattern matching admits unintended strings is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Include valid strings embedded in invalid surrounding text."
+      ],
+      "diagnostic_questions": [
+        "Is the task finding a substring or validating the entire candidate value?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-13",
+        "sql-recipe-06-06",
+        "sql-recipe-06-17"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.13 Searching for Patterns",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-13",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-13.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-13.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-13.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "A broad pattern finds a substring rather than validating the intended complete format.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.13 Searching for Patterns",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-13",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "6.6 Determining Whether a String Is Alphanumeric",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-6",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "6.17 Finding Text Not Matching a Pattern",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-17",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "medium",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Pattern matching admits unintended strings",
+      "description": "A broad pattern finds a substring rather than validating the intended complete format.",
+      "where_it_appears": [
+        "1.13 Searching for Patterns",
+        "6.6 Determining Whether a String Is Alphanumeric",
+        "6.17 Finding Text Not Matching a Pattern"
+      ],
+      "root_cause": "A broad pattern finds a substring rather than validating the intended complete format.",
+      "symptoms": [
+        "A seemingly valid match contains extra invalid characters."
+      ],
+      "why_it_misleads": "A seemingly valid match contains extra invalid characters. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Is the task finding a substring or validating the entire candidate value?",
+      "prevention_or_mitigation": [
+        "Specify candidate boundaries and the exact allowed pattern under the target dialect."
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-regex",
+        "sql-verify-sql-server-version",
+        "sql-verify-strings"
+      ]
+    },
+    {
+      "id": "sql-risk-dialect-confusion",
+      "record_type": "failure_mode",
+      "name": "A source variant is used in another dialect",
+      "summary": "Similar function names or vendor headings are treated as interchangeable syntax.",
+      "source_recipe_or_concept": "1.7 Concatenating Column Values; supporting source units: 1.7, 8.1, 13.3",
+      "sql_problem_addressed": "Similar function names or vendor headings are treated as interchangeable syntax.",
+      "query_intent": "A source variant is used in another dialect",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "A source variant is used in another dialect is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Use the same expected-output fixture for each proposed target variant."
+      ],
+      "diagnostic_questions": [
+        "Which database version must run this query?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-07",
+        "sql-recipe-08-01",
+        "sql-recipe-13-03"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.7 Concatenating Column Values",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-7",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-7.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-7.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-7.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "Similar function names or vendor headings are treated as interchangeable syntax.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.7 Concatenating Column Values",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-7",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "8.1 Adding and Subtracting Days, Months, and Years",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-1",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "13.3 Creating a Hierarchical View of a Table",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-3",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "medium",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "A source variant is used in another dialect",
+      "description": "Similar function names or vendor headings are treated as interchangeable syntax.",
+      "where_it_appears": [
+        "1.7 Concatenating Column Values",
+        "8.1 Adding and Subtracting Days, Months, and Years",
+        "13.3 Creating a Hierarchical View of a Table"
+      ],
+      "root_cause": "Similar function names or vendor headings are treated as interchangeable syntax.",
+      "symptoms": [
+        "The query fails or returns different ordering, units, or NULL results."
+      ],
+      "why_it_misleads": "The query fails or returns different ordering, units, or NULL results. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Which database version must run this query?",
+      "prevention_or_mitigation": [
+        "Translate the conceptual operation, then verify syntax and semantics separately."
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-pivot-hides-missing-category",
+      "record_type": "failure_mode",
+      "name": "Pivot silently omits expected categories",
+      "summary": "The output column domain is based only on observed values or an incomplete fixed list.",
+      "source_recipe_or_concept": "12.2 Pivoting a Result Set into Multiple Rows; supporting source units: 12.2, 14.1",
+      "sql_problem_addressed": "The output column domain is based only on observed values or an incomplete fixed list.",
+      "query_intent": "Pivot silently omits expected categories",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Pivot silently omits expected categories is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Remove one entire category from observations and inspect the report contract."
+      ],
+      "diagnostic_questions": [
+        "Which categories must appear even when no observation exists?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-12-02",
+        "sql-recipe-14-01"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "12",
+        "chapter_title": "Chapter 12. Reporting and Reshaping",
+        "section_heading": "12.2 Pivoting a Result Set into Multiple Rows",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-2",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-2.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-2.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-2.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "The output column domain is based only on observed values or an incomplete fixed list.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "12.2 Pivoting a Result Set into Multiple Rows",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "14.1 Creating Cross-Tab Reports Using SQL Server’s PIVOT Operator",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-1",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Pivot silently omits expected categories",
+      "description": "The output column domain is based only on observed values or an incomplete fixed list.",
+      "where_it_appears": [
+        "12.2 Pivoting a Result Set into Multiple Rows",
+        "14.1 Creating Cross-Tab Reports Using SQL Server’s PIVOT Operator"
+      ],
+      "root_cause": "The output column domain is based only on observed values or an incomplete fixed list.",
+      "symptoms": [
+        "An absent category looks like a removed business population."
+      ],
+      "why_it_misleads": "An absent category looks like a removed business population. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Which categories must appear even when no observation exists?",
+      "prevention_or_mitigation": [
+        "Establish the category domain and missing-versus-zero policy before pivoting."
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics",
+        "sql-verify-grouping",
+        "sql-verify-pivot"
+      ]
+    },
+    {
+      "id": "sql-risk-bucket-boundary",
+      "record_type": "failure_mode",
+      "name": "Bucket edges or bucket meaning are ambiguous",
+      "summary": "Fixed bucket count, fixed row count, and fixed elapsed-time width are confused.",
+      "source_recipe_or_concept": "12.7 Creating Buckets of Data, of a Fixed Size; supporting source units: 12.7, 12.8, 12.17",
+      "sql_problem_addressed": "Fixed bucket count, fixed row count, and fixed elapsed-time width are confused.",
+      "query_intent": "Bucket edges or bucket meaning are ambiguous",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Bucket edges or bucket meaning are ambiguous is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Test exact edges, fewer rows than buckets, and irregular timestamps."
+      ],
+      "diagnostic_questions": [
+        "What quantity defines bucket width, and which side owns an endpoint?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-12-07",
+        "sql-recipe-12-08",
+        "sql-recipe-12-17"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "12",
+        "chapter_title": "Chapter 12. Reporting and Reshaping",
+        "section_heading": "12.7 Creating Buckets of Data, of a Fixed Size",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-7",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-7.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-7.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-7.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "Fixed bucket count, fixed row count, and fixed elapsed-time width are confused.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "12.7 Creating Buckets of Data, of a Fixed Size",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-7",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "12.8 Creating a Predefined Number of Buckets",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-8",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "12.17 Grouping Rows by Units of Time",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-17",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "medium",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Bucket edges or bucket meaning are ambiguous",
+      "description": "Fixed bucket count, fixed row count, and fixed elapsed-time width are confused.",
+      "where_it_appears": [
+        "12.7 Creating Buckets of Data, of a Fixed Size",
+        "12.8 Creating a Predefined Number of Buckets",
+        "12.17 Grouping Rows by Units of Time"
+      ],
+      "root_cause": "Fixed bucket count, fixed row count, and fixed elapsed-time width are confused.",
+      "symptoms": [
+        "Rows fall into unexpected groups or boundary values get double-counted."
+      ],
+      "why_it_misleads": "Rows fall into unexpected groups or boundary values get double-counted. Successful execution alone cannot establish the intended answer.",
+      "better_question": "What quantity defines bucket width, and which side owns an endpoint?",
+      "prevention_or_mitigation": [
+        "Define bucket units, endpoints, and remainder policy explicitly."
+      ],
+      "source_issue_ids": [
+        "source-issue-row-time"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-subtotal-mixed-with-detail",
+      "record_type": "failure_mode",
+      "name": "Subtotal rows are counted as detail",
+      "summary": "Rolled-up NULL labels are confused with ordinary NULL categories or downstream totals add both.",
+      "source_recipe_or_concept": "12.12 Calculating Simple Subtotals; supporting source units: 12.12, 12.13, 12.14",
+      "sql_problem_addressed": "Rolled-up NULL labels are confused with ordinary NULL categories or downstream totals add both.",
+      "query_intent": "Subtotal rows are counted as detail",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Subtotal rows are counted as detail is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Include an actual NULL category and reconcile totals without re-adding subtotal rows."
+      ],
+      "diagnostic_questions": [
+        "How can the consumer identify the aggregation level of each row?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-12-12",
+        "sql-recipe-12-13",
+        "sql-recipe-12-14"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "12",
+        "chapter_title": "Chapter 12. Reporting and Reshaping",
+        "section_heading": "12.12 Calculating Simple Subtotals",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-12",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-12.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-12.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-12.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "Rolled-up NULL labels are confused with ordinary NULL categories or downstream totals add both.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "12.12 Calculating Simple Subtotals",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-12",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "12.13 Calculating Subtotals for All Possible Expression Combinations",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-13",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "12.14 Identifying Rows That Are Not Subtotals",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-14",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "medium",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Subtotal rows are counted as detail",
+      "description": "Rolled-up NULL labels are confused with ordinary NULL categories or downstream totals add both.",
+      "where_it_appears": [
+        "12.12 Calculating Simple Subtotals",
+        "12.13 Calculating Subtotals for All Possible Expression Combinations",
+        "12.14 Identifying Rows That Are Not Subtotals"
+      ],
+      "root_cause": "Rolled-up NULL labels are confused with ordinary NULL categories or downstream totals add both.",
+      "symptoms": [
+        "The grand total is inflated or genuine missing categories disappear."
+      ],
+      "why_it_misleads": "The grand total is inflated or genuine missing categories disappear. Successful execution alone cannot establish the intended answer.",
+      "better_question": "How can the consumer identify the aggregation level of each row?",
+      "prevention_or_mitigation": [
+        "Retain grouping-level metadata and separate detail from subtotal consumption."
+      ],
+      "source_issue_ids": [
+        "source-issue-grouping-era"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-grouping",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-pivot",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-generated-sql-unsafe",
+      "record_type": "failure_mode",
+      "name": "Generated statement text is executed without review",
+      "summary": "String generation is treated as safe parameter binding or execution authorization.",
+      "source_recipe_or_concept": "5.6 Using SQL to Generate SQL; supporting source units: 5.6, 6.2",
+      "sql_problem_addressed": "String generation is treated as safe parameter binding or execution authorization.",
+      "query_intent": "Generated statement text is executed without review",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Generated statement text is executed without review is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Inspect quotes and NULLs; preview affected objects in a read-only step."
+      ],
+      "diagnostic_questions": [
+        "Which values are parameters, which are identifiers, and who authorized execution?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-05-06",
+        "sql-recipe-06-02"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "5",
+        "chapter_title": "Chapter 5. Metadata Queries",
+        "section_heading": "5.6 Using SQL to Generate SQL",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-6",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-6.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-6.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-6.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "String generation is treated as safe parameter binding or execution authorization.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "5.6 Using SQL to Generate SQL",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-6",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "6.2 Embedding Quotes Within String Literals",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch06.html#sqlckbk-CHP-6-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Generated statement text is executed without review",
+      "description": "String generation is treated as safe parameter binding or execution authorization.",
+      "where_it_appears": [
+        "5.6 Using SQL to Generate SQL",
+        "6.2 Embedding Quotes Within String Literals"
+      ],
+      "root_cause": "String generation is treated as safe parameter binding or execution authorization.",
+      "symptoms": [
+        "Quoted values alter statement meaning or unexpected objects are targeted."
+      ],
+      "why_it_misleads": "Quoted values alter statement meaning or unexpected objects are targeted. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Which values are parameters, which are identifiers, and who authorized execution?",
+      "prevention_or_mitigation": [
+        "Keep generation separate from execution; validate identifiers and use target-supported safe binding."
+      ],
+      "source_issue_ids": [
+        "source-issue-empty-null"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-recursive-query-no-termination",
+      "record_type": "failure_mode",
+      "name": "Recursive expansion is not safely bounded",
+      "summary": "The recursive step cannot demonstrate progress to a stopping condition or encounters cycles.",
+      "source_recipe_or_concept": "Common Table Expressions; supporting source units: app02#sqlckbk-APP-B-SECT-2, 13.4",
+      "sql_problem_addressed": "The recursive step cannot demonstrate progress to a stopping condition or encounters cycles.",
+      "query_intent": "Recursive expansion is not safely bounded",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Recursive expansion is not safely bounded is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Test self-links, a two-node cycle, a short chain, and empty roots."
+      ],
+      "diagnostic_questions": [
+        "What decreases or advances each step, and how are cycles handled?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-13-04"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "B",
+        "chapter_title": "Appendix B. Common Table Expressions",
+        "section_heading": "Common Table Expressions",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/app02.html#sqlckbk-APP-B-SECT-2",
+        "problem_solution_discussion_reference": {},
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "The recursive step cannot demonstrate progress to a stopping condition or encounters cycles.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "Common Table Expressions",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/app02.html#sqlckbk-APP-B-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "13.4 Finding All Child Rows for a Given Parent Row",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-4",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "medium",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Recursive expansion is not safely bounded",
+      "description": "The recursive step cannot demonstrate progress to a stopping condition or encounters cycles.",
+      "where_it_appears": [
+        "Common Table Expressions",
+        "13.4 Finding All Child Rows for a Given Parent Row"
+      ],
+      "root_cause": "The recursive step cannot demonstrate progress to a stopping condition or encounters cycles.",
+      "symptoms": [
+        "Row counts grow unexpectedly or recursion stops only on an engine error."
+      ],
+      "why_it_misleads": "Row counts grow unexpectedly or recursion stops only on an engine error. Successful execution alone cannot establish the intended answer.",
+      "better_question": "What decreases or advances each step, and how are cycles handled?",
+      "prevention_or_mitigation": [
+        "Verify anchor, recursive names, progress, cycle policy, and a finite bound."
+      ],
+      "source_issue_ids": [
+        "source-issue-recursive-symbol",
+        "source-issue-recursive-keyword"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-cte",
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-current-version-assumption",
+      "record_type": "failure_mode",
+      "name": "Historical support is presented as current",
+      "summary": "Source-era syntax, catalogs, or default behavior is applied to an unverified version.",
+      "source_recipe_or_concept": "5.1 Listing Tables in a Schema; supporting source units: 5.1, 8.1, 13.3",
+      "sql_problem_addressed": "Source-era syntax, catalogs, or default behavior is applied to an unverified version.",
+      "query_intent": "Historical support is presented as current",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Historical support is presented as current is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Record database product, version, relevant documentation, and fixture results."
+      ],
+      "diagnostic_questions": [
+        "What official documentation and local result establish this version’s behavior?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-05-01",
+        "sql-recipe-08-01",
+        "sql-recipe-13-03"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "5",
+        "chapter_title": "Chapter 5. Metadata Queries",
+        "section_heading": "5.1 Listing Tables in a Schema",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-1",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-1.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-1.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-1.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "Source-era syntax, catalogs, or default behavior is applied to an unverified version.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "5.1 Listing Tables in a Schema",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch05.html#sqlckbk-CHP-5-SECT-1",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "8.1 Adding and Subtracting Days, Months, and Years",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch08.html#sqlckbk-CHP-8-SECT-1",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "13.3 Creating a Hierarchical View of a Table",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-3",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "current_verification_flag",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Historical support is presented as current",
+      "description": "Source-era syntax, catalogs, or default behavior is applied to an unverified version.",
+      "where_it_appears": [
+        "5.1 Listing Tables in a Schema",
+        "8.1 Adding and Subtracting Days, Months, and Years",
+        "13.3 Creating a Hierarchical View of a Table"
+      ],
+      "root_cause": "Source-era syntax, catalogs, or default behavior is applied to an unverified version.",
+      "symptoms": [
+        "A valid-looking statement relies on unavailable or changed behavior."
+      ],
+      "why_it_misleads": "A valid-looking statement relies on unavailable or changed behavior. Successful execution alone cannot establish the intended answer.",
+      "better_question": "What official documentation and local result establish this version’s behavior?",
+      "prevention_or_mitigation": [
+        "Carry current-verification flags and record evidence before declaring current compatibility."
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-business-definition-invented",
+      "record_type": "failure_mode",
+      "name": "The query invents a metric definition",
+      "summary": "A plausible formula or population is substituted for an approved business rule.",
+      "source_recipe_or_concept": "7.11 Determining the Percentage of a Total; supporting source units: 7.11, 12.18",
+      "sql_problem_addressed": "A plausible formula or population is substituted for an approved business rule.",
+      "query_intent": "The query invents a metric definition",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "The query invents a metric definition is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Reconcile an approved example period and document exclusions."
+      ],
+      "diagnostic_questions": [
+        "Who defined the population, amount, exclusions, and denominator?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-11",
+        "sql-recipe-12-18"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.11 Determining the Percentage of a Total",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "A plausible formula or population is substituted for an approved business rule.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.11 Determining the Percentage of a Total",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "12.18 Performing Aggregations over Different Groups/Partitions Simultaneously",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch12.html#sqlckbk-CHP-12-SECT-18",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "The query invents a metric definition",
+      "description": "A plausible formula or population is substituted for an approved business rule.",
+      "where_it_appears": [
+        "7.11 Determining the Percentage of a Total",
+        "12.18 Performing Aggregations over Different Groups/Partitions Simultaneously"
+      ],
+      "root_cause": "A plausible formula or population is substituted for an approved business rule.",
+      "symptoms": [
+        "A mathematically correct query disagrees with the organization’s metric."
+      ],
+      "why_it_misleads": "A mathematically correct query disagrees with the organization’s metric. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Who defined the population, amount, exclusions, and denominator?",
+      "prevention_or_mitigation": [
+        "Leave business definitions as unresolved inputs until authoritative evidence is provided."
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics"
+      ]
+    },
+    {
+      "id": "sql-risk-correlation-as-causation",
+      "record_type": "failure_mode",
+      "name": "A SQL association is presented as a causal effect",
+      "summary": "Aggregated trends or co-movement are interpreted as proof that one activity caused another.",
+      "source_recipe_or_concept": "7.11 Determining the Percentage of a Total; supporting source units: 7.11, 7.13, 7.17",
+      "sql_problem_addressed": "Aggregated trends or co-movement are interpreted as proof that one activity caused another.",
+      "query_intent": "A SQL association is presented as a causal effect",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "A SQL association is presented as a causal effect is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Check populations and time alignment; explicitly separate descriptive output from a causal conclusion."
+      ],
+      "diagnostic_questions": [
+        "What evidence beyond these query outputs supports the causal claim?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-11",
+        "sql-recipe-07-13",
+        "sql-recipe-07-17"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.11 Determining the Percentage of a Total",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "Aggregated trends or co-movement are interpreted as proof that one activity caused another.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.11 Determining the Percentage of a Total",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.13 Computing Averages Without High and Low Values",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-13",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.17 Finding Anomalies Using Benford’s Law",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-17",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "applied_analytics_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "A SQL association is presented as a causal effect",
+      "description": "Aggregated trends or co-movement are interpreted as proof that one activity caused another.",
+      "where_it_appears": [
+        "7.11 Determining the Percentage of a Total",
+        "7.13 Computing Averages Without High and Low Values",
+        "7.17 Finding Anomalies Using Benford’s Law"
+      ],
+      "root_cause": "Aggregated trends or co-movement are interpreted as proof that one activity caused another.",
+      "symptoms": [
+        "A dashboard claims impact without a causal study or comparable exposure definition."
+      ],
+      "why_it_misleads": "A dashboard claims impact without a causal study or comparable exposure definition. Successful execution alone cannot establish the intended answer.",
+      "better_question": "What evidence beyond these query outputs supports the causal claim?",
+      "prevention_or_mitigation": [
+        "Report descriptive association and its limitations; do not infer causation from the SQL alone."
+      ],
+      "source_issue_ids": [
+        "source-issue-benford-count"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-bi-connectors",
+        "sql-verify-business-metrics"
+      ]
+    },
+    {
+      "id": "sql-risk-source-listing-defect",
+      "record_type": "failure_mode",
+      "name": "A source listing contradicts its stated method",
+      "summary": "Readable book code is assumed correct despite internal naming, grouping, or arithmetic inconsistencies.",
+      "source_recipe_or_concept": "7.10 Calculating a Median; supporting source units: 7.10, 7.16, app02#sqlckbk-APP-B-SECT-2",
+      "sql_problem_addressed": "Readable book code is assumed correct despite internal naming, grouping, or arithmetic inconsistencies.",
+      "query_intent": "A source listing contradicts its stated method",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "A source listing contradicts its stated method is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Use the documented median and MAD counterexamples and verify repaired SQL on the target database."
+      ],
+      "diagnostic_questions": [
+        "Which source statement, expression, and expected result conflict?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-10",
+        "sql-recipe-07-16"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.10 Calculating a Median",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-10",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-10.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-10.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-10.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "Readable book code is assumed correct despite internal naming, grouping, or arithmetic inconsistencies.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.10 Calculating a Median",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-10",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "7.16 Finding Outliers Using the Median Absolute Deviation",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-16",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "Common Table Expressions",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/app02.html#sqlckbk-APP-B-SECT-2",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "medium",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "A source listing contradicts its stated method",
+      "description": "Readable book code is assumed correct despite internal naming, grouping, or arithmetic inconsistencies.",
+      "where_it_appears": [
+        "7.10 Calculating a Median",
+        "7.16 Finding Outliers Using the Median Absolute Deviation",
+        "Common Table Expressions"
+      ],
+      "root_cause": "Readable book code is assumed correct despite internal naming, grouping, or arithmetic inconsistencies.",
+      "symptoms": [
+        "A tiny counterexample disagrees with the method described in prose."
+      ],
+      "why_it_misleads": "A tiny counterexample disagrees with the method described in prose. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Which source statement, expression, and expected result conflict?",
+      "prevention_or_mitigation": [
+        "Keep the issue visible, block unreviewed code reuse, and label any proposed repair separately."
+      ],
+      "source_issue_ids": [
+        "source-issue-median",
+        "source-issue-mad",
+        "source-issue-recursive-symbol",
+        "source-issue-recursive-keyword"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-destructive-write",
+      "record_type": "failure_mode",
+      "name": "Unreviewed destructive or broad data change",
+      "summary": "A write statement is executed before target identity, affected rows, or recovery controls are established.",
+      "source_recipe_or_concept": "4.9 Updating When Corresponding Rows Exist; supporting source units: 4.9, 4.12, 4.16",
+      "sql_problem_addressed": "A write statement is executed before target identity, affected rows, or recovery controls are established.",
+      "query_intent": "Unreviewed destructive or broad data change",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Unreviewed destructive or broad data change is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Reconcile intended and previewed identifiers; validate a safe test environment before authorized execution."
+      ],
+      "diagnostic_questions": [
+        "Which exact identifiers should change, and what approved recovery process exists?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-09",
+        "sql-recipe-04-12",
+        "sql-recipe-04-16"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.9 Updating When Corresponding Rows Exist",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-9",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-9.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-9.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-9.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "A write statement is executed before target identity, affected rows, or recovery controls are established.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.9 Updating When Corresponding Rows Exist",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-9",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "4.12 Deleting All Records from a Table",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-12",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "4.16 Deleting Duplicate Records",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-16",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Unreviewed destructive or broad data change",
+      "description": "A write statement is executed before target identity, affected rows, or recovery controls are established.",
+      "where_it_appears": [
+        "4.9 Updating When Corresponding Rows Exist",
+        "4.12 Deleting All Records from a Table",
+        "4.16 Deleting Duplicate Records"
+      ],
+      "root_cause": "A write statement is executed before target identity, affected rows, or recovery controls are established.",
+      "symptoms": [
+        "More rows change than intended or the chosen survivor is wrong."
+      ],
+      "why_it_misleads": "More rows change than intended or the chosen survivor is wrong. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Which exact identifiers should change, and what approved recovery process exists?",
+      "prevention_or_mitigation": [
+        "Require a read-only affected-row preview, authorized write scope, and environment-appropriate recovery review."
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-risk-percent-denominator",
+      "record_type": "failure_mode",
+      "name": "Percentage uses an unclear or empty denominator",
+      "summary": "Filters, NULLs, or repeated joins change the population of a ratio.",
+      "source_recipe_or_concept": "7.11 Determining the Percentage of a Total; supporting source units: 7.11, 14.12",
+      "sql_problem_addressed": "Filters, NULLs, or repeated joins change the population of a ratio.",
+      "query_intent": "Percentage uses an unclear or empty denominator",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Set the input and output grain for the linked task before choosing an implementation.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "A reviewed design or result contract for the named SQL task, not a claim of executed output.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Percentage uses an unclear or empty denominator is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Test zero total, missing observations, and a filtered-out group."
+      ],
+      "diagnostic_questions": [
+        "Exactly which rows and values contribute to the denominator?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-11",
+        "sql-recipe-14-12"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.11 Determining the Percentage of a Total",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11.3"
+        },
+        "support_role": "basis for explicitly derived guidance",
+        "support_strength": "indirect",
+        "directly_supported_claims": [
+          "The linked sections supply the SQL patterns, not a live implementation."
+        ],
+        "inferred_claims": [
+          "Filters, NULLs, or repeated joins change the population of a ratio.",
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.11 Determining the Percentage of a Total",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-11",
+            "support_role": "basis for explicitly derived guidance"
+          },
+          {
+            "section_heading": "14.12 Calculating Percent Relative to Total",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch14.html#sqlckbk-CHP-14-SECT-12",
+            "support_role": "basis for explicitly derived guidance"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "explanation": "Derived from the cited SQL patterns. Context-specific evidence is required; this is not quoted source guidance.",
+        "confidence": "medium",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "failure_mode"
+      ],
+      "failure_mode": "Percentage uses an unclear or empty denominator",
+      "description": "Filters, NULLs, or repeated joins change the population of a ratio.",
+      "where_it_appears": [
+        "7.11 Determining the Percentage of a Total",
+        "14.12 Calculating Percent Relative to Total"
+      ],
+      "root_cause": "Filters, NULLs, or repeated joins change the population of a ratio.",
+      "symptoms": [
+        "Percentages appear plausible but do not reconcile with the named population."
+      ],
+      "why_it_misleads": "Percentages appear plausible but do not reconcile with the named population. Successful execution alone cannot establish the intended answer.",
+      "better_question": "Exactly which rows and values contribute to the denominator?",
+      "prevention_or_mitigation": [
+        "Compute numerator and denominator at compatible grains and define empty-denominator behavior."
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    }
+  ]
+}

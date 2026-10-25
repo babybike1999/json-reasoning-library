@@ -1,0 +1,1691 @@
+{
+  "file": "streamlit_control_plane_safety_pack_v2.json",
+  "purpose": "Active-use pack for control panels and data-app safety reviews.",
+  "risk_records": [
+    {
+      "id": "streamlit-risk-rerun-side-effect",
+      "risk_name": "Rerun side effect",
+      "risk_description": "A write, API call, email, or job launch happens during normal top-to-bottom rendering rather than behind an explicit submit/confirmation/service boundary.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?"
+    },
+    {
+      "id": "streamlit-risk-double-submit",
+      "risk_name": "Double submit",
+      "risk_description": "A user rerun, browser refresh, impatient click, or retry can perform the same live action more than once.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?"
+    },
+    {
+      "id": "streamlit-risk-session-state-as-storage",
+      "risk_name": "Session state as storage",
+      "risk_description": "Per-user UI state is treated as durable storage, audit history, queue, or database.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?"
+    },
+    {
+      "id": "streamlit-risk-session-state-as-authz",
+      "risk_name": "Session state as authorization",
+      "risk_description": "A value in session state is treated as proof that a user may perform an action.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?"
+    },
+    {
+      "id": "streamlit-risk-hidden-widget-authz",
+      "risk_name": "Hidden widget authorization",
+      "risk_description": "Hiding a page, widget, or button is mistaken for permission enforcement.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?"
+    },
+    {
+      "id": "streamlit-risk-cache-stale-data",
+      "risk_name": "Stale cached data",
+      "risk_description": "Cached values are reused after inputs, files, permissions, or external data changed.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?"
+    },
+    {
+      "id": "streamlit-risk-cache-sensitive-data",
+      "risk_name": "Sensitive cached data",
+      "risk_description": "Secrets, tokens, user-specific private data, or restricted results are cached without isolation and redaction controls.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?"
+    },
+    {
+      "id": "streamlit-risk-mutated-cached-object",
+      "risk_name": "Mutated cached object",
+      "risk_description": "A cached object is mutated and then leaks stale or cross-request state into later runs.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?"
+    },
+    {
+      "id": "streamlit-risk-file-upload-without-validation",
+      "risk_name": "Unvalidated upload",
+      "risk_description": "Uploaded file content is parsed or processed before extension, size, schema, type, and business-rule validation.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?"
+    },
+    {
+      "id": "streamlit-risk-live-write-without-dry-run",
+      "risk_name": "Live write without dry run",
+      "risk_description": "A destructive, financial, database, or API write occurs without preview, dry-run plan, confirmation, and backend authorization.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?"
+    },
+    {
+      "id": "streamlit-risk-long-operation-on-rerun",
+      "risk_name": "Long operation on rerun",
+      "risk_description": "A slow model, file parse, API call, or report generation repeats on normal widget changes.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?"
+    },
+    {
+      "id": "streamlit-risk-raw-exception-exposure",
+      "risk_name": "Raw exception exposure",
+      "risk_description": "Tracebacks, credentials, SQL, tokens, file paths, or internal details are shown to ordinary users.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?"
+    },
+    {
+      "id": "streamlit-risk-secret-leakage",
+      "risk_name": "Secret leakage",
+      "risk_description": "Credentials appear in code, logs, UI, downloaded files, exceptions, cache entries, or committed repositories.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?"
+    },
+    {
+      "id": "streamlit-risk-owner-dashboard-false-green",
+      "risk_name": "False green dashboard",
+      "risk_description": "An executive/owner dashboard displays success while data is stale, partial, filtered, failed, or unvalidated.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?"
+    },
+    {
+      "id": "streamlit-risk-ui-business-logic-coupling",
+      "risk_name": "UI/business logic coupling",
+      "risk_description": "Core rules live in Streamlit rendering code, making rerun behavior, tests, and service reuse unsafe.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?"
+    },
+    {
+      "id": "streamlit-risk-streamlit-as-backend",
+      "risk_name": "Streamlit as backend",
+      "risk_description": "The app is treated as the durable job engine, scheduler, auth server, transaction manager, or audit ledger.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?"
+    },
+    {
+      "id": "streamlit-risk-unverified-current-api",
+      "risk_name": "Unverified current API",
+      "risk_description": "A current Streamlit API, component, Cloud behavior, auth option, or testing tool is assumed without checking the installed version and official docs.",
+      "minimum_review_question": "Can this risk occur during a normal rerun, repeated click, stale cache, hidden UI path, or failed backend call?"
+    }
+  ],
+  "mandatory_patterns": [
+    {
+      "id": "streamlit-workflow-upload-validate-preview-process",
+      "pattern_name": "upload → validate → preview → process",
+      "goal": "Validate files before transformation or live use",
+      "ui_state_machine": [
+        "idle",
+        "file_selected",
+        "validated",
+        "preview_ready",
+        "submitted",
+        "processed",
+        "reported"
+      ],
+      "service_boundary": "Streamlit collects file and displays validation; parser/service owns schema and transformation contract.",
+      "required_backend_contract": [
+        "file hash",
+        "parser version",
+        "schema errors",
+        "preview rows",
+        "safe output contract"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-file-upload-without-validation",
+        "streamlit-risk-long-operation-on-rerun"
+      ]
+    },
+    {
+      "id": "streamlit-workflow-form-dryrun-confirm-live",
+      "pattern_name": "inputs → form submit → dry run → confirmation → live execution",
+      "goal": "Prevent accidental live mutations from multi-field inputs",
+      "ui_state_machine": [
+        "editing",
+        "submitted",
+        "dry_run_requested",
+        "dry_run_ready",
+        "confirmation_required",
+        "live_requested",
+        "live_complete"
+      ],
+      "service_boundary": "Streamlit submits intent; backend service creates dry-run plan and executes only matching approved plan.",
+      "required_backend_contract": [
+        "dry_run_plan_id",
+        "plan digest",
+        "authorized actor",
+        "idempotency key",
+        "execution receipt"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-live-write-without-dry-run",
+        "streamlit-risk-double-submit"
+      ]
+    },
+    {
+      "id": "streamlit-workflow-backend-authorized-live-action",
+      "pattern_name": "live action guarded by backend authorization",
+      "goal": "Ensure UI affordances do not become permission enforcement",
+      "ui_state_machine": [
+        "identity_seen",
+        "scope_checked",
+        "plan_created",
+        "authorization_checked",
+        "action_executed"
+      ],
+      "service_boundary": "Backend permission service decides; Streamlit only passes actor, scope, and requested operation.",
+      "required_backend_contract": [
+        "actor id",
+        "roles/scopes",
+        "resource id",
+        "decision reason",
+        "denial contract"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-hidden-widget-authz",
+        "streamlit-risk-session-state-as-authz"
+      ]
+    },
+    {
+      "id": "streamlit-workflow-live-action-plan-id",
+      "pattern_name": "live action linked to a specific dry-run plan ID",
+      "goal": "Avoid executing a different operation than the reviewed preview",
+      "ui_state_machine": [
+        "draft_inputs",
+        "dry_run_plan_created",
+        "plan_displayed",
+        "confirmed_plan",
+        "executed_plan"
+      ],
+      "service_boundary": "Service creates immutable plan; Streamlit displays plan digest and submits exact id.",
+      "required_backend_contract": [
+        "immutable plan id",
+        "input digest",
+        "expires_at",
+        "actor scope",
+        "idempotency key"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-live-write-without-dry-run",
+        "streamlit-risk-double-submit"
+      ]
+    },
+    {
+      "id": "streamlit-workflow-status-result-display",
+      "pattern_name": "status/result display after execution",
+      "goal": "Make post-run outcome clear to nontechnical users",
+      "ui_state_machine": [
+        "pending",
+        "running",
+        "success",
+        "partial_failure",
+        "failed",
+        "stale"
+      ],
+      "service_boundary": "Streamlit displays result contract; service owns final state.",
+      "required_backend_contract": [
+        "run_id",
+        "status",
+        "started_at",
+        "finished_at",
+        "warnings",
+        "errors",
+        "artifact ids"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-owner-dashboard-false-green"
+      ]
+    },
+    {
+      "id": "streamlit-workflow-partial-failure-display",
+      "pattern_name": "partial failure display",
+      "goal": "Prevent all-or-nothing confusion when some rows/items fail",
+      "ui_state_machine": [
+        "submitted",
+        "processed_with_warnings",
+        "needs_review",
+        "download_errors"
+      ],
+      "service_boundary": "Service returns row/item-level results; Streamlit groups by business meaning.",
+      "required_backend_contract": [
+        "total_count",
+        "success_count",
+        "warning_count",
+        "failed_count",
+        "error_csv"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-owner-dashboard-false-green",
+        "streamlit-risk-raw-exception-exposure"
+      ]
+    },
+    {
+      "id": "streamlit-workflow-cancel-timeout",
+      "pattern_name": "cancellation or timeout handling",
+      "goal": "Avoid orphaned or ambiguous long operations",
+      "ui_state_machine": [
+        "queued",
+        "running",
+        "cancel_requested",
+        "timed_out",
+        "cancelled",
+        "completed"
+      ],
+      "service_boundary": "Backend job runner owns cancellation semantics; Streamlit only requests and displays.",
+      "required_backend_contract": [
+        "job id",
+        "timeout_at",
+        "cancel endpoint",
+        "terminal status"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-long-operation-on-rerun",
+        "streamlit-risk-streamlit-as-backend"
+      ]
+    },
+    {
+      "id": "streamlit-workflow-noop-warning",
+      "pattern_name": "no-op and warning handling",
+      "goal": "Prevent users from thinking an action changed data when it did nothing",
+      "ui_state_machine": [
+        "dry_run_ready",
+        "no_changes",
+        "warnings_present",
+        "confirmed_or_cancelled"
+      ],
+      "service_boundary": "Service identifies no-op and warnings before live execution.",
+      "required_backend_contract": [
+        "diff summary",
+        "warnings",
+        "blockers",
+        "noop reason"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-owner-dashboard-false-green"
+      ]
+    },
+    {
+      "id": "streamlit-workflow-download-report-after-run",
+      "pattern_name": "download report after run",
+      "goal": "Give users a durable artifact without exposing unsafe data",
+      "ui_state_machine": [
+        "run_complete",
+        "report_ready",
+        "downloaded"
+      ],
+      "service_boundary": "Backend/report service creates artifact; Streamlit provides download button/link.",
+      "required_backend_contract": [
+        "artifact id",
+        "file type",
+        "redaction status",
+        "retention policy"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-secret-leakage",
+        "streamlit-risk-raw-exception-exposure"
+      ]
+    },
+    {
+      "id": "streamlit-workflow-run-history-display",
+      "pattern_name": "run history display",
+      "goal": "Make prior runs reviewable without treating session state as storage",
+      "ui_state_machine": [
+        "history_requested",
+        "filters_applied",
+        "run_selected",
+        "detail_displayed"
+      ],
+      "service_boundary": "Durable run ledger owns history; Streamlit queries and displays it.",
+      "required_backend_contract": [
+        "run id",
+        "actor",
+        "status",
+        "timestamps",
+        "input digest",
+        "artifact refs"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-session-state-as-storage",
+        "streamlit-risk-streamlit-as-backend"
+      ]
+    }
+  ],
+  "architecture_boundaries": [
+    {
+      "id": "streamlit-arch-ui-layer",
+      "layer_or_boundary": "UI layer",
+      "responsibilities": [
+        "collect inputs",
+        "display state",
+        "show preview/dry-run/live result",
+        "call service functions",
+        "render business meaning",
+        "provide downloads",
+        "guide nontechnical users"
+      ],
+      "must_not_do": [
+        "own business rules",
+        "perform durable writes at render time",
+        "enforce permissions by hiding UI"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-rerun-side-effect",
+        "streamlit-risk-ui-business-logic-coupling"
+      ]
+    },
+    {
+      "id": "streamlit-arch-service-layer",
+      "layer_or_boundary": "service layer",
+      "responsibilities": [
+        "execute use cases",
+        "call domain logic/adapters",
+        "return result contracts"
+      ],
+      "must_not_do": [
+        "render Streamlit widgets",
+        "read widget state directly",
+        "hide authorization decisions in UI"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-double-submit",
+        "streamlit-risk-streamlit-as-backend"
+      ]
+    },
+    {
+      "id": "streamlit-arch-domain-logic",
+      "layer_or_boundary": "domain logic",
+      "responsibilities": [
+        "business rules",
+        "financial/metric calculations",
+        "workflow invariants"
+      ],
+      "must_not_do": [
+        "import streamlit",
+        "read session_state",
+        "format UI copy"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-ui-business-logic-coupling"
+      ]
+    },
+    {
+      "id": "streamlit-arch-adapters",
+      "layer_or_boundary": "adapters",
+      "responsibilities": [
+        "API/database/file system calls",
+        "retry policy",
+        "timeouts",
+        "mapping external errors"
+      ],
+      "must_not_do": [
+        "render widgets",
+        "own business approval",
+        "leak credentials"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-secret-leakage",
+        "streamlit-risk-streamlit-as-backend"
+      ]
+    },
+    {
+      "id": "streamlit-arch-result-contracts",
+      "layer_or_boundary": "result contracts",
+      "responsibilities": [
+        "standardize status/warnings/errors/artifacts",
+        "separate user-safe message from internal detail"
+      ],
+      "must_not_do": [
+        "return raw exception as user result",
+        "hide partial failures"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-owner-dashboard-false-green",
+        "streamlit-risk-raw-exception-exposure"
+      ]
+    },
+    {
+      "id": "streamlit-arch-run-ledger",
+      "layer_or_boundary": "run ledger",
+      "responsibilities": [
+        "durable run history",
+        "idempotency tracking",
+        "input digest",
+        "execution receipt"
+      ],
+      "must_not_do": [
+        "store only in session_state/cache",
+        "trust browser state"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-session-state-as-storage",
+        "streamlit-risk-double-submit"
+      ]
+    },
+    {
+      "id": "streamlit-arch-audit-trail",
+      "layer_or_boundary": "audit trail",
+      "responsibilities": [
+        "record who did what and why",
+        "store approvals and denials"
+      ],
+      "must_not_do": [
+        "use UI text as proof",
+        "let users edit audit fields"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-streamlit-as-backend",
+        "streamlit-risk-hidden-widget-authz"
+      ]
+    },
+    {
+      "id": "streamlit-arch-validation-layer",
+      "layer_or_boundary": "validation layer",
+      "responsibilities": [
+        "file/schema/business validation",
+        "blockers vs warnings",
+        "human-review triggers"
+      ],
+      "must_not_do": [
+        "trust upload extension",
+        "parse and mutate before validate"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-file-upload-without-validation"
+      ]
+    },
+    {
+      "id": "streamlit-arch-permissions-layer",
+      "layer_or_boundary": "permissions layer",
+      "responsibilities": [
+        "authentication claims",
+        "authorization decision",
+        "tenant/resource checks"
+      ],
+      "must_not_do": [
+        "hide pages as enforcement",
+        "store role in session_state"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-hidden-widget-authz",
+        "streamlit-risk-session-state-as-authz"
+      ]
+    },
+    {
+      "id": "streamlit-arch-configuration-layer",
+      "layer_or_boundary": "configuration layer",
+      "responsibilities": [
+        "runtime config",
+        "feature flags",
+        "secrets references",
+        "environment labels"
+      ],
+      "must_not_do": [
+        "print secrets",
+        "commit credentials",
+        "derive prod behavior from widgets"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-secret-leakage"
+      ]
+    },
+    {
+      "id": "streamlit-arch-deployment-runtime-layer",
+      "layer_or_boundary": "deployment/runtime layer",
+      "responsibilities": [
+        "process hosting",
+        "dependency versions",
+        "network boundaries",
+        "resource limits"
+      ],
+      "must_not_do": [
+        "assume local and cloud match",
+        "own production job semantics"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-unverified-current-api",
+        "streamlit-risk-streamlit-as-backend"
+      ]
+    }
+  ],
+  "security_non_negotiables": [
+    "UI hiding is not authorization.",
+    "Session state is not authorization.",
+    "Secrets must not be displayed, cached, logged, downloaded, or committed.",
+    "Backend authorization must guard live actions and data reads.",
+    "Live actions require dry-run/preview, confirmation, idempotency, durable result contract, and tests."
+  ],
+  "agent_review_checklists": [
+    {
+      "id": "streamlit-checklist-before-live-action",
+      "checklist_name": "Before a live action",
+      "checks": [
+        "validated inputs",
+        "dry-run plan id shown",
+        "backend authorization checked",
+        "idempotency key present",
+        "result contract defined",
+        "duplicate-submit test exists"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-live-write-without-dry-run",
+        "streamlit-risk-double-submit"
+      ]
+    },
+    {
+      "id": "streamlit-checklist-before-file-processing",
+      "checklist_name": "Before file processing",
+      "checks": [
+        "type/size/schema validated",
+        "file hash recorded",
+        "preview shown",
+        "blockers vs warnings separated",
+        "download/report redaction reviewed"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-file-upload-without-validation",
+        "streamlit-risk-secret-leakage"
+      ]
+    },
+    {
+      "id": "streamlit-checklist-before-dashboard-release",
+      "checklist_name": "Before dashboard release",
+      "checks": [
+        "freshness labels",
+        "metric definitions",
+        "partial failure state",
+        "source timestamp",
+        "cache invalidation",
+        "owner summary copy"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-owner-dashboard-false-green",
+        "streamlit-risk-cache-stale-data"
+      ]
+    },
+    {
+      "id": "streamlit-checklist-before-auth-sensitive-page",
+      "checklist_name": "Before auth-sensitive page",
+      "checks": [
+        "authentication source verified",
+        "authorization service check",
+        "hidden UI not trusted",
+        "session state not authz",
+        "download/data scoped"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-hidden-widget-authz",
+        "streamlit-risk-session-state-as-authz"
+      ]
+    },
+    {
+      "id": "streamlit-checklist-current-verification",
+      "checklist_name": "Before relying on current Streamlit behavior",
+      "checks": [
+        "official docs checked",
+        "installed version captured",
+        "runtime smoke test passed",
+        "deployment platform docs checked",
+        "current verification flag resolved or accepted"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-unverified-current-api"
+      ]
+    }
+  ],
+  "anti_patterns": [
+    {
+      "id": "streamlit-anti-rerun-side-effect",
+      "anti_pattern": "Rerun side effect",
+      "why_it_is_bad": "A write, API call, email, or job launch happens during normal top-to-bottom rendering rather than behind an explicit submit/confirmation/service boundary.",
+      "safer_replacement": "Use the related risk record and linked V2 pattern/checklist before modifying code.",
+      "related_risk_ids": [
+        "streamlit-risk-rerun-side-effect"
+      ]
+    },
+    {
+      "id": "streamlit-anti-double-submit",
+      "anti_pattern": "Double submit",
+      "why_it_is_bad": "A user rerun, browser refresh, impatient click, or retry can perform the same live action more than once.",
+      "safer_replacement": "Use the related risk record and linked V2 pattern/checklist before modifying code.",
+      "related_risk_ids": [
+        "streamlit-risk-double-submit"
+      ]
+    },
+    {
+      "id": "streamlit-anti-session-state-as-storage",
+      "anti_pattern": "Session state as storage",
+      "why_it_is_bad": "Per-user UI state is treated as durable storage, audit history, queue, or database.",
+      "safer_replacement": "Use the related risk record and linked V2 pattern/checklist before modifying code.",
+      "related_risk_ids": [
+        "streamlit-risk-session-state-as-storage"
+      ]
+    },
+    {
+      "id": "streamlit-anti-session-state-as-authz",
+      "anti_pattern": "Session state as authorization",
+      "why_it_is_bad": "A value in session state is treated as proof that a user may perform an action.",
+      "safer_replacement": "Use the related risk record and linked V2 pattern/checklist before modifying code.",
+      "related_risk_ids": [
+        "streamlit-risk-session-state-as-authz"
+      ]
+    },
+    {
+      "id": "streamlit-anti-hidden-widget-authz",
+      "anti_pattern": "Hidden widget authorization",
+      "why_it_is_bad": "Hiding a page, widget, or button is mistaken for permission enforcement.",
+      "safer_replacement": "Use the related risk record and linked V2 pattern/checklist before modifying code.",
+      "related_risk_ids": [
+        "streamlit-risk-hidden-widget-authz"
+      ]
+    },
+    {
+      "id": "streamlit-anti-cache-stale-data",
+      "anti_pattern": "Stale cached data",
+      "why_it_is_bad": "Cached values are reused after inputs, files, permissions, or external data changed.",
+      "safer_replacement": "Use the related risk record and linked V2 pattern/checklist before modifying code.",
+      "related_risk_ids": [
+        "streamlit-risk-cache-stale-data"
+      ]
+    },
+    {
+      "id": "streamlit-anti-cache-sensitive-data",
+      "anti_pattern": "Sensitive cached data",
+      "why_it_is_bad": "Secrets, tokens, user-specific private data, or restricted results are cached without isolation and redaction controls.",
+      "safer_replacement": "Use the related risk record and linked V2 pattern/checklist before modifying code.",
+      "related_risk_ids": [
+        "streamlit-risk-cache-sensitive-data"
+      ]
+    },
+    {
+      "id": "streamlit-anti-mutated-cached-object",
+      "anti_pattern": "Mutated cached object",
+      "why_it_is_bad": "A cached object is mutated and then leaks stale or cross-request state into later runs.",
+      "safer_replacement": "Use the related risk record and linked V2 pattern/checklist before modifying code.",
+      "related_risk_ids": [
+        "streamlit-risk-mutated-cached-object"
+      ]
+    },
+    {
+      "id": "streamlit-anti-file-upload-without-validation",
+      "anti_pattern": "Unvalidated upload",
+      "why_it_is_bad": "Uploaded file content is parsed or processed before extension, size, schema, type, and business-rule validation.",
+      "safer_replacement": "Use the related risk record and linked V2 pattern/checklist before modifying code.",
+      "related_risk_ids": [
+        "streamlit-risk-file-upload-without-validation"
+      ]
+    },
+    {
+      "id": "streamlit-anti-live-write-without-dry-run",
+      "anti_pattern": "Live write without dry run",
+      "why_it_is_bad": "A destructive, financial, database, or API write occurs without preview, dry-run plan, confirmation, and backend authorization.",
+      "safer_replacement": "Use the related risk record and linked V2 pattern/checklist before modifying code.",
+      "related_risk_ids": [
+        "streamlit-risk-live-write-without-dry-run"
+      ]
+    },
+    {
+      "id": "streamlit-anti-long-operation-on-rerun",
+      "anti_pattern": "Long operation on rerun",
+      "why_it_is_bad": "A slow model, file parse, API call, or report generation repeats on normal widget changes.",
+      "safer_replacement": "Use the related risk record and linked V2 pattern/checklist before modifying code.",
+      "related_risk_ids": [
+        "streamlit-risk-long-operation-on-rerun"
+      ]
+    },
+    {
+      "id": "streamlit-anti-raw-exception-exposure",
+      "anti_pattern": "Raw exception exposure",
+      "why_it_is_bad": "Tracebacks, credentials, SQL, tokens, file paths, or internal details are shown to ordinary users.",
+      "safer_replacement": "Use the related risk record and linked V2 pattern/checklist before modifying code.",
+      "related_risk_ids": [
+        "streamlit-risk-raw-exception-exposure"
+      ]
+    },
+    {
+      "id": "streamlit-anti-secret-leakage",
+      "anti_pattern": "Secret leakage",
+      "why_it_is_bad": "Credentials appear in code, logs, UI, downloaded files, exceptions, cache entries, or committed repositories.",
+      "safer_replacement": "Use the related risk record and linked V2 pattern/checklist before modifying code.",
+      "related_risk_ids": [
+        "streamlit-risk-secret-leakage"
+      ]
+    },
+    {
+      "id": "streamlit-anti-owner-dashboard-false-green",
+      "anti_pattern": "False green dashboard",
+      "why_it_is_bad": "An executive/owner dashboard displays success while data is stale, partial, filtered, failed, or unvalidated.",
+      "safer_replacement": "Use the related risk record and linked V2 pattern/checklist before modifying code.",
+      "related_risk_ids": [
+        "streamlit-risk-owner-dashboard-false-green"
+      ]
+    },
+    {
+      "id": "streamlit-anti-ui-business-logic-coupling",
+      "anti_pattern": "UI/business logic coupling",
+      "why_it_is_bad": "Core rules live in Streamlit rendering code, making rerun behavior, tests, and service reuse unsafe.",
+      "safer_replacement": "Use the related risk record and linked V2 pattern/checklist before modifying code.",
+      "related_risk_ids": [
+        "streamlit-risk-ui-business-logic-coupling"
+      ]
+    },
+    {
+      "id": "streamlit-anti-streamlit-as-backend",
+      "anti_pattern": "Streamlit as backend",
+      "why_it_is_bad": "The app is treated as the durable job engine, scheduler, auth server, transaction manager, or audit ledger.",
+      "safer_replacement": "Use the related risk record and linked V2 pattern/checklist before modifying code.",
+      "related_risk_ids": [
+        "streamlit-risk-streamlit-as-backend"
+      ]
+    },
+    {
+      "id": "streamlit-anti-unverified-current-api",
+      "anti_pattern": "Unverified current API",
+      "why_it_is_bad": "A current Streamlit API, component, Cloud behavior, auth option, or testing tool is assumed without checking the installed version and official docs.",
+      "safer_replacement": "Use the related risk record and linked V2 pattern/checklist before modifying code.",
+      "related_risk_ids": [
+        "streamlit-risk-unverified-current-api"
+      ]
+    }
+  ],
+  "current_verification_flags": [
+    {
+      "verification_id": "streamlit-verify-api-names",
+      "verification_category": "Streamlit API names",
+      "affected_record_count": 24,
+      "do_not_assume_current_accuracy": true
+    },
+    {
+      "verification_id": "streamlit-verify-cache-data-resource",
+      "verification_category": "st.cache_data / st.cache_resource behavior",
+      "affected_record_count": 10,
+      "do_not_assume_current_accuracy": true
+    },
+    {
+      "verification_id": "streamlit-verify-session-state",
+      "verification_category": "session state behavior",
+      "affected_record_count": 6,
+      "do_not_assume_current_accuracy": true
+    },
+    {
+      "verification_id": "streamlit-verify-forms",
+      "verification_category": "forms behavior",
+      "affected_record_count": 3,
+      "do_not_assume_current_accuracy": true
+    },
+    {
+      "verification_id": "streamlit-verify-multipage-navigation",
+      "verification_category": "multipage/navigation APIs",
+      "affected_record_count": 2,
+      "do_not_assume_current_accuracy": true
+    },
+    {
+      "verification_id": "streamlit-verify-app-testing",
+      "verification_category": "app testing APIs",
+      "affected_record_count": 14,
+      "do_not_assume_current_accuracy": true
+    },
+    {
+      "verification_id": "streamlit-verify-authentication-options",
+      "verification_category": "authentication options",
+      "affected_record_count": 9,
+      "do_not_assume_current_accuracy": true
+    },
+    {
+      "verification_id": "streamlit-verify-authorization-patterns",
+      "verification_category": "authorization patterns",
+      "affected_record_count": 8,
+      "do_not_assume_current_accuracy": true
+    },
+    {
+      "verification_id": "streamlit-verify-secrets-handling",
+      "verification_category": "secrets handling",
+      "affected_record_count": 6,
+      "do_not_assume_current_accuracy": true
+    },
+    {
+      "verification_id": "streamlit-verify-community-cloud",
+      "verification_category": "Streamlit Community Cloud behavior",
+      "affected_record_count": 9,
+      "do_not_assume_current_accuracy": true
+    },
+    {
+      "verification_id": "streamlit-verify-deployment-options",
+      "verification_category": "deployment options",
+      "affected_record_count": 9,
+      "do_not_assume_current_accuracy": true
+    },
+    {
+      "verification_id": "streamlit-verify-components",
+      "verification_category": "components",
+      "affected_record_count": 3,
+      "do_not_assume_current_accuracy": true
+    },
+    {
+      "verification_id": "streamlit-verify-data-editor",
+      "verification_category": "data editor behavior",
+      "affected_record_count": 1,
+      "do_not_assume_current_accuracy": true
+    },
+    {
+      "verification_id": "streamlit-verify-file-uploader-limits",
+      "verification_category": "file uploader limits",
+      "affected_record_count": 13,
+      "do_not_assume_current_accuracy": true
+    },
+    {
+      "verification_id": "streamlit-verify-dataframe-display",
+      "verification_category": "dataframe display behavior",
+      "affected_record_count": 5,
+      "do_not_assume_current_accuracy": true
+    },
+    {
+      "verification_id": "streamlit-verify-browser-mobile",
+      "verification_category": "current browser/mobile behavior",
+      "affected_record_count": 3,
+      "do_not_assume_current_accuracy": true
+    },
+    {
+      "verification_id": "streamlit-verify-accessibility",
+      "verification_category": "current accessibility guidance",
+      "affected_record_count": 13,
+      "do_not_assume_current_accuracy": true
+    },
+    {
+      "verification_id": "streamlit-verify-security-recommendations",
+      "verification_category": "current security recommendations",
+      "affected_record_count": 22,
+      "do_not_assume_current_accuracy": true
+    }
+  ],
+  "review_matrix": [
+    {
+      "record_id": "streamlit-exec-top-to-bottom-script",
+      "category": "execution",
+      "ask": "Could a rerun repeat or alter this action?",
+      "risks": [
+        "streamlit-risk-rerun-side-effect",
+        "streamlit-risk-ui-business-logic-coupling"
+      ]
+    },
+    {
+      "record_id": "streamlit-exec-rerun-model",
+      "category": "execution",
+      "ask": "Could a rerun repeat or alter this action?",
+      "risks": [
+        "streamlit-risk-rerun-side-effect",
+        "streamlit-risk-long-operation-on-rerun"
+      ]
+    },
+    {
+      "record_id": "streamlit-exec-widget-triggered-reruns",
+      "category": "execution",
+      "ask": "Could a rerun repeat or alter this action?",
+      "risks": [
+        "streamlit-risk-long-operation-on-rerun",
+        "streamlit-risk-rerun-side-effect"
+      ]
+    },
+    {
+      "record_id": "streamlit-exec-button-momentary-trigger",
+      "category": "execution",
+      "ask": "Could a rerun repeat or alter this action?",
+      "risks": [
+        "streamlit-risk-double-submit",
+        "streamlit-risk-rerun-side-effect"
+      ]
+    },
+    {
+      "record_id": "streamlit-exec-forms-submit-boundary",
+      "category": "execution",
+      "ask": "Could a rerun repeat or alter this action?",
+      "risks": [
+        "streamlit-risk-double-submit",
+        "streamlit-risk-live-write-without-dry-run"
+      ]
+    },
+    {
+      "record_id": "streamlit-exec-session-state-ui-workflow",
+      "category": "execution",
+      "ask": "Could a rerun repeat or alter this action?",
+      "risks": [
+        "streamlit-risk-session-state-as-storage",
+        "streamlit-risk-session-state-as-authz"
+      ]
+    },
+    {
+      "record_id": "streamlit-exec-session-state-initialization",
+      "category": "execution",
+      "ask": "Could a rerun repeat or alter this action?",
+      "risks": [
+        "streamlit-risk-session-state-as-storage",
+        "streamlit-risk-session-state-as-authz",
+        "streamlit-risk-unverified-current-api"
+      ]
+    },
+    {
+      "record_id": "streamlit-exec-cache-data-resource-boundary",
+      "category": "execution",
+      "ask": "Could a rerun repeat or alter this action?",
+      "risks": [
+        "streamlit-risk-cache-stale-data",
+        "streamlit-risk-cache-sensitive-data",
+        "streamlit-risk-mutated-cached-object"
+      ]
+    },
+    {
+      "record_id": "streamlit-exec-cache-invalidation",
+      "category": "execution",
+      "ask": "Could a rerun repeat or alter this action?",
+      "risks": [
+        "streamlit-risk-cache-stale-data",
+        "streamlit-risk-owner-dashboard-false-green"
+      ]
+    },
+    {
+      "record_id": "streamlit-exec-long-running-operations",
+      "category": "execution",
+      "ask": "Could a rerun repeat or alter this action?",
+      "risks": [
+        "streamlit-risk-long-operation-on-rerun",
+        "streamlit-risk-streamlit-as-backend"
+      ]
+    },
+    {
+      "record_id": "streamlit-exec-status-display",
+      "category": "execution",
+      "ask": "Could a rerun repeat or alter this action?",
+      "risks": [
+        "streamlit-risk-owner-dashboard-false-green"
+      ]
+    },
+    {
+      "record_id": "streamlit-exec-progress-display",
+      "category": "execution",
+      "ask": "Could a rerun repeat or alter this action?",
+      "risks": [
+        "streamlit-risk-double-submit",
+        "streamlit-risk-owner-dashboard-false-green"
+      ]
+    },
+    {
+      "record_id": "streamlit-exec-exception-display",
+      "category": "execution",
+      "ask": "Could a rerun repeat or alter this action?",
+      "risks": [
+        "streamlit-risk-raw-exception-exposure",
+        "streamlit-risk-secret-leakage"
+      ]
+    },
+    {
+      "record_id": "streamlit-exec-stop-rerun-flow-control",
+      "category": "execution",
+      "ask": "Could a rerun repeat or alter this action?",
+      "risks": [
+        "streamlit-risk-file-upload-without-validation",
+        "streamlit-risk-unverified-current-api"
+      ]
+    },
+    {
+      "record_id": "streamlit-exec-safe-side-effect-boundary",
+      "category": "execution",
+      "ask": "Could a rerun repeat or alter this action?",
+      "risks": [
+        "streamlit-risk-rerun-side-effect",
+        "streamlit-risk-live-write-without-dry-run",
+        "streamlit-risk-streamlit-as-backend"
+      ]
+    }
+  ],
+  "template_safety_cards": [
+    {
+      "id": "streamlit-template-data-upload-validation",
+      "template_name": "data upload validation app",
+      "primary_user": "analyst or operations user",
+      "state_machine": [
+        "idle",
+        "file_selected",
+        "validated",
+        "previewed",
+        "reported"
+      ],
+      "safe_actions": [
+        "validate file",
+        "download issue report",
+        "process only valid rows"
+      ],
+      "dangerous_actions": [
+        "parse before validation",
+        "overwrite source data"
+      ],
+      "required_tests": [
+        "parser fixtures",
+        "bad schema tests",
+        "download redaction tests"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-file-upload-without-validation",
+        "streamlit-risk-secret-leakage"
+      ]
+    },
+    {
+      "id": "streamlit-template-csv-xlsx-cleaning-preview",
+      "template_name": "CSV/XLSX cleaning preview app",
+      "primary_user": "nontechnical data preparer",
+      "state_machine": [
+        "uploaded",
+        "mapped",
+        "dry_run_clean",
+        "reviewed",
+        "exported"
+      ],
+      "safe_actions": [
+        "preview transformations",
+        "export clean copy"
+      ],
+      "dangerous_actions": [
+        "modify original without preview",
+        "hide dropped rows"
+      ],
+      "required_tests": [
+        "golden file tests",
+        "row-count preservation tests"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-file-upload-without-validation",
+        "streamlit-risk-owner-dashboard-false-green"
+      ]
+    },
+    {
+      "id": "streamlit-template-executive-dashboard",
+      "template_name": "executive dashboard",
+      "primary_user": "owner/executive",
+      "state_machine": [
+        "loaded",
+        "filtered",
+        "stale_checked",
+        "exception_review"
+      ],
+      "safe_actions": [
+        "filter dashboard",
+        "download summary"
+      ],
+      "dangerous_actions": [
+        "show green KPIs without freshness/source markers"
+      ],
+      "required_tests": [
+        "metric definition tests",
+        "stale data tests"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-owner-dashboard-false-green",
+        "streamlit-risk-cache-stale-data"
+      ]
+    },
+    {
+      "id": "streamlit-template-owner-operations-console",
+      "template_name": "owner-facing operations console",
+      "primary_user": "business owner or manager",
+      "state_machine": [
+        "review",
+        "dry_run",
+        "confirm",
+        "execute",
+        "history"
+      ],
+      "safe_actions": [
+        "approve linked dry-run",
+        "download run report"
+      ],
+      "dangerous_actions": [
+        "perform live write from top-level render"
+      ],
+      "required_tests": [
+        "permission-denied tests",
+        "double-submit tests"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-live-write-without-dry-run",
+        "streamlit-risk-hidden-widget-authz"
+      ]
+    },
+    {
+      "id": "streamlit-template-api-control-console",
+      "template_name": "API control console",
+      "primary_user": "technical operator or trusted admin",
+      "state_machine": [
+        "scoped",
+        "dry_run_ready",
+        "confirmed",
+        "executed",
+        "receipt_shown"
+      ],
+      "safe_actions": [
+        "dry-run API call",
+        "execute approved idempotent action"
+      ],
+      "dangerous_actions": [
+        "retry mutation on every rerun",
+        "show token in error"
+      ],
+      "required_tests": [
+        "mocked API tests",
+        "timeout tests",
+        "redaction tests"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-double-submit",
+        "streamlit-risk-secret-leakage"
+      ]
+    },
+    {
+      "id": "streamlit-template-dryrun-live-job-launcher",
+      "template_name": "dry-run/live job launcher",
+      "primary_user": "operations analyst",
+      "state_machine": [
+        "editing",
+        "planned",
+        "confirmed",
+        "running",
+        "terminal"
+      ],
+      "safe_actions": [
+        "create plan",
+        "execute plan id",
+        "download report"
+      ],
+      "dangerous_actions": [
+        "run job from widget edit",
+        "store job state only in session"
+      ],
+      "required_tests": [
+        "plan mismatch test",
+        "duplicate-submit test"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-live-write-without-dry-run",
+        "streamlit-risk-session-state-as-storage"
+      ]
+    },
+    {
+      "id": "streamlit-template-run-history-issue-review",
+      "template_name": "run history and issue review app",
+      "primary_user": "manager, QA reviewer, or support",
+      "state_machine": [
+        "history_loaded",
+        "run_selected",
+        "issues_filtered",
+        "artifact_downloaded"
+      ],
+      "safe_actions": [
+        "filter history",
+        "review issue",
+        "download redacted report"
+      ],
+      "dangerous_actions": [
+        "trust session state as durable history"
+      ],
+      "required_tests": [
+        "history persistence tests",
+        "permission filters"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-session-state-as-storage",
+        "streamlit-risk-hidden-widget-authz"
+      ]
+    },
+    {
+      "id": "streamlit-template-nontechnical-report-processor",
+      "template_name": "nontechnical-user report processor",
+      "primary_user": "frontline or accounting user",
+      "state_machine": [
+        "guided_upload",
+        "validated",
+        "needs_fix",
+        "report_ready"
+      ],
+      "safe_actions": [
+        "show plain blockers",
+        "download report"
+      ],
+      "dangerous_actions": [
+        "show stack traces or technical-only errors"
+      ],
+      "required_tests": [
+        "copy review tests",
+        "bad file fixtures"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-raw-exception-exposure",
+        "streamlit-risk-file-upload-without-validation"
+      ]
+    },
+    {
+      "id": "streamlit-template-admin-config-review",
+      "template_name": "admin-only configuration review app",
+      "primary_user": "administrator",
+      "state_machine": [
+        "auth_checked",
+        "config_loaded",
+        "health_checked",
+        "audit_visible"
+      ],
+      "safe_actions": [
+        "view redacted config",
+        "run health check"
+      ],
+      "dangerous_actions": [
+        "print secrets",
+        "let dropdown grant admin role"
+      ],
+      "required_tests": [
+        "secret redaction tests",
+        "permission-denied tests"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-secret-leakage",
+        "streamlit-risk-session-state-as-authz"
+      ]
+    },
+    {
+      "id": "streamlit-template-existing-python-services-frontend",
+      "template_name": "Streamlit front end over existing Python services",
+      "primary_user": "team building an internal tool",
+      "state_machine": [
+        "inputs_ready",
+        "service_preview",
+        "confirmed",
+        "service_called",
+        "result_rendered"
+      ],
+      "safe_actions": [
+        "call service functions",
+        "render result contract"
+      ],
+      "dangerous_actions": [
+        "move service logic into app.py",
+        "call service on every rerun"
+      ],
+      "required_tests": [
+        "service contract tests",
+        "rerun safety tests"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-ui-business-logic-coupling",
+        "streamlit-risk-rerun-side-effect"
+      ]
+    }
+  ],
+  "testing_cards": [
+    {
+      "id": "streamlit-test-service-functions",
+      "test_or_review_pattern": "service function tests",
+      "what_to_test": [
+        "service inputs/outputs",
+        "authorization passed through",
+        "idempotency keys"
+      ],
+      "evidence_of_pass": [
+        "contract matches expected result",
+        "no live write"
+      ],
+      "evidence_of_failure": [
+        "raw exception or widget dependency"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-ui-business-logic-coupling",
+        "streamlit-risk-streamlit-as-backend"
+      ]
+    },
+    {
+      "id": "streamlit-test-pure-validation",
+      "test_or_review_pattern": "pure validation tests",
+      "what_to_test": [
+        "schema blockers",
+        "warnings",
+        "edge values",
+        "business dates"
+      ],
+      "evidence_of_pass": [
+        "blocker/warning taxonomy correct"
+      ],
+      "evidence_of_failure": [
+        "invalid file accepted"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-file-upload-without-validation"
+      ]
+    },
+    {
+      "id": "streamlit-test-file-parser",
+      "test_or_review_pattern": "file parser tests",
+      "what_to_test": [
+        "CSV/XLSX fixtures",
+        "encoding",
+        "empty file",
+        "large file",
+        "malformed rows"
+      ],
+      "evidence_of_pass": [
+        "safe error contract and row counts"
+      ],
+      "evidence_of_failure": [
+        "traceback or silent truncation"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-file-upload-without-validation",
+        "streamlit-risk-raw-exception-exposure"
+      ]
+    },
+    {
+      "id": "streamlit-test-dryrun-live-equivalence",
+      "test_or_review_pattern": "dry-run/live equivalence tests",
+      "what_to_test": [
+        "plan digest",
+        "input mutation",
+        "expired plan",
+        "matching execution"
+      ],
+      "evidence_of_pass": [
+        "live requires exact plan id/digest"
+      ],
+      "evidence_of_failure": [
+        "live recomputes from widgets"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-live-write-without-dry-run",
+        "streamlit-risk-double-submit"
+      ]
+    },
+    {
+      "id": "streamlit-test-rerun-safety",
+      "test_or_review_pattern": "rerun safety tests",
+      "what_to_test": [
+        "page import/render",
+        "widget edit",
+        "refresh after completion"
+      ],
+      "evidence_of_pass": [
+        "no live calls before submit/confirm"
+      ],
+      "evidence_of_failure": [
+        "live call on render"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-rerun-side-effect"
+      ]
+    },
+    {
+      "id": "streamlit-test-duplicate-submit",
+      "test_or_review_pattern": "duplicate-submit tests",
+      "what_to_test": [
+        "double click",
+        "retry after timeout",
+        "browser refresh",
+        "same idempotency key"
+      ],
+      "evidence_of_pass": [
+        "one live effect per plan/key"
+      ],
+      "evidence_of_failure": [
+        "two different writes"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-double-submit"
+      ]
+    },
+    {
+      "id": "streamlit-test-permission-denied",
+      "test_or_review_pattern": "permission-denied tests",
+      "what_to_test": [
+        "unauthorized actor",
+        "wrong tenant",
+        "wrong role",
+        "direct service call"
+      ],
+      "evidence_of_pass": [
+        "denied with safe message and no data leak"
+      ],
+      "evidence_of_failure": [
+        "unauthorized data/action succeeds"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-hidden-widget-authz",
+        "streamlit-risk-session-state-as-authz"
+      ]
+    },
+    {
+      "id": "streamlit-test-partial-failure-display",
+      "test_or_review_pattern": "partial-failure display tests",
+      "what_to_test": [
+        "mixed row outcomes",
+        "warnings",
+        "failed API items"
+      ],
+      "evidence_of_pass": [
+        "partial state, counts, issue download"
+      ],
+      "evidence_of_failure": [
+        "green success only"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-owner-dashboard-false-green"
+      ]
+    },
+    {
+      "id": "streamlit-test-timeout",
+      "test_or_review_pattern": "timeout tests",
+      "what_to_test": [
+        "slow adapter",
+        "timeout exception",
+        "cancel unsupported"
+      ],
+      "evidence_of_pass": [
+        "timeout state and next step shown"
+      ],
+      "evidence_of_failure": [
+        "spinner forever or retry storm"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-long-operation-on-rerun"
+      ]
+    },
+    {
+      "id": "streamlit-test-stale-data-display",
+      "test_or_review_pattern": "stale-data display tests",
+      "what_to_test": [
+        "cache key changes",
+        "source timestamp",
+        "manual refresh"
+      ],
+      "evidence_of_pass": [
+        "freshness label updates and stale warning shown"
+      ],
+      "evidence_of_failure": [
+        "no timestamp or stale marker"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-cache-stale-data",
+        "streamlit-risk-owner-dashboard-false-green"
+      ]
+    },
+    {
+      "id": "streamlit-test-cache-invalidation",
+      "test_or_review_pattern": "cache invalidation tests",
+      "what_to_test": [
+        "file hash",
+        "tenant",
+        "source version",
+        "resource lifecycle"
+      ],
+      "evidence_of_pass": [
+        "new input yields new value or explicit stale label"
+      ],
+      "evidence_of_failure": [
+        "cross-user/scope reuse"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-cache-stale-data",
+        "streamlit-risk-cache-sensitive-data",
+        "streamlit-risk-mutated-cached-object"
+      ]
+    },
+    {
+      "id": "streamlit-test-secrets-redaction",
+      "test_or_review_pattern": "secrets redaction tests",
+      "what_to_test": [
+        "known token canary",
+        "exception paths",
+        "download artifacts",
+        "logs"
+      ],
+      "evidence_of_pass": [
+        "secret absent; redacted placeholder only"
+      ],
+      "evidence_of_failure": [
+        "secret appears anywhere user can see"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-secret-leakage",
+        "streamlit-risk-raw-exception-exposure"
+      ]
+    },
+    {
+      "id": "streamlit-test-current-app-testing-tools",
+      "test_or_review_pattern": "current Streamlit app testing tools",
+      "what_to_test": [
+        "installed Streamlit version",
+        "AppTest import path",
+        "widget simulation",
+        "element assertions"
+      ],
+      "evidence_of_pass": [
+        "tests run under pinned version"
+      ],
+      "evidence_of_failure": [
+        "docs claim copied without runtime verification"
+      ],
+      "related_risk_ids": [
+        "streamlit-risk-unverified-current-api"
+      ]
+    }
+  ],
+  "nontechnical_user_safety_cards": [
+    {
+      "id": "streamlit-ux-plain-language-status",
+      "ux_pattern": "plain-language status",
+      "recommended_ui_behavior": "Use direct status labels tied to real result state and next action.",
+      "bad_ui_behavior": "Show spinner/green check without business meaning.",
+      "related_risk_ids": [
+        "streamlit-risk-owner-dashboard-false-green"
+      ]
+    },
+    {
+      "id": "streamlit-ux-business-meaning-first",
+      "ux_pattern": "business meaning before technical detail",
+      "recommended_ui_behavior": "Show what changed, which records are affected, and what action is safe before logs/details.",
+      "bad_ui_behavior": "Lead with dataframe dumps, JSON, or exceptions.",
+      "related_risk_ids": [
+        "streamlit-risk-owner-dashboard-false-green"
+      ]
+    },
+    {
+      "id": "streamlit-ux-progressive-disclosure",
+      "ux_pattern": "progressive disclosure",
+      "recommended_ui_behavior": "Show required basics first; reveal advanced/debug sections only when relevant.",
+      "bad_ui_behavior": "Put admin, debug, and live controls beside first-step upload controls.",
+      "related_risk_ids": [
+        "streamlit-risk-raw-exception-exposure"
+      ]
+    },
+    {
+      "id": "streamlit-ux-visible-file-selection",
+      "ux_pattern": "visible file selection state",
+      "recommended_ui_behavior": "Display filename, size, detected type, hash/preview, and validation status before processing.",
+      "bad_ui_behavior": "Let the Process button remain ambiguous after selecting a new file.",
+      "related_risk_ids": [
+        "streamlit-risk-file-upload-without-validation"
+      ]
+    },
+    {
+      "id": "streamlit-ux-safe-disabled-buttons",
+      "ux_pattern": "safe disabled buttons",
+      "recommended_ui_behavior": "Disable or hide live controls until validation, dry-run, authorization, and confirmation are satisfied; still enforce server-side.",
+      "bad_ui_behavior": "Use disabled button as the only safety mechanism.",
+      "related_risk_ids": [
+        "streamlit-risk-hidden-widget-authz",
+        "streamlit-risk-live-write-without-dry-run"
+      ]
+    },
+    {
+      "id": "streamlit-ux-confirmation-wording",
+      "ux_pattern": "confirmation wording",
+      "recommended_ui_behavior": "Use confirmation copy that names scope, count, target, and irreversibility; require exact plan match for live action.",
+      "bad_ui_behavior": "Generic “Are you sure?” near a mutable plan.",
+      "related_risk_ids": [
+        "streamlit-risk-live-write-without-dry-run",
+        "streamlit-risk-double-submit"
+      ]
+    },
+    {
+      "id": "streamlit-ux-warnings-vs-blockers",
+      "ux_pattern": "warnings versus blockers",
+      "recommended_ui_behavior": "Separate blockers from warnings and make live behavior explicit.",
+      "bad_ui_behavior": "Mix all issues in one red error list.",
+      "related_risk_ids": [
+        "streamlit-risk-owner-dashboard-false-green"
+      ]
+    },
+    {
+      "id": "streamlit-ux-partial-success",
+      "ux_pattern": "partial success display",
+      "recommended_ui_behavior": "Show totals, successful items, failed items, warning groups, and next steps.",
+      "bad_ui_behavior": "Display a single success toast for partial completion.",
+      "related_risk_ids": [
+        "streamlit-risk-owner-dashboard-false-green"
+      ]
+    },
+    {
+      "id": "streamlit-ux-stale-data-display",
+      "ux_pattern": "stale data display",
+      "recommended_ui_behavior": "Show last refresh time, source, filters, completeness, and manual refresh affordance.",
+      "bad_ui_behavior": "Cache a dashboard with no freshness label.",
+      "related_risk_ids": [
+        "streamlit-risk-cache-stale-data",
+        "streamlit-risk-owner-dashboard-false-green"
+      ]
+    },
+    {
+      "id": "streamlit-ux-owner-executive-summary",
+      "ux_pattern": "owner/executive summary",
+      "recommended_ui_behavior": "Show KPI, risk, freshness, exception count, and recommended next action.",
+      "bad_ui_behavior": "Show only charts without caveats or data definitions.",
+      "related_risk_ids": [
+        "streamlit-risk-owner-dashboard-false-green"
+      ]
+    },
+    {
+      "id": "streamlit-ux-accounting-upload-workflow",
+      "ux_pattern": "accounting-friendly upload workflow",
+      "recommended_ui_behavior": "Use period/entity selectors, file hash, row count, totals, reconciliation warnings, and exportable validation report.",
+      "bad_ui_behavior": "Process financial rows after upload with no totals or period confirmation.",
+      "related_risk_ids": [
+        "streamlit-risk-file-upload-without-validation",
+        "streamlit-risk-live-write-without-dry-run"
+      ]
+    },
+    {
+      "id": "streamlit-ux-frontline-workflow",
+      "ux_pattern": "frontline/nontechnical workflow",
+      "recommended_ui_behavior": "Use step-by-step pages, clear blockers, examples, and safe defaults.",
+      "bad_ui_behavior": "Expose developer controls and raw technical failures.",
+      "related_risk_ids": [
+        "streamlit-risk-raw-exception-exposure"
+      ]
+    },
+    {
+      "id": "streamlit-ux-bilingual-label-structure",
+      "ux_pattern": "bilingual-ready label structure",
+      "recommended_ui_behavior": "Centralize labels/messages and keep business meaning separate from code identifiers.",
+      "bad_ui_behavior": "Intermix English UI copy in validation/business logic.",
+      "related_risk_ids": [
+        "streamlit-risk-ui-business-logic-coupling"
+      ]
+    }
+  ]
+}

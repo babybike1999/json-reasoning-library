@@ -1,0 +1,1062 @@
+{
+  "system_metadata": {
+    "package": "excel_data_quality_gates_v2",
+    "version": "v2",
+    "repair_type": "focused_v2_repair_not_full_rebuild",
+    "created_utc": "2026-06-19T22:19:55Z",
+    "source_files": [
+      "Excel Data Analysis For Dummies 5th Edition PDF",
+      "Python in Excel EPUB",
+      "existing v1 Excel/Python-in-Excel JSON package"
+    ],
+    "authority_order": [
+      "original_uploaded_books",
+      "v1_json_files",
+      "repair_prompt",
+      "general_operational_reasoning"
+    ],
+    "description": "Specific data-quality gates for Excel-heavy workflows."
+  },
+  "data_quality_gates": [
+    {
+      "id": "dqg-required-sheet-exists",
+      "gate_name": "Required sheet exists",
+      "risk_addressed": "Missing input/control/output sheet",
+      "validation_rule": "Every named sheet in the workbook contract must exist before analysis or upload.",
+      "blocking_condition": "Required sheet missing.",
+      "warning_condition": "Sheet exists but order/visibility differs from template.",
+      "excel_native_check": "Check workbook sheet list against contract.",
+      "python_in_excel_check": "Use workbook metadata from inspection; Python-in-Excel is not needed unless sheet list is exposed.",
+      "external_python_check": "openpyxl/xlwings validates sheet names before processing.",
+      "example_failure": "Upload_Template sheet absent.",
+      "business_impact": "Formulas, named ranges, or upload exports point to missing sheet.",
+      "ai_agent_check": "List sheets and compare to contract before editing.",
+      "related_risk_ids": [
+        "excel-risk-hidden-sheets"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - Required sheet exists",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for Required sheet exists.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-required-table-exists",
+      "gate_name": "Required table exists",
+      "risk_addressed": "Formula/pivot/source table missing or renamed",
+      "validation_rule": "Each required Excel Table name must resolve and have at least expected columns.",
+      "blocking_condition": "Required table missing or empty.",
+      "warning_condition": "Table exists but row count is zero when not expected.",
+      "excel_native_check": "Name Manager/Table Design name review.",
+      "python_in_excel_check": "xl() explicit table read fails or shape mismatch flags issue.",
+      "external_python_check": "openpyxl table inventory or pandas Excel read validation.",
+      "example_failure": "tblSalesExport renamed to Sales Export.",
+      "business_impact": "Pivots/Python code reference stale range or wrong data.",
+      "ai_agent_check": "Inventory table names and row/column counts.",
+      "related_risk_ids": [
+        "excel-risk-named-range-broken"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - Required table exists",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for Required table exists.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-required-column-exists",
+      "gate_name": "Required column exists",
+      "risk_addressed": "Missing schema field",
+      "validation_rule": "Required columns must exist exactly or be mapped before formulas, pivots, Python, or upload.",
+      "blocking_condition": "Required column absent or duplicated.",
+      "warning_condition": "Column present with suspicious spelling/case difference.",
+      "excel_native_check": "Header row comparison in Excel table.",
+      "python_in_excel_check": "df.columns check and set difference.",
+      "external_python_check": "pandas schema validation.",
+      "example_failure": "Week_Ending missing from labor export.",
+      "business_impact": "Metric cannot be calculated or upload rejected.",
+      "ai_agent_check": "Compare headers to contract and do not invent fields.",
+      "related_risk_ids": [
+        "excel-risk-duplicate-keys"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - Required column exists",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for Required column exists.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-date-column-parses",
+      "gate_name": "Date column parses",
+      "risk_addressed": "Invalid dates or text dates",
+      "validation_rule": "Date fields must parse to valid dates and fall within expected range.",
+      "blocking_condition": "Unparsed required date value exists.",
+      "warning_condition": "Dates parse but min/max outside report period.",
+      "excel_native_check": "ISNUMBER/date serial checks; filter blanks/text.",
+      "python_in_excel_check": "pd.to_datetime(..., errors=\"coerce\") and count failures.",
+      "external_python_check": "pandas/pyarrow schema checks.",
+      "example_failure": "13/31/2026 or text Week 1 in date field.",
+      "business_impact": "Rows assigned to wrong week/month or rejected by upload.",
+      "ai_agent_check": "Profile raw types, parse failures, and min/max dates.",
+      "related_risk_ids": [
+        "excel-risk-date-serials"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - Date column parses",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for Date column parses.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-week-ending-matches-period",
+      "gate_name": "Week-ending date matches expected period",
+      "risk_addressed": "Wrong report period",
+      "validation_rule": "All week-ending dates must match the requested reporting week/calendar rule.",
+      "blocking_condition": "Any required row outside expected week-ending date.",
+      "warning_condition": "Rows include adjacent period dates needing explanation.",
+      "excel_native_check": "Filter Date column and compare to control-sheet period.",
+      "python_in_excel_check": "Compare parsed Date/Week_Ending to expected date variable.",
+      "external_python_check": "pipeline parameter validation.",
+      "example_failure": "2026-06-12 data in 2026-06-19 upload.",
+      "business_impact": "Prior/next period results distort weekly scorecard.",
+      "ai_agent_check": "Read control period and compare every row.",
+      "related_risk_ids": [
+        "excel-risk-date-serials",
+        "excel-risk-stale-refresh-timestamp"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - Week-ending date matches expected period",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for Week-ending date matches expected period.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-percent-convention-known",
+      "gate_name": "Percent convention is known",
+      "risk_addressed": "Percent stored as 0.15 vs 15 vs text",
+      "validation_rule": "Every percent column must declare convention and values must fit it.",
+      "blocking_condition": "Mixed convention detected in same field.",
+      "warning_condition": "Values exceed expected range but may be basis points or whole percents.",
+      "excel_native_check": "Check raw values plus number format.",
+      "python_in_excel_check": "Profile min/max and string % suffixes.",
+      "external_python_check": "schema/unit validation.",
+      "example_failure": "Labor_pct contains 0.28 and 28 in same column.",
+      "business_impact": "Margins/labor cost overstated by 100x.",
+      "ai_agent_check": "Do not calculate with percent fields until convention is documented.",
+      "related_risk_ids": [
+        "excel-risk-percent-convention"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - Percent convention is known",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for Percent convention is known.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-currency-values-numeric",
+      "gate_name": "Currency values are numeric",
+      "risk_addressed": "Currency text or symbols in value cells",
+      "validation_rule": "Currency amount columns must be numeric, with symbols only as formatting.",
+      "blocking_condition": "Required amount has nonnumeric text.",
+      "warning_condition": "Negative/zero amounts outside expected rule.",
+      "excel_native_check": "ISNUMBER/SUM test and number format review.",
+      "python_in_excel_check": "pd.to_numeric with failures captured.",
+      "external_python_check": "schema type validation.",
+      "example_failure": "$1,234 stored as text.",
+      "business_impact": "Totals exclude or concatenate values; upload fails.",
+      "ai_agent_check": "Test numeric coercion and preserve raw extract.",
+      "related_risk_ids": [
+        "excel-risk-currency-format-vs-value"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - Currency values are numeric",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for Currency values are numeric.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-no-formula-errors-output",
+      "gate_name": "No formula errors in output range",
+      "risk_addressed": "Visible output contains formula errors",
+      "validation_rule": "Output/report/upload ranges must not contain #N/A, #VALUE!, #DIV/0!, #REF!, #SPILL!, or #PYTHON! unless explicitly allowed.",
+      "blocking_condition": "Any blocking error in required output range.",
+      "warning_condition": "Allowed diagnostic error exists outside output zone.",
+      "excel_native_check": "Go To Special > Formulas > Errors or formula scan.",
+      "python_in_excel_check": "Check Excel-returned range / Python diagnostics for errors.",
+      "external_python_check": "openpyxl formula/value scan after calculation where available.",
+      "example_failure": "#REF! in Owner Dashboard KPI.",
+      "business_impact": "Bad decision or rejected upload.",
+      "ai_agent_check": "Scan outputs after refresh/recalc and before saving final.",
+      "related_risk_ids": [
+        "excel-risk-formula-drift",
+        "python-excel-risk-spill-output"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - No formula errors in output range",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for No formula errors in output range.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-hidden-sheets-unchanged",
+      "gate_name": "Hidden sheets unexpectedly changed",
+      "risk_addressed": "Unreviewed hidden dependency",
+      "validation_rule": "Hidden/very hidden sheet list and hashes/key values must not change unexpectedly.",
+      "blocking_condition": "Hidden sheet created/deleted/changed in protected workbook.",
+      "warning_condition": "Hidden sheet exists without documentation.",
+      "excel_native_check": "Unhide/list sheets and inspect references.",
+      "python_in_excel_check": "Not a Python-in-Excel task; use workbook inspection.",
+      "external_python_check": "openpyxl workbook metadata and hash comparison.",
+      "example_failure": "Lookup_Hidden sheet modified.",
+      "business_impact": "Visible totals change without reviewer awareness.",
+      "ai_agent_check": "Inventory hidden sheets before/after modifications.",
+      "related_risk_ids": [
+        "excel-risk-hidden-sheets"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - Hidden sheets unexpectedly changed",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for Hidden sheets unexpectedly changed.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-no-merged-cells-import-range",
+      "gate_name": "No merged cells in import range",
+      "risk_addressed": "Merged cells break tabular reads",
+      "validation_rule": "Machine-readable input/upload ranges must have no merged cells.",
+      "blocking_condition": "Merged cell intersects required table/import range.",
+      "warning_condition": "Merged cells exist in presentation tabs only.",
+      "excel_native_check": "Find merged cells / inspect range.",
+      "python_in_excel_check": "xl() shape check may reveal missing repeated labels but should not be primary.",
+      "external_python_check": "openpyxl merged_cells inventory.",
+      "example_failure": "Merged Store header spans two columns in staging data.",
+      "business_impact": "pandas/Power Query reads wrong headers/nulls.",
+      "ai_agent_check": "Scan import rectangles for merged cells before table conversion.",
+      "related_risk_ids": [
+        "excel-risk-merged-cells"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - No merged cells in import range",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for No merged cells in import range.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-no-duplicate-metric-ids",
+      "gate_name": "No duplicate metric IDs",
+      "risk_addressed": "Duplicate business keys",
+      "validation_rule": "Metric/key fields declared unique must have no duplicates after trimming/case normalization.",
+      "blocking_condition": "Duplicate required unique key exists.",
+      "warning_condition": "Duplicate may be legitimate but lacks rule.",
+      "excel_native_check": "COUNTIF/helper key or conditional format duplicates.",
+      "python_in_excel_check": "df.duplicated(keys).sum().",
+      "external_python_check": "pandas/data-contract uniqueness check.",
+      "example_failure": "Two rows for same metric_id/week/location.",
+      "business_impact": "Double-counted dashboard or rejected upload.",
+      "ai_agent_check": "Validate grain before pivot, merge, or upload.",
+      "related_risk_ids": [
+        "excel-risk-duplicate-keys"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - No duplicate metric IDs",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for No duplicate metric IDs.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-blank-required-keys",
+      "gate_name": "No blank required keys",
+      "risk_addressed": "Blank identifiers",
+      "validation_rule": "Required key fields must be nonblank after trimming whitespace.",
+      "blocking_condition": "Blank required key exists.",
+      "warning_condition": "Whitespace-only or placeholder key exists.",
+      "excel_native_check": "COUNTBLANK/TRIM checks.",
+      "python_in_excel_check": "df[key].isna() or str.strip().eq(\"\").",
+      "external_python_check": "schema non-null validation.",
+      "example_failure": "Blank Location_ID.",
+      "business_impact": "Rows cannot be matched or uploaded.",
+      "ai_agent_check": "Reject blanks before formulas/joins.",
+      "related_risk_ids": [
+        "excel-risk-blank-vs-zero",
+        "excel-risk-duplicate-keys"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - No blank required keys",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for No blank required keys.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-stale-refresh-timestamp",
+      "gate_name": "No stale refresh timestamp",
+      "risk_addressed": "Report may use old data",
+      "validation_rule": "Refresh timestamp/source period must be present and not older than allowed freshness rule.",
+      "blocking_condition": "Missing timestamp or older than configured maximum.",
+      "warning_condition": "Timestamp present but source row count changed from expected.",
+      "excel_native_check": "Control sheet refresh log check.",
+      "python_in_excel_check": "Read refresh log table and compare dates.",
+      "external_python_check": "pipeline metadata validation.",
+      "example_failure": "Refresh_Log says last extract 2026-05-31 for June report.",
+      "business_impact": "Decision makers act on stale metrics.",
+      "ai_agent_check": "Require source/time/row count in refresh log.",
+      "related_risk_ids": [
+        "excel-risk-stale-refresh-timestamp"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - No stale refresh timestamp",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for No stale refresh timestamp.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-pivot-cache-refreshed",
+      "gate_name": "Pivot cache refreshed",
+      "risk_addressed": "PivotTable stale after source change",
+      "validation_rule": "PivotTables used for outputs must be refreshed after source import/change and reconcile to source totals.",
+      "blocking_condition": "Pivot totals do not equal source totals after refresh.",
+      "warning_condition": "Refresh state unknown but totals match.",
+      "excel_native_check": "Refresh All and compare grand totals.",
+      "python_in_excel_check": "Python not needed; can compare source/pivot exported values if available.",
+      "external_python_check": "Excel automation refresh then reconcile.",
+      "example_failure": "Pivot still excludes new June rows.",
+      "business_impact": "Executive KPI wrong despite source data present.",
+      "ai_agent_check": "Inspect pivot source and refresh before trusting output.",
+      "related_risk_ids": [
+        "excel-risk-stale-pivot-cache"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - Pivot cache refreshed",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for Pivot cache refreshed.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-named-range-resolves",
+      "gate_name": "Named range resolves",
+      "risk_addressed": "Broken named range",
+      "validation_rule": "Required workbook names must resolve to valid intended ranges.",
+      "blocking_condition": "Name points to #REF! or missing sheet.",
+      "warning_condition": "Name resolves but dimensions changed from contract.",
+      "excel_native_check": "Name Manager review.",
+      "python_in_excel_check": "Not primary; use workbook inspection metadata.",
+      "external_python_check": "openpyxl defined_names resolution.",
+      "example_failure": "UploadRange refers to deleted sheet.",
+      "business_impact": "Export or formula pulls wrong cells.",
+      "ai_agent_check": "Resolve every contract name before modifying workbook.",
+      "related_risk_ids": [
+        "excel-risk-named-range-broken"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - Named range resolves",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for Named range resolves.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-external-links-expected",
+      "gate_name": "External links are expected",
+      "risk_addressed": "Uncontrolled external dependencies",
+      "validation_rule": "All external workbook/data links must be documented, reachable, and authorized.",
+      "blocking_condition": "Unknown external link exists in final workbook.",
+      "warning_condition": "Expected link unreachable or stale.",
+      "excel_native_check": "Data > Edit Links / workbook links inventory.",
+      "python_in_excel_check": "Python not needed; scan formulas for bracketed external references if exported.",
+      "external_python_check": "openpyxl formula scan / link metadata.",
+      "example_failure": "Formula references prior analyst desktop path.",
+      "business_impact": "Workbook fails for other users or leaks dependency.",
+      "ai_agent_check": "Inventory links and confirm each is expected.",
+      "related_risk_ids": [
+        "excel-risk-external-links"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - External links are expected",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for External links are expected.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-manual-overrides-documented",
+      "gate_name": "Manual override cells documented",
+      "risk_addressed": "Undocumented constants in formula zones",
+      "validation_rule": "Any manual override in a calculated/protected zone must have reason, date, owner, and approver.",
+      "blocking_condition": "Constant found where formula required and no override log.",
+      "warning_condition": "Override log exists but no approval.",
+      "excel_native_check": "Compare formula map to template; inspect comments/override log.",
+      "python_in_excel_check": "Python not needed unless formula map exported for analysis.",
+      "external_python_check": "openpyxl formula/constant diff against template.",
+      "example_failure": "Food cost KPI hard-coded for one week.",
+      "business_impact": "Formula drift masked by manual value.",
+      "ai_agent_check": "Detect constants in formula zones and cross-check audit trail.",
+      "related_risk_ids": [
+        "excel-risk-manual-overrides",
+        "excel-risk-formula-drift"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - Manual override cells documented",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for Manual override cells documented.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-python-output-spill-safe",
+      "gate_name": "Python output spill range safe",
+      "risk_addressed": "Python output overwrites or fails to spill",
+      "validation_rule": "PY cells returning Excel values must have empty, protected, expected spill ranges.",
+      "blocking_condition": "Spill blocked in output zone.",
+      "warning_condition": "Spill range larger than expected but not blocked.",
+      "excel_native_check": "Check #SPILL! and neighboring occupied cells.",
+      "python_in_excel_check": "Inspect output shape before return; use head/summary where possible.",
+      "external_python_check": "n/a for external Python except generated workbook validation.",
+      "example_failure": "Python summary spills over manual notes.",
+      "business_impact": "Workbook output incomplete or overwritten.",
+      "ai_agent_check": "Reserve ranges and test return shape.",
+      "related_risk_ids": [
+        "python-excel-risk-spill-output"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - Python output spill range safe",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for Python output spill range safe.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-python-cell-review-required",
+      "gate_name": "Python cell reviewed",
+      "risk_addressed": "Unreviewed embedded code",
+      "validation_rule": "Every PY cell in production-adjacent workbook must be reviewed for purpose, source range, package imports, and output use.",
+      "blocking_condition": "PY cell affects output and lacks review note.",
+      "warning_condition": "PY cell only exploratory but remains in final workbook.",
+      "excel_native_check": "Locate PY formulas in workbook.",
+      "python_in_excel_check": "Open Python Editor and inspect code.",
+      "external_python_check": "n/a unless generated workbook scan.",
+      "example_failure": "Hidden analysis PY cell changes KPI.",
+      "business_impact": "Nontechnical users cannot audit code.",
+      "ai_agent_check": "List PY cells before final save.",
+      "related_risk_ids": [
+        "python-excel-risk-cloud-execution",
+        "python-excel-risk-package-availability"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - Python cell reviewed",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for Python cell reviewed.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-row-count-reconciles",
+      "gate_name": "Row count reconciles across stages",
+      "risk_addressed": "Rows lost or duplicated between raw/clean/output",
+      "validation_rule": "Raw, clean, analysis, and upload tables must reconcile with documented exclusions.",
+      "blocking_condition": "Unexplained row count change between stages.",
+      "warning_condition": "Exclusions documented but not approved.",
+      "excel_native_check": "COUNTA/table row counts on each stage.",
+      "python_in_excel_check": "len(df) before/after transformations.",
+      "external_python_check": "pipeline row-count assertions.",
+      "example_failure": "500 raw rows become 493 clean rows with no reason.",
+      "business_impact": "Missing transactions or duplicate uploads.",
+      "ai_agent_check": "Capture row counts for every transformation step.",
+      "related_risk_ids": [
+        "excel-risk-blank-vs-zero",
+        "excel-risk-duplicate-keys"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - Row count reconciles across stages",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for Row count reconciles across stages.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-upload-schema-contract",
+      "gate_name": "Upload schema matches contract",
+      "risk_addressed": "Upload file rejected or mis-mapped",
+      "validation_rule": "Upload staging table must match required field names, order, types, and required/optional rules.",
+      "blocking_condition": "Missing/extra required field or invalid type.",
+      "warning_condition": "Extra optional field not in contract.",
+      "excel_native_check": "Compare headers/order and data validation rules.",
+      "python_in_excel_check": "df schema check before exporting staged table.",
+      "external_python_check": "contract/schema validation before API/file upload.",
+      "example_failure": "Amount column named Total incorrectly.",
+      "business_impact": "System rejects upload or maps wrong value.",
+      "ai_agent_check": "Validate schema before creating upload file.",
+      "related_risk_ids": [
+        "excel-risk-currency-format-vs-value",
+        "excel-risk-date-serials"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - Upload schema matches contract",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for Upload schema matches contract.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-control-sheet-complete",
+      "gate_name": "Control sheet complete",
+      "risk_addressed": "Missing period/source/owner context",
+      "validation_rule": "Workbook control sheet must specify reporting period, source extracts, refresh status, owner, and signoff status.",
+      "blocking_condition": "Required control field blank.",
+      "warning_condition": "Control value inconsistent with data.",
+      "excel_native_check": "Check named control cells or control table.",
+      "python_in_excel_check": "Read control table and compare to data.",
+      "external_python_check": "pipeline manifest validation.",
+      "example_failure": "Period_End blank on final dashboard.",
+      "business_impact": "Reviewer cannot tell what workbook represents.",
+      "ai_agent_check": "Read control sheet before analysis.",
+      "related_risk_ids": [
+        "excel-risk-stale-refresh-timestamp"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - Control sheet complete",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for Control sheet complete.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-chart-source-validated",
+      "gate_name": "Chart source validated",
+      "risk_addressed": "Chart uses wrong/stale/filtered source",
+      "validation_rule": "Each published chart must trace to validated source range/table/pivot and display filters/axis assumptions.",
+      "blocking_condition": "Chart source cannot be traced or fails source gate.",
+      "warning_condition": "Axis/filter choices may be misleading.",
+      "excel_native_check": "Select chart data and inspect axes/filters.",
+      "python_in_excel_check": "If Python chart, trace DataFrame construction and plot code.",
+      "external_python_check": "report-generation tests for chart data source.",
+      "example_failure": "Dashboard chart still points to prior month range.",
+      "business_impact": "Executive sees incorrect trend.",
+      "ai_agent_check": "Trace every chart before publishing.",
+      "related_risk_ids": [
+        "excel-risk-chart-without-data-validation"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - Chart source validated",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for Chart source validated.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    },
+    {
+      "id": "dqg-protected-zones-intact",
+      "gate_name": "Protected formula zones intact",
+      "risk_addressed": "Accidental edits in protected formulas",
+      "validation_rule": "Protected zones must retain formulas/locked status except documented changes.",
+      "blocking_condition": "Formula in protected zone changed without approval.",
+      "warning_condition": "Protection absent on final template.",
+      "excel_native_check": "Compare formula map/protection to template.",
+      "python_in_excel_check": "Not primary; use workbook inspection.",
+      "external_python_check": "openpyxl style/protection/formula diff.",
+      "example_failure": "Total formula overwritten by value.",
+      "business_impact": "Template produces wrong outputs for users.",
+      "ai_agent_check": "Compare against template before delivery.",
+      "related_risk_ids": [
+        "excel-risk-formula-drift",
+        "excel-risk-manual-overrides"
+      ],
+      "source_domain": "ai_agent_operational_extension",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "AI agent workbook operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Workbook safety workflows",
+        "section_heading": "Data quality gate - Protected formula zones intact",
+        "page_or_anchor": "v2 operational workflow",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed AI-agent extension",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source covers tables, pivots, external data, conditional checks, and statistical/data summaries; Python source covers pandas profiling and transformation."
+        ],
+        "inferred_claims": [
+          "Gate is an operational control derived from those mechanics and v1 quality gaps."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_ai_agent_use",
+        "explanation": "This gate turns repeated v1 generic quality checks into a specific blocking/warning control for Protected formula zones intact.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "data_or_workbook_dependent",
+      "current_verification_required": false
+    }
+  ]
+}

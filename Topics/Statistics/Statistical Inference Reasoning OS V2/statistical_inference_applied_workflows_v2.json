@@ -1,0 +1,1616 @@
+{
+  "applied_statistical_workflows": [
+    {
+      "id": "wf_identify_probability_model",
+      "workflow_name": "Identify the probability model",
+      "goal": "Turn a verbal random process into sample space, variables, distribution family, and parameters.",
+      "preconditions": [
+        "problem context",
+        "measurement units"
+      ],
+      "inspection_steps": [
+        "List outcomes and support.",
+        "Define random variables.",
+        "Identify fixed versus random quantities.",
+        "State candidate parameter(s).",
+        "Mark any unverified assumptions."
+      ],
+      "source_records_to_consult": [
+        "assump_sample_space_defined",
+        "def_random_variable",
+        "dist_binomial"
+      ],
+      "questions_to_ask": [
+        "What is random?",
+        "What is observed?",
+        "What values are possible?"
+      ],
+      "safe_outputs": [
+        "A provisional model with explicit assumptions."
+      ],
+      "dangerous_outputs": [
+        "A test or estimator recommendation before a model is stated."
+      ],
+      "human_review_triggers": [
+        "ambiguous sampling mechanism",
+        "high-stakes decision"
+      ],
+      "completion_criteria": [
+        "sample space, variables, parameters, support recorded"
+      ],
+      "failure_modes": [
+        "support mismatch",
+        "invented iid assumption"
+      ],
+      "related_record_ids": [
+        "concept_probability_model_first"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "1",
+        "chapter_title": "Probability Theory",
+        "section_heading": "1.1. Set Theory",
+        "page_or_anchor": "book p. 1; PDF p. 32; section 1.1",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "applied_statistics_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Turn a verbal random process into sample space, variables, distribution family, and parameters."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "applied_statistics_extension",
+        "explanation": "This applied workflow stages Identify the probability model as a checklist built from source assumptions and method requirements; it is not represented as an author-stated recipe.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "best_fit_context": [
+        "New problem statement with unclear model"
+      ],
+      "checks_or_calculations": [
+        "support check",
+        "normalization check"
+      ],
+      "domain": "applied_statistics_extension",
+      "related_risk_ids": [
+        "stat-risk-undefined-sample-space",
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-ignored-iid-assumption",
+        "stat-risk-wrong-distribution-family",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ]
+    },
+    {
+      "id": "wf_choose_distribution_family",
+      "workflow_name": "Choose a distribution family",
+      "goal": "Select a source-supported family by support and mechanism, not by name alone.",
+      "preconditions": [
+        "candidate variable",
+        "sampling mechanism"
+      ],
+      "inspection_steps": [
+        "Match support.",
+        "Match trial/stopping/exposure mechanism.",
+        "Check moment relationships.",
+        "State parameterization.",
+        "List alternatives and diagnostics."
+      ],
+      "source_records_to_consult": [
+        "dist_binomial",
+        "assump_parametric_family_membership"
+      ],
+      "questions_to_ask": [
+        "Is n fixed?",
+        "Is sampling with replacement?",
+        "Is support positive?"
+      ],
+      "safe_outputs": [
+        "Family shortlist with assumptions."
+      ],
+      "dangerous_outputs": [
+        "Single family asserted as true without diagnostics."
+      ],
+      "human_review_triggers": [
+        "data contradict support",
+        "parameterization conflicts"
+      ],
+      "completion_criteria": [
+        "family chosen with caveats"
+      ],
+      "failure_modes": [
+        "wrong support",
+        "overdispersion ignored"
+      ],
+      "related_record_ids": [
+        "dec_distribution_family"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "3",
+        "chapter_title": "Common Families of Distributions",
+        "section_heading": "3.1. Introduction",
+        "page_or_anchor": "book p. 70; PDF p. 101; section 3.1",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "applied_statistics_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Select a source-supported family by support and mechanism, not by name alone."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "applied_statistics_extension",
+        "explanation": "This applied workflow stages Choose a distribution family as a checklist built from source assumptions and method requirements; it is not represented as an author-stated recipe.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "best_fit_context": [
+        "Distribution/model selection"
+      ],
+      "checks_or_calculations": [
+        "support/moment/story comparison"
+      ],
+      "domain": "applied_statistics_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-wrong-distribution-family",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ]
+    },
+    {
+      "id": "wf_check_random_sample",
+      "workflow_name": "Check random-sample assumptions",
+      "goal": "Assess iid or random-sample claims before using product likelihoods or sampling distributions.",
+      "preconditions": [
+        "data collection description"
+      ],
+      "inspection_steps": [
+        "Identify observational units.",
+        "Check independence source.",
+        "Check identical distribution plausibility.",
+        "Look for clustering/time/order effects.",
+        "Separate finite-population from iid sampling."
+      ],
+      "source_records_to_consult": [
+        "def_random_sample",
+        "method_mle"
+      ],
+      "questions_to_ask": [
+        "Are observations independent?",
+        "Were units sampled the same way?"
+      ],
+      "safe_outputs": [
+        "Explicit iid/provisional sampling statement."
+      ],
+      "dangerous_outputs": [
+        "Product likelihood with no sampling design."
+      ],
+      "human_review_triggers": [
+        "clustered/time series data"
+      ],
+      "completion_criteria": [
+        "iid status determined or flagged"
+      ],
+      "failure_modes": [
+        "dependence ignored"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "5",
+        "chapter_title": "Properties of a Random Sample",
+        "section_heading": "5.1. Basic Concepts of Random Samples",
+        "page_or_anchor": "book p. 169; PDF p. 200; section 5.1",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "applied_statistics_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Assess iid or random-sample claims before using product likelihoods or sampling distributions."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "applied_statistics_extension",
+        "explanation": "This applied workflow stages Check random-sample assumptions as a checklist built from source assumptions and method requirements; it is not represented as an author-stated recipe.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "best_fit_context": [
+        "Inference from multiple observations"
+      ],
+      "checks_or_calculations": [
+        "design review",
+        "dependence diagnostics"
+      ],
+      "domain": "applied_statistics_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-independence-disjointness-confusion",
+        "stat-risk-ignored-iid-assumption",
+        "stat-risk-likelihood-as-parameter-probability",
+        "stat-risk-nonunique-mle",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ],
+      "source_topics_to_consult": [
+        "assump_iid"
+      ],
+      "related_topics": [
+        "dq_random_samples_001"
+      ]
+    },
+    {
+      "id": "wf_find_sufficient_statistic",
+      "workflow_name": "Find a sufficient statistic",
+      "goal": "Reduce data without losing model-based information about θ when possible.",
+      "preconditions": [
+        "likelihood",
+        "parameter target"
+      ],
+      "inspection_steps": [
+        "Write joint likelihood with support.",
+        "Factor into g(T,θ)h(x).",
+        "Identify T.",
+        "Check whether support depends on θ.",
+        "Optionally test minimal sufficiency via likelihood-ratio criterion."
+      ],
+      "source_records_to_consult": [
+        "thm_079_factorization",
+        "thm_080_minimal_sufficient_ratio"
+      ],
+      "questions_to_ask": [
+        "Which likelihood part depends on θ?",
+        "Is the conditional distribution parameter-free?"
+      ],
+      "safe_outputs": [
+        "Sufficient statistic with source conditions."
+      ],
+      "dangerous_outputs": [
+        "Data reduction claimed without model."
+      ],
+      "human_review_triggers": [
+        "support depends on parameter",
+        "model uncertain"
+      ],
+      "completion_criteria": [
+        "T identified and assumptions stated"
+      ],
+      "failure_modes": [
+        "insufficient summary"
+      ],
+      "related_record_ids": [
+        "dec_sufficiency"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "6",
+        "chapter_title": "Principles of Data Reduction",
+        "section_heading": "6.2.1. Sufficient Statistics",
+        "page_or_anchor": "book p. 222; PDF p. 253; section 6.2.1",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "applied_statistics_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Reduce data without losing model-based information about θ when possible."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "applied_statistics_extension",
+        "explanation": "This applied workflow stages Find a sufficient statistic as a checklist built from source assumptions and method requirements; it is not represented as an author-stated recipe.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "best_fit_context": [
+        "Parametric likelihood available"
+      ],
+      "checks_or_calculations": [
+        "factorization",
+        "support indicators"
+      ],
+      "domain": "applied_statistics_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-sufficiency-overclaim",
+        "stat-risk-likelihood-as-parameter-probability",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ]
+    },
+    {
+      "id": "wf_build_likelihood",
+      "workflow_name": "Build or evaluate a likelihood",
+      "goal": "Create a valid likelihood for estimation/testing while respecting support and sampling design.",
+      "preconditions": [
+        "pmf/pdf",
+        "sample design",
+        "parameter space"
+      ],
+      "inspection_steps": [
+        "Write f(x|θ) for one observation or joint law.",
+        "Include support indicators.",
+        "Multiply only when independence is justified.",
+        "Drop only θ-free factors when appropriate.",
+        "Inspect boundary and identifiability."
+      ],
+      "source_records_to_consult": [
+        "def_likelihood",
+        "method_mle",
+        "method_lrt"
+      ],
+      "questions_to_ask": [
+        "What is Θ?",
+        "What factors depend on θ?"
+      ],
+      "safe_outputs": [
+        "Likelihood expression with support and Θ."
+      ],
+      "dangerous_outputs": [
+        "Likelihood as P(θ|x) without prior."
+      ],
+      "human_review_triggers": [
+        "nuisance parameters",
+        "dependent data"
+      ],
+      "completion_criteria": [
+        "valid likelihood object"
+      ],
+      "failure_modes": [
+        "support omission",
+        "parameter probability confusion"
+      ],
+      "related_record_ids": [
+        "dec_likelihood_object"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "6",
+        "chapter_title": "Principles of Data Reduction",
+        "section_heading": "6.3.1. The Likelihood Function",
+        "page_or_anchor": "book p. 236; PDF p. 267; section 6.3.1",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "applied_statistics_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Create a valid likelihood for estimation/testing while respecting support and sampling design."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "applied_statistics_extension",
+        "explanation": "This applied workflow stages Build or evaluate a likelihood as a checklist built from source assumptions and method requirements; it is not represented as an author-stated recipe.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "best_fit_context": [
+        "Parametric model and observed data"
+      ],
+      "checks_or_calculations": [
+        "normalization/support",
+        "independence",
+        "parameter space"
+      ],
+      "domain": "applied_statistics_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-independence-disjointness-confusion",
+        "stat-risk-likelihood-as-parameter-probability",
+        "stat-risk-nonunique-mle",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ]
+    },
+    {
+      "id": "wf_choose_estimator",
+      "workflow_name": "Choose an estimator",
+      "goal": "Select estimator construction/evaluation aligned with target, model, and loss.",
+      "preconditions": [
+        "target τ(θ)",
+        "model",
+        "criterion"
+      ],
+      "inspection_steps": [
+        "Define target.",
+        "List candidate estimators: moment, MLE, Bayes, unbiased/robust.",
+        "Check assumptions and parameter range.",
+        "Evaluate bias, variance, MSE or loss.",
+        "Report tradeoffs."
+      ],
+      "source_records_to_consult": [
+        "method_method_of_moments",
+        "method_mle",
+        "method_bayes_estimator",
+        "method_mse_evaluation"
+      ],
+      "questions_to_ask": [
+        "What target?",
+        "What loss?",
+        "Is bias acceptable?"
+      ],
+      "safe_outputs": [
+        "Estimator recommendation with caveats and evaluation plan."
+      ],
+      "dangerous_outputs": [
+        "Estimator chosen by popularity alone."
+      ],
+      "human_review_triggers": [
+        "nonidentifiability",
+        "small sample",
+        "heavy tails"
+      ],
+      "completion_criteria": [
+        "candidate chosen or evidence requested"
+      ],
+      "failure_modes": [
+        "unbiasedness overclaim"
+      ],
+      "related_record_ids": [
+        "dec_mle",
+        "dec_mse"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "7",
+        "chapter_title": "Point Estimation",
+        "section_heading": "7.2. Methods of Finding Estimators",
+        "page_or_anchor": "book p. 253; PDF p. 284; section 7.2",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "applied_statistics_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Select estimator construction/evaluation aligned with target, model, and loss."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "applied_statistics_extension",
+        "explanation": "This applied workflow stages Choose an estimator as a checklist built from source assumptions and method requirements; it is not represented as an author-stated recipe.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "best_fit_context": [
+        "Point estimation task"
+      ],
+      "checks_or_calculations": [
+        "bias/MSE",
+        "likelihood shape",
+        "prior sensitivity"
+      ],
+      "domain": "applied_statistics_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-nonunique-mle",
+        "stat-risk-unbiasedness-as-best",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-regression-assumption-violation",
+        "stat-risk-software-defaults"
+      ]
+    },
+    {
+      "id": "wf_evaluate_bias_variance_mse",
+      "workflow_name": "Evaluate estimator bias, variance, and MSE",
+      "goal": "Quantify estimator performance under squared-error or variance criteria.",
+      "preconditions": [
+        "distribution of estimator or moments"
+      ],
+      "inspection_steps": [
+        "Compute E(W).",
+        "Compute Var(W).",
+        "Compute bias and MSE.",
+        "Compare across θ values.",
+        "Distinguish unbiasedness from MSE optimality."
+      ],
+      "source_records_to_consult": [
+        "def_mse",
+        "thm_086_mse_decomposition"
+      ],
+      "questions_to_ask": [
+        "Does E(W) exist?",
+        "Is squared error relevant?"
+      ],
+      "safe_outputs": [
+        "Bias/variance/MSE table or formulas."
+      ],
+      "dangerous_outputs": [
+        "'Best' claim with no criterion."
+      ],
+      "human_review_triggers": [
+        "undefined moments"
+      ],
+      "completion_criteria": [
+        "risk criterion reported"
+      ],
+      "failure_modes": [
+        "high variance ignored"
+      ],
+      "related_record_ids": [
+        "method_mse_evaluation"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "7",
+        "chapter_title": "Point Estimation",
+        "section_heading": "7.3.1. Mean Squared Error",
+        "page_or_anchor": "book p. 267; PDF p. 298; section 7.3.1",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "applied_statistics_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Quantify estimator performance under squared-error or variance criteria."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "applied_statistics_extension",
+        "explanation": "This applied workflow stages Evaluate estimator bias, variance, and MSE as a checklist built from source assumptions and method requirements; it is not represented as an author-stated recipe.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "best_fit_context": [
+        "Candidate estimator"
+      ],
+      "checks_or_calculations": [
+        "moment existence",
+        "risk comparison"
+      ],
+      "domain": "applied_statistics_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-unbiasedness-as-best",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ]
+    },
+    {
+      "id": "wf_construct_hypothesis_test",
+      "workflow_name": "Construct a hypothesis test",
+      "goal": "Build a rejection rule with stated null, alternative, statistic, and calibration.",
+      "preconditions": [
+        "Θ0",
+        "Θ1",
+        "model",
+        "test statistic"
+      ],
+      "inspection_steps": [
+        "Define null/alternative as parameter sets.",
+        "Choose construction: LRT, NP, Bayes, UIT/IUT.",
+        "Derive statistic and rejection region.",
+        "Determine critical values.",
+        "State interpretation."
+      ],
+      "source_records_to_consult": [
+        "method_lrt",
+        "method_np_mp_test",
+        "method_bayesian_test"
+      ],
+      "questions_to_ask": [
+        "What is H0?",
+        "What alternatives matter?",
+        "How is α controlled?"
+      ],
+      "safe_outputs": [
+        "Test rule and calibration statement."
+      ],
+      "dangerous_outputs": [
+        "p-value without null/statistic."
+      ],
+      "human_review_triggers": [
+        "composite null uncalibrated"
+      ],
+      "completion_criteria": [
+        "test fully specified"
+      ],
+      "failure_modes": [
+        "size not controlled"
+      ],
+      "related_record_ids": [
+        "dec_lrt",
+        "dec_np"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "8",
+        "chapter_title": "Hypothesis Testing",
+        "section_heading": "8.2. Methods of Finding Tests",
+        "page_or_anchor": "book p. 303; PDF p. 334; section 8.2",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "applied_statistics_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Build a rejection rule with stated null, alternative, statistic, and calibration."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "applied_statistics_extension",
+        "explanation": "This applied workflow stages Construct a hypothesis test as a checklist built from source assumptions and method requirements; it is not represented as an author-stated recipe.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "best_fit_context": [
+        "Testing problem"
+      ],
+      "checks_or_calculations": [
+        "size",
+        "null distribution",
+        "power"
+      ],
+      "domain": "applied_statistics_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-pvalue-as-null-probability",
+        "stat-risk-ignored-power",
+        "stat-risk-size-level-confusion",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ]
+    },
+    {
+      "id": "wf_evaluate_size_power",
+      "workflow_name": "Evaluate size and power",
+      "goal": "Assess error probabilities of a test across null and alternative parameter values.",
+      "preconditions": [
+        "rejection region",
+        "sampling distribution"
+      ],
+      "inspection_steps": [
+        "Compute power function β(θ).",
+        "Take supremum over null for size.",
+        "Plot/compare power over alternatives.",
+        "Identify low-power regions.",
+        "Avoid interpreting non-rejection as proof."
+      ],
+      "source_records_to_consult": [
+        "method_power_size_eval"
+      ],
+      "questions_to_ask": [
+        "Where is size maximized?",
+        "What effect sizes matter?"
+      ],
+      "safe_outputs": [
+        "Size/power summary."
+      ],
+      "dangerous_outputs": [
+        "Only p-value reported for study design."
+      ],
+      "human_review_triggers": [
+        "small sample",
+        "nuisance parameters"
+      ],
+      "completion_criteria": [
+        "error profile known"
+      ],
+      "failure_modes": [
+        "power ignored"
+      ],
+      "related_record_ids": [
+        "dec_pvalue",
+        "misuse_ignore_power"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "8",
+        "chapter_title": "Hypothesis Testing",
+        "section_heading": "8.3.1. Error Probabilities and the Power Function",
+        "page_or_anchor": "book p. 310; PDF p. 341; section 8.3.1",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "applied_statistics_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Assess error probabilities of a test across null and alternative parameter values."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "applied_statistics_extension",
+        "explanation": "This applied workflow stages Evaluate size and power as a checklist built from source assumptions and method requirements; it is not represented as an author-stated recipe.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "best_fit_context": [
+        "Test rule exists"
+      ],
+      "checks_or_calculations": [
+        "power function",
+        "simulation if needed"
+      ],
+      "domain": "applied_statistics_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-pvalue-as-null-probability",
+        "stat-risk-ignored-power",
+        "stat-risk-size-level-confusion",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ]
+    },
+    {
+      "id": "wf_interpret_pvalue",
+      "workflow_name": "Interpret a p-value safely",
+      "goal": "Explain p-values as null-calibrated extremeness measures.",
+      "preconditions": [
+        "test statistic",
+        "null distribution"
+      ],
+      "inspection_steps": [
+        "Name the null and statistic.",
+        "State tail/extremeness rule.",
+        "Say what small p suggests.",
+        "Say what it does not mean.",
+        "Add power/effect-size context if possible."
+      ],
+      "source_records_to_consult": [
+        "method_pvalue_interpretation",
+        "misuse_pvalue_null_true"
+      ],
+      "questions_to_ask": [
+        "Is this one-sided or two-sided?",
+        "What null distribution?"
+      ],
+      "safe_outputs": [
+        "Clear frequentist interpretation."
+      ],
+      "dangerous_outputs": [
+        "Probability H0 true or probability result due to chance."
+      ],
+      "human_review_triggers": [
+        "multiple testing",
+        "optional stopping",
+        "low power"
+      ],
+      "completion_criteria": [
+        "misuse avoided"
+      ],
+      "failure_modes": [
+        "posterior language"
+      ],
+      "related_record_ids": [
+        "dec_pvalue"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "8",
+        "chapter_title": "Hypothesis Testing",
+        "section_heading": "8.3.4. p-Values",
+        "page_or_anchor": "book p. 322; PDF p. 353; section 8.3.4",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "applied_statistics_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Explain p-values as null-calibrated extremeness measures."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "applied_statistics_extension",
+        "explanation": "This applied workflow stages Interpret a p-value safely as a checklist built from source assumptions and method requirements; it is not represented as an author-stated recipe.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "best_fit_context": [
+        "p-value output"
+      ],
+      "checks_or_calculations": [
+        "calibration",
+        "wording review"
+      ],
+      "domain": "applied_statistics_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-pvalue-as-null-probability",
+        "stat-risk-ignored-power",
+        "stat-risk-size-level-confusion",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ]
+    },
+    {
+      "id": "wf_construct_interval",
+      "workflow_name": "Construct an interval estimator",
+      "goal": "Choose interval construction matching the desired probability interpretation.",
+      "preconditions": [
+        "target",
+        "model",
+        "interpretation"
+      ],
+      "inspection_steps": [
+        "Classify interval as confidence, credible, prediction, tolerance, etc.",
+        "Choose inversion/pivot/CDF/Bayesian route.",
+        "Derive interval with assumptions.",
+        "Check support and endpoints.",
+        "State interpretation."
+      ],
+      "source_records_to_consult": [
+        "method_test_inversion",
+        "method_pivotal_interval",
+        "method_bayesian_interval"
+      ],
+      "questions_to_ask": [
+        "Coverage or posterior probability?",
+        "What target?"
+      ],
+      "safe_outputs": [
+        "Interval with interpretation and assumptions."
+      ],
+      "dangerous_outputs": [
+        "A 95% label without construction."
+      ],
+      "human_review_triggers": [
+        "discrete or boundary parameter"
+      ],
+      "completion_criteria": [
+        "interval type clear"
+      ],
+      "failure_modes": [
+        "confidence/credible confusion"
+      ],
+      "related_record_ids": [
+        "dec_pivot",
+        "dec_interval_inversion"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "9",
+        "chapter_title": "Interval Estimation",
+        "section_heading": "9.2. Methods of Finding Interval Estimators",
+        "page_or_anchor": "book p. 339; PDF p. 370; section 9.2",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "applied_statistics_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Choose interval construction matching the desired probability interpretation."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "applied_statistics_extension",
+        "explanation": "This applied workflow stages Construct an interval estimator as a checklist built from source assumptions and method requirements; it is not represented as an author-stated recipe.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "best_fit_context": [
+        "Uncertainty interval requested"
+      ],
+      "checks_or_calculations": [
+        "coverage/pivot/posterior check"
+      ],
+      "domain": "applied_statistics_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ]
+    },
+    {
+      "id": "wf_evaluate_coverage",
+      "workflow_name": "Evaluate coverage",
+      "goal": "Verify frequentist repeated-sampling performance of interval procedures.",
+      "preconditions": [
+        "interval rule",
+        "model"
+      ],
+      "inspection_steps": [
+        "Define C(X).",
+        "Compute or simulate Pθ(θ∈C(X)).",
+        "Find infimum over θ if needed.",
+        "Compare nominal and actual coverage.",
+        "Flag discreteness/asymptotics."
+      ],
+      "source_records_to_consult": [
+        "method_coverage_evaluation"
+      ],
+      "questions_to_ask": [
+        "Is coverage exact, conservative, or approximate?"
+      ],
+      "safe_outputs": [
+        "Coverage statement by θ or coefficient."
+      ],
+      "dangerous_outputs": [
+        "Realized interval treated as posterior probability."
+      ],
+      "human_review_triggers": [
+        "small sample",
+        "discrete models"
+      ],
+      "completion_criteria": [
+        "coverage evaluated or caveated"
+      ],
+      "failure_modes": [
+        "nominal-only claim"
+      ],
+      "related_record_ids": [
+        "dec_coverage"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "9",
+        "chapter_title": "Interval Estimation",
+        "section_heading": "9.3.1. Size and Coverage Probability",
+        "page_or_anchor": "book p. 356; PDF p. 387; section 9.3.1",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "applied_statistics_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Verify frequentist repeated-sampling performance of interval procedures."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "applied_statistics_extension",
+        "explanation": "This applied workflow stages Evaluate coverage as a checklist built from source assumptions and method requirements; it is not represented as an author-stated recipe.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "best_fit_context": [
+        "Confidence interval claim"
+      ],
+      "checks_or_calculations": [
+        "coverage function",
+        "simulation"
+      ],
+      "domain": "applied_statistics_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-size-level-confusion",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-asymptotic-overuse",
+        "stat-risk-software-defaults"
+      ]
+    },
+    {
+      "id": "wf_decide_asymptotics",
+      "workflow_name": "Decide whether asymptotics are acceptable",
+      "goal": "Assess whether large-sample approximation is defensible for the present problem.",
+      "preconditions": [
+        "n",
+        "model",
+        "regularity",
+        "parameter location"
+      ],
+      "inspection_steps": [
+        "Identify limiting theorem.",
+        "Check regularity/interior/support.",
+        "Compare sample size to model difficulty.",
+        "Use simulation or exact alternatives if feasible.",
+        "Label approximation."
+      ],
+      "source_records_to_consult": [
+        "method_consistency_eval",
+        "method_large_sample_lrt",
+        "method_approx_mle_intervals"
+      ],
+      "questions_to_ask": [
+        "What goes to infinity?",
+        "Any boundaries or heavy tails?"
+      ],
+      "safe_outputs": [
+        "Approximation accepted with caveats or rejected."
+      ],
+      "dangerous_outputs": [
+        "Asymptotic result stated as exact."
+      ],
+      "human_review_triggers": [
+        "small n",
+        "separation",
+        "heavy tails"
+      ],
+      "completion_criteria": [
+        "approximation decision documented"
+      ],
+      "failure_modes": [
+        "overreliance on asymptotics"
+      ],
+      "related_record_ids": [
+        "dec_asymptotics"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "10",
+        "chapter_title": "Asymptotic Evaluations",
+        "section_heading": "10.1. Point Estimation",
+        "page_or_anchor": "book p. 377; PDF p. 408; section 10.1",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "applied_statistics_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Assess whether large-sample approximation is defensible for the present problem."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "applied_statistics_extension",
+        "explanation": "This applied workflow stages Decide whether asymptotics are acceptable as a checklist built from source assumptions and method requirements; it is not represented as an author-stated recipe.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "best_fit_context": [
+        "Exact method unavailable or large-sample method proposed"
+      ],
+      "checks_or_calculations": [
+        "simulation",
+        "boundary check",
+        "regularity list"
+      ],
+      "domain": "applied_statistics_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-invalid-differentiation-under-integral",
+        "stat-risk-nonunique-mle",
+        "stat-risk-size-level-confusion",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-asymptotic-overuse",
+        "stat-risk-software-defaults"
+      ]
+    },
+    {
+      "id": "wf_assess_robustness",
+      "workflow_name": "Assess robustness",
+      "goal": "Evaluate sensitivity to outliers, heavy tails, and model deviations.",
+      "preconditions": [
+        "data/residuals",
+        "candidate estimators"
+      ],
+      "inspection_steps": [
+        "Identify contamination concern.",
+        "Compare mean/median or LS/robust fit.",
+        "Check influence/leverage.",
+        "Report efficiency tradeoff.",
+        "Recommend sensitivity analysis."
+      ],
+      "source_records_to_consult": [
+        "method_m_estimator",
+        "method_robust_regression"
+      ],
+      "questions_to_ask": [
+        "Robust to what?",
+        "What efficiency is lost?"
+      ],
+      "safe_outputs": [
+        "Sensitivity report."
+      ],
+      "dangerous_outputs": [
+        "Robust method declared valid without threat model."
+      ],
+      "human_review_triggers": [
+        "high leverage",
+        "small sample"
+      ],
+      "completion_criteria": [
+        "robustness scope stated"
+      ],
+      "failure_modes": [
+        "automatic robustness"
+      ],
+      "related_record_ids": [
+        "dec_robustness"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "10",
+        "chapter_title": "Asymptotic Evaluations",
+        "section_heading": "10.2. Robustness",
+        "page_or_anchor": "book p. 388; PDF p. 419; section 10.2",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "applied_statistics_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Evaluate sensitivity to outliers, heavy tails, and model deviations."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "applied_statistics_extension",
+        "explanation": "This applied workflow stages Assess robustness as a checklist built from source assumptions and method requirements; it is not represented as an author-stated recipe.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "best_fit_context": [
+        "Outlier/heavy-tail concern"
+      ],
+      "checks_or_calculations": [
+        "outlier diagnostics",
+        "ARE",
+        "influence"
+      ],
+      "domain": "applied_statistics_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-asymptotic-overuse",
+        "stat-risk-regression-assumption-violation",
+        "stat-risk-software-defaults"
+      ]
+    },
+    {
+      "id": "wf_review_anova",
+      "workflow_name": "Review ANOVA assumptions",
+      "goal": "Evaluate whether oneway ANOVA F/contrast procedures are appropriate.",
+      "preconditions": [
+        "grouping factor",
+        "responses",
+        "design"
+      ],
+      "inspection_steps": [
+        "Identify groups and units.",
+        "Check independence/randomization.",
+        "Assess variance homogeneity and residual normality.",
+        "Specify global test or contrasts.",
+        "Address multiplicity if needed."
+      ],
+      "source_records_to_consult": [
+        "method_anova_f_test",
+        "method_anova_contrast_intervals"
+      ],
+      "questions_to_ask": [
+        "What is the experimental unit?",
+        "Which contrasts are planned?"
+      ],
+      "safe_outputs": [
+        "ANOVA review with assumptions and caveats."
+      ],
+      "dangerous_outputs": [
+        "Global F used to claim pairwise differences."
+      ],
+      "human_review_triggers": [
+        "unbalanced design",
+        "heteroscedasticity"
+      ],
+      "completion_criteria": [
+        "ANOVA validity classified"
+      ],
+      "failure_modes": [
+        "assumptions ignored"
+      ],
+      "related_record_ids": [
+        "dec_anova"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "11",
+        "chapter_title": "Analysis of Variance and Regression",
+        "section_heading": "11.2. Oneway Analysis of Variance",
+        "page_or_anchor": "book p. 421; PDF p. 452; section 11.2",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "applied_statistics_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Evaluate whether oneway ANOVA F/contrast procedures are appropriate."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "applied_statistics_extension",
+        "explanation": "This applied workflow stages Review ANOVA assumptions as a checklist built from source assumptions and method requirements; it is not represented as an author-stated recipe.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "best_fit_context": [
+        "Grouped continuous response"
+      ],
+      "checks_or_calculations": [
+        "residuals",
+        "group variances",
+        "contrast weights"
+      ],
+      "domain": "applied_statistics_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-independence-disjointness-confusion",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-regression-assumption-violation",
+        "stat-risk-software-defaults"
+      ]
+    },
+    {
+      "id": "wf_review_regression",
+      "workflow_name": "Review regression assumptions",
+      "goal": "Assess simple/logistic/EIV/robust regression model fit and interpretation.",
+      "preconditions": [
+        "response type",
+        "predictors",
+        "fit output",
+        "data/design"
+      ],
+      "inspection_steps": [
+        "Classify regression type.",
+        "Check response distribution and predictor measurement.",
+        "Review residuals/outliers/leverage.",
+        "Check inference assumptions and extrapolation.",
+        "State safe interpretation."
+      ],
+      "source_records_to_consult": [
+        "method_simple_linear_regression",
+        "method_logistic_regression",
+        "method_errors_in_variables_mle",
+        "method_robust_regression"
+      ],
+      "questions_to_ask": [
+        "What is measured with error?",
+        "Is prediction inside support?"
+      ],
+      "safe_outputs": [
+        "Regression review with assumption mismatches."
+      ],
+      "dangerous_outputs": [
+        "Causal or extrapolated claims without support."
+      ],
+      "human_review_triggers": [
+        "measurement error",
+        "binary outcome",
+        "outliers"
+      ],
+      "completion_criteria": [
+        "model type and risks stated"
+      ],
+      "failure_modes": [
+        "wrong regression family"
+      ],
+      "related_record_ids": [
+        "dec_regression",
+        "dec_logistic",
+        "dec_eiv"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "11",
+        "chapter_title": "Analysis of Variance and Regression",
+        "section_heading": "11.3. Simple Linear Regression",
+        "page_or_anchor": "book p. 435; PDF p. 466; section 11.3",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "applied_statistics_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Assess simple/logistic/EIV/robust regression model fit and interpretation."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "applied_statistics_extension",
+        "explanation": "This applied workflow stages Review regression assumptions as a checklist built from source assumptions and method requirements; it is not represented as an author-stated recipe.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "best_fit_context": [
+        "Regression analysis"
+      ],
+      "checks_or_calculations": [
+        "residual diagnostics",
+        "leverage",
+        "separation"
+      ],
+      "domain": "applied_statistics_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-nonunique-mle",
+        "stat-risk-unbiasedness-as-best",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-regression-assumption-violation",
+        "stat-risk-software-defaults"
+      ]
+    },
+    {
+      "id": "wf_compare_frequentist_bayesian",
+      "workflow_name": "Compare frequentist and Bayesian interpretations",
+      "goal": "Separate coverage/size/power statements from posterior/loss statements.",
+      "preconditions": [
+        "procedure type",
+        "prior/loss if Bayesian"
+      ],
+      "inspection_steps": [
+        "Identify procedure class.",
+        "State probability statement.",
+        "For Bayesian, state prior/model/loss.",
+        "For frequentist, state repeated-sampling property.",
+        "Warn against interchange."
+      ],
+      "source_records_to_consult": [
+        "method_bayes_estimator",
+        "method_bayesian_interval",
+        "method_coverage_evaluation"
+      ],
+      "questions_to_ask": [
+        "Is there a prior?",
+        "Is coverage evaluated?"
+      ],
+      "safe_outputs": [
+        "Interpretation separation."
+      ],
+      "dangerous_outputs": [
+        "95% probability claim for frequentist CI without prior."
+      ],
+      "human_review_triggers": [
+        "mixed report"
+      ],
+      "completion_criteria": [
+        "interpretations disentangled"
+      ],
+      "failure_modes": [
+        "confidence/credible confusion"
+      ],
+      "related_record_ids": [
+        "misuse_confidence_posterior"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "9",
+        "chapter_title": "Interval Estimation",
+        "section_heading": "9.2.4. Bayesian Intervals",
+        "page_or_anchor": "book p. 352; PDF p. 383; section 9.2.4",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "applied_statistics_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Separate coverage/size/power statements from posterior/loss statements."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "applied_statistics_extension",
+        "explanation": "This applied workflow stages Compare frequentist and Bayesian interpretations as a checklist built from source assumptions and method requirements; it is not represented as an author-stated recipe.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "best_fit_context": [
+        "Report includes both methods or ambiguous interval/test language"
+      ],
+      "checks_or_calculations": [
+        "prior",
+        "coverage",
+        "posterior"
+      ],
+      "domain": "applied_statistics_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-invalid-differentiation-under-integral",
+        "stat-risk-ignored-power",
+        "stat-risk-size-level-confusion",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ]
+    },
+    {
+      "id": "wf_translate_data_question",
+      "workflow_name": "Translate a data-analysis question into an inference problem",
+      "goal": "Convert applied question into model, target, procedure, and evaluation criteria.",
+      "preconditions": [
+        "context",
+        "data availability",
+        "decision goal"
+      ],
+      "inspection_steps": [
+        "Restate decision.",
+        "Identify data type and sampling design.",
+        "Choose target: parameter/test/interval/prediction.",
+        "List assumptions and missing evidence.",
+        "Select candidate procedure or ask for more information."
+      ],
+      "source_records_to_consult": [],
+      "questions_to_ask": [
+        "What decision changes?",
+        "What data and assumptions are known?"
+      ],
+      "safe_outputs": [
+        "Formal inference problem or targeted clarification request."
+      ],
+      "dangerous_outputs": [
+        "Immediate method recommendation with invented assumptions."
+      ],
+      "human_review_triggers": [
+        "missing data description",
+        "software-specific output"
+      ],
+      "completion_criteria": [
+        "problem formalized"
+      ],
+      "failure_modes": [
+        "wrong target"
+      ],
+      "related_record_ids": [
+        "concept_construct_then_evaluate"
+      ],
+      "source_traceability": {
+        "source_file": "Statistical Inference (Chapman & Hall_CRC Texts in -- George Casella, Roger L_ Berger -- Texts in Statistical Science, 2ed, 2024.pdf",
+        "book_title": "Statistical Inference",
+        "authors": [
+          "George Casella",
+          "Roger L. Berger"
+        ],
+        "chapter_number": "7",
+        "chapter_title": "Point Estimation",
+        "section_heading": "7.1. Introduction",
+        "page_or_anchor": "book p. 252; PDF p. 283; section 7.1",
+        "definition_theorem_example_table_or_exercise": "workflow synthesis",
+        "support_role": "applied_statistics_extension",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "Convert applied question into model, target, procedure, and evaluation criteria."
+        ],
+        "inferred_claims": [
+          "Workflow operationalizes source material for applied/agent use."
+        ]
+      },
+      "derivation": {
+        "classification": "applied_statistics_extension",
+        "explanation": "This applied workflow stages Translate a data-analysis question into an inference problem as a checklist built from source assumptions and method requirements; it is not represented as an author-stated recipe.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "best_fit_context": [
+        "User asks a broad applied question"
+      ],
+      "checks_or_calculations": [
+        "task classification",
+        "assumption extraction"
+      ],
+      "domain": "applied_statistics_extension",
+      "related_risk_ids": [
+        "stat-risk-support-mismatch",
+        "stat-risk-discrete-continuous-confusion",
+        "stat-risk-density-as-probability",
+        "stat-risk-confidence-as-posterior-probability",
+        "stat-risk-software-defaults"
+      ],
+      "source_topics_to_consult": [
+        "major_concept_map",
+        "decision_rules",
+        "diagnostic_questions"
+      ]
+    }
+  ]
+}

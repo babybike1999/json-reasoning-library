@@ -1,0 +1,4298 @@
+{
+  "context_metadata": {
+    "file_name": "eloquent_javascript_assistant_context_v1.json",
+    "package_name": "Eloquent JavaScript Reasoning OS",
+    "package_version": "v1",
+    "generated_at_utc": "2026-08-25T15:48:13+00:00",
+    "target_size_bytes": {
+      "minimum": 76800,
+      "maximum": 204800
+    },
+    "purpose": "Compact routing context and reasoning gates. This is not the full OS and does not duplicate full record bodies.",
+    "source_pdf_sha256": "2cd84d428c07c531b1295ca2393bc0d4218c24567aac5b6049a9b5850e7dea1d",
+    "final_size_bytes_before_write": 107300
+  },
+  "purpose_and_boundary": {
+    "purpose": "JavaScript reasoning for practical internal tools, with a major Google Apps Script runtime-translation layer.",
+    "central_rule": "JavaScript language reasoning transfers. Runtime assumptions do not automatically transfer.",
+    "book_authority": "Eloquent JavaScript, Fourth Edition is authoritative only for source-supported JavaScript reasoning and source-era examples.",
+    "current_behavior_rule": "Current project code, logs, runtime behavior, Google documentation, deployment settings, and SOPs outrank source-era platform assumptions."
+  },
+  "authority_order": [
+    "Current project code and runtime behavior",
+    "Current error logs, execution logs, stack traces, and user reports",
+    "Current Google Apps Script documentation",
+    "Current Google Workspace service documentation",
+    "Current browser and Node.js documentation when relevant",
+    "Current business requirements, SOPs, and workflow rules",
+    "Source-supported JavaScript concepts from Eloquent JavaScript",
+    "Cross-chapter synthesis from the source",
+    "Google Apps Script translation-layer extensions",
+    "AI-agent workflow extensions",
+    "General programming advice"
+  ],
+  "runtime_boundary_rules": [
+    "JavaScript language reasoning transfers more reliably than runtime assumptions.",
+    "Google Apps Script is not Node.js.",
+    "Server-side Apps Script .gs code is not browser JavaScript.",
+    "DOM, browser events, form-element APIs, and browser storage apply only to HTMLService client-side code when currently supported.",
+    "Browser fetch is not UrlFetchApp; HTTP concepts transfer, API contracts and security contexts differ.",
+    "Node filesystem, HTTP server, stream, CommonJS, and NPM behavior do not transfer directly to Apps Script.",
+    "google.script.run is a client/server asynchronous boundary whose current behavior must be verified.",
+    "Apps Script service calls in .gs may look synchronous, but quotas, timeouts, external latency, concurrency, and partial effects still matter.",
+    "Current quotas, scopes, trigger behavior, deployment, uploads, permissions, services, modules, and security must be verified from current evidence.",
+    "The book never overrides current project code, logs, runtime behavior, or business rules."
+  ],
+  "non_negotiable_agent_rules": [
+    "Identify the runtime before recommending code.",
+    "Inspect current project code, logs, data shape, deployment settings, and user reports before diagnosing a live tool.",
+    "Separate parse, validate, transform, export, UI, logging, and side-effect stages.",
+    "Validate data shape before writing to Sheets, sending mail, creating files, or calling an external write API.",
+    "Prefer a deterministic dry-run action plan before live mutation.",
+    "Do not hide unknown defects behind broad catch blocks.",
+    "Do not assume browser APIs work in server-side Apps Script.",
+    "Do not assume Node APIs or packages work in Apps Script.",
+    "Do not assume current Apps Script quotas or APIs from memory.",
+    "Do not treat fetch and UrlFetchApp as interchangeable.",
+    "Do not recommend DOM code inside .gs.",
+    "Do not recommend packages without verifying compatibility, build/deployment, license, security, and maintenance.",
+    "Do not claim a workflow works without tests and runtime evidence.",
+    "Do not invent current project code, schemas, mappings, permissions, or SOPs."
+  ],
+  "apps_script_reasoning_gate": [
+    "What problem is the script solving?",
+    "What code runs client-side and what runs server-side?",
+    "What JavaScript concept is involved?",
+    "What Apps Script service or runtime behavior is involved?",
+    "What input shape is expected?",
+    "What validation happens before transformation?",
+    "What side effects happen, and when?",
+    "What could fail silently?",
+    "What error should the user see?",
+    "What should be logged for the developer?",
+    "Is there a dry-run path before live write?",
+    "What happens on partial failure?",
+    "What current Google documentation must be verified?",
+    "What test proves this works?"
+  ],
+  "workflow_stage_model": {
+    "recommended_stage_order": [
+      "identify_runtime_and_contract",
+      "ingest_or_receive_plain_input",
+      "parse_into_intermediate_representation",
+      "validate_structure_and_business_fields",
+      "normalize_to_canonical_records",
+      "transform_with_pure_helpers",
+      "reconcile_counts_totals_and_keys",
+      "build_immutable_action_plan",
+      "preview_or_dry_run",
+      "authorize_live_effects",
+      "execute_narrow_side_effect_adapters",
+      "verify_destination_results",
+      "record_sanitized_run_history",
+      "report_user_status_and_recovery_path"
+    ],
+    "separation_rule": "Service reads/writes, mail, file creation, and external HTTP effects must not be hidden inside row-level transformation helpers.",
+    "partial_failure_rule": "Represent success, rejected, skipped, failed, unknown-outcome, and retryable states explicitly; never collapse mixed results into one boolean."
+  },
+  "runtime_quick_matrix": [
+    {
+      "runtime": "JavaScript language",
+      "generally_transfers": [
+        "Values/types/operators",
+        "Functions/scope/closures",
+        "Objects/arrays",
+        "Control flow",
+        "Exceptions",
+        "Regex semantics subject to runtime version"
+      ],
+      "does_not_establish": [
+        "Host APIs",
+        "Quotas",
+        "Permissions",
+        "Deployment",
+        "Service return shapes"
+      ]
+    },
+    {
+      "runtime": "HTMLService client-side browser JavaScript",
+      "generally_transfers": [
+        "DOM",
+        "Events",
+        "Form UI",
+        "Browser promises",
+        "Browser storage/fetch when currently supported"
+      ],
+      "does_not_establish": [
+        "Server .gs services",
+        "Secrets",
+        "Authoritative validation",
+        "UrlFetchApp behavior"
+      ]
+    },
+    {
+      "runtime": "Server-side Apps Script .gs",
+      "generally_transfers": [
+        "Language mechanics",
+        "Pure transformations",
+        "Exception reasoning"
+      ],
+      "does_not_establish": [
+        "DOM/window/document",
+        "Node fs/http/streams",
+        "Browser event loop",
+        "Normal browser fetch equivalence"
+      ]
+    },
+    {
+      "runtime": "Node.js",
+      "generally_transfers": [
+        "Conceptual server/module/HTTP/file/stream reasoning"
+      ],
+      "does_not_establish": [
+        "Availability of Node APIs or NPM packages in Apps Script"
+      ]
+    }
+  ],
+  "high_priority_lookup": {
+    "translation_layer_file": "eloquent_javascript_google_apps_script_translation_layer_v1.json",
+    "failure_modes_file": "eloquent_javascript_failure_modes_and_pitfalls_v1.json",
+    "decision_rules_file": "eloquent_javascript_decision_rules_v1.json",
+    "diagnostic_questions_file": "eloquent_javascript_diagnostic_questions_v1.json",
+    "ai_workflows_file": "eloquent_javascript_ai_agent_workflows_v1.json",
+    "current_flags_file": "eloquent_javascript_current_verification_flags_v1.json",
+    "source_map_file": "eloquent_javascript_source_map_v1.json"
+  },
+  "current_verification_trigger_index": [
+    {
+      "verification_id": "verify-appsscript-v8-runtime",
+      "category": "apps_script_v8_runtime",
+      "why": "Apps Script runtime versions, supported syntax, built-ins, optimization, and edge behavior can change independently of the book."
+    },
+    {
+      "verification_id": "verify-appsscript-quotas",
+      "category": "apps_script_quotas",
+      "why": "Numeric quotas, reset windows, account tiers, payload limits, and execution limits are platform- and time-sensitive."
+    },
+    {
+      "verification_id": "verify-appsscript-triggers",
+      "category": "apps_script_triggers",
+      "why": "Trigger types, event objects, identity, authorization, schedules, concurrency, and failure reporting are host-specific and may change."
+    },
+    {
+      "verification_id": "verify-appsscript-deployments",
+      "category": "apps_script_deployment",
+      "why": "Version, deployment, execute-as, access, URL, rollback, and manifest behavior are platform settings that can change."
+    },
+    {
+      "verification_id": "verify-appsscript-authorization-scopes",
+      "category": "authorization_and_identity",
+      "why": "Scopes, consent, admin policy, deployment identity, and service access depend on current project/account configuration."
+    },
+    {
+      "verification_id": "verify-htmlservice-restrictions",
+      "category": "htmlservice",
+      "why": "Sandbox, embedding, origin, script, navigation, security, and browser support can vary by platform release and deployment."
+    },
+    {
+      "verification_id": "verify-google-script-run",
+      "category": "google_script_run",
+      "why": "Supported argument/return values, handlers, error behavior, and client/server constraints are Apps Script-specific and time-sensitive."
+    },
+    {
+      "verification_id": "verify-appsscript-file-uploads",
+      "category": "file_uploads",
+      "why": "Allowed payloads, Blob/form serialization, size limits, encoding, permissions, and HTMLService restrictions are platform-specific."
+    },
+    {
+      "verification_id": "verify-spreadsheetapp",
+      "category": "spreadsheetapp",
+      "why": "Raw/display/formula values, date objects, rectangular writes, limits, protections, and performance are current service behavior."
+    },
+    {
+      "verification_id": "verify-driveapp",
+      "category": "driveapp",
+      "why": "Drive ownership, shared-drive support, permissions, file conversion, Blob handling, and quotas are service-specific and time-sensitive."
+    },
+    {
+      "verification_id": "verify-urlfetchapp",
+      "category": "urlfetchapp",
+      "why": "Options, redirect behavior, certificate/security, response handling, scopes, payload limits, and quotas are current host behavior."
+    },
+    {
+      "verification_id": "verify-propertiesservice",
+      "category": "properties_service",
+      "why": "Scope, size limits, quotas, consistency, access identity, and serialization patterns are current service behavior."
+    },
+    {
+      "verification_id": "verify-cacheservice",
+      "category": "cache_service",
+      "why": "Eviction, expiry, size, scope, quotas, and consistency are current platform behavior; cache must not be assumed durable."
+    },
+    {
+      "verification_id": "verify-lockservice",
+      "category": "lock_service",
+      "why": "Lock types, acquisition/timeout behavior, scope, quotas, and interaction with triggers are host-specific."
+    },
+    {
+      "verification_id": "verify-mail-gmail-services",
+      "category": "mail_services",
+      "why": "Quotas, authorization, sender identity, aliases, attachments, delivery behavior, and HTML restrictions can change."
+    },
+    {
+      "verification_id": "verify-utilities-behavior",
+      "category": "utilities",
+      "why": "Encoding, Blob/archive/conversion, formatting, and cryptographic helper behavior are current service/API facts."
+    },
+    {
+      "verification_id": "verify-browser-dom-apis",
+      "category": "browser_dom",
+      "why": "Browser support, security restrictions, accessibility behavior, and API details evolve independently of the source."
+    },
+    {
+      "verification_id": "verify-browser-fetch",
+      "category": "browser_fetch",
+      "why": "Request/response options, streams, credentials, abort behavior, browser support, and security behavior can change."
+    },
+    {
+      "verification_id": "verify-cors-security",
+      "category": "web_security",
+      "why": "CORS, content security, cookie/credential, mixed-content, origin, and HTMLService interactions evolve and are deployment-specific."
+    },
+    {
+      "verification_id": "verify-nodejs-apis",
+      "category": "nodejs",
+      "why": "Node versions, globals, standard modules, stream behavior, security defaults, and deprecations can change."
+    },
+    {
+      "verification_id": "verify-npm-packages",
+      "category": "npm_packages",
+      "why": "Versions, maintenance, transitive dependencies, licenses, vulnerabilities, module format, and build compatibility change."
+    },
+    {
+      "verification_id": "verify-es-module-support",
+      "category": "modules",
+      "why": "Apps Script runtime support, file loading, bundling, libraries, and tooling can differ from browsers/Node and change over time."
+    },
+    {
+      "verification_id": "verify-date-timezone-behavior",
+      "category": "date_timezone",
+      "why": "Runtime, project, spreadsheet, account, browser, locale, and company fiscal-calendar settings can produce different interpretations."
+    },
+    {
+      "verification_id": "verify-workspace-permissions",
+      "category": "workspace_permissions",
+      "why": "Admin restrictions, file sharing, external access, OAuth controls, and user roles vary by organization and change."
+    },
+    {
+      "verification_id": "verify-current-project-behavior",
+      "category": "project_specific",
+      "why": "Project code, report schemas, mappings, business rules, dependencies, credentials, deployments, and observed errors can change at any time."
+    },
+    {
+      "verification_id": "verify-external-api-contracts",
+      "category": "external_apis",
+      "why": "Endpoints, authentication, schemas, status semantics, pagination, rate limits, and deprecations are provider-specific and time-sensitive."
+    },
+    {
+      "verification_id": "verify-report-source-target-specs",
+      "category": "report_specs",
+      "why": "Column names, encodings, accepted formats, date windows, identifiers, and import validation rules are external and versioned."
+    },
+    {
+      "verification_id": "verify-xlsx-parser-dependency",
+      "category": "xlsx_dependency",
+      "why": "Library compatibility, license, vulnerabilities, memory behavior, module format, bundling, and workbook feature support change."
+    }
+  ],
+  "record_locator_index": [
+    {
+      "id": "term-value",
+      "name": "value",
+      "g": "g01",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "term-type",
+      "name": "type",
+      "g": "g01",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "term-operator",
+      "name": "operator",
+      "g": "g01",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "term-expression",
+      "name": "expression",
+      "g": "g01",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "term-statement",
+      "name": "statement",
+      "g": "g01",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "term-binding",
+      "name": "binding",
+      "g": "g01",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "term-scope",
+      "name": "scope",
+      "g": "g01",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "term-lexical-scope",
+      "name": "lexical scope",
+      "g": "g01",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "term-function",
+      "name": "function",
+      "g": "g01",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "term-closure",
+      "name": "closure",
+      "g": "g01",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "term-recursion",
+      "name": "recursion",
+      "g": "g01",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "term-side-effect",
+      "name": "side effect",
+      "g": "g01",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "term-object",
+      "name": "object",
+      "g": "g01",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "term-property",
+      "name": "property",
+      "g": "g01",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "term-method",
+      "name": "method",
+      "g": "g01",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "term-array",
+      "name": "array",
+      "g": "g01",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "term-mutability",
+      "name": "mutability",
+      "g": "g01",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "term-destructuring",
+      "name": "destructuring",
+      "g": "g01",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "term-json",
+      "name": "JSON",
+      "g": "g01",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "term-higher-order-function",
+      "name": "higher-order function",
+      "g": "g01",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "term-abstraction",
+      "name": "abstraction",
+      "g": "g01",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "term-callback",
+      "name": "callback",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-prototype",
+      "name": "prototype",
+      "g": "g01",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "term-class",
+      "name": "class",
+      "g": "g01",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "term-iterator",
+      "name": "iterator",
+      "g": "g01",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "term-map-collection",
+      "name": "Map",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-module",
+      "name": "module",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-package",
+      "name": "package",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-exception",
+      "name": "exception",
+      "g": "g01",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "term-debugging",
+      "name": "debugging",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-assertion",
+      "name": "assertion",
+      "g": "g01",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "term-regular-expression",
+      "name": "regular expression",
+      "g": "g01",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "term-promise",
+      "name": "promise",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-asynchronous-programming",
+      "name": "asynchronous programming",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-event-loop",
+      "name": "event loop",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-dom",
+      "name": "DOM",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-event-handler",
+      "name": "event handler",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-event-object",
+      "name": "event object",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-event-propagation",
+      "name": "event propagation",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-default-action",
+      "name": "default action",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-http",
+      "name": "HTTP",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-form",
+      "name": "form",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-fetch",
+      "name": "fetch",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-stream",
+      "name": "stream",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-nodejs",
+      "name": "Node.js",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-filesystem",
+      "name": "filesystem",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-canvas",
+      "name": "canvas",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-generator",
+      "name": "generator",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-strict-mode",
+      "name": "strict mode",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "term-client-server-boundary",
+      "name": "client/server boundary",
+      "g": "g01",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "js-core-programming-as-precise-communication",
+      "name": "Programming as precise communication",
+      "g": "g02",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-core-language-shapes-thought",
+      "name": "Language shapes program structure",
+      "g": "g02",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-core-javascript-is-hosted",
+      "name": "JavaScript language versus host environment",
+      "g": "g02",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-core-code-needs-observable-execution",
+      "name": "Code must be run and observed",
+      "g": "g02",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-core-complexity-managed-by-abstraction",
+      "name": "Complexity managed through useful abstraction",
+      "g": "g02",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-core-data-and-control-are-separate-concerns",
+      "name": "Data shape and control flow are separate concerns",
+      "g": "g02",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-core-functions-create-reasoning-boundaries",
+      "name": "Functions create reasoning boundaries",
+      "g": "g02",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-core-pure-core-imperative-shell",
+      "name": "Pure calculation around explicit side-effect boundaries",
+      "g": "g02",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-core-errors-should-carry-context",
+      "name": "Errors should propagate with useful context",
+      "g": "g02",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-core-modules-make-dependencies-visible",
+      "name": "Modules make dependencies and interfaces visible",
+      "g": "g02",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-core-time-is-part-of-correctness",
+      "name": "Time and ordering are part of correctness",
+      "g": "g02",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-core-client-server-contracts",
+      "name": "Client/server contracts require explicit data and failure paths",
+      "g": "g02",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-value-value-and-type",
+      "name": "Values have types",
+      "g": "g03",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-value-number-representation",
+      "name": "Number representation and precision",
+      "g": "g03",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-value-arithmetic-and-precedence",
+      "name": "Arithmetic operators and precedence",
+      "g": "g03",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-value-special-numbers",
+      "name": "Infinity and NaN",
+      "g": "g03",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-value-strings-and-escaping",
+      "name": "Strings and escaping",
+      "g": "g03",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-value-template-literals",
+      "name": "Template literals and interpolation",
+      "g": "g03",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-value-unary-operators",
+      "name": "Unary operators",
+      "g": "g03",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-value-boolean-comparison",
+      "name": "Boolean comparison",
+      "g": "g03",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-value-logical-operators",
+      "name": "Logical operators",
+      "g": "g03",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-value-empty-values",
+      "name": "null and undefined",
+      "g": "g03",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-value-automatic-coercion",
+      "name": "Automatic type conversion",
+      "g": "g03",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-value-strict-equality",
+      "name": "Strict versus coercing equality",
+      "g": "g03",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-value-short-circuiting",
+      "name": "Short-circuit evaluation and fallback values",
+      "g": "g03",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-value-nullish-defaulting",
+      "name": "Nullish defaulting distinction",
+      "g": "g03",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-value-spreadsheet-blank-taxonomy",
+      "name": "Spreadsheet blank taxonomy",
+      "g": "g03",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-value-safe-numeric-normalization",
+      "name": "Safe numeric normalization",
+      "g": "g03",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-value-export-type-contract",
+      "name": "Export type contract",
+      "g": "g03",
+      "t": "PA",
+      "c": "L"
+    },
+    {
+      "id": "js-value-string-normalization-boundary",
+      "name": "String normalization boundary",
+      "g": "g03",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-structure-expression-vs-statement",
+      "name": "Expression versus statement",
+      "g": "g04",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-structure-bindings",
+      "name": "Bindings and reassignment",
+      "g": "g04",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-structure-binding-names",
+      "name": "Meaningful binding names",
+      "g": "g04",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-structure-environment",
+      "name": "The execution environment",
+      "g": "g04",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-structure-function-calls",
+      "name": "Calling functions as program actions",
+      "g": "g04",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-structure-return-values",
+      "name": "Return values",
+      "g": "g04",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-structure-control-flow",
+      "name": "Sequential control flow",
+      "g": "g04",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-structure-conditionals",
+      "name": "Conditional execution",
+      "g": "g04",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-structure-while-do-loops",
+      "name": "while and do loops",
+      "g": "g04",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-structure-indentation",
+      "name": "Indentation as structural signal",
+      "g": "g04",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-structure-for-loops",
+      "name": "for loops",
+      "g": "g04",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-structure-breaking-loops",
+      "name": "Breaking out of loops",
+      "g": "g04",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-structure-succinct-updates",
+      "name": "Succinct binding updates",
+      "g": "g04",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-structure-switch-dispatch",
+      "name": "Dispatch by value with switch",
+      "g": "g04",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-structure-capitalization-conventions",
+      "name": "Capitalization conventions",
+      "g": "g04",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-structure-comments-explain-why",
+      "name": "Comments as explanation",
+      "g": "g04",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-structure-validate-before-effects",
+      "name": "Validate before side effects",
+      "g": "g04",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-structure-explicit-workflow-states",
+      "name": "Explicit workflow states",
+      "g": "g04",
+      "t": "PA",
+      "c": "L"
+    },
+    {
+      "id": "js-fn-definition",
+      "name": "Function definition",
+      "g": "g05",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-fn-lexical-scope",
+      "name": "Lexical scope",
+      "g": "g05",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-fn-nested-scope",
+      "name": "Nested scope",
+      "g": "g05",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-fn-functions-as-values",
+      "name": "Functions as values",
+      "g": "g05",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-fn-declaration",
+      "name": "Function declaration",
+      "g": "g05",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-fn-arrow",
+      "name": "Arrow functions",
+      "g": "g05",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-fn-call-stack",
+      "name": "Call stack",
+      "g": "g05",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-fn-optional-arguments",
+      "name": "Optional arguments and defaults",
+      "g": "g05",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-fn-closure",
+      "name": "Closure",
+      "g": "g05",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-fn-recursion",
+      "name": "Recursion",
+      "g": "g05",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-fn-growing-functions",
+      "name": "Growing functions from repeated structure",
+      "g": "g05",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-fn-side-effects",
+      "name": "Functions and side effects",
+      "g": "g05",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-fn-higher-order-composition",
+      "name": "Function composition for transformations",
+      "g": "g05",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-fn-parse-validate-transform-export",
+      "name": "Parse → validate → transform → export pipeline",
+      "g": "g05",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-fn-pure-row-normalizer",
+      "name": "Pure row normalization helper",
+      "g": "g05",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-fn-pass-config-explicitly",
+      "name": "Pass configuration explicitly",
+      "g": "g05",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-fn-ui-server-separation",
+      "name": "Separate UI handlers from transformation logic",
+      "g": "g05",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-fn-avoid-clever-abstraction",
+      "name": "Avoid clever abstraction in maintainership-critical scripts",
+      "g": "g05",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-data-datasets-as-values",
+      "name": "Datasets represented in JavaScript",
+      "g": "g06",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-data-properties",
+      "name": "Object properties",
+      "g": "g06",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-data-methods",
+      "name": "Methods on values and objects",
+      "g": "g06",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-data-objects",
+      "name": "Plain objects as records",
+      "g": "g06",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-data-arrays",
+      "name": "Arrays as ordered sequences",
+      "g": "g06",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-data-object-identity",
+      "name": "Object identity versus content",
+      "g": "g06",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-data-mutability",
+      "name": "Mutation and shared references",
+      "g": "g06",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-data-journal-model",
+      "name": "Journal-style event records",
+      "g": "g06",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-data-tabular-encoding",
+      "name": "Compact tabular encoding in arrays",
+      "g": "g06",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-data-array-loops",
+      "name": "Iterating arrays",
+      "g": "g06",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-data-array-methods",
+      "name": "Sequence operations on arrays",
+      "g": "g06",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-data-string-properties",
+      "name": "Strings expose sequence-like properties and methods",
+      "g": "g06",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-data-rest-parameters",
+      "name": "Rest parameters and spread",
+      "g": "g06",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-data-math-object",
+      "name": "Math utilities",
+      "g": "g06",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-data-destructuring",
+      "name": "Destructuring data shapes",
+      "g": "g06",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-data-optional-access",
+      "name": "Optional property access",
+      "g": "g06",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-data-json-parse-stringify",
+      "name": "JSON parsing and serialization",
+      "g": "g06",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-data-row-object-normalization",
+      "name": "Represent spreadsheet rows as named objects",
+      "g": "g06",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-data-header-normalization",
+      "name": "Normalize headers without losing provenance",
+      "g": "g06",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-data-config-objects",
+      "name": "Configuration objects as explicit inputs",
+      "g": "g06",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-data-validation-result-shape",
+      "name": "Structured validation result objects",
+      "g": "g06",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-data-safe-export-records",
+      "name": "Build new export records",
+      "g": "g06",
+      "t": "PA",
+      "c": "L"
+    },
+    {
+      "id": "js-data-schema-before-destructuring",
+      "name": "Validate schema before destructuring",
+      "g": "g06",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-hof-abstraction",
+      "name": "Abstraction",
+      "g": "g07",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-hof-abstract-repetition",
+      "name": "Abstracting repetition",
+      "g": "g07",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-hof-functions-operate-on-functions",
+      "name": "Higher-order functions",
+      "g": "g07",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-hof-script-dataset",
+      "name": "Processing a script dataset",
+      "g": "g07",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-hof-filter",
+      "name": "Filtering arrays",
+      "g": "g07",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-hof-map",
+      "name": "Transforming with map",
+      "g": "g07",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-hof-reduce",
+      "name": "Summarizing with reduce",
+      "g": "g07",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-hof-composability",
+      "name": "Composability",
+      "g": "g07",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-hof-character-codes",
+      "name": "Strings and character codes",
+      "g": "g07",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-hof-recognizing-text",
+      "name": "Recognizing text through composed data operations",
+      "g": "g07",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-hof-report-row-pipeline",
+      "name": "Report row transformation pipeline",
+      "g": "g07",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-hof-loop-over-clever-chain",
+      "name": "Prefer a loop when it is clearer",
+      "g": "g07",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-hof-predicate-contract",
+      "name": "Predicate contract for validators",
+      "g": "g07",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-hof-batch-aggregation",
+      "name": "Batch aggregation with explicit invariants",
+      "g": "g07",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-object-abstract-data-types",
+      "name": "Abstract data types",
+      "g": "g08",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-object-methods-and-this",
+      "name": "Methods and this",
+      "g": "g08",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-object-prototypes",
+      "name": "Prototype delegation",
+      "g": "g08",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-object-classes",
+      "name": "Classes",
+      "g": "g08",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-object-private-properties",
+      "name": "Private properties",
+      "g": "g08",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-object-overriding",
+      "name": "Overriding derived properties",
+      "g": "g08",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-object-map",
+      "name": "Map collections",
+      "g": "g08",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-object-polymorphism",
+      "name": "Polymorphism",
+      "g": "g08",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-object-getters-setters-statics",
+      "name": "Getters, setters, and static methods",
+      "g": "g08",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-object-symbols",
+      "name": "Symbols",
+      "g": "g08",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-object-iterator-interface",
+      "name": "Iterator interface",
+      "g": "g08",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-object-inheritance",
+      "name": "Inheritance",
+      "g": "g08",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-object-instanceof",
+      "name": "instanceof",
+      "g": "g08",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-object-plain-object-vs-class",
+      "name": "Plain object versus class in Apps Script",
+      "g": "g08",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-object-report-config-as-data",
+      "name": "Report behavior configured as data",
+      "g": "g08",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-object-workflow-class-when-justified",
+      "name": "Workflow class when lifecycle is real",
+      "g": "g08",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-object-map-for-location-lookup",
+      "name": "Map or object for location lookup",
+      "g": "g08",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-object-avoid-this-in-simple-helpers",
+      "name": "Avoid this in simple transformation helpers",
+      "g": "g08",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-error-language-mistakes",
+      "name": "Language mistakes become observable failures",
+      "g": "g09",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-error-strict-mode",
+      "name": "Strict mode",
+      "g": "g09",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-error-types-and-mistakes",
+      "name": "Types as debugging evidence",
+      "g": "g09",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-error-testing",
+      "name": "Testing",
+      "g": "g09",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-error-debugging",
+      "name": "Debugging by evidence",
+      "g": "g09",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-error-propagation",
+      "name": "Error propagation",
+      "g": "g09",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-error-exceptions",
+      "name": "Exceptions",
+      "g": "g09",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-error-finally-cleanup",
+      "name": "Cleanup after exceptions",
+      "g": "g09",
+      "t": "PA",
+      "c": "H"
+    },
+    {
+      "id": "js-error-selective-catching",
+      "name": "Selective catching",
+      "g": "g09",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-error-assertions",
+      "name": "Assertions for invariants",
+      "g": "g09",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-error-upload-validation-boundary",
+      "name": "Uploaded-file validation boundary",
+      "g": "g09",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-error-validation-results",
+      "name": "Validation results versus exceptions",
+      "g": "g09",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-error-workflow-boundary-catch",
+      "name": "Catch at the workflow boundary",
+      "g": "g09",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-error-user-vs-developer-message",
+      "name": "User-facing versus developer-facing errors",
+      "g": "g09",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-error-partial-success-reporting",
+      "name": "Partial success reporting",
+      "g": "g09",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-error-dry-run-live-boundary",
+      "name": "Dry-run versus live-run boundary",
+      "g": "g09",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-error-trigger-observability",
+      "name": "Trigger failure observability",
+      "g": "g09",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-error-sensitive-logging",
+      "name": "Diagnostic logging without sensitive leakage",
+      "g": "g09",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-error-reconciliation-assertions",
+      "name": "Reconciliation assertions",
+      "g": "g09",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-regex-create-literal",
+      "name": "Creating regular expressions",
+      "g": "g10",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-regex-test",
+      "name": "Testing for matches",
+      "g": "g10",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-regex-character-sets",
+      "name": "Sets of characters",
+      "g": "g10",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-regex-international-characters",
+      "name": "International characters",
+      "g": "g10",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-regex-repetition",
+      "name": "Repeating pattern parts",
+      "g": "g10",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-regex-grouping",
+      "name": "Grouping subexpressions",
+      "g": "g10",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-regex-match-groups",
+      "name": "Matches and groups",
+      "g": "g10",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-regex-date-object",
+      "name": "Date objects and parsed dates",
+      "g": "g10",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-regex-boundaries-lookahead",
+      "name": "Boundaries and look-ahead",
+      "g": "g10",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-regex-choice",
+      "name": "Choice patterns",
+      "g": "g10",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-regex-matching-mechanics",
+      "name": "Matching mechanics",
+      "g": "g10",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-regex-backtracking",
+      "name": "Backtracking",
+      "g": "g10",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-regex-replace",
+      "name": "Replacing matched text",
+      "g": "g10",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-regex-greed",
+      "name": "Greedy and nongreedy matching",
+      "g": "g10",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-regex-dynamic-regexp",
+      "name": "Dynamic RegExp construction",
+      "g": "g10",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-regex-search",
+      "name": "Searching for match positions",
+      "g": "g10",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-regex-lastindex",
+      "name": "lastIndex and stateful matching",
+      "g": "g10",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-regex-ini-parser",
+      "name": "Parsing structured text",
+      "g": "g10",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-regex-code-units-characters",
+      "name": "Code units and characters",
+      "g": "g10",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-regex-filename-validation",
+      "name": "Filename validation",
+      "g": "g10",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-regex-date-extraction",
+      "name": "Extract dates, then validate dates",
+      "g": "g10",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-regex-parser-or-schema-check",
+      "name": "Regex versus parser or schema check",
+      "g": "g10",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-module-modular-programs",
+      "name": "Modular programs",
+      "g": "g11",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-module-es-modules",
+      "name": "ES modules",
+      "g": "g11",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-module-packages",
+      "name": "Packages",
+      "g": "g11",
+      "t": "NC",
+      "c": "H"
+    },
+    {
+      "id": "js-module-commonjs",
+      "name": "CommonJS modules",
+      "g": "g11",
+      "t": "NC",
+      "c": "H"
+    },
+    {
+      "id": "js-module-build-bundle",
+      "name": "Building and bundling",
+      "g": "g11",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-module-design",
+      "name": "Module design",
+      "g": "g11",
+      "t": "DL",
+      "c": "H"
+    },
+    {
+      "id": "js-module-appsscript-files-as-organization",
+      "name": "Apps Script files as organization boundaries",
+      "g": "g11",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-module-responsibility-layout",
+      "name": "Responsibility-based file layout",
+      "g": "g11",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-module-namespace-when-needed",
+      "name": "Namespace object when collision risk justifies it",
+      "g": "g11",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-module-clasp-bundling-gate",
+      "name": "clasp or bundling verification gate",
+      "g": "g11",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-module-simple-deployment-first",
+      "name": "Preserve deployment simplicity",
+      "g": "g11",
+      "t": "SS",
+      "c": "L"
+    },
+    {
+      "id": "js-async-asynchronicity",
+      "name": "Asynchronicity",
+      "g": "g12",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-async-callbacks",
+      "name": "Callbacks",
+      "g": "g12",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-async-promises",
+      "name": "Promises",
+      "g": "g12",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-async-failure",
+      "name": "Asynchronous failure propagation",
+      "g": "g12",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-async-async-functions",
+      "name": "Async functions",
+      "g": "g12",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-async-generators",
+      "name": "Generators",
+      "g": "g12",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-async-event-loop",
+      "name": "Event loop",
+      "g": "g12",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-async-bugs",
+      "name": "Asynchronous bugs",
+      "g": "g12",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-async-htmlservice-client-promises",
+      "name": "Promises belong to HTMLService client reasoning",
+      "g": "g12",
+      "t": "BC",
+      "c": "L"
+    },
+    {
+      "id": "js-async-google-script-run-boundary",
+      "name": "google.script.run asynchronous boundary",
+      "g": "g12",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-async-disable-double-submit",
+      "name": "Disable repeated submission while active",
+      "g": "g12",
+      "t": "BC",
+      "c": "L"
+    },
+    {
+      "id": "js-async-loading-and-status-state",
+      "name": "Loading and status state",
+      "g": "g12",
+      "t": "BC",
+      "c": "L"
+    },
+    {
+      "id": "js-async-server-latency-with-sync-looking-services",
+      "name": "Server latency despite synchronous-looking .gs code",
+      "g": "g12",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-async-trigger-concurrency",
+      "name": "Trigger execution concurrency",
+      "g": "g12",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-async-retry-boundary",
+      "name": "Retry only at a classified boundary",
+      "g": "g12",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-async-partial-failure-ui",
+      "name": "Communicate partial failure in the UI",
+      "g": "g12",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-browser-networks-internet",
+      "name": "Networks and the Internet",
+      "g": "g13",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-browser-web",
+      "name": "The Web",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-browser-html",
+      "name": "HTML document structure",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-browser-html-js",
+      "name": "HTML and JavaScript",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-browser-sandbox",
+      "name": "Browser sandbox",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-browser-compatibility",
+      "name": "Browser compatibility",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-dom-document-structure",
+      "name": "DOM document structure",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-dom-trees",
+      "name": "Trees",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-dom-standard",
+      "name": "DOM standard interface",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-dom-traversal",
+      "name": "Moving through the DOM tree",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-dom-finding-elements",
+      "name": "Finding elements",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-dom-changing-document",
+      "name": "Changing the document",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-dom-creating-nodes",
+      "name": "Creating nodes",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-dom-attributes",
+      "name": "Element attributes",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-dom-layout",
+      "name": "Layout measurement",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-dom-styling",
+      "name": "Styling through JavaScript",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-dom-cascade",
+      "name": "Cascading styles",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-dom-query-selectors",
+      "name": "Query selectors",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-dom-position-animation",
+      "name": "Positioning and animation",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-event-handlers",
+      "name": "Event handlers",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-events-dom-nodes",
+      "name": "Events and DOM nodes",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-event-object",
+      "name": "Event objects",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-event-propagation",
+      "name": "Event propagation",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-event-default-actions",
+      "name": "Default actions",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-event-key",
+      "name": "Keyboard events",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-event-pointer",
+      "name": "Pointer events",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-event-scroll",
+      "name": "Scroll events",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-event-focus",
+      "name": "Focus events",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-event-load",
+      "name": "Load event",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-event-loop-browser",
+      "name": "Events and the browser event loop",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-event-timers",
+      "name": "Timers",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-event-debouncing",
+      "name": "Debouncing",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-canvas-svg",
+      "name": "SVG versus canvas",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-canvas-element",
+      "name": "Canvas element",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-canvas-paths",
+      "name": "Canvas lines, paths, and surfaces",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-canvas-text-images",
+      "name": "Canvas text and images",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-canvas-transformations",
+      "name": "Canvas transformations",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-canvas-state-stack",
+      "name": "Saving and clearing drawing transformations",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-canvas-interface-choice",
+      "name": "Choosing a graphics interface",
+      "g": "g13",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-browser-htmlservice-client-boundary",
+      "name": "HTMLService client-only boundary",
+      "g": "g13",
+      "t": "BC",
+      "c": "L"
+    },
+    {
+      "id": "js-browser-render-from-state",
+      "name": "Render UI from explicit state",
+      "g": "g13",
+      "t": "BC",
+      "c": "L"
+    },
+    {
+      "id": "js-browser-accessible-status",
+      "name": "Accessible status and error presentation",
+      "g": "g13",
+      "t": "BC",
+      "c": "L"
+    },
+    {
+      "id": "js-http-protocol",
+      "name": "HTTP request and response protocol",
+      "g": "g14",
+      "t": "PA",
+      "c": "H"
+    },
+    {
+      "id": "js-http-browser-behavior",
+      "name": "Browsers and HTTP",
+      "g": "g14",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-http-fetch",
+      "name": "Browser fetch",
+      "g": "g14",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-http-sandboxing",
+      "name": "HTTP sandboxing and origin restrictions",
+      "g": "g14",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-http-abstraction",
+      "name": "Appreciating HTTP as a general interface",
+      "g": "g14",
+      "t": "PA",
+      "c": "H"
+    },
+    {
+      "id": "js-http-security-https",
+      "name": "Security and HTTPS",
+      "g": "g14",
+      "t": "CV",
+      "c": "H"
+    },
+    {
+      "id": "js-form-fields",
+      "name": "Form fields",
+      "g": "g14",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-form-focus",
+      "name": "Form focus",
+      "g": "g14",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-form-disabled",
+      "name": "Disabled fields",
+      "g": "g14",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-form-whole",
+      "name": "The form as a whole",
+      "g": "g14",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-form-text-fields",
+      "name": "Text fields",
+      "g": "g14",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-form-checkbox-radio",
+      "name": "Checkboxes and radio buttons",
+      "g": "g14",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-form-select",
+      "name": "Select fields",
+      "g": "g14",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-form-file-fields",
+      "name": "File fields",
+      "g": "g14",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-form-client-storage",
+      "name": "Storing data client-side",
+      "g": "g14",
+      "t": "BC",
+      "c": "H"
+    },
+    {
+      "id": "js-http-browser-fetch-vs-urlfetch",
+      "name": "Browser fetch versus UrlFetchApp",
+      "g": "g14",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-form-client-and-server-validation",
+      "name": "Client validation plus independent server validation",
+      "g": "g14",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-form-upload-visible-selection",
+      "name": "Keep selected-file state visible",
+      "g": "g14",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-form-upload-contract",
+      "name": "Upload contract before processing",
+      "g": "g14",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-form-preserve-state-after-error",
+      "name": "Preserve form state after error",
+      "g": "g14",
+      "t": "BC",
+      "c": "L"
+    },
+    {
+      "id": "js-form-status-feedback",
+      "name": "Progress and status feedback",
+      "g": "g14",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-form-prevent-double-submit",
+      "name": "Prevent duplicate form submission",
+      "g": "g14",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-form-file-metadata-not-proof",
+      "name": "File metadata is not proof of content",
+      "g": "g14",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-storage-browser-vs-properties",
+      "name": "Browser storage versus PropertiesService, CacheService, or Sheets",
+      "g": "g14",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-node-background",
+      "name": "Node.js background",
+      "g": "g15",
+      "t": "NC",
+      "c": "H"
+    },
+    {
+      "id": "js-node-command",
+      "name": "Node command line",
+      "g": "g15",
+      "t": "NC",
+      "c": "H"
+    },
+    {
+      "id": "js-node-modules",
+      "name": "Node modules",
+      "g": "g15",
+      "t": "NC",
+      "c": "H"
+    },
+    {
+      "id": "js-node-npm",
+      "name": "Installing with NPM",
+      "g": "g15",
+      "t": "NC",
+      "c": "H"
+    },
+    {
+      "id": "js-node-filesystem",
+      "name": "Node filesystem module",
+      "g": "g15",
+      "t": "NT",
+      "c": "H"
+    },
+    {
+      "id": "js-node-http-module",
+      "name": "Node HTTP module",
+      "g": "g15",
+      "t": "NT",
+      "c": "H"
+    },
+    {
+      "id": "js-node-streams",
+      "name": "Node streams",
+      "g": "g15",
+      "t": "NC",
+      "c": "H"
+    },
+    {
+      "id": "js-node-file-server",
+      "name": "File server project pattern",
+      "g": "g15",
+      "t": "NC",
+      "c": "H"
+    },
+    {
+      "id": "js-node-not-appsscript",
+      "name": "Node.js is not Google Apps Script",
+      "g": "g15",
+      "t": "NT",
+      "c": "L"
+    },
+    {
+      "id": "js-node-filesystem-to-drive-concept",
+      "name": "Filesystem concepts versus DriveApp",
+      "g": "g15",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-node-http-server-to-webapp",
+      "name": "Node HTTP server versus Apps Script Web App",
+      "g": "g15",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-node-streams-conceptual-only",
+      "name": "Streams are conceptual only for Apps Script",
+      "g": "g15",
+      "t": "NC",
+      "c": "L"
+    },
+    {
+      "id": "js-project-robot",
+      "name": "A Robot",
+      "g": "g16",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "js-project-programming-language",
+      "name": "A Programming Language",
+      "g": "g16",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "js-project-platform-game",
+      "name": "A Platform Game",
+      "g": "g16",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "js-project-pixel-editor",
+      "name": "A Pixel Art Editor",
+      "g": "g16",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "js-project-skill-sharing",
+      "name": "Skill-Sharing Website",
+      "g": "g16",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "js-project-pattern-explicit-state",
+      "name": "Cross-project: explicit state",
+      "g": "g16",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "js-project-pattern-incremental-build",
+      "name": "Cross-project: incremental construction",
+      "g": "g16",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "js-project-pattern-parser-evaluator",
+      "name": "Cross-project: parse before evaluate",
+      "g": "g16",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "js-project-pattern-client-server-contract",
+      "name": "Cross-project: client/server contract",
+      "g": "g16",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "js-project-pattern-persistence-boundary",
+      "name": "Cross-project: persistence boundary",
+      "g": "g16",
+      "t": "CV",
+      "c": "M"
+    },
+    {
+      "id": "gas-translate-values-types-operators",
+      "name": "JavaScript values, types, and operators",
+      "g": "g17",
+      "t": "DL",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-functions-scope-closures",
+      "name": "Functions, lexical scope, and closures",
+      "g": "g17",
+      "t": "DL",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-objects-arrays-rows",
+      "name": "Objects and arrays for spreadsheet transformations",
+      "g": "g17",
+      "t": "DL",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-json-payloads",
+      "name": "JSON serialization for payloads and import/export",
+      "g": "g17",
+      "t": "DL",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-higher-order-row-transforms",
+      "name": "Higher-order functions for report-row transformations",
+      "g": "g17",
+      "t": "DL",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-errors-workflow-boundaries",
+      "name": "Exceptions and workflow failure boundaries",
+      "g": "g17",
+      "t": "PA",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-regex-validation",
+      "name": "Regular expressions for filename, date, and text validation",
+      "g": "g17",
+      "t": "DL",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-modules-file-organization",
+      "name": "Module concepts and Apps Script project organization",
+      "g": "g17",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-browser-promises-client-only",
+      "name": "Browser promises and async functions in HTMLService client code",
+      "g": "g17",
+      "t": "BC",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-google-script-run",
+      "name": "google.script.run asynchronous client-to-server calls",
+      "g": "g17",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-dom-htmlservice-client",
+      "name": "DOM access in HTMLService client-side code",
+      "g": "g17",
+      "t": "BC",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-events-htmlservice-client",
+      "name": "Browser events in HTMLService client-side code",
+      "g": "g17",
+      "t": "BC",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-forms-file-fields",
+      "name": "Forms and file fields in Apps Script Web Apps",
+      "g": "g17",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-fetch-vs-urlfetch",
+      "name": "Browser fetch versus server-side UrlFetchApp",
+      "g": "g17",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-node-filesystem",
+      "name": "Node.js filesystem concepts versus Drive and Sheets",
+      "g": "g17",
+      "t": "NC",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-node-http-server",
+      "name": "Node HTTP server concepts versus Apps Script Web Apps",
+      "g": "g17",
+      "t": "NC",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-streams-conceptual",
+      "name": "Streams as a conceptual model",
+      "g": "g17",
+      "t": "NC",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-client-storage",
+      "name": "Browser storage versus server-side properties and cache",
+      "g": "g17",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-long-running-operations",
+      "name": "Long-running operations and execution limits",
+      "g": "g17",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-concurrency-locks-idempotency",
+      "name": "Concurrency, race conditions, locks, and idempotency",
+      "g": "g17",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-quotas",
+      "name": "Apps Script quotas and service limits",
+      "g": "g17",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-authorization-scopes",
+      "name": "Authorization scopes and execution identity",
+      "g": "g17",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-triggers",
+      "name": "Apps Script trigger behavior",
+      "g": "g17",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-deployment-versioning",
+      "name": "Apps Script deployment and versioning",
+      "g": "g17",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-spreadsheet-blank-values",
+      "name": "Spreadsheet blank, missing, zero, false, and date values",
+      "g": "g17",
+      "t": "PA",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-logging-diagnostics",
+      "name": "Logging and diagnostic context",
+      "g": "g17",
+      "t": "PA",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-mail-side-effects",
+      "name": "Email as a non-idempotent side effect",
+      "g": "g17",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "gas-translate-date-timezone",
+      "name": "Date and timezone boundaries",
+      "g": "g17",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "internal-r365-report-processor",
+      "name": "R365 report processor",
+      "g": "g18",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "internal-uber-eats-reviews-transform",
+      "name": "Uber Eats Reviews transformation",
+      "g": "g18",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "internal-sevenrooms-guest-satisfaction-transform",
+      "name": "SevenRooms Guest Satisfaction transformation",
+      "g": "g18",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "internal-csv-xlsx-upload-validation",
+      "name": "CSV/XLSX upload validation",
+      "g": "g18",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "internal-sheets-import-export",
+      "name": "Google Sheets import/export workflow",
+      "g": "g18",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "internal-manager-qr-form",
+      "name": "Manager QR form workflow",
+      "g": "g18",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "internal-warehouse-pickup-form",
+      "name": "Warehouse pickup form workflow",
+      "g": "g18",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "internal-scorecard-sync-helper",
+      "name": "Scorecard synchronization helper scripts",
+      "g": "g18",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "internal-dashboard-data-preparation",
+      "name": "Dashboard data preparation",
+      "g": "g18",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "internal-email-report-generation",
+      "name": "Email and report generation",
+      "g": "g18",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "internal-dry-run-live-pattern",
+      "name": "Dry-run versus live execution pattern",
+      "g": "g18",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "internal-partial-failure-reporting",
+      "name": "Partial failure reporting",
+      "g": "g18",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "internal-webapp-status-state",
+      "name": "User-facing Web App status state",
+      "g": "g18",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "internal-config-driven-report-types",
+      "name": "Config-driven report types",
+      "g": "g18",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "internal-location-mapping",
+      "name": "Location mapping",
+      "g": "g18",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "internal-date-fiscal-week-logic",
+      "name": "Date parsing and fiscal-week logic",
+      "g": "g18",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "internal-audit-log-run-history",
+      "name": "Audit log and run history",
+      "g": "g18",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "internal-retry-idempotency",
+      "name": "Retry and idempotency boundary",
+      "g": "g18",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-implicit-coercion",
+      "name": "Implicit coercion changes meaning",
+      "g": "g19",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-risk-null-undefined-access",
+      "name": "Null or undefined property access",
+      "g": "g19",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-risk-shared-object-mutation",
+      "name": "Shared object mutation",
+      "g": "g19",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-risk-array-shape-assumption",
+      "name": "Array shape assumption",
+      "g": "g19",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-risk-sparse-array-assumption",
+      "name": "Sparse array treated as dense data",
+      "g": "g19",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-risk-this-binding",
+      "name": "Unexpected this binding",
+      "g": "g19",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-risk-closure-state",
+      "name": "Closure captures stale or hidden state",
+      "g": "g19",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-risk-global-state",
+      "name": "Global mutable state couples executions",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-prototype-confusion",
+      "name": "Prototype-chain confusion",
+      "g": "g19",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-risk-class-overengineering",
+      "name": "Class overengineering",
+      "g": "g19",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-risk-regex-overmatching",
+      "name": "Regular expression overmatching",
+      "g": "g19",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-risk-date-parsing",
+      "name": "Date parsing assumption",
+      "g": "g19",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-risk-locale-assumption",
+      "name": "Locale assumption",
+      "g": "g19",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-risk-json-serialization-loss",
+      "name": "JSON serialization loses information",
+      "g": "g19",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-risk-broad-catch-hides-error",
+      "name": "Broad catch block hides the defect",
+      "g": "g19",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-risk-silent-failure",
+      "name": "Silent failure",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-async-ordering",
+      "name": "Asynchronous ordering assumption",
+      "g": "g19",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-risk-double-submit",
+      "name": "Double submission",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-client-server-boundary-confusion",
+      "name": "Client/server boundary confusion",
+      "g": "g19",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "js-risk-browser-node-appsscript-confusion",
+      "name": "Browser, Node.js, and Apps Script are treated as one runtime",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-dom-in-server-code",
+      "name": "DOM API used in server-side .gs code",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-fetch-urlfetch-confusion",
+      "name": "Browser fetch and UrlFetchApp are treated as interchangeable",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-node-api-in-appsscript",
+      "name": "Node.js API called from Apps Script",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-module-runtime-assumption",
+      "name": "Module support is assumed from another runtime",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-quota-timeout",
+      "name": "Quota or execution-time failure",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-permission-scope",
+      "name": "Permission, scope, or execution-identity mismatch",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-trigger-race-condition",
+      "name": "Trigger race condition",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-live-write-without-dry-run",
+      "name": "Live write without dry-run evidence",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-missing-idempotency",
+      "name": "Missing idempotency",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-user-facing-error-too-technical",
+      "name": "User-facing error is too technical",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-row-count-drift",
+      "name": "Row-count or control-total drift",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-header-mapping-collision",
+      "name": "Header normalization collision",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-partial-write-inconsistency",
+      "name": "Partial write leaves inconsistent state",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-validation-after-side-effect",
+      "name": "Validation occurs after a side effect",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-sensitive-log-leak",
+      "name": "Sensitive data leaks into logs or error messages",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-retry-duplicates",
+      "name": "Retry duplicates a completed side effect",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-stale-cache",
+      "name": "Stale or missing cache treated as truth",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-timezone-rollover",
+      "name": "Timezone or period rollover error",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-location-mapping-collision",
+      "name": "Location mapping collision or false match",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "js-risk-formula-injection",
+      "name": "Spreadsheet formula injection from imported text",
+      "g": "g19",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "decision-function-vs-inline",
+      "name": "Function versus inline code",
+      "g": "g20",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "decision-pure-vs-side-effect",
+      "name": "Pure transformation versus side-effect function",
+      "g": "g20",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "decision-object-vs-array-of-arrays",
+      "name": "Object versus array of arrays",
+      "g": "g20",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "decision-plain-object-vs-class",
+      "name": "Plain object versus class",
+      "g": "g20",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "decision-map-filter-reduce-vs-loop",
+      "name": "map/filter/reduce versus loop",
+      "g": "g20",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "decision-regex-vs-parser",
+      "name": "Regular expression versus parser or manual validation",
+      "g": "g20",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "decision-throw-vs-validation-result",
+      "name": "Throw exception versus return validation result",
+      "g": "g20",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "decision-catch-locally-vs-boundary",
+      "name": "Catch locally versus catch at workflow boundary",
+      "g": "g20",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "decision-global-config-vs-passed-config",
+      "name": "Global configuration versus passed configuration",
+      "g": "g20",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "decision-client-vs-server-validation",
+      "name": "Client-side validation versus server-side validation",
+      "g": "g20",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "decision-dom-vs-server-code",
+      "name": "Browser DOM code versus Apps Script server code",
+      "g": "g20",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "decision-fetch-vs-urlfetch",
+      "name": "Browser fetch versus UrlFetchApp",
+      "g": "g20",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "decision-node-package-vs-appsscript-service",
+      "name": "Node package versus Apps Script built-in service",
+      "g": "g20",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "decision-module-vs-file-organization",
+      "name": "Module abstraction versus simple file organization",
+      "g": "g20",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "decision-dry-run-vs-live",
+      "name": "Dry run versus live write",
+      "g": "g20",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "decision-sync-processing-vs-async-feedback",
+      "name": "Synchronous processing versus asynchronous UI feedback",
+      "g": "g20",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "decision-automation-vs-human-review",
+      "name": "Broad automation versus human review",
+      "g": "g20",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "decision-report-vs-action-workflow",
+      "name": "Dashboard/report generation versus action workflow",
+      "g": "g20",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-runtime-classification",
+      "name": "Runtime boundary: Is this failure caused by JavaScript language behavior, Apps Script API behavior, or the business data shape?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-runtime-per-global",
+      "name": "Runtime boundary: For each non-language global name used here, which runtime or host API defines it?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-value-five-way",
+      "name": "Values and types: Is this value null, undefined, an empty string, zero, false, or a blank spreadsheet cell represented by the current API?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-operand-types",
+      "name": "Values and types: What are the exact operand types immediately before this comparison, addition, or logical expression?",
+      "g": "g21",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "diag-expression-side-effect",
+      "name": "Program structure: What side effect, if any, occurs while this expression or condition is evaluated?",
+      "g": "g21",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "diag-loop-progress",
+      "name": "Control flow: What variable or state change proves this loop advances toward termination for every branch?",
+      "g": "g21",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "diag-function-contract",
+      "name": "Functions: Can this function’s input contract, output, side effects, and failure behavior be stated in one sentence each?",
+      "g": "g21",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "diag-closure-captures",
+      "name": "Functions: Which outer bindings does this callback or returned function capture, and can any of them change before invocation?",
+      "g": "g21",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "diag-recursion-depth",
+      "name": "Functions: What maximum recursion depth follows from the largest valid input, and is an iterative form safer?",
+      "g": "g21",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "diag-shared-mutation",
+      "name": "Data structures: Which function mutates shared state, and which other references observe the same object or array?",
+      "g": "g21",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "diag-row-shape-after-parse",
+      "name": "Data shape: What exact object shape does each row have immediately after parsing and normalization?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-headers-unique",
+      "name": "Data shape: Do normalized headers remain one-to-one, or do two source columns collapse to the same property name?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-row-reconciliation",
+      "name": "Data integrity: What evidence proves input rows equal accepted plus rejected plus intentionally deduplicated or skipped rows?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-output-rectangular",
+      "name": "Data shape: Does every output row have the exact same column count and ordering required by the destination?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-map-filter-loop",
+      "name": "Abstraction: Would a named map/filter/reduce operation make the transformation clearer, or would an explicit loop expose necessary control flow and diagnostics?",
+      "g": "g21",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "diag-reduce-invariant",
+      "name": "Higher-order functions: What invariant describes the reduce accumulator after processing the first n records?",
+      "g": "g21",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "diag-plain-object-class",
+      "name": "Object design: What invariant, lifecycle, or substitutable behavior would a class enforce that a plain object plus functions would not?",
+      "g": "g21",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "diag-this-callsite",
+      "name": "Object methods: What call expression sets this for the failing method invocation?",
+      "g": "g21",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "diag-json-roundtrip",
+      "name": "Serialization: Which required fields and types change or disappear after JSON.stringify followed by JSON.parse?",
+      "g": "g21",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "diag-first-side-effect",
+      "name": "Side effects: What external side effect occurs first, and which validations can still fail after it?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-catch-recovery",
+      "name": "Error handling: For each catch block, which exact condition can this layer recover from without hiding an unexpected programming error?",
+      "g": "g21",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "diag-error-audience",
+      "name": "Error handling: Is this error user-facing, developer-facing, or both, and what information belongs in each channel?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-partial-success",
+      "name": "Error handling: If one item fails after others succeed, what status, evidence, and retry set are returned?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-assertion-impossible-state",
+      "name": "Error handling: Which state should be impossible after validation, and where should an assertion stop the workflow if it occurs?",
+      "g": "g21",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "diag-minimal-reproduction",
+      "name": "Debugging: What is the smallest input, function path, and runtime context that reproduces this failure?",
+      "g": "g21",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "diag-test-oracle",
+      "name": "Testing: What exact expected rows, totals, statuses, and side effects form the test oracle for this case?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-dry-run-proof",
+      "name": "Live safety: Can this live write be represented and reviewed as an immutable dry-run action plan first?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-idempotency-key",
+      "name": "Live safety: What stable operation key proves that a retry or duplicate event refers to the same logical action?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-regex-near-misses",
+      "name": "Regular expressions: Which realistic near-miss filenames or strings must this regex reject, and do anchored tests prove that?",
+      "g": "g21",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "diag-regex-greed",
+      "name": "Regular expressions: Could a greedy repeated part consume a delimiter or field that a later group is supposed to match?",
+      "g": "g21",
+      "t": "DL",
+      "c": "M"
+    },
+    {
+      "id": "diag-date-semantics",
+      "name": "Dates: Is this source value an instant, a local calendar date, a spreadsheet serial, or a formatted display string?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-fiscal-boundaries",
+      "name": "Dates: What test cases cover year-end, leap day, DST where relevant, and a 53-week fiscal year?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-client-server-lines",
+      "name": "HTMLService boundary: Which exact functions run in HTMLService client JavaScript and which run in server-side .gs?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-script-run-result-shape",
+      "name": "google.script.run: What serializable argument and result shape crosses google.script.run, including validation, partial, and failure states?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-double-click",
+      "name": "UI events: What happens if the user clicks submit twice, presses Enter while clicking, or retries after a slow response?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-out-of-order-response",
+      "name": "UI async: What happens if an older server request completes after a newer request and tries to update the same UI state?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-loading-terminal-states",
+      "name": "UI state: Does every success, validation rejection, server exception, and transport failure transition the UI out of processing state?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-client-validation-bypass",
+      "name": "Form validation: What happens when the server receives a payload that bypasses or tampers with every client-side validation rule?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-file-error-preserves-state",
+      "name": "File uploads: When one selected file fails validation, which user-entered fields and valid selections remain visible and recoverable?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-fetch-runtime",
+      "name": "HTTP boundary: Is this request executed by browser fetch or server-side UrlFetchApp, and why is that location required?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-http-status-body",
+      "name": "HTTP integration: Which status codes, response content types, and error bodies are handled explicitly before parsing or retrying?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-api-retry-unknown-outcome",
+      "name": "HTTP integration: If the request times out after the remote system may have completed it, how is the actual outcome reconciled before retry?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-current-quota",
+      "name": "Platform limits: What current Apps Script quota, service limit, payload limit, or execution limit could this measured workload consume?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-trigger-contract",
+      "name": "Triggers: Which exact trigger type invokes this function, and what event fields, identity, authorization, concurrency, and failure reporting are currently verified?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-lock-invariant",
+      "name": "Concurrency: What invariant is protected by the lock, what is the narrowest critical section, and what still prevents duplicate external effects?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-permission-identity",
+      "name": "Permissions: Who executes this path, whose file/mail/data is accessed, and which current scope and deployment setting authorize it?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-module-toolchain",
+      "name": "Modules and deployment: Does this project need a runtime module loader, a build-time bundle, or only clearer file/function boundaries?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-deployed-version",
+      "name": "Deployment: Which exact code version, manifest/settings, deployment ID, and access policy are live, and how is the previous known-good version restored?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-location-map-evidence",
+      "name": "Mappings: Does each raw location label resolve to exactly one active canonical location under the current brand/context registry?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-dashboard-denominator",
+      "name": "Dashboard metrics: What raw numerator, denominator, population, date range, and freshness timestamp support this displayed metric?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-email-routing-privacy",
+      "name": "Email/report effects: What evidence proves the recipient list, privacy gate, attachment, and report version are correct before this send?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-file-content-vs-extension",
+      "name": "Uploaded files: Does the file content and parsed structure match the claimed extension, MIME hint, selected report type, and schema version?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-formula-text-policy",
+      "name": "Spreadsheet safety: Which imported fields can contain user-controlled text, and how does the destination distinguish literal text from formulas?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-audit-log-minimum",
+      "name": "Observability: What minimum run ID, input/config fingerprint, stage counts, effect references, and sanitized error context are needed to investigate without storing sensitive payloads?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-live-project-evidence",
+      "name": "Current project evidence: What do the current project code, execution logs, stack traces, deployment settings, and representative user reports show before any recommendation is made?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "diag-doc-verification-trigger",
+      "name": "Current verification: Which claim in this recommendation depends on current Apps Script, Workspace, browser, Node.js, quota, security, or deployment behavior?",
+      "g": "g21",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "workflow-review-appsscript-bug",
+      "name": "Review a Google Apps Script bug",
+      "g": "g22",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "workflow-distinguish-js-vs-appsscript",
+      "name": "Distinguish JavaScript error from Apps Script runtime error",
+      "g": "g22",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "workflow-review-uploaded-file-transformation",
+      "name": "Review an uploaded-file transformation workflow",
+      "g": "g22",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "workflow-review-htmlservice-boundary",
+      "name": "Review HTMLService client/server boundary",
+      "g": "g22",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "workflow-review-google-script-run",
+      "name": "Review google.script.run asynchronous flow",
+      "g": "g22",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "workflow-review-form-validation",
+      "name": "Review form validation",
+      "g": "g22",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "workflow-review-data-shape",
+      "name": "Review data-shape transformation",
+      "g": "g22",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "workflow-review-csv-xlsx-parsing",
+      "name": "Review CSV/XLSX parsing logic",
+      "g": "g22",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "workflow-review-regex-date",
+      "name": "Review regex and date parsing",
+      "g": "g22",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "workflow-review-error-status",
+      "name": "Review error handling and user-facing status",
+      "g": "g22",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "workflow-review-dry-run-live",
+      "name": "Review dry-run/live safety",
+      "g": "g22",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "workflow-review-trigger-quota-timeout",
+      "name": "Review trigger, quota, and timeout risk",
+      "g": "g22",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "workflow-review-api-integration",
+      "name": "Review API integration logic",
+      "g": "g22",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "workflow-review-appsscript-organization",
+      "name": "Review code organization in an Apps Script project",
+      "g": "g22",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "workflow-refactor-messy-script",
+      "name": "Convert a messy script into modules and helpers",
+      "g": "g22",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "workflow-create-internal-tool-test-plan",
+      "name": "Create a test plan for an internal tool",
+      "g": "g22",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "workflow-review-deployment-rollback",
+      "name": "Review deployment and rollback risk",
+      "g": "g22",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "workflow-decide-current-docs-required",
+      "name": "Decide when current Google documentation is required",
+      "g": "g22",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-appsscript-v8-runtime",
+      "name": "Google Apps Script V8 runtime behavior",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-appsscript-quotas",
+      "name": "Apps Script quotas and limits",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-appsscript-triggers",
+      "name": "Apps Script triggers",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-appsscript-deployments",
+      "name": "Apps Script Web App deployment and versioning behavior",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-appsscript-authorization-scopes",
+      "name": "Apps Script authorization scopes and execution identity",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-htmlservice-restrictions",
+      "name": "HTMLService restrictions and sandbox behavior",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-google-script-run",
+      "name": "google.script.run behavior",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-appsscript-file-uploads",
+      "name": "Apps Script Web App file-upload behavior",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-spreadsheetapp",
+      "name": "SpreadsheetApp and Range behavior",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-driveapp",
+      "name": "DriveApp file, folder, Blob, and permission behavior",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-urlfetchapp",
+      "name": "UrlFetchApp request and response behavior",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-propertiesservice",
+      "name": "PropertiesService behavior and limits",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-cacheservice",
+      "name": "CacheService behavior and limits",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-lockservice",
+      "name": "LockService behavior and limits",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-mail-gmail-services",
+      "name": "MailApp and GmailApp behavior",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-utilities-behavior",
+      "name": "Apps Script Utilities behavior",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-browser-dom-apis",
+      "name": "Current browser DOM and event APIs",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-browser-fetch",
+      "name": "Current browser fetch behavior",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-cors-security",
+      "name": "Current CORS, HTTPS, and browser security behavior",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-nodejs-apis",
+      "name": "Current Node.js APIs",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-npm-packages",
+      "name": "Current NPM package behavior and supply-chain status",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-es-module-support",
+      "name": "Current ES module and Apps Script module support",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-date-timezone-behavior",
+      "name": "Current date, locale, and timezone behavior",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-workspace-permissions",
+      "name": "Current Google Workspace permissions and admin policy",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-current-project-behavior",
+      "name": "Current project-specific code and runtime behavior",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-external-api-contracts",
+      "name": "Current external API contracts and rate limits",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-report-source-target-specs",
+      "name": "Current report source and target specifications",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "verify-xlsx-parser-dependency",
+      "name": "Current XLSX parsing dependency and compatibility",
+      "g": "g23",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "cross-javascript-definitive-guide",
+      "name": "Eloquent JavaScript × JavaScript: The Definitive Guide",
+      "g": "g24",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "cross-google-apps-script-projects",
+      "name": "Eloquent JavaScript × Current Google Apps Script projects",
+      "g": "g24",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "cross-human-centered-design",
+      "name": "Eloquent JavaScript × The Design of Everyday Things / Human-Centered Design",
+      "g": "g24",
+      "t": "NA",
+      "c": "L"
+    },
+    {
+      "id": "cross-hooked-ethical-adoption",
+      "name": "Eloquent JavaScript × Hooked / ethical adoption",
+      "g": "g24",
+      "t": "NA",
+      "c": "L"
+    },
+    {
+      "id": "cross-toyota-way",
+      "name": "Eloquent JavaScript × Toyota Way",
+      "g": "g24",
+      "t": "NA",
+      "c": "L"
+    },
+    {
+      "id": "cross-operational-excellence",
+      "name": "Eloquent JavaScript × Operational Excellence",
+      "g": "g24",
+      "t": "NA",
+      "c": "L"
+    },
+    {
+      "id": "cross-excel-python-in-excel",
+      "name": "Eloquent JavaScript × Excel / Python-in-Excel",
+      "g": "g24",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "cross-streamlit",
+      "name": "Eloquent JavaScript × Streamlit",
+      "g": "g24",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "cross-ddia",
+      "name": "Eloquent JavaScript × Designing Data-Intensive Applications (DDIA)",
+      "g": "g24",
+      "t": "NA",
+      "c": "L"
+    },
+    {
+      "id": "cross-robust-python",
+      "name": "Eloquent JavaScript × Robust Python",
+      "g": "g24",
+      "t": "NA",
+      "c": "L"
+    },
+    {
+      "id": "cross-architecture-patterns-python",
+      "name": "Eloquent JavaScript × Architecture Patterns with Python",
+      "g": "g24",
+      "t": "NA",
+      "c": "L"
+    },
+    {
+      "id": "cross-statistical-inference",
+      "name": "Eloquent JavaScript × Statistical Inference",
+      "g": "g24",
+      "t": "NA",
+      "c": "L"
+    },
+    {
+      "id": "cross-pattern-recognition-ml",
+      "name": "Eloquent JavaScript × Pattern Recognition / Machine Learning",
+      "g": "g24",
+      "t": "NA",
+      "c": "L"
+    },
+    {
+      "id": "cross-eos-core-values",
+      "name": "Eloquent JavaScript × EOS / Core Values",
+      "g": "g24",
+      "t": "NA",
+      "c": "L"
+    },
+    {
+      "id": "cross-restaurant-operations",
+      "name": "Eloquent JavaScript × Restaurant operations",
+      "g": "g24",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "cross-warehouse-operations",
+      "name": "Eloquent JavaScript × Warehouse operations",
+      "g": "g24",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "cross-scorecards",
+      "name": "Eloquent JavaScript × Scorecards",
+      "g": "g24",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "cross-r365-report-processing",
+      "name": "Eloquent JavaScript × R365 report processing",
+      "g": "g24",
+      "t": "CV",
+      "c": "L"
+    },
+    {
+      "id": "cross-forms-dashboards",
+      "name": "Eloquent JavaScript × Forms and dashboards",
+      "g": "g24",
+      "t": "CV",
+      "c": "L"
+    }
+  ],
+  "completion_gate": [
+    "Runtime and data shape identified.",
+    "Observed behavior or a reproducible fixture is available.",
+    "Language concept and host-specific behavior are separated.",
+    "All validation precedes live effects or an explicit consistency policy exists.",
+    "Expected rows, totals, status, and effect counts are defined.",
+    "Dry-run/live, partial failure, idempotency, permissions, quotas, and deployment are addressed when relevant.",
+    "Every time-sensitive platform claim is verified or explicitly left unresolved."
+  ],
+  "compact_key_legend": {
+    "g": {
+      "g01": {
+        "group": "terminology_registry",
+        "file": "eloquent_javascript_core_language_v1.json"
+      },
+      "g02": {
+        "group": "core_language_records",
+        "file": "eloquent_javascript_core_language_v1.json"
+      },
+      "g03": {
+        "group": "values_types_operators_records",
+        "file": "eloquent_javascript_values_types_operators_v1.json"
+      },
+      "g04": {
+        "group": "program_structure_records",
+        "file": "eloquent_javascript_program_structure_v1.json"
+      },
+      "g05": {
+        "group": "function_scope_closure_records",
+        "file": "eloquent_javascript_functions_scope_closures_v1.json"
+      },
+      "g06": {
+        "group": "data_structure_records",
+        "file": "eloquent_javascript_data_structures_objects_arrays_v1.json"
+      },
+      "g07": {
+        "group": "higher_order_function_records",
+        "file": "eloquent_javascript_higher_order_functions_v1.json"
+      },
+      "g08": {
+        "group": "object_prototype_class_records",
+        "file": "eloquent_javascript_objects_prototypes_classes_v1.json"
+      },
+      "g09": {
+        "group": "bug_error_testing_debugging_records",
+        "file": "eloquent_javascript_bugs_errors_testing_debugging_v1.json"
+      },
+      "g10": {
+        "group": "regular_expression_records",
+        "file": "eloquent_javascript_regular_expressions_v1.json"
+      },
+      "g11": {
+        "group": "module_records",
+        "file": "eloquent_javascript_modules_v1.json"
+      },
+      "g12": {
+        "group": "async_programming_records",
+        "file": "eloquent_javascript_async_programming_v1.json"
+      },
+      "g13": {
+        "group": "browser_dom_event_records",
+        "file": "eloquent_javascript_browser_dom_events_v1.json"
+      },
+      "g14": {
+        "group": "http_form_records",
+        "file": "eloquent_javascript_http_forms_v1.json"
+      },
+      "g15": {
+        "group": "node_runtime_records",
+        "file": "eloquent_javascript_node_runtime_v1.json"
+      },
+      "g16": {
+        "group": "project_pattern_records",
+        "file": "eloquent_javascript_project_patterns_v1.json"
+      },
+      "g17": {
+        "group": "google_apps_script_translation_records",
+        "file": "eloquent_javascript_google_apps_script_translation_layer_v1.json"
+      },
+      "g18": {
+        "group": "internal_tool_workflow_records",
+        "file": "eloquent_javascript_internal_tools_workflows_v1.json"
+      },
+      "g19": {
+        "group": "failure_modes_and_pitfalls",
+        "file": "eloquent_javascript_failure_modes_and_pitfalls_v1.json"
+      },
+      "g20": {
+        "group": "decision_rules",
+        "file": "eloquent_javascript_decision_rules_v1.json"
+      },
+      "g21": {
+        "group": "diagnostic_questions",
+        "file": "eloquent_javascript_diagnostic_questions_v1.json"
+      },
+      "g22": {
+        "group": "ai_agent_workflows",
+        "file": "eloquent_javascript_ai_agent_workflows_v1.json"
+      },
+      "g23": {
+        "group": "current_verification_flags",
+        "file": "eloquent_javascript_current_verification_flags_v1.json"
+      },
+      "g24": {
+        "group": "cross_domain_connections",
+        "file": "eloquent_javascript_cross_domain_connections_v1.json"
+      }
+    },
+    "t": {
+      "DL": "direct_language_transfer",
+      "PA": "partial_transfer_requires_apps_script_api",
+      "BC": "browser_client_only",
+      "SS": "server_side_apps_script_not_browser",
+      "NC": "node_conceptual_only",
+      "NT": "does_not_transfer_directly",
+      "CV": "current_verification_required",
+      "NA": "not_applicable"
+    },
+    "c": {
+      "H": "high",
+      "M": "medium",
+      "L": "low"
+    }
+  }
+}

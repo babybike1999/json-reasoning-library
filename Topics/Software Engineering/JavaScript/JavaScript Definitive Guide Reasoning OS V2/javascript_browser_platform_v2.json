@@ -1,0 +1,1030 @@
+{
+  "package_metadata": {
+    "package_name": "JavaScript Language, Runtime, and Code-Quality Reasoning OS V2",
+    "module_name": "browser_platform",
+    "repair_type": "focused_v2_repair_not_full_rebuild",
+    "generated_at": "2026-06-21T05:00:11.155979+00:00",
+    "primary_source": {
+      "title": "JavaScript: The Definitive Guide",
+      "edition": "Seventh Edition",
+      "author": "David Flanagan",
+      "publisher": "O'Reilly Media",
+      "release_year": 2020,
+      "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+      "source_sha256": "b511aca2b98ae4eec4966c87d5e6b6c1704cbafe7dd076b924db46cb8d20ae07"
+    },
+    "v1_package_reference": {
+      "source_zip": "Javascript Reasoning.zip",
+      "source_zip_sha256": "60242e2ad2cfcc9bdf79f2fc73b392b7f149339dc95d6234f00db683f368d98d",
+      "not_overwritten": true
+    },
+    "authority_order": [
+      "Original uploaded book source",
+      "Current generated JavaScript Reasoning OS package",
+      "User repair prompt",
+      "Current official documentation only if available",
+      "General engineering reasoning"
+    ],
+    "source_limitation_warning": "Current browser, Node, npm, bundler, tool, framework, and Google Apps Script behavior is not asserted unless explicitly verified. V2 flags such items for current documentation checks.",
+    "purpose": "Browser platform boundary and async records without claiming Node/App Script availability."
+  },
+  "runtime_boundary_records": [
+    {
+      "id": "js-boundary-browser-dom",
+      "feature_or_api": "browser DOM",
+      "belongs_to": "Web browser platform",
+      "available_in": [
+        "Web browsers and browser-like DOM environments after verification"
+      ],
+      "not_guaranteed_in": [
+        "Plain Node.js",
+        "Server-side scripts without DOM",
+        "Apps Script server-side .gs files"
+      ],
+      "problem_solved": "Manipulate HTML documents and elements.",
+      "common_use": [
+        "Query elements",
+        "Update document content",
+        "Read attributes/classes/styles"
+      ],
+      "common_misuse": [
+        "Using document/window in Node or Apps Script server code",
+        "Assuming DOM collection is a normal array"
+      ],
+      "runtime_boundary_warning": "DOM is a browser host API, not ECMAScript language core.",
+      "current_verification_required": true,
+      "related_risk_ids": [
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.3 Scripting Documents"
+        ],
+        "source_basis": "Runtime boundary record separated in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-boundary-browser-events",
+      "feature_or_api": "browser events",
+      "belongs_to": "Web browser platform",
+      "available_in": [
+        "Web browsers and compatible DOM event environments after verification"
+      ],
+      "not_guaranteed_in": [
+        "Plain Node.js EventEmitter APIs",
+        "Apps Script server-side functions"
+      ],
+      "problem_solved": "React to user and document lifecycle events.",
+      "common_use": [
+        "click/input/submit handlers",
+        "event delegation",
+        "preventing default browser actions"
+      ],
+      "common_misuse": [
+        "Assuming Node EventEmitter and DOM EventTarget semantics are the same",
+        "Forgetting listener cleanup"
+      ],
+      "runtime_boundary_warning": "Browser event propagation/default-action behavior is host platform behavior and must not be projected onto Node or Apps Script.",
+      "current_verification_required": true,
+      "related_risk_ids": [
+        "js-risk-async-ordering",
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.2 Events"
+        ],
+        "source_basis": "Runtime boundary record separated in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-boundary-browser-networking",
+      "feature_or_api": "browser networking",
+      "belongs_to": "Web browser platform",
+      "available_in": [
+        "Web browsers after verifying API support, security model, and deployment context"
+      ],
+      "not_guaranteed_in": [
+        "ECMAScript core",
+        "Node unless using Node-provided or polyfilled compatible APIs",
+        "Apps Script server functions unless using Apps Script services"
+      ],
+      "problem_solved": "Make HTTP/network requests from browser code.",
+      "common_use": [
+        "Fetch resources",
+        "Submit forms",
+        "Load JSON"
+      ],
+      "common_misuse": [
+        "Assuming fulfilled promise means HTTP success",
+        "Ignoring CORS, credentials, origin, and security rules"
+      ],
+      "runtime_boundary_warning": "Networking behavior is security-sensitive and must be checked against current browser documentation and deployment policy.",
+      "current_verification_required": true,
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-async-ordering",
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.11 Networking"
+        ],
+        "source_basis": "Runtime boundary record separated in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-boundary-browser-storage",
+      "feature_or_api": "browser storage",
+      "belongs_to": "Web browser platform",
+      "available_in": [
+        "Web browsers after verifying storage API, quota, privacy, and partitioning behavior"
+      ],
+      "not_guaranteed_in": [
+        "Node core language",
+        "Apps Script server-side storage unless using Apps Script APIs"
+      ],
+      "problem_solved": "Persist client-side data.",
+      "common_use": [
+        "Store small user preferences",
+        "Cache data within browser constraints"
+      ],
+      "common_misuse": [
+        "Storing secrets in client storage",
+        "Assuming quota/lifetime/private-mode behavior without verification"
+      ],
+      "runtime_boundary_warning": "Browser storage is client-side and deployment/privacy-policy sensitive; verify current platform behavior.",
+      "current_verification_required": true,
+      "related_risk_ids": [
+        "js-risk-browser-node-api-confusion",
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.12 Storage"
+        ],
+        "source_basis": "Runtime boundary record separated in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-boundary-workers",
+      "feature_or_api": "browser workers",
+      "belongs_to": "Web browser platform",
+      "available_in": [
+        "Web browsers with worker support after verification"
+      ],
+      "not_guaranteed_in": [
+        "ECMAScript core alone",
+        "Plain Node worker_threads without Node-specific API differences",
+        "Apps Script server runtime"
+      ],
+      "problem_solved": "Run work off the browser main thread and communicate with messages.",
+      "common_use": [
+        "CPU-heavy browser work",
+        "Background processing",
+        "Message-based isolation"
+      ],
+      "common_misuse": [
+        "Expecting shared ordinary object identity",
+        "Ignoring worker lifecycle/error paths"
+      ],
+      "runtime_boundary_warning": "Worker semantics are host-defined around messaging, transfer, and lifecycle; verify current browser support.",
+      "current_verification_required": true,
+      "related_risk_ids": [
+        "js-risk-worker-message-boundary",
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.13 Worker Threads and Messaging"
+        ],
+        "source_basis": "Runtime boundary record separated in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    }
+  ],
+  "async_records": [
+    {
+      "id": "js-async-callbacks",
+      "async_concept": "callbacks",
+      "runtime_or_environment": "browser and Node host APIs plus ECMAScript functions",
+      "problem_addressed": "Represent async completion or event notification without blocking.",
+      "behavior_explained": "A callback is a function value passed to an API and invoked later by that API or host environment. The surrounding call usually returns before the callback executes.",
+      "safe_pattern": "Name callback boundaries, keep callback small, and ensure the outer function does not claim to return callback-produced data synchronously.",
+      "dangerous_pattern": "Returning a value from inside a callback and expecting the outer function to return it.",
+      "common_failure_modes": [
+        "Outer function returns undefined or stale state",
+        "Exceptions occur outside expected synchronous control flow",
+        "Callback runs multiple times or never runs depending on API"
+      ],
+      "diagnostic_questions": [
+        "Which API invokes the callback and when?",
+        "Does the outer function return before the callback runs?",
+        "Can the callback run more than once?"
+      ],
+      "tests_or_evidence_needed": [
+        "Use a fake timer/event/source to prove ordering",
+        "Test zero, one, and multiple callback invocations",
+        "Check documented callback signature"
+      ],
+      "related_risk_ids": [
+        "js-risk-async-ordering",
+        "js-risk-callback-error-path"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.1 Asynchronous Programming with Callbacks"
+        ],
+        "source_basis": "Async/event-driven behavior record concretized in V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-async-timers",
+      "async_concept": "timers",
+      "runtime_or_environment": "browser and Node host APIs",
+      "problem_addressed": "Schedule work after a delay or repeatedly.",
+      "behavior_explained": "Timer APIs are host-provided. They schedule callbacks for later execution; delays are not precise guarantees of exact execution time, and ordering with other events/promises depends on host event loop behavior.",
+      "safe_pattern": "Keep timer callbacks idempotent; clear timers when lifecycle ends; test with fake timers where appropriate.",
+      "dangerous_pattern": "Using setTimeout as a synchronization guarantee for network/DOM/stream completion.",
+      "common_failure_modes": [
+        "Race condition",
+        "Work runs after component/request closed",
+        "Flaky tests"
+      ],
+      "diagnostic_questions": [
+        "What condition is the timer standing in for?",
+        "Who clears the timer?",
+        "Could callback run after state is invalid?"
+      ],
+      "tests_or_evidence_needed": [
+        "Fake timer tests",
+        "Unmount/cleanup test",
+        "Delayed network/event interleaving test"
+      ],
+      "related_risk_ids": [
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.10 Timers"
+        ],
+        "source_basis": "Async/event-driven behavior record concretized in V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-async-browser-events",
+      "async_concept": "browser events",
+      "runtime_or_environment": "browser host APIs",
+      "problem_addressed": "Respond to user, document, network, and platform events.",
+      "behavior_explained": "Event listeners run when the browser dispatches events. Propagation, default actions, listener options, and target/currentTarget shape matter.",
+      "safe_pattern": "Attach listeners at clear lifecycle points; remove them if needed; inspect event target/currentTarget; prevent default only when appropriate.",
+      "dangerous_pattern": "Assuming a handler runs immediately or only once, or assuming event.target is the element the listener was attached to.",
+      "common_failure_modes": [
+        "Duplicate handlers",
+        "Default action still happens or is wrongly prevented",
+        "Wrong element read from event",
+        "Memory leak"
+      ],
+      "diagnostic_questions": [
+        "Where is listener attached and removed?",
+        "Does propagation matter?",
+        "Is target or currentTarget intended?"
+      ],
+      "tests_or_evidence_needed": [
+        "Simulate event bubbling",
+        "Test double initialization",
+        "Test default action and cleanup"
+      ],
+      "related_risk_ids": [
+        "js-risk-async-ordering",
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.2 Events"
+        ],
+        "source_basis": "Async/event-driven behavior record concretized in V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-async-fetch-networking-promises",
+      "async_concept": "fetch and networking promises",
+      "runtime_or_environment": "browser host APIs and environments with compatible APIs only after verification",
+      "problem_addressed": "Handle HTTP/network operations that return promises.",
+      "behavior_explained": "Fetch-style APIs are asynchronous. A fulfilled promise may still represent an HTTP error status depending on the API; network failure, parsing failure, and application-level failure are separate.",
+      "safe_pattern": "Await the response, check status/ok according to API docs, parse body once, and handle abort/timeout policy where supported and verified.",
+      "dangerous_pattern": "Assuming any fulfilled networking promise means usable successful JSON data.",
+      "common_failure_modes": [
+        "UI treats HTTP error page as success",
+        "Body parse throws",
+        "Stale response overwrites newer state",
+        "Unhandled rejection"
+      ],
+      "diagnostic_questions": [
+        "Which environment provides fetch?",
+        "Does this API reject on HTTP status or only network failure?",
+        "What prevents stale result use?"
+      ],
+      "tests_or_evidence_needed": [
+        "Mock HTTP 200, 400/500, malformed JSON, network failure, slow response, and aborted request",
+        "Verify current platform docs"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-async-ordering",
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.11 Networking"
+        ],
+        "source_basis": "Async/event-driven behavior record concretized in V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-async-worker-messaging",
+      "async_concept": "worker messaging",
+      "runtime_or_environment": "browser workers and Node worker threads after current verification",
+      "problem_addressed": "Move work across threads/process-like boundaries using messages.",
+      "behavior_explained": "Worker APIs communicate through message events or ports. Values crossing the boundary follow host cloning/transfer rules; code does not share ordinary object identity.",
+      "safe_pattern": "Define message schemas, correlate requests/responses, handle error/exit/termination, and verify current worker API details.",
+      "dangerous_pattern": "Mutating an object after sending it and expecting the worker/main side to see the mutation.",
+      "common_failure_modes": [
+        "Lost update",
+        "Unsupported value transfer failure",
+        "Dangling worker",
+        "Response applied to wrong request"
+      ],
+      "diagnostic_questions": [
+        "What values cross the boundary?",
+        "How are errors and exits reported?",
+        "How are requests correlated?"
+      ],
+      "tests_or_evidence_needed": [
+        "Round-trip message schema test",
+        "Large payload test",
+        "Worker error/termination test",
+        "Verify current browser/Node docs"
+      ],
+      "related_risk_ids": [
+        "js-risk-worker-message-boundary",
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.13 Worker Threads and Messaging",
+          "16.11 Worker Threads"
+        ],
+        "source_basis": "Async/event-driven behavior record concretized in V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    }
+  ],
+  "pitfall_records": [
+    {
+      "id": "js-pitfall-module-system-mismatch",
+      "pitfall_or_failure_name": "CommonJS ES module or loader mismatch",
+      "plain_language_description": "A file is written for one module system but executed by another loader or transform path.",
+      "technical_description": "ES modules and CommonJS differ in syntax, strictness, binding/export shapes, loading configuration, and interop. Browser, Node, bundler, and test runner loaders differ.",
+      "where_it_appears": [
+        "Node projects",
+        "browser modules",
+        "bundled frontend code",
+        "Jest tests",
+        "package exports"
+      ],
+      "symptoms": [
+        "Cannot use import outside module",
+        "require is not defined",
+        "default export undefined",
+        "Works in build but not direct runtime"
+      ],
+      "root_cause_pattern": "Module format, file extension, package config, or bundler/test transform is inconsistent.",
+      "conditions_required": [
+        "Mixed import/export and require/module.exports",
+        "Package type or file extension changes",
+        "Dependency publishes different export shape"
+      ],
+      "minimal_example_shape": "const x = require(\"m\") in ESM; import x from CommonJS without adapter",
+      "why_it_surprises_developers": "The imported name often looks correct even when the actual object shape differs.",
+      "prevention_or_mitigation": [
+        "Identify runtime loader first",
+        "Choose one module system per boundary",
+        "Write explicit interop adapters"
+      ],
+      "checks_or_diagnostics": [
+        "Inspect package.json type/exports",
+        "Check file extension",
+        "Run minimal import/require probe in target runtime"
+      ],
+      "related_concepts": [
+        "js-sem-es-modules",
+        "js-sem-commonjs-modules"
+      ],
+      "related_risk_ids": [
+        "js-risk-module-system-mismatch",
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 10,
+        "chapter_title": "Modules",
+        "sections": [
+          "10.2 Modules in Node",
+          "10.3 Modules in ES6"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-json-serialization-loss",
+      "pitfall_or_failure_name": "JSON serialization drops or changes values",
+      "plain_language_description": "Data crossing JSON loses JavaScript-specific values and behavior.",
+      "technical_description": "JSON.stringify omits or transforms unsupported values and JSON.parse returns plain data without prototypes unless reviver logic handles it.",
+      "where_it_appears": [
+        "network payloads",
+        "browser storage",
+        "local files",
+        "Apps Script boundaries",
+        "test fixtures"
+      ],
+      "symptoms": [
+        "Date becomes string",
+        "undefined/function/symbol missing",
+        "Map/Set becomes empty object",
+        "Class instance methods lost",
+        "Cycle throws"
+      ],
+      "root_cause_pattern": "Code treats JSON as a deep clone or exact serialization of JavaScript objects.",
+      "conditions_required": [
+        "Non-plain values in payload",
+        "No replacer/reviver/schema",
+        "Round-trip not tested"
+      ],
+      "minimal_example_shape": "JSON.parse(JSON.stringify(objWithDateMapUndefined))",
+      "why_it_surprises_developers": "The output is valid JSON, so the loss may not look like an error.",
+      "prevention_or_mitigation": [
+        "Use explicit schema and custom serialization",
+        "Round-trip representative values",
+        "Avoid JSON clone for complex objects"
+      ],
+      "checks_or_diagnostics": [
+        "List value types crossing JSON",
+        "Check toJSON/replacer/reviver",
+        "Test undefined, Date, Map, Set, Error, NaN, Infinity, cycle"
+      ],
+      "related_concepts": [
+        "js-sem-json-serialization",
+        "js-sem-date-time"
+      ],
+      "related_risk_ids": [
+        "js-risk-json-serialization-loss"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.6 JSON Serialization and Parsing"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-date-timezone-confusion",
+      "pitfall_or_failure_name": "Date/timezone confusion",
+      "plain_language_description": "Date code changes meaning across timezone, locale, or parse context.",
+      "technical_description": "Date stores instants but constructors, parsing, and getters can use local timezone or UTC. String formats and display methods have different assumptions.",
+      "where_it_appears": [
+        "browser/server boundary",
+        "CSV imports",
+        "scheduling",
+        "JSON date strings",
+        "tests"
+      ],
+      "symptoms": [
+        "Off-by-one day",
+        "Different CI/local result",
+        "DST bug",
+        "Sorted dates wrong"
+      ],
+      "root_cause_pattern": "Code does not distinguish instant, local date, formatted string, and timezone-aware display.",
+      "conditions_required": [
+        "Date parsing from string",
+        "Local getters used",
+        "Tests run in one timezone only"
+      ],
+      "minimal_example_shape": "new Date(\"2020-01-01\").getDate() or date.toString() used for storage",
+      "why_it_surprises_developers": "Date values print as readable strings that hide timezone conversions.",
+      "prevention_or_mitigation": [
+        "Use explicit ISO instants with timezone for instants",
+        "Store local dates separately from timestamps",
+        "Test multiple timezones"
+      ],
+      "checks_or_diagnostics": [
+        "Check Date constructors/parsers",
+        "Compare get* and getUTC* use",
+        "Test around midnight/DST"
+      ],
+      "related_concepts": [
+        "js-sem-date-time"
+      ],
+      "related_risk_ids": [
+        "js-risk-date-timezone"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.4 Dates and Times"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-callback-error-path",
+      "pitfall_or_failure_name": "Callback error path ignored during promise conversion",
+      "plain_language_description": "A callback-style API is wrapped or used without handling the documented error branch.",
+      "technical_description": "Callback APIs may report errors through an error argument, separate callback, or event. Throwing inside async callback is not the same as rejecting an outer promise.",
+      "where_it_appears": [
+        "Node fs-style APIs",
+        "legacy browser APIs",
+        "custom wrappers",
+        "Apps Script client callbacks"
+      ],
+      "symptoms": [
+        "Promise never rejects",
+        "Success handler runs with invalid data",
+        "Outer try/catch misses failure"
+      ],
+      "root_cause_pattern": "Wrapper resolves success but forgets reject path or multiple-settle guard.",
+      "conditions_required": [
+        "Callback API has error channel",
+        "Manual Promise wrapper",
+        "No error test"
+      ],
+      "minimal_example_shape": "new Promise(resolve => api((err,data)=> resolve(data)))",
+      "why_it_surprises_developers": "The happy-path wrapper is short and appears correct until the API fails.",
+      "prevention_or_mitigation": [
+        "Handle documented error channel",
+        "Settle once",
+        "Prefer built-in Promise APIs when available and verified"
+      ],
+      "checks_or_diagnostics": [
+        "Stub error callback",
+        "Assert promise rejects",
+        "Check double-callback behavior"
+      ],
+      "related_concepts": [
+        "js-async-callback-error-conventions"
+      ],
+      "related_risk_ids": [
+        "js-risk-callback-error-path",
+        "js-risk-unhandled-promise-rejection"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.1 Asynchronous Programming with Callbacks"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-dom-event-assumption",
+      "pitfall_or_failure_name": "DOM event assumptions break UI behavior",
+      "plain_language_description": "Event code assumes target, timing, default action, or listener lifecycle incorrectly.",
+      "technical_description": "Browser event dispatch includes propagation, default actions, listener options, target/currentTarget distinctions, and async interaction with rendering/user input.",
+      "where_it_appears": [
+        "click/input/submit handlers",
+        "delegated listeners",
+        "dynamic DOM",
+        "single-page UI"
+      ],
+      "symptoms": [
+        "Wrong element read",
+        "Duplicate event handling",
+        "Form submits unexpectedly",
+        "Handler leaks after element removal"
+      ],
+      "root_cause_pattern": "Event lifecycle and propagation are not modeled.",
+      "conditions_required": [
+        "Browser event code",
+        "Listeners attached repeatedly",
+        "target/currentTarget not distinguished"
+      ],
+      "minimal_example_shape": "container.addEventListener(\"click\", e => e.target.value)",
+      "why_it_surprises_developers": "Events look like simple callbacks but carry browser-specific dispatch semantics.",
+      "prevention_or_mitigation": [
+        "Use currentTarget where receiver matters",
+        "Remove listeners when lifecycle ends",
+        "Use preventDefault deliberately"
+      ],
+      "checks_or_diagnostics": [
+        "Simulate bubbling and nested elements",
+        "Test double initialization",
+        "Check default action"
+      ],
+      "related_concepts": [
+        "js-async-browser-events"
+      ],
+      "related_risk_ids": [
+        "js-risk-async-ordering",
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.2 Events"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-fetch-networking-assumption",
+      "pitfall_or_failure_name": "Fetch/networking success assumption",
+      "plain_language_description": "Networking code assumes a fulfilled promise equals successful parsed data.",
+      "technical_description": "Fetch-style APIs and host networking have separate network, HTTP status, body parsing, CORS/security, abort, timeout, and application error concerns. Current behavior must be verified for the target environment.",
+      "where_it_appears": [
+        "browser fetch",
+        "Node fetch-like APIs",
+        "web app frontends"
+      ],
+      "symptoms": [
+        "HTTP 500 treated as success",
+        "JSON parse error unhandled",
+        "Stale response overwrites current state",
+        "CORS/deployment failure"
+      ],
+      "root_cause_pattern": "Only the happy path is modeled.",
+      "conditions_required": [
+        "Networking promise returned",
+        "Status/body/application errors possible",
+        "No stale request guard"
+      ],
+      "minimal_example_shape": "const data = await fetch(url).then(r => r.json())",
+      "why_it_surprises_developers": "The promise API hides multiple failure layers behind one await expression.",
+      "prevention_or_mitigation": [
+        "Check status before parsing",
+        "Handle parse/network/application errors separately",
+        "Use abort/sequence guards where appropriate"
+      ],
+      "checks_or_diagnostics": [
+        "Mock 200/400/500/malformed JSON/network failure/slow response",
+        "Verify current docs for environment"
+      ],
+      "related_concepts": [
+        "js-async-fetch-networking-promises"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.11 Networking"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-browser-storage-assumption",
+      "pitfall_or_failure_name": "Browser storage treated as durable secure database",
+      "plain_language_description": "Client storage is used without considering quota, lifetime, privacy, origin, or security.",
+      "technical_description": "Browser storage APIs are host features with evolving privacy/security/quota behavior. They are not ECMAScript core and must be verified for current platform and deployment.",
+      "where_it_appears": [
+        "frontend preferences",
+        "offline cache",
+        "session state",
+        "tokens/secrets"
+      ],
+      "symptoms": [
+        "Data missing in private mode or after policy change",
+        "Quota error",
+        "Secret exposed to client script",
+        "Cross-origin/origin surprise"
+      ],
+      "root_cause_pattern": "Storage API chosen without threat model or current support check.",
+      "conditions_required": [
+        "Browser storage used",
+        "Data considered important or sensitive",
+        "No quota/error path"
+      ],
+      "minimal_example_shape": "localStorage.setItem(\"token\", secret) or large JSON cache without quota handling",
+      "why_it_surprises_developers": "The API looks like a simple key/value map but has browser policy and security constraints.",
+      "prevention_or_mitigation": [
+        "Do not store secrets in ordinary client storage",
+        "Handle quota/errors",
+        "Verify current browser behavior"
+      ],
+      "checks_or_diagnostics": [
+        "Identify data sensitivity",
+        "Test quota/error path",
+        "Check origin/lifetime requirements"
+      ],
+      "related_concepts": [
+        "js-boundary-browser-storage"
+      ],
+      "related_risk_ids": [
+        "js-risk-browser-node-api-confusion",
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.12 Storage"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-worker-message-boundary",
+      "pitfall_or_failure_name": "Worker message boundary identity assumption",
+      "plain_language_description": "Main and worker code assume sent objects remain shared ordinary objects.",
+      "technical_description": "Worker communication uses host message passing and cloning/transfer rules. Mutation, methods, prototypes, and transferable ownership may not behave like local references.",
+      "where_it_appears": [
+        "browser workers",
+        "Node worker threads",
+        "CPU-heavy tasks"
+      ],
+      "symptoms": [
+        "Mutation not visible across boundary",
+        "Unsupported value error",
+        "Response matched to wrong request",
+        "Worker never terminates"
+      ],
+      "root_cause_pattern": "Message boundary is treated like a synchronous function call or shared object reference.",
+      "conditions_required": [
+        "postMessage/worker thread communication",
+        "Object/function/class instances sent",
+        "No correlation ID/lifecycle handling"
+      ],
+      "minimal_example_shape": "worker.postMessage(obj); obj.changed = true; expect worker to see change",
+      "why_it_surprises_developers": "Both sides use JavaScript objects, but the boundary is not ordinary reference passing.",
+      "prevention_or_mitigation": [
+        "Define message schema",
+        "Use correlation IDs",
+        "Handle error/exit/termination",
+        "Verify transfer/clone support"
+      ],
+      "checks_or_diagnostics": [
+        "Test round-trip payload",
+        "Send unsupported/large value",
+        "Test worker error and termination"
+      ],
+      "related_concepts": [
+        "js-async-worker-messaging"
+      ],
+      "related_risk_ids": [
+        "js-risk-worker-message-boundary"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.13 Worker Threads and Messaging",
+          "16.11 Worker Threads"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    }
+  ],
+  "boundary_policy": "Browser APIs are not claimed for Node or Apps Script server-side code."
+}

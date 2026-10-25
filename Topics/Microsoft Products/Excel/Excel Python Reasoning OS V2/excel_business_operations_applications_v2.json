@@ -1,0 +1,1466 @@
+{
+  "system_metadata": {
+    "package": "excel_business_operations_applications_v2",
+    "version": "v2",
+    "repair_type": "focused_v2_repair_not_full_rebuild",
+    "created_utc": "2026-06-19T22:19:55Z",
+    "source_files": [
+      "Excel Data Analysis For Dummies 5th Edition PDF",
+      "Python in Excel EPUB",
+      "existing v1 Excel/Python-in-Excel JSON package"
+    ],
+    "authority_order": [
+      "original_uploaded_books",
+      "v1_json_files",
+      "repair_prompt",
+      "general_operational_reasoning"
+    ],
+    "description": "Business operations templates with placeholders for organization-specific policy."
+  },
+  "business_operations_applications": [
+    {
+      "id": "biz-restaurant365-export-validation",
+      "application_name": "Restaurant365 export validation",
+      "business_question": "Is the system export complete, current, typed correctly, and ready for analysis or upload staging?",
+      "typical_data_sources": [
+        "Restaurant365 CSV/XLSX exports",
+        "control sheet period",
+        "mapping tables"
+      ],
+      "required_fields": [
+        "export_timestamp",
+        "location_id",
+        "business_date or week_ending",
+        "account_or_metric_id",
+        "amount or value"
+      ],
+      "optional_fields": [
+        "department",
+        "vendor",
+        "category",
+        "source_file_name"
+      ],
+      "grain_of_analysis": "one row per exported transaction/metric/date/location as defined by export",
+      "recommended_workbook_structure": [
+        "control sheet",
+        "raw export tab",
+        "clean/staging table",
+        "analysis pivots or Python review tab",
+        "output/report tab",
+        "error-check sheet"
+      ],
+      "analysis_steps": [
+        "define period and source contract",
+        "load raw data without editing it",
+        "run required data-quality gates",
+        "build validated clean table",
+        "summarize at stated grain",
+        "reconcile totals to source",
+        "publish output with refresh/signoff status"
+      ],
+      "recommended_excel_tools": [
+        "Excel Tables",
+        "filters",
+        "SUMIFS/PivotTables",
+        "Power Query import where available"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas profiling",
+        "date/currency/duplicate exception summaries"
+      ],
+      "when_external_python_is_better": [
+        "scheduled exports, authenticated API pulls, multi-file ingestion, credentialed workflows"
+      ],
+      "quality_gates": [
+        "dqg-required-table-exists",
+        "dqg-required-column-exists",
+        "dqg-date-column-parses",
+        "dqg-currency-values-numeric",
+        "dqg-row-count-reconciles",
+        "dqg-stale-refresh-timestamp"
+      ],
+      "outputs": [
+        "export validation report",
+        "rejected-row table",
+        "ready/not-ready status"
+      ],
+      "dashboard_or_report_design": [
+        "status banner, row counts, source timestamp, blocking warnings"
+      ],
+      "automation_opportunities": [
+        "Power Query refresh log",
+        "external Python validation for nightly exports"
+      ],
+      "manual_review_required": [
+        "unmapped accounts/metrics",
+        "unexpected period",
+        "manual adjustments"
+      ],
+      "risks": [
+        "excel-risk-stale-refresh-timestamp",
+        "excel-risk-currency-format-vs-value"
+      ],
+      "lowest_complexity_safe_approach": "Excel table + gates + pivot/control totals.",
+      "advanced_approach": "Power Query or external Python ingestion plus workbook review pack.",
+      "do_not_invent_without_company_policy": [
+        "account mappings",
+        "acceptable freshness window",
+        "metric formulas",
+        "posting/upload rules"
+      ],
+      "source_supported_elements": [
+        "Tables, external import, pivots, formulas, pandas profiling"
+      ],
+      "operational_extensions": [
+        "Restaurant365-specific fields are placeholders; exact export schema must be supplied."
+      ],
+      "source_domain": "business_operations_application",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "Business operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Operational templates",
+        "section_heading": "Restaurant365 export validation",
+        "page_or_anchor": "v2 operational template",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed business application",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports tables, pivots, formulas, charts, what-if/statistics; Python source supports pandas, xl(), Power Query handoff, Python visuals."
+        ],
+        "inferred_claims": [
+          "Template applies source-supported tools to restaurant/business reporting without inventing organization formulas."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_business_use",
+        "explanation": "Business template tailored to Restaurant365 export validation with placeholders for organization-specific definitions.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      },
+      "date_sensitivity": "organization_policy_dependent",
+      "current_verification_required": true
+    },
+    {
+      "id": "biz-weekly-scorecard-workbook",
+      "application_name": "Weekly scorecard workbook",
+      "business_question": "What changed this week and which KPIs need management attention?",
+      "typical_data_sources": [
+        "POS/sales export",
+        "labor export",
+        "food cost or purchasing export",
+        "guest/review source",
+        "budget/target table"
+      ],
+      "required_fields": [
+        "week_ending",
+        "location_id",
+        "metric_id",
+        "metric_value"
+      ],
+      "optional_fields": [
+        "prior_week_value",
+        "budget_value",
+        "owner_comment",
+        "traffic/source"
+      ],
+      "grain_of_analysis": "one row per metric/location/week",
+      "recommended_workbook_structure": [
+        "control sheet",
+        "raw export tab",
+        "clean/staging table",
+        "analysis pivots or Python review tab",
+        "output/report tab",
+        "error-check sheet"
+      ],
+      "analysis_steps": [
+        "define period and source contract",
+        "load raw data without editing it",
+        "run required data-quality gates",
+        "build validated clean table",
+        "summarize at stated grain",
+        "reconcile totals to source",
+        "publish output with refresh/signoff status"
+      ],
+      "recommended_excel_tools": [
+        "Excel Tables",
+        "PivotTables",
+        "PivotCharts",
+        "SUMIFS",
+        "conditional formatting"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas profile for missing/duplicate metric rows",
+        "Python chart for distributions if needed"
+      ],
+      "when_external_python_is_better": [
+        "automated multi-source scorecard generation or Slack/email distribution"
+      ],
+      "quality_gates": [
+        "dqg-week-ending-matches-period",
+        "dqg-no-duplicate-metric-ids",
+        "dqg-percent-convention-known",
+        "dqg-no-formula-errors-output",
+        "dqg-chart-source-validated"
+      ],
+      "outputs": [
+        "weekly KPI table",
+        "exceptions list",
+        "executive summary tab"
+      ],
+      "dashboard_or_report_design": [
+        "period, refresh status, top exceptions, trend charts, owner notes"
+      ],
+      "automation_opportunities": [
+        "refreshable imports",
+        "formula drift check",
+        "external scheduled generation"
+      ],
+      "manual_review_required": [
+        "metric definition approval",
+        "threshold/target definitions",
+        "manual commentary"
+      ],
+      "risks": [
+        "excel-risk-percent-convention",
+        "excel-risk-chart-without-data-validation"
+      ],
+      "lowest_complexity_safe_approach": "Excel template with protected formulas and pivot/charts.",
+      "advanced_approach": "Power Query load + optional Python QA + external distribution.",
+      "do_not_invent_without_company_policy": [
+        "KPI formulas",
+        "red/yellow/green thresholds",
+        "labor/food cost definitions"
+      ],
+      "source_supported_elements": [
+        "PivotTables, charts, conditional formatting, tables; Python profiling optional"
+      ],
+      "operational_extensions": [
+        "Operational scorecard structure is an extension; company metric policy required."
+      ],
+      "source_domain": "business_operations_application",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "Business operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Operational templates",
+        "section_heading": "Weekly scorecard workbook",
+        "page_or_anchor": "v2 operational template",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed business application",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports tables, pivots, formulas, charts, what-if/statistics; Python source supports pandas, xl(), Power Query handoff, Python visuals."
+        ],
+        "inferred_claims": [
+          "Template applies source-supported tools to restaurant/business reporting without inventing organization formulas."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_business_use",
+        "explanation": "Business template tailored to Weekly scorecard workbook with placeholders for organization-specific definitions.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      },
+      "date_sensitivity": "organization_policy_dependent",
+      "current_verification_required": true
+    },
+    {
+      "id": "biz-sales-labor-analysis",
+      "application_name": "Sales and labor analysis",
+      "business_question": "How do sales, labor hours, and labor cost relate by location/period?",
+      "typical_data_sources": [
+        "POS sales export",
+        "labor/payroll export",
+        "schedule export",
+        "location mapping"
+      ],
+      "required_fields": [
+        "date or week_ending",
+        "location_id",
+        "sales_amount",
+        "labor_hours",
+        "labor_cost"
+      ],
+      "optional_fields": [
+        "job_code",
+        "daypart",
+        "forecast_sales",
+        "guest_count"
+      ],
+      "grain_of_analysis": "location-date or location-week",
+      "recommended_workbook_structure": [
+        "control sheet",
+        "raw export tab",
+        "clean/staging table",
+        "analysis pivots or Python review tab",
+        "output/report tab",
+        "error-check sheet"
+      ],
+      "analysis_steps": [
+        "define period and source contract",
+        "load raw data without editing it",
+        "run required data-quality gates",
+        "build validated clean table",
+        "summarize at stated grain",
+        "reconcile totals to source",
+        "publish output with refresh/signoff status"
+      ],
+      "recommended_excel_tools": [
+        "Excel Tables",
+        "PivotTables by location/week",
+        "SUMIFS/AVERAGEIFS",
+        "charts"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas merge/reconcile",
+        "groupby summaries",
+        "scatter/regression exploratory checks"
+      ],
+      "when_external_python_is_better": [
+        "large historical labor model, scheduling optimization, API integrations"
+      ],
+      "quality_gates": [
+        "dqg-date-column-parses",
+        "dqg-percent-convention-known",
+        "dqg-currency-values-numeric",
+        "dqg-row-count-reconciles"
+      ],
+      "outputs": [
+        "labor % summary",
+        "hours vs sales trend",
+        "exception list"
+      ],
+      "dashboard_or_report_design": [
+        "trend by week, variance table, caveats about percent convention"
+      ],
+      "automation_opportunities": [
+        "Power Query joining exports",
+        "external model for scheduling forecasts"
+      ],
+      "manual_review_required": [
+        "labor allocation rules",
+        "overtime treatment",
+        "sales net/gross definition"
+      ],
+      "risks": [
+        "excel-risk-percent-convention",
+        "python-excel-risk-performance"
+      ],
+      "lowest_complexity_safe_approach": "PivotTable summary with explicit labor % convention.",
+      "advanced_approach": "pandas reconciliation and external forecasting if productionized.",
+      "do_not_invent_without_company_policy": [
+        "labor % formula",
+        "overtime policy",
+        "sales definition"
+      ],
+      "source_supported_elements": [
+        "PivotTables, formulas, charts; pandas merge/groupby"
+      ],
+      "operational_extensions": [
+        "Regression or optimization should remain exploratory unless approved."
+      ],
+      "source_domain": "business_operations_application",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "Business operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Operational templates",
+        "section_heading": "Sales and labor analysis",
+        "page_or_anchor": "v2 operational template",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed business application",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports tables, pivots, formulas, charts, what-if/statistics; Python source supports pandas, xl(), Power Query handoff, Python visuals."
+        ],
+        "inferred_claims": [
+          "Template applies source-supported tools to restaurant/business reporting without inventing organization formulas."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_business_use",
+        "explanation": "Business template tailored to Sales and labor analysis with placeholders for organization-specific definitions.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      },
+      "date_sensitivity": "organization_policy_dependent",
+      "current_verification_required": true
+    },
+    {
+      "id": "biz-food-cost-analysis",
+      "application_name": "Food cost analysis",
+      "business_question": "Are food cost values complete, numeric, and explainable by category/location/period?",
+      "typical_data_sources": [
+        "purchasing export",
+        "inventory export",
+        "sales export",
+        "recipe/menu mapping"
+      ],
+      "required_fields": [
+        "period",
+        "location_id",
+        "category_or_item",
+        "cost_amount",
+        "sales_amount or denominator field"
+      ],
+      "optional_fields": [
+        "vendor",
+        "invoice_id",
+        "menu_item",
+        "waste/spoilage"
+      ],
+      "grain_of_analysis": "category/location/period or item/location/period",
+      "recommended_workbook_structure": [
+        "control sheet",
+        "raw export tab",
+        "clean/staging table",
+        "analysis pivots or Python review tab",
+        "output/report tab",
+        "error-check sheet"
+      ],
+      "analysis_steps": [
+        "define period and source contract",
+        "load raw data without editing it",
+        "run required data-quality gates",
+        "build validated clean table",
+        "summarize at stated grain",
+        "reconcile totals to source",
+        "publish output with refresh/signoff status"
+      ],
+      "recommended_excel_tools": [
+        "Excel Tables",
+        "PivotTables",
+        "SUMIFS",
+        "conditional formatting"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas duplicate invoice/item checks",
+        "outlier profiling"
+      ],
+      "when_external_python_is_better": [
+        "inventory/API integrations, large item-level recipe models"
+      ],
+      "quality_gates": [
+        "dqg-currency-values-numeric",
+        "dqg-percent-convention-known",
+        "dqg-no-duplicate-metric-ids",
+        "dqg-row-count-reconciles"
+      ],
+      "outputs": [
+        "food cost summary",
+        "unmapped category list",
+        "outlier review"
+      ],
+      "dashboard_or_report_design": [
+        "category mix, period trend, variance notes"
+      ],
+      "automation_opportunities": [
+        "Power Query append/join exports",
+        "external Python for recipe/inventory engine"
+      ],
+      "manual_review_required": [
+        "COGS formula policy",
+        "category mapping",
+        "waste treatment"
+      ],
+      "risks": [
+        "excel-risk-currency-format-vs-value",
+        "excel-risk-duplicate-keys"
+      ],
+      "lowest_complexity_safe_approach": "Excel/PivotTable category summary with mapping table.",
+      "advanced_approach": "External pipeline when item-level inventory/recipe logic is complex.",
+      "do_not_invent_without_company_policy": [
+        "food cost formula",
+        "category mapping",
+        "inventory adjustment policy"
+      ],
+      "source_supported_elements": [
+        "Excel tables/pivots; pandas profiling"
+      ],
+      "operational_extensions": [
+        "Food-service formulas are placeholders requiring policy."
+      ],
+      "source_domain": "business_operations_application",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "Business operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Operational templates",
+        "section_heading": "Food cost analysis",
+        "page_or_anchor": "v2 operational template",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed business application",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports tables, pivots, formulas, charts, what-if/statistics; Python source supports pandas, xl(), Power Query handoff, Python visuals."
+        ],
+        "inferred_claims": [
+          "Template applies source-supported tools to restaurant/business reporting without inventing organization formulas."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_business_use",
+        "explanation": "Business template tailored to Food cost analysis with placeholders for organization-specific definitions.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      },
+      "date_sensitivity": "organization_policy_dependent",
+      "current_verification_required": true
+    },
+    {
+      "id": "biz-management-cost-analysis",
+      "application_name": "Management cost analysis",
+      "business_question": "How do management costs compare to sales, budget, and prior periods?",
+      "typical_data_sources": [
+        "payroll export",
+        "GL/accounting export",
+        "sales export",
+        "budget table"
+      ],
+      "required_fields": [
+        "period",
+        "location_id",
+        "cost_category",
+        "cost_amount"
+      ],
+      "optional_fields": [
+        "manager_role",
+        "department",
+        "budget_amount",
+        "allocation_basis"
+      ],
+      "grain_of_analysis": "cost category/location/period",
+      "recommended_workbook_structure": [
+        "control sheet",
+        "raw export tab",
+        "clean/staging table",
+        "analysis pivots or Python review tab",
+        "output/report tab",
+        "error-check sheet"
+      ],
+      "analysis_steps": [
+        "define period and source contract",
+        "load raw data without editing it",
+        "run required data-quality gates",
+        "build validated clean table",
+        "summarize at stated grain",
+        "reconcile totals to source",
+        "publish output with refresh/signoff status"
+      ],
+      "recommended_excel_tools": [
+        "Excel Tables",
+        "PivotTables",
+        "SUMIFS",
+        "budget vs actual formulas"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas merge to budget/mapping tables",
+        "variance exception output"
+      ],
+      "when_external_python_is_better": [
+        "allocation engine, scheduled accounting close package"
+      ],
+      "quality_gates": [
+        "dqg-currency-values-numeric",
+        "dqg-required-column-exists",
+        "dqg-row-count-reconciles",
+        "dqg-manual-overrides-documented"
+      ],
+      "outputs": [
+        "management cost variance report",
+        "mapping exceptions"
+      ],
+      "dashboard_or_report_design": [
+        "actual vs budget, trend, notes and signoff"
+      ],
+      "automation_opportunities": [
+        "Power Query import from GL/payroll",
+        "external close workflow"
+      ],
+      "manual_review_required": [
+        "allocation rules",
+        "bonus/accrual policy",
+        "management cost definition"
+      ],
+      "risks": [
+        "excel-risk-manual-overrides",
+        "excel-risk-currency-format-vs-value"
+      ],
+      "lowest_complexity_safe_approach": "Excel budget-vs-actual workbook with protected formulas.",
+      "advanced_approach": "External governed pipeline for close/accounting upload.",
+      "do_not_invent_without_company_policy": [
+        "cost allocation formulas",
+        "account classifications",
+        "accrual rules"
+      ],
+      "source_supported_elements": [
+        "PivotTables, financial formulas, data model concepts"
+      ],
+      "operational_extensions": [
+        "Accounting policy determines exact metrics."
+      ],
+      "source_domain": "business_operations_application",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "Business operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Operational templates",
+        "section_heading": "Management cost analysis",
+        "page_or_anchor": "v2 operational template",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed business application",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports tables, pivots, formulas, charts, what-if/statistics; Python source supports pandas, xl(), Power Query handoff, Python visuals."
+        ],
+        "inferred_claims": [
+          "Template applies source-supported tools to restaurant/business reporting without inventing organization formulas."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_business_use",
+        "explanation": "Business template tailored to Management cost analysis with placeholders for organization-specific definitions.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      },
+      "date_sensitivity": "organization_policy_dependent",
+      "current_verification_required": true
+    },
+    {
+      "id": "biz-sevenrooms-guest-satisfaction",
+      "application_name": "SevenRooms guest satisfaction analysis",
+      "business_question": "What guest satisfaction themes, ratings, and operational issues need attention?",
+      "typical_data_sources": [
+        "SevenRooms review/guest feedback export",
+        "location mapping",
+        "visit/reservation metadata"
+      ],
+      "required_fields": [
+        "review_date",
+        "location_id",
+        "rating_or_score",
+        "comment_or_tag"
+      ],
+      "optional_fields": [
+        "server",
+        "reservation_source",
+        "guest_segment",
+        "response_status"
+      ],
+      "grain_of_analysis": "review/location/date or tag/location/week",
+      "recommended_workbook_structure": [
+        "control sheet",
+        "raw export tab",
+        "clean/staging table",
+        "analysis pivots or Python review tab",
+        "output/report tab",
+        "error-check sheet"
+      ],
+      "analysis_steps": [
+        "define period and source contract",
+        "load raw data without editing it",
+        "run required data-quality gates",
+        "build validated clean table",
+        "summarize at stated grain",
+        "reconcile totals to source",
+        "publish output with refresh/signoff status"
+      ],
+      "recommended_excel_tools": [
+        "Excel Tables",
+        "PivotTables",
+        "charts",
+        "conditional formatting"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas text/profile summaries",
+        "rating distribution visualization"
+      ],
+      "when_external_python_is_better": [
+        "NLP/text analytics service, scheduled sentiment pipeline, API pull"
+      ],
+      "quality_gates": [
+        "dqg-date-column-parses",
+        "dqg-required-column-exists",
+        "dqg-blank-required-keys",
+        "dqg-chart-source-validated"
+      ],
+      "outputs": [
+        "rating trend",
+        "theme/tag counts",
+        "response follow-up list"
+      ],
+      "dashboard_or_report_design": [
+        "ratings distribution, recent comments exceptions, filter status"
+      ],
+      "automation_opportunities": [
+        "Power Query import",
+        "external NLP when policy allows"
+      ],
+      "manual_review_required": [
+        "sentiment scoring method",
+        "response SLA",
+        "guest privacy rules"
+      ],
+      "risks": [
+        "python-excel-risk-privacy-boundary",
+        "excel-risk-chart-without-data-validation"
+      ],
+      "lowest_complexity_safe_approach": "Excel pivots/charts on exported tags/ratings.",
+      "advanced_approach": "Python-in-Excel text profiling or external NLP with privacy review.",
+      "do_not_invent_without_company_policy": [
+        "sentiment formula/threshold",
+        "guest privacy policy",
+        "response rules"
+      ],
+      "source_supported_elements": [
+        "Charts, pivots, Python visualization/text capability"
+      ],
+      "operational_extensions": [
+        "Do not invent sentiment scores without approved method."
+      ],
+      "source_domain": "business_operations_application",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "Business operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Operational templates",
+        "section_heading": "SevenRooms guest satisfaction analysis",
+        "page_or_anchor": "v2 operational template",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed business application",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports tables, pivots, formulas, charts, what-if/statistics; Python source supports pandas, xl(), Power Query handoff, Python visuals."
+        ],
+        "inferred_claims": [
+          "Template applies source-supported tools to restaurant/business reporting without inventing organization formulas."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_business_use",
+        "explanation": "Business template tailored to SevenRooms guest satisfaction analysis with placeholders for organization-specific definitions.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      },
+      "date_sensitivity": "organization_policy_dependent",
+      "current_verification_required": true
+    },
+    {
+      "id": "biz-ubereats-reviews-analysis",
+      "application_name": "Uber Eats reviews analysis",
+      "business_question": "What delivery-review patterns, ratings, and order issues require action?",
+      "typical_data_sources": [
+        "Uber Eats reviews/order export",
+        "location mapping",
+        "menu item mapping"
+      ],
+      "required_fields": [
+        "review_date",
+        "location_id",
+        "rating",
+        "review_text or issue_code"
+      ],
+      "optional_fields": [
+        "order_id",
+        "menu_item",
+        "delivery_time",
+        "refund_flag"
+      ],
+      "grain_of_analysis": "review/order/location/date",
+      "recommended_workbook_structure": [
+        "control sheet",
+        "raw export tab",
+        "clean/staging table",
+        "analysis pivots or Python review tab",
+        "output/report tab",
+        "error-check sheet"
+      ],
+      "analysis_steps": [
+        "define period and source contract",
+        "load raw data without editing it",
+        "run required data-quality gates",
+        "build validated clean table",
+        "summarize at stated grain",
+        "reconcile totals to source",
+        "publish output with refresh/signoff status"
+      ],
+      "recommended_excel_tools": [
+        "Excel Tables",
+        "PivotTables",
+        "charts",
+        "filters"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas duplicate/order issue profiling",
+        "Python distribution/keyword summaries"
+      ],
+      "when_external_python_is_better": [
+        "API ingestion, NLP, multi-platform review consolidation"
+      ],
+      "quality_gates": [
+        "dqg-date-column-parses",
+        "dqg-required-column-exists",
+        "dqg-no-duplicate-metric-ids",
+        "dqg-chart-source-validated"
+      ],
+      "outputs": [
+        "rating trend",
+        "issue exception list",
+        "menu/location summary"
+      ],
+      "dashboard_or_report_design": [
+        "trend chart, issue buckets, notes"
+      ],
+      "automation_opportunities": [
+        "Power Query append across platforms",
+        "external NLP"
+      ],
+      "manual_review_required": [
+        "issue taxonomy",
+        "rating threshold",
+        "response policy"
+      ],
+      "risks": [
+        "excel-risk-duplicate-keys",
+        "python-excel-risk-privacy-boundary"
+      ],
+      "lowest_complexity_safe_approach": "Excel export validation + pivots.",
+      "advanced_approach": "External multi-channel review pipeline if recurring and large.",
+      "do_not_invent_without_company_policy": [
+        "issue taxonomy",
+        "sentiment rules",
+        "refund policy"
+      ],
+      "source_supported_elements": [
+        "Tables/pivots/charts; pandas profiling"
+      ],
+      "operational_extensions": [
+        "Exact rating thresholds and response decisions require policy."
+      ],
+      "source_domain": "business_operations_application",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "Business operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Operational templates",
+        "section_heading": "Uber Eats reviews analysis",
+        "page_or_anchor": "v2 operational template",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed business application",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports tables, pivots, formulas, charts, what-if/statistics; Python source supports pandas, xl(), Power Query handoff, Python visuals."
+        ],
+        "inferred_claims": [
+          "Template applies source-supported tools to restaurant/business reporting without inventing organization formulas."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_business_use",
+        "explanation": "Business template tailored to Uber Eats reviews analysis with placeholders for organization-specific definitions.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      },
+      "date_sensitivity": "organization_policy_dependent",
+      "current_verification_required": true
+    },
+    {
+      "id": "biz-marketing-spend-performance",
+      "application_name": "Marketing spend and performance analysis",
+      "business_question": "Which campaigns/channels produced measurable performance relative to spend?",
+      "typical_data_sources": [
+        "ad spend exports",
+        "campaign tracking",
+        "sales/traffic exports",
+        "budget table"
+      ],
+      "required_fields": [
+        "period",
+        "campaign_or_channel",
+        "spend_amount",
+        "performance_metric"
+      ],
+      "optional_fields": [
+        "impressions",
+        "clicks",
+        "orders",
+        "revenue",
+        "location_id"
+      ],
+      "grain_of_analysis": "campaign/channel/period",
+      "recommended_workbook_structure": [
+        "control sheet",
+        "raw export tab",
+        "clean/staging table",
+        "analysis pivots or Python review tab",
+        "output/report tab",
+        "error-check sheet"
+      ],
+      "analysis_steps": [
+        "define period and source contract",
+        "load raw data without editing it",
+        "run required data-quality gates",
+        "build validated clean table",
+        "summarize at stated grain",
+        "reconcile totals to source",
+        "publish output with refresh/signoff status"
+      ],
+      "recommended_excel_tools": [
+        "Excel Tables",
+        "PivotTables",
+        "charts",
+        "SUMIFS"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas merge/groupby",
+        "outlier and missing campaign checks"
+      ],
+      "when_external_python_is_better": [
+        "API-connected ad platforms, attribution model, scheduled refresh"
+      ],
+      "quality_gates": [
+        "dqg-currency-values-numeric",
+        "dqg-percent-convention-known",
+        "dqg-required-column-exists",
+        "dqg-row-count-reconciles"
+      ],
+      "outputs": [
+        "spend vs result table",
+        "campaign exceptions",
+        "budget variance"
+      ],
+      "dashboard_or_report_design": [
+        "channel trend, ROI-like metric with caveat, source status"
+      ],
+      "automation_opportunities": [
+        "Power Query/ad platform connectors",
+        "external attribution pipeline"
+      ],
+      "manual_review_required": [
+        "attribution rules",
+        "ROI formula",
+        "campaign naming conventions"
+      ],
+      "risks": [
+        "excel-risk-percent-convention",
+        "excel-risk-duplicate-keys"
+      ],
+      "lowest_complexity_safe_approach": "Excel pivot budget/performance report.",
+      "advanced_approach": "External attribution/ETL when joining many platforms or using APIs.",
+      "do_not_invent_without_company_policy": [
+        "ROI/ROAS formula",
+        "attribution window",
+        "campaign taxonomy"
+      ],
+      "source_supported_elements": [
+        "Pivots, charts, formulas; pandas joins"
+      ],
+      "operational_extensions": [
+        "Do not invent attribution model."
+      ],
+      "source_domain": "business_operations_application",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "Business operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Operational templates",
+        "section_heading": "Marketing spend and performance analysis",
+        "page_or_anchor": "v2 operational template",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed business application",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports tables, pivots, formulas, charts, what-if/statistics; Python source supports pandas, xl(), Power Query handoff, Python visuals."
+        ],
+        "inferred_claims": [
+          "Template applies source-supported tools to restaurant/business reporting without inventing organization formulas."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_business_use",
+        "explanation": "Business template tailored to Marketing spend and performance analysis with placeholders for organization-specific definitions.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      },
+      "date_sensitivity": "organization_policy_dependent",
+      "current_verification_required": true
+    },
+    {
+      "id": "biz-budget-vs-actual-report",
+      "application_name": "Budget versus actual report",
+      "business_question": "Where do actual results differ from budget, and why?",
+      "typical_data_sources": [
+        "GL/accounting export",
+        "budget workbook",
+        "location/account mapping"
+      ],
+      "required_fields": [
+        "period",
+        "location_id",
+        "account_or_metric",
+        "actual_amount",
+        "budget_amount"
+      ],
+      "optional_fields": [
+        "forecast_amount",
+        "prior_year_amount",
+        "comment"
+      ],
+      "grain_of_analysis": "account/metric/location/period",
+      "recommended_workbook_structure": [
+        "control sheet",
+        "raw export tab",
+        "clean/staging table",
+        "analysis pivots or Python review tab",
+        "output/report tab",
+        "error-check sheet"
+      ],
+      "analysis_steps": [
+        "define period and source contract",
+        "load raw data without editing it",
+        "run required data-quality gates",
+        "build validated clean table",
+        "summarize at stated grain",
+        "reconcile totals to source",
+        "publish output with refresh/signoff status"
+      ],
+      "recommended_excel_tools": [
+        "Excel Tables",
+        "PivotTables",
+        "variance formulas",
+        "conditional formatting"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas reconciliation to mapping/budget tables"
+      ],
+      "when_external_python_is_better": [
+        "accounting close pipeline, ERP integrations, multi-entity consolidation"
+      ],
+      "quality_gates": [
+        "dqg-currency-values-numeric",
+        "dqg-percent-convention-known",
+        "dqg-manual-overrides-documented",
+        "dqg-row-count-reconciles"
+      ],
+      "outputs": [
+        "variance report",
+        "unmapped accounts",
+        "commentary request list"
+      ],
+      "dashboard_or_report_design": [
+        "material variances, refresh status, notes and signoff"
+      ],
+      "automation_opportunities": [
+        "Power Query merge to budget",
+        "external close package"
+      ],
+      "manual_review_required": [
+        "variance threshold",
+        "budget version",
+        "mapping rules"
+      ],
+      "risks": [
+        "excel-risk-manual-overrides",
+        "excel-risk-currency-format-vs-value"
+      ],
+      "lowest_complexity_safe_approach": "Excel protected budget vs actual template.",
+      "advanced_approach": "Power Query/external pipeline for close-grade multi-entity report.",
+      "do_not_invent_without_company_policy": [
+        "variance formulas/thresholds",
+        "budget version policy",
+        "account mappings"
+      ],
+      "source_supported_elements": [
+        "Formulas, pivots, charts, external data"
+      ],
+      "operational_extensions": [
+        "Accounting policy required for thresholds and mapping."
+      ],
+      "source_domain": "business_operations_application",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "Business operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Operational templates",
+        "section_heading": "Budget versus actual report",
+        "page_or_anchor": "v2 operational template",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed business application",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports tables, pivots, formulas, charts, what-if/statistics; Python source supports pandas, xl(), Power Query handoff, Python visuals."
+        ],
+        "inferred_claims": [
+          "Template applies source-supported tools to restaurant/business reporting without inventing organization formulas."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_business_use",
+        "explanation": "Business template tailored to Budget versus actual report with placeholders for organization-specific definitions.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      },
+      "date_sensitivity": "organization_policy_dependent",
+      "current_verification_required": true
+    },
+    {
+      "id": "biz-owner-executive-dashboard",
+      "application_name": "Owner/executive dashboard",
+      "business_question": "What is the concise, current state of performance and exceptions?",
+      "typical_data_sources": [
+        "validated scorecard tables",
+        "financial summaries",
+        "guest/review summaries",
+        "refresh log"
+      ],
+      "required_fields": [
+        "period",
+        "metric_id",
+        "metric_value",
+        "status_or_variance"
+      ],
+      "optional_fields": [
+        "trend_value",
+        "comment",
+        "owner"
+      ],
+      "grain_of_analysis": "metric/location/period or company-level metric/period",
+      "recommended_workbook_structure": [
+        "control sheet",
+        "raw export tab",
+        "clean/staging table",
+        "analysis pivots or Python review tab",
+        "output/report tab",
+        "error-check sheet"
+      ],
+      "analysis_steps": [
+        "define period and source contract",
+        "load raw data without editing it",
+        "run required data-quality gates",
+        "build validated clean table",
+        "summarize at stated grain",
+        "reconcile totals to source",
+        "publish output with refresh/signoff status"
+      ],
+      "recommended_excel_tools": [
+        "PivotTables",
+        "PivotCharts",
+        "GETPIVOTDATA",
+        "conditional formatting"
+      ],
+      "recommended_python_in_excel_tools": [
+        "Python visuals only for approved advanced insights"
+      ],
+      "when_external_python_is_better": [
+        "BI dashboard or scheduled executive distribution"
+      ],
+      "quality_gates": [
+        "dqg-control-sheet-complete",
+        "dqg-chart-source-validated",
+        "dqg-no-formula-errors-output",
+        "dqg-stale-refresh-timestamp"
+      ],
+      "outputs": [
+        "executive summary tab",
+        "exception list",
+        "drill links"
+      ],
+      "dashboard_or_report_design": [
+        "few KPIs, visible refresh status, caveats, owner notes"
+      ],
+      "automation_opportunities": [
+        "Power Query refresh",
+        "external reporting distribution"
+      ],
+      "manual_review_required": [
+        "KPI definitions",
+        "thresholds",
+        "who can approve commentary"
+      ],
+      "risks": [
+        "excel-risk-chart-without-data-validation",
+        "excel-risk-stale-refresh-timestamp"
+      ],
+      "lowest_complexity_safe_approach": "Excel executive tab fed by validated pivots/tables.",
+      "advanced_approach": "BI/external reporting for scheduled or multi-user dashboards.",
+      "do_not_invent_without_company_policy": [
+        "KPI selection",
+        "thresholds",
+        "commentary rules"
+      ],
+      "source_supported_elements": [
+        "PivotCharts, dashboards, GETPIVOTDATA, charts"
+      ],
+      "operational_extensions": [
+        "Do not invent KPIs or targets."
+      ],
+      "source_domain": "business_operations_application",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "Business operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Operational templates",
+        "section_heading": "Owner/executive dashboard",
+        "page_or_anchor": "v2 operational template",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed business application",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports tables, pivots, formulas, charts, what-if/statistics; Python source supports pandas, xl(), Power Query handoff, Python visuals."
+        ],
+        "inferred_claims": [
+          "Template applies source-supported tools to restaurant/business reporting without inventing organization formulas."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_business_use",
+        "explanation": "Business template tailored to Owner/executive dashboard with placeholders for organization-specific definitions.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      },
+      "date_sensitivity": "organization_policy_dependent",
+      "current_verification_required": true
+    },
+    {
+      "id": "biz-accounting-upload-template",
+      "application_name": "Accounting upload template",
+      "business_question": "Can accounting upload this file without schema, period, or formula errors?",
+      "typical_data_sources": [
+        "clean source table",
+        "account mapping",
+        "accounting upload schema",
+        "control sheet"
+      ],
+      "required_fields": [
+        "upload_period",
+        "account_id",
+        "location_id",
+        "amount",
+        "description_or_memo"
+      ],
+      "optional_fields": [
+        "department",
+        "vendor",
+        "invoice_id",
+        "reference_id"
+      ],
+      "grain_of_analysis": "one row per upload transaction according to accounting schema",
+      "recommended_workbook_structure": [
+        "control sheet",
+        "raw export tab",
+        "clean/staging table",
+        "analysis pivots or Python review tab",
+        "output/report tab",
+        "error-check sheet"
+      ],
+      "analysis_steps": [
+        "define period and source contract",
+        "load raw data without editing it",
+        "run required data-quality gates",
+        "build validated clean table",
+        "summarize at stated grain",
+        "reconcile totals to source",
+        "publish output with refresh/signoff status"
+      ],
+      "recommended_excel_tools": [
+        "Excel Tables",
+        "data validation/gates",
+        "protected formulas",
+        "SUMIFS control totals"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas schema/duplicate/date/currency prechecks"
+      ],
+      "when_external_python_is_better": [
+        "actual upload, API call, scheduled posting"
+      ],
+      "quality_gates": [
+        "dqg-upload-schema-contract",
+        "dqg-date-column-parses",
+        "dqg-currency-values-numeric",
+        "dqg-blank-required-keys",
+        "dqg-no-formula-errors-output"
+      ],
+      "outputs": [
+        "ready upload table",
+        "control totals",
+        "rejected-row list"
+      ],
+      "dashboard_or_report_design": [
+        "upload status, row counts, totals by account/location"
+      ],
+      "automation_opportunities": [
+        "external uploader after validation",
+        "automated schema tests"
+      ],
+      "manual_review_required": [
+        "account mappings",
+        "posting rules",
+        "approval workflow"
+      ],
+      "risks": [
+        "excel-risk-currency-format-vs-value",
+        "excel-risk-manual-overrides"
+      ],
+      "lowest_complexity_safe_approach": "Excel staging table with strict gates and manual accounting review.",
+      "advanced_approach": "External governed upload service after workbook validation.",
+      "do_not_invent_without_company_policy": [
+        "account codes",
+        "debit/credit sign convention",
+        "posting rules"
+      ],
+      "source_supported_elements": [
+        "Tables, formulas, criteria checks, Python profiling optional"
+      ],
+      "operational_extensions": [
+        "Exact accounting rules must come from company/accounting policy."
+      ],
+      "source_domain": "business_operations_application",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "Business operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Operational templates",
+        "section_heading": "Accounting upload template",
+        "page_or_anchor": "v2 operational template",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed business application",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports tables, pivots, formulas, charts, what-if/statistics; Python source supports pandas, xl(), Power Query handoff, Python visuals."
+        ],
+        "inferred_claims": [
+          "Template applies source-supported tools to restaurant/business reporting without inventing organization formulas."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_business_use",
+        "explanation": "Business template tailored to Accounting upload template with placeholders for organization-specific definitions.",
+        "confidence": "medium",
+        "human_review_recommended": true
+      },
+      "date_sensitivity": "organization_policy_dependent",
+      "current_verification_required": true
+    },
+    {
+      "id": "biz-api-upload-staging-workbook",
+      "application_name": "API upload staging workbook",
+      "business_question": "Is workbook data shaped and validated for an external API handoff without storing credentials?",
+      "typical_data_sources": [
+        "clean table",
+        "API schema contract",
+        "mapping table",
+        "validation log"
+      ],
+      "required_fields": [
+        "record_id",
+        "operation",
+        "required API fields",
+        "ready_status"
+      ],
+      "optional_fields": [
+        "batch_id",
+        "hash",
+        "error_message",
+        "source_reference"
+      ],
+      "grain_of_analysis": "one row per API record/action",
+      "recommended_workbook_structure": [
+        "control sheet",
+        "raw export tab",
+        "clean/staging table",
+        "analysis pivots or Python review tab",
+        "output/report tab",
+        "error-check sheet"
+      ],
+      "analysis_steps": [
+        "define period and source contract",
+        "load raw data without editing it",
+        "run required data-quality gates",
+        "build validated clean table",
+        "summarize at stated grain",
+        "reconcile totals to source",
+        "publish output with refresh/signoff status"
+      ],
+      "recommended_excel_tools": [
+        "Excel Table staging",
+        "gates",
+        "control sheet",
+        "protected formulas"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas schema/type checks and JSON-like preview generation"
+      ],
+      "when_external_python_is_better": [
+        "authenticated API calls, retries, scheduling, monitoring"
+      ],
+      "quality_gates": [
+        "dqg-upload-schema-contract",
+        "dqg-blank-required-keys",
+        "dqg-no-duplicate-metric-ids",
+        "dqg-python-output-spill-safe",
+        "dqg-control-sheet-complete"
+      ],
+      "outputs": [
+        "API-ready staging table",
+        "rejected-record table",
+        "handoff manifest"
+      ],
+      "dashboard_or_report_design": [
+        "schema version, ready count, rejected count, no-secrets reminder"
+      ],
+      "automation_opportunities": [
+        "external Python/API worker consumes validated file"
+      ],
+      "manual_review_required": [
+        "API contract version",
+        "operation mapping",
+        "error/retry policy"
+      ],
+      "risks": [
+        "python-excel-risk-privacy-boundary",
+        "python-excel-risk-not-production-scheduler"
+      ],
+      "lowest_complexity_safe_approach": "Excel validates and stages; external system uploads.",
+      "advanced_approach": "External API service with workbook-generated validation manifest.",
+      "do_not_invent_without_company_policy": [
+        "API endpoint behavior",
+        "credential handling",
+        "retry/idempotency rules"
+      ],
+      "source_supported_elements": [
+        "Data-quality gates; Python/Power Query boundaries"
+      ],
+      "operational_extensions": [
+        "Workbook must not contain tokens or perform unattended network upload."
+      ],
+      "source_domain": "business_operations_application",
+      "source_traceability": {
+        "source_file": "Excel Data Analysis For Dummies 5th Edition PDF; Python in Excel EPUB; existing v1 Excel/Python-in-Excel JSON package; repair prompt",
+        "book_title": "Business operations synthesis",
+        "chapter_number": "multiple",
+        "chapter_title": "Operational templates",
+        "section_heading": "API upload staging workbook",
+        "page_or_anchor": "v2 operational template",
+        "figure_table_formula_or_code_example": "",
+        "support_role": "source-informed business application",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "Excel source supports tables, pivots, formulas, charts, what-if/statistics; Python source supports pandas, xl(), Power Query handoff, Python visuals."
+        ],
+        "inferred_claims": [
+          "Template applies source-supported tools to restaurant/business reporting without inventing organization formulas."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_business_use",
+        "explanation": "Business template tailored to API upload staging workbook with placeholders for organization-specific definitions.",
+        "confidence": "low",
+        "human_review_recommended": true
+      },
+      "date_sensitivity": "organization_policy_dependent",
+      "current_verification_required": true
+    }
+  ]
+}

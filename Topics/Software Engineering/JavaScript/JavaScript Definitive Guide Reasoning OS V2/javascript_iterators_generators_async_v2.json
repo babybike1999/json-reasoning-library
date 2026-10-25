@@ -1,0 +1,1072 @@
+{
+  "package_metadata": {
+    "package_name": "JavaScript Language, Runtime, and Code-Quality Reasoning OS V2",
+    "module_name": "iterators_generators_async",
+    "repair_type": "focused_v2_repair_not_full_rebuild",
+    "generated_at": "2026-06-21T05:00:11.155979+00:00",
+    "primary_source": {
+      "title": "JavaScript: The Definitive Guide",
+      "edition": "Seventh Edition",
+      "author": "David Flanagan",
+      "publisher": "O'Reilly Media",
+      "release_year": 2020,
+      "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+      "source_sha256": "b511aca2b98ae4eec4966c87d5e6b6c1704cbafe7dd076b924db46cb8d20ae07"
+    },
+    "v1_package_reference": {
+      "source_zip": "Javascript Reasoning.zip",
+      "source_zip_sha256": "60242e2ad2cfcc9bdf79f2fc73b392b7f149339dc95d6234f00db683f368d98d",
+      "not_overwritten": true
+    },
+    "authority_order": [
+      "Original uploaded book source",
+      "Current generated JavaScript Reasoning OS package",
+      "User repair prompt",
+      "Current official documentation only if available",
+      "General engineering reasoning"
+    ],
+    "source_limitation_warning": "Current browser, Node, npm, bundler, tool, framework, and Google Apps Script behavior is not asserted unless explicitly verified. V2 flags such items for current documentation checks.",
+    "purpose": "V2 iterator/generator and concrete async/event-driven records."
+  },
+  "language_semantics_records": [
+    {
+      "id": "js-sem-iterables-iterators",
+      "concept_name": "iterables and iterators",
+      "language_area": "iterators_generators_async",
+      "plain_language_meaning": "An iterable is an object that can produce a sequence of values for for/of and spread-like consumers.",
+      "precise_behavior": "An iterable has a Symbol.iterator method returning an iterator. An iterator has next() returning {value, done}. Built-in collections and strings are iterable; plain objects are not iterable by default.",
+      "syntax_or_api_shape": "for (const x of iterable), [...iterable], obj[Symbol.iterator](), iterator.next()",
+      "why_it_matters": "Iteration protocols connect arrays, maps, sets, strings, generators, async iteration, and custom data sources.",
+      "common_use": [
+        "Define custom sequence APIs",
+        "Consume Map/Set/string entries",
+        "Lazily traverse data"
+      ],
+      "common_misuse": [
+        "Using for/of on plain object",
+        "Assuming every array-like is iterable",
+        "Returning malformed next results"
+      ],
+      "debugging_symptoms": [
+        "TypeError: not iterable",
+        "Spread fails",
+        "Loop never ends"
+      ],
+      "tests_or_checks": [
+        "Check Symbol.iterator",
+        "Call next manually in test",
+        "Test empty and early termination"
+      ],
+      "safe_refactor_notes": [
+        "When materializing an iterable, consider one-shot/lazy behavior",
+        "Preserve iterator close behavior if implemented"
+      ],
+      "related_risk_ids": [
+        "js-risk-metaprogramming-opacity"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 12,
+        "chapter_title": "Iterators and Generators",
+        "sections": [
+          "12.1 How Iterators Work",
+          "12.2 Implementing Iterable Objects"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-generators",
+      "concept_name": "generators",
+      "language_area": "iterators_generators_async",
+      "plain_language_meaning": "Generator functions make it easier to define iterators and lazy sequences.",
+      "precise_behavior": "function* returns a generator object. yield produces a value and pauses execution. return, throw, and delegation with yield* affect control flow between consumer and generator.",
+      "syntax_or_api_shape": "function* g(){ yield x; } const it = g(); it.next(); yield* other",
+      "why_it_matters": "Generator control flow is bidirectional enough to surprise reviewers unfamiliar with pause/resume behavior.",
+      "common_use": [
+        "Create lazy sequences",
+        "Implement custom iterables",
+        "Model stepwise algorithms"
+      ],
+      "common_misuse": [
+        "Expecting function* body to run before next()",
+        "Ignoring return/throw path",
+        "Using generator where a simple array is clearer"
+      ],
+      "debugging_symptoms": [
+        "No side effect until iterated",
+        "Cleanup not run until iterator closed",
+        "Consumer sees unexpected done/value"
+      ],
+      "tests_or_checks": [
+        "Call next() manually",
+        "Test early break from for/of",
+        "Check yield* delegation"
+      ],
+      "safe_refactor_notes": [
+        "Do not replace materialized arrays with generators without consumption tests",
+        "Document one-shot versus reusable iterable behavior"
+      ],
+      "related_risk_ids": [
+        "js-risk-metaprogramming-opacity"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 12,
+        "chapter_title": "Iterators and Generators",
+        "sections": [
+          "12.3 Generators",
+          "12.4 Advanced Generator Features"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-promises",
+      "concept_name": "Promises",
+      "language_area": "iterators_generators_async",
+      "plain_language_meaning": "A Promise represents a future fulfillment or rejection.",
+      "precise_behavior": "A Promise settles once, either fulfilled with a value or rejected with a reason. then/catch/finally return promises and schedule handlers asynchronously according to the host event loop/microtask model.",
+      "syntax_or_api_shape": "new Promise((resolve,reject)=>{}), p.then(onFulfilled,onRejected), p.catch(fn), Promise.all(list)",
+      "why_it_matters": "Promises structure async code but do not cancel work automatically or make ordering implicit.",
+      "common_use": [
+        "Wrap async results",
+        "Compose concurrent operations",
+        "Propagate failures through chains"
+      ],
+      "common_misuse": [
+        "Forgetting to return nested promise",
+        "Using try/catch around unawaited promise",
+        "Leaving rejection unhandled"
+      ],
+      "debugging_symptoms": [
+        "then receives undefined",
+        "Unhandled rejection",
+        "Operation completes after caller returned"
+      ],
+      "tests_or_checks": [
+        "Trace every returned promise",
+        "Test rejection path",
+        "Check Promise.all/allSettled choice"
+      ],
+      "safe_refactor_notes": [
+        "Return promise chains from helper functions",
+        "Do not fire-and-forget without explicit reporting policy"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-async-ordering"
+      ],
+      "runtime_or_environment": "ECMAScript language core plus host async APIs",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.2 Promises"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-async-await",
+      "concept_name": "async functions and await",
+      "language_area": "iterators_generators_async",
+      "plain_language_meaning": "async/await lets Promise-based code read like sequential code, while still returning promises.",
+      "precise_behavior": "An async function always returns a Promise. await pauses the async function until the awaited value resolves or rejects. try/catch catches awaited rejections inside the async function, not unrelated async callbacks.",
+      "syntax_or_api_shape": "async function f(){ const x = await p; return x; }",
+      "why_it_matters": "async/await improves readability but does not remove rejection handling, cancellation, concurrency, or ordering design.",
+      "common_use": [
+        "Write sequential async flows",
+        "Use try/catch for awaited rejections",
+        "Bridge Promise APIs into clearer code"
+      ],
+      "common_misuse": [
+        "Forgetting that async function return value is a Promise",
+        "Awaiting operations sequentially that should run concurrently",
+        "Not awaiting a call whose rejection matters"
+      ],
+      "debugging_symptoms": [
+        "Caller receives Promise instead of value",
+        "Slow code due sequential awaits",
+        "Unhandled rejection"
+      ],
+      "tests_or_checks": [
+        "Check callers of async functions",
+        "Test rejected awaits",
+        "Compare sequential versus Promise.all requirements"
+      ],
+      "safe_refactor_notes": [
+        "Adding async to a function is API change unless callers already expect Promise",
+        "Preserve concurrency intentionally"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-async-ordering"
+      ],
+      "runtime_or_environment": "ECMAScript language core plus host async APIs",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.3 async and await"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-async-iteration",
+      "concept_name": "asynchronous iteration",
+      "language_area": "iterators_generators_async",
+      "plain_language_meaning": "Async iteration consumes values that arrive over time.",
+      "precise_behavior": "An async iterable has Symbol.asyncIterator and is consumed by for await...of. Each next step can await a Promise. It is useful for streams and paged/network-like sources.",
+      "syntax_or_api_shape": "for await (const chunk of asyncIterable) { } async function* g(){ yield await x; }",
+      "why_it_matters": "Async iteration combines iteration and async failure/lifecycle concerns.",
+      "common_use": [
+        "Consume readable streams or paged async sources",
+        "Expose lazy async data",
+        "Process chunks in order"
+      ],
+      "common_misuse": [
+        "Forgetting loop is async and needs await at caller",
+        "Ignoring errors thrown during iteration",
+        "Buffering everything when streaming was intended"
+      ],
+      "debugging_symptoms": [
+        "Function returns before loop completes",
+        "Unhandled rejection from iterator",
+        "Memory spike"
+      ],
+      "tests_or_checks": [
+        "Test early break, error, and empty source",
+        "Check caller awaits enclosing async function",
+        "Verify cleanup on break"
+      ],
+      "safe_refactor_notes": [
+        "Do not convert async iterable to array unless bounded",
+        "Preserve backpressure/lifecycle behavior"
+      ],
+      "related_risk_ids": [
+        "js-risk-async-ordering",
+        "js-risk-stream-lifecycle"
+      ],
+      "runtime_or_environment": "ECMAScript language core plus host async APIs",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.4 Asynchronous Iteration"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    }
+  ],
+  "async_records": [
+    {
+      "id": "js-async-callbacks",
+      "async_concept": "callbacks",
+      "runtime_or_environment": "browser and Node host APIs plus ECMAScript functions",
+      "problem_addressed": "Represent async completion or event notification without blocking.",
+      "behavior_explained": "A callback is a function value passed to an API and invoked later by that API or host environment. The surrounding call usually returns before the callback executes.",
+      "safe_pattern": "Name callback boundaries, keep callback small, and ensure the outer function does not claim to return callback-produced data synchronously.",
+      "dangerous_pattern": "Returning a value from inside a callback and expecting the outer function to return it.",
+      "common_failure_modes": [
+        "Outer function returns undefined or stale state",
+        "Exceptions occur outside expected synchronous control flow",
+        "Callback runs multiple times or never runs depending on API"
+      ],
+      "diagnostic_questions": [
+        "Which API invokes the callback and when?",
+        "Does the outer function return before the callback runs?",
+        "Can the callback run more than once?"
+      ],
+      "tests_or_evidence_needed": [
+        "Use a fake timer/event/source to prove ordering",
+        "Test zero, one, and multiple callback invocations",
+        "Check documented callback signature"
+      ],
+      "related_risk_ids": [
+        "js-risk-async-ordering",
+        "js-risk-callback-error-path"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.1 Asynchronous Programming with Callbacks"
+        ],
+        "source_basis": "Async/event-driven behavior record concretized in V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-async-callback-error-conventions",
+      "async_concept": "callback error conventions",
+      "runtime_or_environment": "primarily Node and callback-style host APIs",
+      "problem_addressed": "Keep success and failure channels explicit for callback APIs.",
+      "behavior_explained": "Many callback APIs report failure through an error argument or error event rather than throwing synchronously. Promise wrappers must translate that failure channel into rejection.",
+      "safe_pattern": "Check the documented callback signature; handle error first where applicable; reject wrappers on error and resolve only on success.",
+      "dangerous_pattern": "Ignoring the error parameter or throwing inside an asynchronous callback expecting an outer try/catch to catch it.",
+      "common_failure_modes": [
+        "Silent failure",
+        "Promise never settles",
+        "Unhandled error event",
+        "Data processed after failed operation"
+      ],
+      "diagnostic_questions": [
+        "What is the documented error path?",
+        "Is the error branch tested?",
+        "Does a wrapper settle exactly once?"
+      ],
+      "tests_or_evidence_needed": [
+        "Stub API to call callback with error",
+        "Test wrapper rejection",
+        "Test success and error cannot both settle"
+      ],
+      "related_risk_ids": [
+        "js-risk-callback-error-path",
+        "js-risk-unhandled-promise-rejection"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.1 Asynchronous Programming with Callbacks",
+          "16.2 Node Is Asynchronous by Default"
+        ],
+        "source_basis": "Async/event-driven behavior record concretized in V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-async-promises",
+      "async_concept": "promises",
+      "runtime_or_environment": "ECMAScript language core plus host APIs",
+      "problem_addressed": "Represent one eventual success or failure and compose async steps.",
+      "behavior_explained": "A promise settles once. Handlers registered with then/catch/finally run asynchronously and return new promises. Returning a promise from a handler chains its settlement.",
+      "safe_pattern": "Return promise chains from functions, attach catch at recovery/reporting boundaries, and use Promise.all/allSettled/race deliberately.",
+      "dangerous_pattern": "Creating a promise chain but not returning it, or handling only fulfillment.",
+      "common_failure_modes": [
+        "Unhandled rejection",
+        "Caller cannot await completion",
+        "Nested async result lost",
+        "Operations finish in unintended order"
+      ],
+      "diagnostic_questions": [
+        "Which promises are returned to the caller?",
+        "Where can each promise reject?",
+        "Which combinator matches desired failure semantics?"
+      ],
+      "tests_or_evidence_needed": [
+        "Test fulfillment and rejection",
+        "Assert function returns a Promise",
+        "Inject slow/reordered promises"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.2 Promises"
+        ],
+        "source_basis": "Async/event-driven behavior record concretized in V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-async-promise-chaining",
+      "async_concept": "promise chaining",
+      "runtime_or_environment": "ECMAScript language core plus host APIs",
+      "problem_addressed": "Connect async transformations without nesting callback pyramids.",
+      "behavior_explained": "then returns a new promise whose settlement depends on handler return/throw behavior. A thrown error rejects the next promise; a returned promise is assimilated.",
+      "safe_pattern": "Keep chains linear; return nested promises; use catch near the boundary that can recover.",
+      "dangerous_pattern": "Starting async work inside then without returning it, causing the chain to continue early.",
+      "common_failure_modes": [
+        "Next step receives undefined",
+        "catch misses later async work",
+        "Test completes too soon"
+      ],
+      "diagnostic_questions": [
+        "Does every then handler return the async work it starts?",
+        "Does catch cover the intended chain?",
+        "Are sync exceptions and rejected promises both handled?"
+      ],
+      "tests_or_evidence_needed": [
+        "Add a delayed promise in a handler",
+        "Assert final result waits for nested work",
+        "Test thrown error and rejected promise"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.2 Promises"
+        ],
+        "source_basis": "Async/event-driven behavior record concretized in V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-async-promise-rejection-handling",
+      "async_concept": "promise rejection handling",
+      "runtime_or_environment": "ECMAScript language core plus host APIs",
+      "problem_addressed": "Prevent async failures from being lost or reported at the wrong boundary.",
+      "behavior_explained": "A rejection propagates along a promise chain until an onRejected handler or catch handles it. async functions convert thrown errors into rejected returned promises.",
+      "safe_pattern": "Handle rejection with await inside try/catch, returned catch chains, or top-level/reporting boundaries; rethrow when the caller must decide.",
+      "dangerous_pattern": "catch that logs and continues with an invalid fallback, or missing catch for fire-and-forget work.",
+      "common_failure_modes": [
+        "Unhandled rejection",
+        "Corrupt fallback state",
+        "Caller sees success after failure"
+      ],
+      "diagnostic_questions": [
+        "Where is the rejection handled?",
+        "Can the handler recover or should it rethrow?",
+        "Is fire-and-forget explicitly reported?"
+      ],
+      "tests_or_evidence_needed": [
+        "Test rejection from every async dependency",
+        "Assert caller observes failure",
+        "Check logs/metrics path for intentional background tasks"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.2 Promises",
+          "13.3 async and await"
+        ],
+        "source_basis": "Async/event-driven behavior record concretized in V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-async-async-functions",
+      "async_concept": "async functions",
+      "runtime_or_environment": "ECMAScript language core plus host APIs",
+      "problem_addressed": "Make promise flows read sequentially without changing that the API is asynchronous.",
+      "behavior_explained": "An async function returns a Promise immediately. Returning a value fulfills the promise; throwing rejects it; awaiting a promise pauses only the async function.",
+      "safe_pattern": "Declare async only when callers can handle a Promise; document the Promise result; keep synchronous and asynchronous APIs distinct.",
+      "dangerous_pattern": "Adding async to a formerly synchronous function without updating callers.",
+      "common_failure_modes": [
+        "Caller receives Promise object",
+        "try/catch at caller fails unless await is used",
+        "API contract changes"
+      ],
+      "diagnostic_questions": [
+        "Who calls this function and do they await it?",
+        "Does adding async alter a public API?",
+        "Can the function still throw synchronously before returning?"
+      ],
+      "tests_or_evidence_needed": [
+        "Assert return type/Promise behavior",
+        "Test caller without await fails in expected way",
+        "Test rejection via await"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.3 async and await"
+        ],
+        "source_basis": "Async/event-driven behavior record concretized in V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-async-await-ordering",
+      "async_concept": "await ordering",
+      "runtime_or_environment": "ECMAScript language core plus host APIs",
+      "problem_addressed": "Make dependencies explicit while preserving intended concurrency.",
+      "behavior_explained": "await waits for one value before continuing. Multiple awaits in sequence serialize dependencies unless promises were started earlier. Promise.all starts/joins concurrent work but rejects on first rejection.",
+      "safe_pattern": "Start independent work before awaiting; await dependent work in dependency order; use Promise.all or allSettled according to failure semantics.",
+      "dangerous_pattern": "Sequential awaits for independent network/file operations, or missing await before returning data.",
+      "common_failure_modes": [
+        "Unnecessarily slow code",
+        "Race where result is used before ready",
+        "Partial failure behavior surprises"
+      ],
+      "diagnostic_questions": [
+        "Which operations truly depend on earlier results?",
+        "Which promises are started before await?",
+        "Should one failure stop all or report partial results?"
+      ],
+      "tests_or_evidence_needed": [
+        "Measure/constrain order with delayed promises",
+        "Test rejection in each branch",
+        "Assert result not returned early"
+      ],
+      "related_risk_ids": [
+        "js-risk-async-ordering",
+        "js-risk-unhandled-promise-rejection"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.3 async and await"
+        ],
+        "source_basis": "Async/event-driven behavior record concretized in V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-async-error-handling",
+      "async_concept": "async error handling",
+      "runtime_or_environment": "callbacks promises async await events streams",
+      "problem_addressed": "Align error handling with the async abstraction in use.",
+      "behavior_explained": "Synchronous try/catch catches thrown errors in the same call stack. Promise rejections are caught by await/catch. Event and stream errors often use event channels. Callback errors use callback conventions.",
+      "safe_pattern": "Identify the abstraction first, then handle failure at its boundary and convert to the next abstraction deliberately.",
+      "dangerous_pattern": "Putting one broad try/catch around code that starts callbacks/events/promises and assuming all later failures are caught.",
+      "common_failure_modes": [
+        "Lost errors",
+        "Unhandled rejection/event",
+        "Double reporting",
+        "Cleanup skipped"
+      ],
+      "diagnostic_questions": [
+        "Is this failure thrown, rejected, emitted, messaged, or callback-reported?",
+        "Where is cleanup guaranteed?",
+        "Does conversion wrapper handle both success and failure exactly once?"
+      ],
+      "tests_or_evidence_needed": [
+        "Test sync throw, rejected promise, callback error, event error, and cleanup",
+        "Force timeout/network/file failure"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-callback-error-path",
+        "js-risk-stream-lifecycle"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13 Asynchronous JavaScript",
+          "16.4 Events and EventEmitter",
+          "16.5 Streams"
+        ],
+        "source_basis": "Async/event-driven behavior record concretized in V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-async-asynchronous-iteration",
+      "async_concept": "asynchronous iteration",
+      "runtime_or_environment": "ECMAScript async iteration plus host async sources",
+      "problem_addressed": "Process a sequence whose elements arrive asynchronously.",
+      "behavior_explained": "for await...of awaits each next result from an async iterable. Errors during next or yielded promises reject/throw into the loop. Early exit may trigger iterator cleanup.",
+      "safe_pattern": "Use for await for sequential chunk/page processing; wrap loop in try/catch/finally; avoid materializing unbounded streams.",
+      "dangerous_pattern": "Using for...of on async iterable or collecting all chunks before processing unbounded input.",
+      "common_failure_modes": [
+        "TypeError not iterable",
+        "Memory spike",
+        "Error escapes unhandled",
+        "Cleanup not performed"
+      ],
+      "diagnostic_questions": [
+        "Is the source async iterable or ordinary iterable?",
+        "Can the sequence be unbounded?",
+        "What happens on break or error?"
+      ],
+      "tests_or_evidence_needed": [
+        "Test empty, multiple chunks, delayed chunks, thrown error, and early break",
+        "Verify cleanup/close behavior"
+      ],
+      "related_risk_ids": [
+        "js-risk-async-ordering",
+        "js-risk-stream-lifecycle"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.4 Asynchronous Iteration"
+        ],
+        "source_basis": "Async/event-driven behavior record concretized in V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-async-timers",
+      "async_concept": "timers",
+      "runtime_or_environment": "browser and Node host APIs",
+      "problem_addressed": "Schedule work after a delay or repeatedly.",
+      "behavior_explained": "Timer APIs are host-provided. They schedule callbacks for later execution; delays are not precise guarantees of exact execution time, and ordering with other events/promises depends on host event loop behavior.",
+      "safe_pattern": "Keep timer callbacks idempotent; clear timers when lifecycle ends; test with fake timers where appropriate.",
+      "dangerous_pattern": "Using setTimeout as a synchronization guarantee for network/DOM/stream completion.",
+      "common_failure_modes": [
+        "Race condition",
+        "Work runs after component/request closed",
+        "Flaky tests"
+      ],
+      "diagnostic_questions": [
+        "What condition is the timer standing in for?",
+        "Who clears the timer?",
+        "Could callback run after state is invalid?"
+      ],
+      "tests_or_evidence_needed": [
+        "Fake timer tests",
+        "Unmount/cleanup test",
+        "Delayed network/event interleaving test"
+      ],
+      "related_risk_ids": [
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.10 Timers"
+        ],
+        "source_basis": "Async/event-driven behavior record concretized in V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-async-browser-events",
+      "async_concept": "browser events",
+      "runtime_or_environment": "browser host APIs",
+      "problem_addressed": "Respond to user, document, network, and platform events.",
+      "behavior_explained": "Event listeners run when the browser dispatches events. Propagation, default actions, listener options, and target/currentTarget shape matter.",
+      "safe_pattern": "Attach listeners at clear lifecycle points; remove them if needed; inspect event target/currentTarget; prevent default only when appropriate.",
+      "dangerous_pattern": "Assuming a handler runs immediately or only once, or assuming event.target is the element the listener was attached to.",
+      "common_failure_modes": [
+        "Duplicate handlers",
+        "Default action still happens or is wrongly prevented",
+        "Wrong element read from event",
+        "Memory leak"
+      ],
+      "diagnostic_questions": [
+        "Where is listener attached and removed?",
+        "Does propagation matter?",
+        "Is target or currentTarget intended?"
+      ],
+      "tests_or_evidence_needed": [
+        "Simulate event bubbling",
+        "Test double initialization",
+        "Test default action and cleanup"
+      ],
+      "related_risk_ids": [
+        "js-risk-async-ordering",
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.2 Events"
+        ],
+        "source_basis": "Async/event-driven behavior record concretized in V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-async-fetch-networking-promises",
+      "async_concept": "fetch and networking promises",
+      "runtime_or_environment": "browser host APIs and environments with compatible APIs only after verification",
+      "problem_addressed": "Handle HTTP/network operations that return promises.",
+      "behavior_explained": "Fetch-style APIs are asynchronous. A fulfilled promise may still represent an HTTP error status depending on the API; network failure, parsing failure, and application-level failure are separate.",
+      "safe_pattern": "Await the response, check status/ok according to API docs, parse body once, and handle abort/timeout policy where supported and verified.",
+      "dangerous_pattern": "Assuming any fulfilled networking promise means usable successful JSON data.",
+      "common_failure_modes": [
+        "UI treats HTTP error page as success",
+        "Body parse throws",
+        "Stale response overwrites newer state",
+        "Unhandled rejection"
+      ],
+      "diagnostic_questions": [
+        "Which environment provides fetch?",
+        "Does this API reject on HTTP status or only network failure?",
+        "What prevents stale result use?"
+      ],
+      "tests_or_evidence_needed": [
+        "Mock HTTP 200, 400/500, malformed JSON, network failure, slow response, and aborted request",
+        "Verify current platform docs"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-async-ordering",
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.11 Networking"
+        ],
+        "source_basis": "Async/event-driven behavior record concretized in V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-async-node-eventemitter",
+      "async_concept": "Node EventEmitter",
+      "runtime_or_environment": "Node host APIs",
+      "problem_addressed": "Coordinate event-driven Node APIs.",
+      "behavior_explained": "EventEmitter-style APIs call listeners for named events. Error events and listener lifecycle are critical and current Node behavior must be verified for details.",
+      "safe_pattern": "Handle error events, remove listeners when lifecycle ends, and document event ordering expectations.",
+      "dangerous_pattern": "Listening only for data/success events and ignoring error/close/end events.",
+      "common_failure_modes": [
+        "Unhandled error event",
+        "Memory leak warning",
+        "Out-of-order state transitions"
+      ],
+      "diagnostic_questions": [
+        "Which events mark data, completion, error, and close?",
+        "Can listeners be added repeatedly?",
+        "Is ordering documented?"
+      ],
+      "tests_or_evidence_needed": [
+        "Emit data/error/end in tests",
+        "Check listener count after cleanup",
+        "Verify current Node docs"
+      ],
+      "related_risk_ids": [
+        "js-risk-callback-error-path",
+        "js-risk-stream-lifecycle"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 16,
+        "chapter_title": "Server-Side JavaScript with Node",
+        "sections": [
+          "16.4 Events and EventEmitter"
+        ],
+        "source_basis": "Async/event-driven behavior record concretized in V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-async-node-streams",
+      "async_concept": "Node streams",
+      "runtime_or_environment": "Node host APIs",
+      "problem_addressed": "Process large or incremental data without buffering everything.",
+      "behavior_explained": "Streams emit or consume chunks over time and have lifecycle, backpressure, error, and completion semantics.",
+      "safe_pattern": "Use lifecycle-aware helpers where available and verified; handle error and completion; choose object/binary/text mode deliberately.",
+      "dangerous_pattern": "Concatenating all chunks by default or assuming data event means complete data.",
+      "common_failure_modes": [
+        "Truncated data",
+        "Memory blowup",
+        "Unhandled error",
+        "Write completes before data flushed"
+      ],
+      "diagnostic_questions": [
+        "Is input bounded?",
+        "Which event or promise indicates completion?",
+        "How are errors handled?",
+        "Is backpressure respected?"
+      ],
+      "tests_or_evidence_needed": [
+        "Large input test",
+        "Injected stream error",
+        "Slow consumer test",
+        "Completion assertion"
+      ],
+      "related_risk_ids": [
+        "js-risk-stream-lifecycle",
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 16,
+        "chapter_title": "Server-Side JavaScript with Node",
+        "sections": [
+          "16.5 Streams"
+        ],
+        "source_basis": "Async/event-driven behavior record concretized in V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-async-worker-messaging",
+      "async_concept": "worker messaging",
+      "runtime_or_environment": "browser workers and Node worker threads after current verification",
+      "problem_addressed": "Move work across threads/process-like boundaries using messages.",
+      "behavior_explained": "Worker APIs communicate through message events or ports. Values crossing the boundary follow host cloning/transfer rules; code does not share ordinary object identity.",
+      "safe_pattern": "Define message schemas, correlate requests/responses, handle error/exit/termination, and verify current worker API details.",
+      "dangerous_pattern": "Mutating an object after sending it and expecting the worker/main side to see the mutation.",
+      "common_failure_modes": [
+        "Lost update",
+        "Unsupported value transfer failure",
+        "Dangling worker",
+        "Response applied to wrong request"
+      ],
+      "diagnostic_questions": [
+        "What values cross the boundary?",
+        "How are errors and exits reported?",
+        "How are requests correlated?"
+      ],
+      "tests_or_evidence_needed": [
+        "Round-trip message schema test",
+        "Large payload test",
+        "Worker error/termination test",
+        "Verify current browser/Node docs"
+      ],
+      "related_risk_ids": [
+        "js-risk-worker-message-boundary",
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.13 Worker Threads and Messaging",
+          "16.11 Worker Threads"
+        ],
+        "source_basis": "Async/event-driven behavior record concretized in V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    }
+  ],
+  "async_integrity_policy": {
+    "async_await_note": "async/await improves readability for Promise flows but does not solve cancellation, ordering, unhandled rejections, callback errors, stream lifecycle, or worker message boundaries by itself.",
+    "required_failure_paths": [
+      "Promise rejection",
+      "callback error",
+      "await ordering",
+      "async iteration error",
+      "timer/event ordering",
+      "fetch/networking failure",
+      "Node EventEmitter error",
+      "Node stream error",
+      "worker message/error/termination"
+    ]
+  }
+}

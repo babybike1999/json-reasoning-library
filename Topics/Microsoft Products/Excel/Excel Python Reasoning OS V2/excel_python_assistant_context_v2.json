@@ -1,0 +1,4272 @@
+{
+  "context_name": "excel_python_assistant_context_v2",
+  "version": "v2",
+  "created_utc": "2026-06-19T22:19:55Z",
+  "target_use": "Compact active-use context for Claude, ChatGPT, and coding agents handling Excel-heavy business workflows.",
+  "authority_order": [
+    "original_uploaded_books",
+    "current_v2_canonical_records",
+    "current verification docs/policies",
+    "general reasoning"
+  ],
+  "must_follow_rules": [
+    "Inspect before modifying; create a backup before editing any workbook.",
+    "Do not treat blanks as zero, formatting as value, filters as full data, or hidden sheets as irrelevant.",
+    "Do not invent company-specific formulas, thresholds, mappings, API schemas, or accounting policy.",
+    "Prefer Excel-native methods for transparent low-complexity work; use Python-in-Excel only when it adds clear value and current availability/privacy are verified.",
+    "Do not use Python-in-Excel for credentialed API calls, unattended scheduled jobs, or backend production workflows."
+  ],
+  "tool_choice_digest": [
+    {
+      "id": "decision-simple-formula-vs-python",
+      "decision": "Simple formula versus Python-in-Excel",
+      "default": "Use an Excel formula/Table/PivotTable unless Python materially improves clarity, repeatability, or diagnostics.",
+      "excel": [
+        "calculation is row/column local",
+        "nontechnical users must edit/audit it"
+      ],
+      "python_in_excel": [
+        "multi-column profiling, DataFrame cleaning, or statistical visualization is clearer in Python",
+        "logic is exploratory and workbook-bound"
+      ],
+      "external_python": [
+        "calculation must run unattended or be version-controlled as code",
+        "custom packages/files/API calls are required"
+      ]
+    },
+    {
+      "id": "decision-pivottable-vs-pandas",
+      "decision": "PivotTable versus pandas groupby",
+      "default": "Use PivotTable for interactive business slicing; use pandas when deterministic code, cleaning, or exception output is needed.",
+      "excel": [
+        "business users need drag/drop/filter interaction",
+        "summary can be validated by pivot totals"
+      ],
+      "python_in_excel": [
+        "groupby logic should be explicit and reproducible",
+        "summary follows Python cleaning/merge step"
+      ],
+      "external_python": [
+        "dataset is large, scheduled, or part of automated pipeline"
+      ]
+    },
+    {
+      "id": "decision-excel-chart-vs-python-chart",
+      "decision": "Excel chart versus Python chart",
+      "default": "Use Excel/PivotChart for standard business charts; use Python for statistical/custom visuals.",
+      "excel": [
+        "bar/line/pie/standard dashboard visual is enough",
+        "nontechnical user must modify chart"
+      ],
+      "python_in_excel": [
+        "distribution, scatter/regression, faceting, or custom statistical visualization is needed",
+        "source DataFrame already exists in Python-in-Excel"
+      ],
+      "external_python": [
+        "visual is generated in scheduled report or requires custom package/output control"
+      ]
+    },
+    {
+      "id": "decision-power-query-vs-python-in-excel",
+      "decision": "Power Query versus Python-in-Excel",
+      "default": "Use Power Query for import/shape/load; use Python-in-Excel after data is in workbook and validated.",
+      "excel": [
+        "data already resides in workbook tables",
+        "transformation is formula/PivotTable-friendly"
+      ],
+      "python_in_excel": [
+        "analysis on loaded table benefits from pandas/statistical libraries"
+      ],
+      "external_python": [
+        "custom credentials/API/network/file automation required",
+        "pipeline must run without workbook session"
+      ]
+    },
+    {
+      "id": "decision-python-in-excel-vs-external-script",
+      "decision": "Python-in-Excel versus external Python script",
+      "default": "Use Python-in-Excel for interactive workbook-bound analysis; use external Python for production, custom IO, or orchestration.",
+      "excel": [
+        "workbook formulas/pivots are enough"
+      ],
+      "python_in_excel": [
+        "analysis is interactive, data is already in Excel, and output must remain in workbook",
+        "supported packages are enough"
+      ],
+      "external_python": [
+        "needs local files, APIs, credentials, scheduled execution, tests, CI/CD, or custom packages"
+      ]
+    },
+    {
+      "id": "decision-manual-workbook-vs-repeatable-pipeline",
+      "decision": "Manual workbook versus repeatable pipeline",
+      "default": "Keep manual workbook only when volume is low and controls are explicit; move to pipeline when repetition and risk grow.",
+      "excel": [
+        "one-time or low-risk report",
+        "human judgment is central"
+      ],
+      "python_in_excel": [
+        "analyst needs embedded exploratory checks before human signoff"
+      ],
+      "external_python": [
+        "same workflow repeats on schedule, consumes multiple files, or needs alerts/logging"
+      ]
+    },
+    {
+      "id": "decision-human-edited-vs-locked-template",
+      "decision": "Human-edited report versus locked template",
+      "default": "Use protected formulas and explicit input zones; leave edits open only where review judgment is intended.",
+      "excel": [
+        "users need to enter assumptions or comments in designated cells",
+        "formulas are simple and protected"
+      ],
+      "python_in_excel": [
+        "analyst-owned Python checks support template validation, not casual editing"
+      ],
+      "external_python": [
+        "template generation/versioning is automated outside Excel"
+      ]
+    },
+    {
+      "id": "decision-accounting-review-vs-exploratory",
+      "decision": "Accounting review versus exploratory analysis",
+      "default": "Use conservative Excel controls with documented assumptions; allow Python only as a review aid unless approved.",
+      "excel": [
+        "numbers must be auditable by accounting users",
+        "formula lineage and manual overrides must be visible"
+      ],
+      "python_in_excel": [
+        "Python produces reconciliation exceptions or profiling summaries, not the sole official value"
+      ],
+      "external_python": [
+        "official calculations require governed code/tests/logs outside workbook"
+      ]
+    },
+    {
+      "id": "decision-small-vs-large-dataset",
+      "decision": "Small dataset versus large dataset",
+      "default": "Use Excel/PivotTable for small clean tables; use Power Query/external Python/database for larger or repeatable data.",
+      "excel": [
+        "data fits comfortably in workbook and recalculation is fast",
+        "business users need interactive pivots"
+      ],
+      "python_in_excel": [
+        "moderate table benefits from pandas profiling or visualization in workbook"
+      ],
+      "external_python": [
+        "large files, many joins, long calculations, or memory-heavy modeling are required"
+      ]
+    },
+    {
+      "id": "decision-api-upload-workflow",
+      "decision": "API upload workflow",
+      "default": "Use Excel as staging/validation only; use approved external automation for authenticated API submission.",
+      "excel": [
+        "template produces validated upload table for manual controlled upload"
+      ],
+      "python_in_excel": [
+        "Python-in-Excel helps validate schema/duplicates before handoff"
+      ],
+      "external_python": [
+        "API calls, tokens, retries, logging, and scheduling are required"
+      ]
+    },
+    {
+      "id": "decision-scheduled-workflow",
+      "decision": "Scheduled workflow",
+      "default": "Use external scheduler/orchestration, not Python-in-Excel.",
+      "excel": [
+        "none except workbook generated for human review after schedule"
+      ],
+      "python_in_excel": [
+        "only for analyst preview before productionizing"
+      ],
+      "external_python": [
+        "unattended timing, logging, retries, alerting, and environment control are required"
+      ]
+    },
+    {
+      "id": "decision-credentialed-workflow",
+      "decision": "Credentialed workflow",
+      "default": "Keep credentials out of workbook cells; use approved connector, Power Query credential store, or external service.",
+      "excel": [
+        "manual export/import avoids credentials in workbook"
+      ],
+      "python_in_excel": [
+        "Python-in-Excel can analyze already-imported non-secret data"
+      ],
+      "external_python": [
+        "secrets, API clients, local/network files, or secure vault access are required"
+      ]
+    },
+    {
+      "id": "decision-multi-user-workflow",
+      "decision": "Multi-user workflow",
+      "default": "Use locked templates, controlled input zones, and tool choices available to all users.",
+      "excel": [
+        "shared report uses protected formulas/pivots and standard Excel features"
+      ],
+      "python_in_excel": [
+        "all required users have Python-in-Excel and governance approval; Python cells are analyst-maintained"
+      ],
+      "external_python": [
+        "backend processing is shared, audited, or needs role-based access"
+      ]
+    },
+    {
+      "id": "decision-executive-dashboard",
+      "decision": "Executive dashboard",
+      "default": "Use validated source tables, pivots/charts, and explicit refresh/status indicators; keep Python behind review tabs when used.",
+      "excel": [
+        "standard KPI cards/charts and slicers meet the need",
+        "refresh status and filters are visible"
+      ],
+      "python_in_excel": [
+        "Python supplies validated advanced visual or statistical insight with caveats"
+      ],
+      "external_python": [
+        "dashboard is regenerated/distributed automatically or pulls from enterprise systems"
+      ]
+    },
+    {
+      "id": "decision-nontechnical-user-template",
+      "decision": "Nontechnical-user template",
+      "default": "Prefer Excel Tables, protected formulas, validation gates, and clear instructions; avoid Python cells unless hidden from routine operation and supported.",
+      "excel": [
+        "user enters/export data and refreshes standard pivots",
+        "formulas are protected and explainable"
+      ],
+      "python_in_excel": [
+        "analyst-only validation tab is available and documented"
+      ],
+      "external_python": [
+        "template generation, complex validation, or upload creation must be governed"
+      ]
+    }
+  ],
+  "top_reusable_risks": [
+    {
+      "id": "excel-risk-blank-vs-zero",
+      "risk": "Blank values are not the same as zero values",
+      "rule": "Check whether blanks mean unknown, not applicable, not yet entered, or a valid zero before aggregation.",
+      "inspect": [
+        "count blanks and zeros separately",
+        "inspect formulas that coerce blanks to zero",
+        "document the organization rule for missing values"
+      ]
+    },
+    {
+      "id": "excel-risk-percent-convention",
+      "risk": "Percent convention ambiguity",
+      "rule": "Validate whether percent fields are decimals, whole percents, or text with % symbols before formulas or uploads.",
+      "inspect": [
+        "profile min/max values",
+        "check number formats against raw values",
+        "require a documented convention for every percent field"
+      ]
+    },
+    {
+      "id": "excel-risk-hidden-sheets",
+      "risk": "Hidden sheet dependency",
+      "rule": "Unhide or inspect hidden/very hidden sheets before changing formulas, deleting sheets, or trusting workbook outputs.",
+      "inspect": [
+        "list hidden sheets",
+        "map formulas that reference hidden sheets",
+        "flag unexpected hidden sheet changes"
+      ]
+    },
+    {
+      "id": "excel-risk-formula-drift",
+      "risk": "Formula drift across repeated rows or periods",
+      "rule": "Compare formulas by R1C1 pattern across expected formula bands and period columns.",
+      "inspect": [
+        "extract formula patterns",
+        "compare against template rows",
+        "highlight manual constants in formula zones"
+      ]
+    },
+    {
+      "id": "excel-risk-stale-pivot-cache",
+      "risk": "Stale PivotTable cache",
+      "rule": "Verify source range/table and refresh state before relying on pivot output.",
+      "inspect": [
+        "check source range or table name",
+        "refresh after source changes",
+        "compare pivot totals to source totals"
+      ]
+    },
+    {
+      "id": "excel-risk-merged-cells",
+      "risk": "Merged cells in import ranges",
+      "rule": "Remove or isolate merged cells from machine-readable source and upload ranges.",
+      "inspect": [
+        "scan import rectangles for merged cells",
+        "convert report layouts into normalized tables",
+        "keep merged cells only in presentation zones"
+      ]
+    },
+    {
+      "id": "excel-risk-external-links",
+      "risk": "External links may be stale, broken, or unauthorized",
+      "rule": "Inventory external links and confirm each expected source before refresh or distribution.",
+      "inspect": [
+        "list workbook links",
+        "validate link path and owner",
+        "replace ad hoc links with controlled imports when needed"
+      ]
+    },
+    {
+      "id": "excel-risk-manual-overrides",
+      "risk": "Manual overrides can hide broken formulas or policy exceptions",
+      "rule": "Separate manual input zones from formulas and require override documentation.",
+      "inspect": [
+        "scan formulas vs constants in protected zones",
+        "compare overrides to audit trail",
+        "require reason/date/approver for overrides"
+      ]
+    },
+    {
+      "id": "excel-risk-date-serials",
+      "risk": "Date serial and text-date ambiguity",
+      "rule": "Parse and validate dates before grouping, week-ending checks, or uploads.",
+      "inspect": [
+        "check data type and display format",
+        "test min/max and unexpected serials",
+        "verify week-ending rules"
+      ]
+    },
+    {
+      "id": "excel-risk-currency-format-vs-value",
+      "risk": "Currency format is not numeric value",
+      "rule": "Confirm currency fields are numeric and formats are presentation-only.",
+      "inspect": [
+        "check ISNUMBER-equivalent",
+        "strip text currency only in clean layer",
+        "compare totals before and after coercion"
+      ]
+    },
+    {
+      "id": "excel-risk-chart-without-data-validation",
+      "risk": "Chart built from unvalidated data",
+      "rule": "Validate source range, grain, missing values, axis scales, and filters before publishing charts.",
+      "inspect": [
+        "trace chart source data",
+        "inspect hidden/filtered rows",
+        "check axis and aggregation"
+      ]
+    },
+    {
+      "id": "excel-risk-named-range-broken",
+      "risk": "Broken or ambiguous named ranges",
+      "rule": "Resolve and document names used by formulas, charts, pivots, and upload templates.",
+      "inspect": [
+        "list names and refers-to ranges",
+        "test formulas using names",
+        "flag names referring to errors or deleted sheets"
+      ]
+    },
+    {
+      "id": "excel-risk-filtered-rows",
+      "risk": "Filtered rows can conceal data in review",
+      "rule": "Record active filters and compare visible-only and full-range totals when reviewing outputs.",
+      "inspect": [
+        "list active filters",
+        "clear or document filters before signoff",
+        "compare SUBTOTAL/AGGREGATE vs SUM behavior"
+      ]
+    },
+    {
+      "id": "excel-risk-duplicate-keys",
+      "risk": "Duplicate keys in supposed unique grain",
+      "rule": "Validate uniqueness at the intended grain before lookup, merge, pivot, or upload.",
+      "inspect": [
+        "count key duplicates",
+        "identify exact duplicate rows separately from duplicate business keys",
+        "require dedupe rule before aggregation"
+      ]
+    },
+    {
+      "id": "excel-risk-stale-refresh-timestamp",
+      "risk": "Missing or stale refresh timestamp",
+      "rule": "Require a refresh log with source, timestamp, operator, and row counts for repeatable reports.",
+      "inspect": [
+        "check refresh timestamp",
+        "compare expected period to extract period",
+        "block upload when timestamp is stale"
+      ]
+    },
+    {
+      "id": "python-excel-risk-cloud-execution",
+      "risk": "Python in Excel cloud execution boundary",
+      "rule": "Verify tenant/subscription/channel support and privacy requirements before using Python in Excel.",
+      "inspect": [
+        "confirm feature availability",
+        "confirm workbook data may be processed in the supported cloud boundary",
+        "avoid relying on local files or local network access"
+      ]
+    },
+    {
+      "id": "python-excel-risk-package-availability",
+      "risk": "Python package availability is curated",
+      "rule": "Check whether required libraries are available; use external Python when a custom package or system dependency is required.",
+      "inspect": [
+        "review imports",
+        "replace unavailable libraries with supported ones",
+        "document package assumptions"
+      ]
+    },
+    {
+      "id": "python-excel-risk-privacy-boundary",
+      "risk": "Python in Excel privacy and network boundary",
+      "rule": "Do not place secrets, API tokens, or network-dependent workflows in Python-in-Excel cells.",
+      "inspect": [
+        "scan Python code for credentials",
+        "avoid network IO expectations",
+        "route credentialed workflows to approved external systems"
+      ]
+    },
+    {
+      "id": "python-excel-risk-performance",
+      "risk": "Python in Excel performance and compute limits",
+      "rule": "Profile row counts and calculation dependencies before embedding Python in active workbooks.",
+      "inspect": [
+        "estimate data volume",
+        "avoid repeated expensive cells",
+        "prefer Power Query/external Python for large scheduled transforms"
+      ]
+    },
+    {
+      "id": "python-excel-risk-not-production-scheduler",
+      "risk": "Python in Excel is not a production scheduler",
+      "rule": "Use external Python, BI platform refresh, or approved orchestration for unattended production work.",
+      "inspect": [
+        "identify unattended requirements",
+        "identify failure notification needs",
+        "move scheduled/API jobs outside workbook"
+      ]
+    },
+    {
+      "id": "python-excel-risk-xl-reference-shape",
+      "risk": "xl() reference shape mismatch",
+      "rule": "Check the returned object shape before cleaning, merging, or plotting.",
+      "inspect": [
+        "inspect type and shape",
+        "use explicit table references when possible",
+        "validate headers and indexes"
+      ]
+    },
+    {
+      "id": "python-excel-risk-spill-output",
+      "risk": "Python output spill or object/value mismatch",
+      "rule": "Choose Python object vs Excel value deliberately and reserve spill ranges.",
+      "inspect": [
+        "inspect return type",
+        "clear spill range",
+        "test downstream Excel formulas"
+      ]
+    }
+  ],
+  "critical_gates_digest": [
+    {
+      "id": "dqg-required-sheet-exists",
+      "gate": "Required sheet exists",
+      "blocking_condition": "Required sheet missing.",
+      "agent_check": "List sheets and compare to contract before editing."
+    },
+    {
+      "id": "dqg-required-table-exists",
+      "gate": "Required table exists",
+      "blocking_condition": "Required table missing or empty.",
+      "agent_check": "Inventory table names and row/column counts."
+    },
+    {
+      "id": "dqg-required-column-exists",
+      "gate": "Required column exists",
+      "blocking_condition": "Required column absent or duplicated.",
+      "agent_check": "Compare headers to contract and do not invent fields."
+    },
+    {
+      "id": "dqg-date-column-parses",
+      "gate": "Date column parses",
+      "blocking_condition": "Unparsed required date value exists.",
+      "agent_check": "Profile raw types, parse failures, and min/max dates."
+    },
+    {
+      "id": "dqg-week-ending-matches-period",
+      "gate": "Week-ending date matches expected period",
+      "blocking_condition": "Any required row outside expected week-ending date.",
+      "agent_check": "Read control period and compare every row."
+    },
+    {
+      "id": "dqg-percent-convention-known",
+      "gate": "Percent convention is known",
+      "blocking_condition": "Mixed convention detected in same field.",
+      "agent_check": "Do not calculate with percent fields until convention is documented."
+    },
+    {
+      "id": "dqg-currency-values-numeric",
+      "gate": "Currency values are numeric",
+      "blocking_condition": "Required amount has nonnumeric text.",
+      "agent_check": "Test numeric coercion and preserve raw extract."
+    },
+    {
+      "id": "dqg-no-formula-errors-output",
+      "gate": "No formula errors in output range",
+      "blocking_condition": "Any blocking error in required output range.",
+      "agent_check": "Scan outputs after refresh/recalc and before saving final."
+    },
+    {
+      "id": "dqg-hidden-sheets-unchanged",
+      "gate": "Hidden sheets unexpectedly changed",
+      "blocking_condition": "Hidden sheet created/deleted/changed in protected workbook.",
+      "agent_check": "Inventory hidden sheets before/after modifications."
+    },
+    {
+      "id": "dqg-no-merged-cells-import-range",
+      "gate": "No merged cells in import range",
+      "blocking_condition": "Merged cell intersects required table/import range.",
+      "agent_check": "Scan import rectangles for merged cells before table conversion."
+    },
+    {
+      "id": "dqg-no-duplicate-metric-ids",
+      "gate": "No duplicate metric IDs",
+      "blocking_condition": "Duplicate required unique key exists.",
+      "agent_check": "Validate grain before pivot, merge, or upload."
+    },
+    {
+      "id": "dqg-blank-required-keys",
+      "gate": "No blank required keys",
+      "blocking_condition": "Blank required key exists.",
+      "agent_check": "Reject blanks before formulas/joins."
+    },
+    {
+      "id": "dqg-stale-refresh-timestamp",
+      "gate": "No stale refresh timestamp",
+      "blocking_condition": "Missing timestamp or older than configured maximum.",
+      "agent_check": "Require source/time/row count in refresh log."
+    },
+    {
+      "id": "dqg-pivot-cache-refreshed",
+      "gate": "Pivot cache refreshed",
+      "blocking_condition": "Pivot totals do not equal source totals after refresh.",
+      "agent_check": "Inspect pivot source and refresh before trusting output."
+    },
+    {
+      "id": "dqg-named-range-resolves",
+      "gate": "Named range resolves",
+      "blocking_condition": "Name points to #REF! or missing sheet.",
+      "agent_check": "Resolve every contract name before modifying workbook."
+    },
+    {
+      "id": "dqg-external-links-expected",
+      "gate": "External links are expected",
+      "blocking_condition": "Unknown external link exists in final workbook.",
+      "agent_check": "Inventory links and confirm each is expected."
+    },
+    {
+      "id": "dqg-manual-overrides-documented",
+      "gate": "Manual override cells documented",
+      "blocking_condition": "Constant found where formula required and no override log.",
+      "agent_check": "Detect constants in formula zones and cross-check audit trail."
+    },
+    {
+      "id": "dqg-python-output-spill-safe",
+      "gate": "Python output spill range safe",
+      "blocking_condition": "Spill blocked in output zone.",
+      "agent_check": "Reserve ranges and test return shape."
+    },
+    {
+      "id": "dqg-python-cell-review-required",
+      "gate": "Python cell reviewed",
+      "blocking_condition": "PY cell affects output and lacks review note.",
+      "agent_check": "List PY cells before final save."
+    },
+    {
+      "id": "dqg-row-count-reconciles",
+      "gate": "Row count reconciles across stages",
+      "blocking_condition": "Unexplained row count change between stages.",
+      "agent_check": "Capture row counts for every transformation step."
+    },
+    {
+      "id": "dqg-upload-schema-contract",
+      "gate": "Upload schema matches contract",
+      "blocking_condition": "Missing/extra required field or invalid type.",
+      "agent_check": "Validate schema before creating upload file."
+    },
+    {
+      "id": "dqg-control-sheet-complete",
+      "gate": "Control sheet complete",
+      "blocking_condition": "Required control field blank.",
+      "agent_check": "Read control sheet before analysis."
+    },
+    {
+      "id": "dqg-chart-source-validated",
+      "gate": "Chart source validated",
+      "blocking_condition": "Chart source cannot be traced or fails source gate.",
+      "agent_check": "Trace every chart before publishing."
+    },
+    {
+      "id": "dqg-protected-zones-intact",
+      "gate": "Protected formula zones intact",
+      "blocking_condition": "Formula in protected zone changed without approval.",
+      "agent_check": "Compare against template before delivery."
+    }
+  ],
+  "workflow_digest": [
+    {
+      "id": "aiwf-inspect-unknown-workbook",
+      "workflow": "Inspect unknown workbook",
+      "preconditions": [
+        "Workbook file is available; no edits have been made."
+      ],
+      "dangerous_actions": [
+        "saving over original",
+        "deleting hidden sheets",
+        "refreshing external links before understanding credentials"
+      ],
+      "completion": [
+        "inventory and no-edit status documented"
+      ]
+    },
+    {
+      "id": "aiwf-create-workbook-backup",
+      "workflow": "Create workbook backup",
+      "preconditions": [
+        "Original workbook exists and edit is requested."
+      ],
+      "dangerous_actions": [
+        "renaming original as working file without backup",
+        "compressing/altering workbook before copy"
+      ],
+      "completion": [
+        "backup exists and original untouched"
+      ]
+    },
+    {
+      "id": "aiwf-extract-workbook-contract",
+      "workflow": "Extract workbook contract",
+      "preconditions": [
+        "Workbook has been inspected."
+      ],
+      "dangerous_actions": [
+        "inventing business rules not present",
+        "assuming hidden sheets irrelevant"
+      ],
+      "completion": [
+        "contract can drive validation gates"
+      ]
+    },
+    {
+      "id": "aiwf-validate-upload-workbook",
+      "workflow": "Validate upload workbook",
+      "preconditions": [
+        "Workbook contract and upload target schema are known."
+      ],
+      "dangerous_actions": [
+        "uploading from raw/report sheet",
+        "fixing by changing values without source owner approval"
+      ],
+      "completion": [
+        "ready-to-upload table is validated and documented"
+      ]
+    },
+    {
+      "id": "aiwf-repair-formulas-safely",
+      "workflow": "Repair formulas safely",
+      "preconditions": [
+        "Backup exists; formula issue identified."
+      ],
+      "dangerous_actions": [
+        "global find/replace without scope",
+        "overwriting constants that are legitimate inputs",
+        "editing protected formulas without log"
+      ],
+      "completion": [
+        "all affected formulas explained and validated"
+      ]
+    },
+    {
+      "id": "aiwf-compare-two-workbook-versions",
+      "workflow": "Compare two workbook versions",
+      "preconditions": [
+        "Two workbook files are available."
+      ],
+      "dangerous_actions": [
+        "treating formatting-only changes as harmless when formulas moved",
+        "ignoring hidden sheets"
+      ],
+      "completion": [
+        "differences explained or escalated"
+      ]
+    },
+    {
+      "id": "aiwf-detect-formula-drift",
+      "workflow": "Detect formula drift",
+      "preconditions": [
+        "Workbook has repeated formula zones or template rows."
+      ],
+      "dangerous_actions": [
+        "filling formulas over intentional overrides",
+        "ignoring table calculated columns"
+      ],
+      "completion": [
+        "drift either repaired or approved as override"
+      ]
+    },
+    {
+      "id": "aiwf-detect-hidden-sheet-dependency",
+      "workflow": "Detect hidden-sheet dependency",
+      "preconditions": [
+        "Workbook may contain hidden sheets."
+      ],
+      "dangerous_actions": [
+        "deleting/unhiding permanently without owner approval",
+        "assuming hidden means irrelevant"
+      ],
+      "completion": [
+        "dependency understood and no unreviewed changes remain"
+      ]
+    },
+    {
+      "id": "aiwf-validate-percent-conventions",
+      "workflow": "Validate percent conventions",
+      "preconditions": [
+        "Workbook has percent/rate fields."
+      ],
+      "dangerous_actions": [
+        "blindly dividing/multiplying all percent fields",
+        "trusting formatting only"
+      ],
+      "completion": [
+        "conventions documented and formulas consistent"
+      ]
+    },
+    {
+      "id": "aiwf-validate-date-week-periods",
+      "workflow": "Validate date/week periods",
+      "preconditions": [
+        "Workbook has date/period/week fields."
+      ],
+      "dangerous_actions": [
+        "assuming file name period is correct",
+        "treating text dates as valid"
+      ],
+      "completion": [
+        "date period is validated against control sheet"
+      ]
+    },
+    {
+      "id": "aiwf-convert-manual-report-to-template",
+      "workflow": "Convert manual report into template",
+      "preconditions": [
+        "Manual report pattern repeats and business owner can define required fields."
+      ],
+      "dangerous_actions": [
+        "automating before definitions are approved",
+        "preserving broken manual logic as official"
+      ],
+      "completion": [
+        "repeatable template passes test period"
+      ]
+    },
+    {
+      "id": "aiwf-build-accounting-upload-file",
+      "workflow": "Build Accounting-friendly upload file",
+      "preconditions": [
+        "Upload schema and accounting rules are provided."
+      ],
+      "dangerous_actions": [
+        "inventing account mappings or formulas",
+        "uploading from presentation tab"
+      ],
+      "completion": [
+        "Accounting can review and upload without hidden transformations"
+      ]
+    },
+    {
+      "id": "aiwf-prepare-workbook-data-for-api-upload",
+      "workflow": "Prepare workbook data for API upload",
+      "preconditions": [
+        "API contract/schema is known; credentials are not stored in workbook."
+      ],
+      "dangerous_actions": [
+        "placing API tokens in workbook",
+        "using Python-in-Excel for network calls"
+      ],
+      "completion": [
+        "data is ready for external upload process"
+      ]
+    },
+    {
+      "id": "aiwf-review-python-in-excel-cell",
+      "workflow": "Review Python-in-Excel cell",
+      "preconditions": [
+        "Workbook contains PY cells."
+      ],
+      "dangerous_actions": [
+        "editing source data to silence Python errors",
+        "leaving unreviewed PY cells in nontechnical template"
+      ],
+      "completion": [
+        "all PY cells reviewed or removed from final workbook"
+      ]
+    },
+    {
+      "id": "aiwf-decide-tooling",
+      "workflow": "Decide Excel versus Python-in-Excel versus external Python",
+      "preconditions": [
+        "Task objective and workbook/user context are known."
+      ],
+      "dangerous_actions": [
+        "choosing Python because it is available",
+        "choosing Excel despite repeated drift/automation failures"
+      ],
+      "completion": [
+        "tool choice prevents overengineering and safety gaps"
+      ]
+    },
+    {
+      "id": "aiwf-create-executive-report",
+      "workflow": "Create executive report",
+      "preconditions": [
+        "Source data and KPI definitions are available."
+      ],
+      "dangerous_actions": [
+        "inventing KPIs/thresholds",
+        "using unvalidated charts",
+        "hiding stale data"
+      ],
+      "completion": [
+        "report is concise, current, and auditable"
+      ]
+    },
+    {
+      "id": "aiwf-create-nontechnical-user-workflow",
+      "workflow": "Create nontechnical-user workflow",
+      "preconditions": [
+        "Workbook will be used by nontechnical users."
+      ],
+      "dangerous_actions": [
+        "leaving Python cells users must debug",
+        "requiring edits in hidden/formula zones"
+      ],
+      "completion": [
+        "nontechnical user can run process safely"
+      ]
+    },
+    {
+      "id": "aiwf-generate-rollback-plan",
+      "workflow": "Generate rollback plan",
+      "preconditions": [
+        "Structural workbook edits, formula repairs, or automation changes are planned."
+      ],
+      "dangerous_actions": [
+        "editing first and planning rollback later",
+        "overwriting backup"
+      ],
+      "completion": [
+        "rollback can be executed by human reviewer"
+      ]
+    }
+  ],
+  "business_application_digest": [
+    {
+      "id": "biz-restaurant365-export-validation",
+      "application": "Restaurant365 export validation",
+      "question": "Is the system export complete, current, typed correctly, and ready for analysis or upload staging?",
+      "required_fields": [
+        "export_timestamp",
+        "location_id",
+        "business_date or week_ending",
+        "account_or_metric_id",
+        "amount or value"
+      ],
+      "lowest_safe": "Excel table + gates + pivot/control totals."
+    },
+    {
+      "id": "biz-weekly-scorecard-workbook",
+      "application": "Weekly scorecard workbook",
+      "question": "What changed this week and which KPIs need management attention?",
+      "required_fields": [
+        "week_ending",
+        "location_id",
+        "metric_id",
+        "metric_value"
+      ],
+      "lowest_safe": "Excel template with protected formulas and pivot/charts."
+    },
+    {
+      "id": "biz-sales-labor-analysis",
+      "application": "Sales and labor analysis",
+      "question": "How do sales, labor hours, and labor cost relate by location/period?",
+      "required_fields": [
+        "date or week_ending",
+        "location_id",
+        "sales_amount",
+        "labor_hours",
+        "labor_cost"
+      ],
+      "lowest_safe": "PivotTable summary with explicit labor % convention."
+    },
+    {
+      "id": "biz-food-cost-analysis",
+      "application": "Food cost analysis",
+      "question": "Are food cost values complete, numeric, and explainable by category/location/period?",
+      "required_fields": [
+        "period",
+        "location_id",
+        "category_or_item",
+        "cost_amount",
+        "sales_amount or denominator field"
+      ],
+      "lowest_safe": "Excel/PivotTable category summary with mapping table."
+    },
+    {
+      "id": "biz-management-cost-analysis",
+      "application": "Management cost analysis",
+      "question": "How do management costs compare to sales, budget, and prior periods?",
+      "required_fields": [
+        "period",
+        "location_id",
+        "cost_category",
+        "cost_amount"
+      ],
+      "lowest_safe": "Excel budget-vs-actual workbook with protected formulas."
+    },
+    {
+      "id": "biz-sevenrooms-guest-satisfaction",
+      "application": "SevenRooms guest satisfaction analysis",
+      "question": "What guest satisfaction themes, ratings, and operational issues need attention?",
+      "required_fields": [
+        "review_date",
+        "location_id",
+        "rating_or_score",
+        "comment_or_tag"
+      ],
+      "lowest_safe": "Excel pivots/charts on exported tags/ratings."
+    },
+    {
+      "id": "biz-ubereats-reviews-analysis",
+      "application": "Uber Eats reviews analysis",
+      "question": "What delivery-review patterns, ratings, and order issues require action?",
+      "required_fields": [
+        "review_date",
+        "location_id",
+        "rating",
+        "review_text or issue_code"
+      ],
+      "lowest_safe": "Excel export validation + pivots."
+    },
+    {
+      "id": "biz-marketing-spend-performance",
+      "application": "Marketing spend and performance analysis",
+      "question": "Which campaigns/channels produced measurable performance relative to spend?",
+      "required_fields": [
+        "period",
+        "campaign_or_channel",
+        "spend_amount",
+        "performance_metric"
+      ],
+      "lowest_safe": "Excel pivot budget/performance report."
+    },
+    {
+      "id": "biz-budget-vs-actual-report",
+      "application": "Budget versus actual report",
+      "question": "Where do actual results differ from budget, and why?",
+      "required_fields": [
+        "period",
+        "location_id",
+        "account_or_metric",
+        "actual_amount",
+        "budget_amount"
+      ],
+      "lowest_safe": "Excel protected budget vs actual template."
+    },
+    {
+      "id": "biz-owner-executive-dashboard",
+      "application": "Owner/executive dashboard",
+      "question": "What is the concise, current state of performance and exceptions?",
+      "required_fields": [
+        "period",
+        "metric_id",
+        "metric_value",
+        "status_or_variance"
+      ],
+      "lowest_safe": "Excel executive tab fed by validated pivots/tables."
+    },
+    {
+      "id": "biz-accounting-upload-template",
+      "application": "Accounting upload template",
+      "question": "Can accounting upload this file without schema, period, or formula errors?",
+      "required_fields": [
+        "upload_period",
+        "account_id",
+        "location_id",
+        "amount",
+        "description_or_memo"
+      ],
+      "lowest_safe": "Excel staging table with strict gates and manual accounting review."
+    },
+    {
+      "id": "biz-api-upload-staging-workbook",
+      "application": "API upload staging workbook",
+      "question": "Is workbook data shaped and validated for an external API handoff without storing credentials?",
+      "required_fields": [
+        "record_id",
+        "operation",
+        "required API fields",
+        "ready_status"
+      ],
+      "lowest_safe": "Excel validates and stages; external system uploads."
+    }
+  ],
+  "architecture_digest": [
+    {
+      "id": "arch-raw-clean-analysis-output",
+      "pattern": "Raw data / clean data / analysis / output separation",
+      "when": "Any workbook with imports, transformations, pivots, or upload outputs.",
+      "agent_rules": [
+        "never edit raw source except to replace whole extract",
+        "place transformations in clean layer"
+      ]
+    },
+    {
+      "id": "arch-control-sheet",
+      "pattern": "Control sheet",
+      "when": "Recurring reports, templates, or upload workbooks.",
+      "agent_rules": [
+        "read control sheet before analysis",
+        "do not infer period from file name alone"
+      ]
+    },
+    {
+      "id": "arch-assumption-sheet",
+      "pattern": "Assumption sheet",
+      "when": "What-if, budget, forecast, Solver, Goal Seek, or scenario models.",
+      "agent_rules": [
+        "do not change hard-coded assumptions inside formulas",
+        "trace every model driver to assumption table"
+      ]
+    },
+    {
+      "id": "arch-mapping-table",
+      "pattern": "Mapping table",
+      "when": "Exports contain system codes that must map to reporting categories.",
+      "agent_rules": [
+        "do not hard-code category labels in formulas",
+        "flag unmapped values instead of silently dropping"
+      ]
+    },
+    {
+      "id": "arch-report-output-sheet",
+      "pattern": "Report output sheet",
+      "when": "Workbook distributes human-readable summary or upload preview.",
+      "agent_rules": [
+        "edit source/analysis layers, not output numbers",
+        "trace any changed output formula before save"
+      ]
+    },
+    {
+      "id": "arch-protected-formula-zone",
+      "pattern": "Protected formula zone",
+      "when": "Templates used by nontechnical users or repeated periods.",
+      "agent_rules": [
+        "backup before unprotecting",
+        "never replace formulas with constants without override record"
+      ]
+    },
+    {
+      "id": "arch-manual-input-zone",
+      "pattern": "Manual input zone",
+      "when": "Users need to enter assumptions, comments, or small adjustments.",
+      "agent_rules": [
+        "do not create new ad hoc input cells",
+        "do not enter values in formula zone"
+      ]
+    },
+    {
+      "id": "arch-error-check-sheet",
+      "pattern": "Error-check sheet",
+      "when": "Workbook has many formulas, uploads, or reviewer handoff.",
+      "agent_rules": [
+        "run after refresh and before final save",
+        "do not hide failing gates"
+      ]
+    },
+    {
+      "id": "arch-refresh-log",
+      "pattern": "Refresh log",
+      "when": "Any workbook pulling system exports, Power Query, pivots, or external links.",
+      "agent_rules": [
+        "do not publish without refresh log",
+        "compare source rows to prior expected period"
+      ]
+    },
+    {
+      "id": "arch-data-dictionary",
+      "pattern": "Data dictionary",
+      "when": "Templates, uploads, and multi-user workbooks with non-obvious fields.",
+      "agent_rules": [
+        "do not invent meanings for undocumented fields",
+        "ask owner when field purpose is unclear"
+      ]
+    },
+    {
+      "id": "arch-metric-definition-table",
+      "pattern": "Metric-definition table",
+      "when": "Scorecards, executive dashboards, or KPI reports.",
+      "agent_rules": [
+        "do not change formula text without metric definition update",
+        "do not infer thresholds"
+      ]
+    },
+    {
+      "id": "arch-executive-summary-tab",
+      "pattern": "Executive summary tab",
+      "when": "Owners/executives need a concise readout.",
+      "agent_rules": [
+        "do not overload with raw tables",
+        "surface caveats and active filters"
+      ]
+    },
+    {
+      "id": "arch-api-staging-sheet",
+      "pattern": "API staging sheet",
+      "when": "Workbook prepares records for API/file upload.",
+      "agent_rules": [
+        "do not upload from raw or report sheets",
+        "do not include secrets or tokens"
+      ]
+    },
+    {
+      "id": "arch-audit-trail",
+      "pattern": "Audit trail sheet",
+      "when": "Workbooks with manual overrides, financial outputs, or multi-user review.",
+      "agent_rules": [
+        "never delete audit records",
+        "link overrides to affected cells"
+      ]
+    },
+    {
+      "id": "arch-version-change-log",
+      "pattern": "Version/change log sheet",
+      "when": "Repeated templates, dashboards, or workbook repairs.",
+      "agent_rules": [
+        "create backup before structural edits",
+        "do not overwrite v1/v2 package files"
+      ]
+    }
+  ],
+  "current_verification_required_for": [
+    {
+      "id": "cvf-python-in-excel-availability",
+      "flag": "Python in Excel availability",
+      "check": "Confirm user tenant/subscription, platform, update channel, and whether PY formulas can be authored/edited."
+    },
+    {
+      "id": "cvf-python-in-excel-cloud-runtime",
+      "flag": "Python in Excel cloud runtime",
+      "check": "Confirm organization allows the workbook data to be processed by Python in Excel cloud runtime."
+    },
+    {
+      "id": "cvf-python-in-excel-network-access",
+      "flag": "Python in Excel network and local access",
+      "check": "Check for pandas.read_csv/read_excel, requests, API tokens, local paths, and network assumptions."
+    },
+    {
+      "id": "cvf-python-in-excel-power-query-import",
+      "flag": "Power Query import boundary for Python in Excel",
+      "check": "Confirm Power Query connection, credentials, refresh behavior, and loaded table name."
+    },
+    {
+      "id": "cvf-python-in-excel-package-set",
+      "flag": "Python package/library availability",
+      "check": "Check current Microsoft/Anaconda package list and test imports in target workbook."
+    },
+    {
+      "id": "cvf-python-in-excel-compute-licensing",
+      "flag": "Python compute and licensing limits",
+      "check": "Confirm standard vs premium compute, calculation mode support, and workbook performance in target tenant."
+    },
+    {
+      "id": "cvf-python-editor-availability",
+      "flag": "Python Editor availability",
+      "check": "Confirm the target user can open the Python Editor or provide alternate review method."
+    },
+    {
+      "id": "cvf-python-in-excel-py-function-return-type",
+      "flag": "PY function return type behavior",
+      "check": "Check return_type, spill behavior, and downstream formula compatibility."
+    },
+    {
+      "id": "cvf-python-in-excel-error-codes",
+      "flag": "Python in Excel error codes",
+      "check": "Check current troubleshoot page when #PYTHON!, #BLOCKED!, or availability errors appear."
+    },
+    {
+      "id": "cvf-python-visualization-libraries",
+      "flag": "Python visualization libraries",
+      "check": "Test Matplotlib/seaborn imports and plot display in target workbook."
+    },
+    {
+      "id": "cvf-copilot-python-in-excel-availability",
+      "flag": "Copilot + Python-in-Excel availability",
+      "check": "Confirm Copilot availability and generated-code review workflow in target tenant."
+    },
+    {
+      "id": "cvf-excel-dynamic-array-functions",
+      "flag": "Modern Excel function availability",
+      "check": "Check target Excel version before using VSTACK, TEXTSPLIT, FILTER, UNIQUE, etc."
+    },
+    {
+      "id": "cvf-organization-accounting-policy",
+      "flag": "Organization accounting/reporting policy",
+      "check": "Confirm metric definitions, account mappings, thresholds, sign conventions, and approval workflow with the business owner."
+    },
+    {
+      "id": "cvf-api-contract-version",
+      "flag": "API/upload contract version",
+      "check": "Verify current schema, required fields, type rules, idempotency keys, and retry/error handling before staging/upload."
+    }
+  ],
+  "routine_upload_recommended_files": [
+    "EXCEL_ASSISTANT_START_HERE_v2.md",
+    "excel_python_assistant_context_v2.json",
+    "excel_agent_workbook_safety_pack_v2.json",
+    "excel_data_quality_gates_v2.json",
+    "excel_vs_python_decision_rules_v2.json",
+    "workbook_architecture_patterns_v2.json",
+    "excel_ai_agent_workflows_v2.json",
+    "excel_business_operations_applications_v2.json",
+    "excel_current_verification_flags_v2.json"
+  ],
+  "canonical_files_for_deeper_lookup": [
+    "excel_data_analysis_reasoning_os_full_v2.json",
+    "excel_data_analysis_source_map_v2.json",
+    "excel_data_analysis_decision_rules_v2.json",
+    "excel_data_analysis_checklists_v2.json",
+    "python_in_excel_reasoning_os_full_v2.json",
+    "python_in_excel_source_map_v2.json",
+    "python_in_excel_decision_rules_v2.json",
+    "python_in_excel_checklists_v2.json",
+    "excel_python_integration_os_v2.json",
+    "excel_vs_python_decision_rules_v2.json",
+    "workbook_architecture_patterns_v2.json",
+    "excel_data_quality_gates_v2.json",
+    "excel_business_operations_applications_v2.json",
+    "excel_ai_agent_workflows_v2.json",
+    "excel_reporting_and_dashboard_design_v2.json",
+    "excel_current_verification_flags_v2.json",
+    "excel_agent_workbook_safety_pack_v2.json",
+    "excel_python_repair_change_log_v2.json",
+    "excel_python_validation_manifest_v2.json",
+    "excel_python_file_index_v2.json"
+  ],
+  "decision_rule_detail_digest": [
+    {
+      "id": "decision-simple-formula-vs-python",
+      "decision_name": "Simple formula versus Python-in-Excel",
+      "context": "A user needs a calculation or transformation in an Excel workbook.",
+      "default": "Use an Excel formula/Table/PivotTable unless Python materially improves clarity, repeatability, or diagnostics.",
+      "excel_when": [
+        "calculation is row/column local",
+        "nontechnical users must edit/audit it",
+        "formula can be tested with adjacent examples"
+      ],
+      "python_in_excel_when": [
+        "multi-column profiling, DataFrame cleaning, or statistical visualization is clearer in Python",
+        "logic is exploratory and workbook-bound",
+        "Python-in-Excel availability is confirmed"
+      ],
+      "external_python_when": [
+        "calculation must run unattended or be version-controlled as code",
+        "custom packages/files/API calls are required"
+      ],
+      "power_query_or_other_when": [
+        "source ingestion or repeatable external-data shaping is the real need"
+      ],
+      "avoid_python": [
+        "formula is transparent and safe",
+        "tenant availability or data privacy is unclear"
+      ],
+      "avoid_excel": [
+        "formula would be copied hundreds of times with drift risk",
+        "complex joins/cleaning obscure auditability"
+      ],
+      "wrong_choice_breaks": [
+        "overengineering with Python makes template unavailable to many users",
+        "overusing formulas creates drift and hidden errors"
+      ],
+      "examples": [
+        "SUMIFS scorecard metric: Excel",
+        "multi-column null/duplicate profile: Python-in-Excel",
+        "nightly report pipeline: external Python"
+      ],
+      "risk_ids": [
+        "excel-risk-formula-drift",
+        "python-excel-risk-cloud-execution"
+      ]
+    },
+    {
+      "id": "decision-pivottable-vs-pandas",
+      "decision_name": "PivotTable versus pandas groupby",
+      "context": "A table must be summarized by dimensions and measures.",
+      "default": "Use PivotTable for interactive business slicing; use pandas when deterministic code, cleaning, or exception output is needed.",
+      "excel_when": [
+        "business users need drag/drop/filter interaction",
+        "summary can be validated by pivot totals",
+        "source is already a clean table"
+      ],
+      "python_in_excel_when": [
+        "groupby logic should be explicit and reproducible",
+        "summary follows Python cleaning/merge step",
+        "exceptions and row counts must be output"
+      ],
+      "external_python_when": [
+        "dataset is large, scheduled, or part of automated pipeline"
+      ],
+      "power_query_or_other_when": [
+        "data must be imported/transformed from external systems first"
+      ],
+      "avoid_python": [
+        "nontechnical users own the report and Python adds no value"
+      ],
+      "avoid_excel": [
+        "Pivot cache/filter state would hide repeatability needs"
+      ],
+      "wrong_choice_breaks": [
+        "pandas can make workbook inaccessible; pivot can hide stale cache or filter state"
+      ],
+      "examples": [
+        "weekly scorecard slicer: PivotTable",
+        "merge exception summary: pandas",
+        "monthly automated KPI feed: external Python/BI"
+      ],
+      "risk_ids": [
+        "excel-risk-stale-pivot-cache",
+        "python-excel-risk-performance"
+      ]
+    },
+    {
+      "id": "decision-excel-chart-vs-python-chart",
+      "decision_name": "Excel chart versus Python chart",
+      "context": "A workbook needs a visual for reporting or analysis.",
+      "default": "Use Excel/PivotChart for standard business charts; use Python for statistical/custom visuals.",
+      "excel_when": [
+        "bar/line/pie/standard dashboard visual is enough",
+        "nontechnical user must modify chart",
+        "visual is tied to PivotTable filters"
+      ],
+      "python_in_excel_when": [
+        "distribution, scatter/regression, faceting, or custom statistical visualization is needed",
+        "source DataFrame already exists in Python-in-Excel"
+      ],
+      "external_python_when": [
+        "visual is generated in scheduled report or requires custom package/output control"
+      ],
+      "power_query_or_other_when": [
+        "visual source requires repeatable external-data shaping first"
+      ],
+      "avoid_python": [
+        "chart does not need Python-specific libraries",
+        "feature availability uncertain"
+      ],
+      "avoid_excel": [
+        "chart source is dirty or current workbook cannot support requested visual honestly"
+      ],
+      "wrong_choice_breaks": [
+        "wrong visual tool can hide filters, break refresh, or make workbook unavailable"
+      ],
+      "examples": [
+        "PivotChart for sales by week",
+        "Python histogram for review rating distribution",
+        "external Python for daily emailed report"
+      ],
+      "risk_ids": [
+        "excel-risk-chart-without-data-validation",
+        "python-excel-risk-performance"
+      ]
+    },
+    {
+      "id": "decision-power-query-vs-python-in-excel",
+      "decision_name": "Power Query versus Python-in-Excel",
+      "context": "External data must be imported or transformed before analysis.",
+      "default": "Use Power Query for import/shape/load; use Python-in-Excel after data is in workbook and validated.",
+      "excel_when": [
+        "data already resides in workbook tables",
+        "transformation is formula/PivotTable-friendly"
+      ],
+      "python_in_excel_when": [
+        "analysis on loaded table benefits from pandas/statistical libraries"
+      ],
+      "external_python_when": [
+        "custom credentials/API/network/file automation required",
+        "pipeline must run without workbook session"
+      ],
+      "power_query_or_other_when": [
+        "external sources, refreshable imports, joins, append/folder operations are central"
+      ],
+      "avoid_python": [
+        "Python would attempt blocked/unsupported external IO"
+      ],
+      "avoid_excel": [
+        "Excel formulas would require fragile manual copy/paste ETL"
+      ],
+      "wrong_choice_breaks": [
+        "Python cells may fail due to external data restrictions; formulas may corrupt import provenance"
+      ],
+      "examples": [
+        "CSV import and clean: Power Query",
+        "DataFrame profiling after load: Python-in-Excel",
+        "API credential workflow: external Python"
+      ],
+      "risk_ids": [
+        "python-excel-risk-privacy-boundary",
+        "excel-risk-stale-refresh-timestamp"
+      ]
+    },
+    {
+      "id": "decision-python-in-excel-vs-external-script",
+      "decision_name": "Python-in-Excel versus external Python script",
+      "context": "Python is needed, but the execution location is unclear.",
+      "default": "Use Python-in-Excel for interactive workbook-bound analysis; use external Python for production, custom IO, or orchestration.",
+      "excel_when": [
+        "workbook formulas/pivots are enough"
+      ],
+      "python_in_excel_when": [
+        "analysis is interactive, data is already in Excel, and output must remain in workbook",
+        "supported packages are enough"
+      ],
+      "external_python_when": [
+        "needs local files, APIs, credentials, scheduled execution, tests, CI/CD, or custom packages"
+      ],
+      "power_query_or_other_when": [
+        "import/transform can be solved with Power Query without custom code"
+      ],
+      "avoid_python": [
+        "workflow is unattended, credentialed, or tenant availability uncertain"
+      ],
+      "avoid_excel": [
+        "workbook must be a user-facing data-entry template, not a code runtime"
+      ],
+      "wrong_choice_breaks": [
+        "Python-in-Excel may be unavailable or unable to access needed resources; external script may overcomplicate ad hoc analysis"
+      ],
+      "examples": [
+        "one-off margin distribution: Python-in-Excel",
+        "nightly POS API load: external Python"
+      ],
+      "risk_ids": [
+        "python-excel-risk-not-production-scheduler",
+        "python-excel-risk-package-availability"
+      ]
+    },
+    {
+      "id": "decision-manual-workbook-vs-repeatable-pipeline",
+      "decision_name": "Manual workbook versus repeatable pipeline",
+      "context": "A recurring report or upload is currently handled manually.",
+      "default": "Keep manual workbook only when volume is low and controls are explicit; move to pipeline when repetition and risk grow.",
+      "excel_when": [
+        "one-time or low-risk report",
+        "human judgment is central",
+        "template has clear control/validation tabs"
+      ],
+      "python_in_excel_when": [
+        "analyst needs embedded exploratory checks before human signoff"
+      ],
+      "external_python_when": [
+        "same workflow repeats on schedule, consumes multiple files, or needs alerts/logging"
+      ],
+      "power_query_or_other_when": [
+        "data source refresh/shape is the main repeatable step"
+      ],
+      "avoid_python": [
+        "manual checks are already sufficient and Python adds no controls"
+      ],
+      "avoid_excel": [
+        "manual copy/paste creates frequent errors or audit gaps"
+      ],
+      "wrong_choice_breaks": [
+        "manual process scales poorly; automated pipeline without business review can upload wrong data faster"
+      ],
+      "examples": [
+        "weekly owner workbook: controlled template",
+        "daily API upload: external pipeline"
+      ],
+      "risk_ids": [
+        "excel-risk-manual-overrides",
+        "python-excel-risk-not-production-scheduler"
+      ]
+    },
+    {
+      "id": "decision-human-edited-vs-locked-template",
+      "decision_name": "Human-edited report versus locked template",
+      "context": "A workbook will be used by nontechnical staff or multiple reviewers.",
+      "default": "Use protected formulas and explicit input zones; leave edits open only where review judgment is intended.",
+      "excel_when": [
+        "users need to enter assumptions or comments in designated cells",
+        "formulas are simple and protected"
+      ],
+      "python_in_excel_when": [
+        "analyst-owned Python checks support template validation, not casual editing"
+      ],
+      "external_python_when": [
+        "template generation/versioning is automated outside Excel"
+      ],
+      "power_query_or_other_when": [
+        "input data load should be separated from report tabs"
+      ],
+      "avoid_python": [
+        "nontechnical users cannot safely maintain Python cells"
+      ],
+      "avoid_excel": [
+        "open editing would permit formula drift or hidden overrides"
+      ],
+      "wrong_choice_breaks": [
+        "locked templates can block needed corrections; unlocked templates invite accidental changes"
+      ],
+      "examples": [
+        "manager input tab with protected formulas",
+        "Python validation tab only for analyst"
+      ],
+      "risk_ids": [
+        "excel-risk-formula-drift",
+        "excel-risk-manual-overrides"
+      ]
+    },
+    {
+      "id": "decision-accounting-review-vs-exploratory",
+      "decision_name": "Accounting review versus exploratory analysis",
+      "context": "Workbook output may support close, upload, or financial reporting.",
+      "default": "Use conservative Excel controls with documented assumptions; allow Python only as a review aid unless approved.",
+      "excel_when": [
+        "numbers must be auditable by accounting users",
+        "formula lineage and manual overrides must be visible"
+      ],
+      "python_in_excel_when": [
+        "Python produces reconciliation exceptions or profiling summaries, not the sole official value"
+      ],
+      "external_python_when": [
+        "official calculations require governed code/tests/logs outside workbook"
+      ],
+      "power_query_or_other_when": [
+        "source import and transformations need refresh logs and repeatability"
+      ],
+      "avoid_python": [
+        "Python feature availability/privacy has not been approved for financial data"
+      ],
+      "avoid_excel": [
+        "Excel workbook has uncontrolled formulas/hidden links"
+      ],
+      "wrong_choice_breaks": [
+        "exploratory tools can look official; accounting outputs need traceability and signoff"
+      ],
+      "examples": [
+        "budget vs actual package: Excel controls",
+        "duplicate invoice scan: Python-in-Excel review summary"
+      ],
+      "risk_ids": [
+        "excel-risk-currency-format-vs-value",
+        "python-excel-risk-privacy-boundary"
+      ]
+    },
+    {
+      "id": "decision-small-vs-large-dataset",
+      "decision_name": "Small dataset versus large dataset",
+      "context": "Data volume may exceed comfortable workbook/Python-in-Excel limits.",
+      "default": "Use Excel/PivotTable for small clean tables; use Power Query/external Python/database for larger or repeatable data.",
+      "excel_when": [
+        "data fits comfortably in workbook and recalculation is fast",
+        "business users need interactive pivots"
+      ],
+      "python_in_excel_when": [
+        "moderate table benefits from pandas profiling or visualization in workbook"
+      ],
+      "external_python_when": [
+        "large files, many joins, long calculations, or memory-heavy modeling are required"
+      ],
+      "power_query_or_other_when": [
+        "import/append/filter/shape of large external sources is central"
+      ],
+      "avoid_python": [
+        "recalculation becomes slow or compute limits uncertain"
+      ],
+      "avoid_excel": [
+        "row limits, workbook size, or cache bloat make Excel unreliable"
+      ],
+      "wrong_choice_breaks": [
+        "wrong size choice leads to timeouts, crashes, or stale sampled analysis"
+      ],
+      "examples": [
+        "single-location weekly sales: Excel",
+        "multi-year transaction modeling: external Python/database"
+      ],
+      "risk_ids": [
+        "python-excel-risk-performance",
+        "excel-risk-stale-pivot-cache"
+      ]
+    },
+    {
+      "id": "decision-api-upload-workflow",
+      "decision_name": "API upload workflow",
+      "context": "A workbook prepares data for upload to an API or system.",
+      "default": "Use Excel as staging/validation only; use approved external automation for authenticated API submission.",
+      "excel_when": [
+        "template produces validated upload table for manual controlled upload"
+      ],
+      "python_in_excel_when": [
+        "Python-in-Excel helps validate schema/duplicates before handoff"
+      ],
+      "external_python_when": [
+        "API calls, tokens, retries, logging, and scheduling are required"
+      ],
+      "power_query_or_other_when": [
+        "Power Query can prepare source data before staging"
+      ],
+      "avoid_python": [
+        "Python-in-Excel would need secrets/network access or unattended retries"
+      ],
+      "avoid_excel": [
+        "Excel cells are used as an uncontrolled system of record"
+      ],
+      "wrong_choice_breaks": [
+        "upload can fail silently or send bad data if validation and logs are weak"
+      ],
+      "examples": [
+        "API staging sheet with validation gates: Excel/Python check; actual POST: external service"
+      ],
+      "risk_ids": [
+        "python-excel-risk-privacy-boundary",
+        "python-excel-risk-not-production-scheduler"
+      ]
+    },
+    {
+      "id": "decision-scheduled-workflow",
+      "decision_name": "Scheduled workflow",
+      "context": "A task must run at a set time without a user opening the workbook.",
+      "default": "Use external scheduler/orchestration, not Python-in-Excel.",
+      "excel_when": [
+        "none except workbook generated for human review after schedule"
+      ],
+      "python_in_excel_when": [
+        "only for analyst preview before productionizing"
+      ],
+      "external_python_when": [
+        "unattended timing, logging, retries, alerting, and environment control are required"
+      ],
+      "power_query_or_other_when": [
+        "Power Query/BI refresh may be sufficient where supported"
+      ],
+      "avoid_python": [
+        "workbook must calculate without user/session dependency"
+      ],
+      "avoid_excel": [
+        "manual workbook is source of production truth without controls"
+      ],
+      "wrong_choice_breaks": [
+        "scheduled needs fail if implemented in a user-session workbook"
+      ],
+      "examples": [
+        "nightly export validation: external job; morning workbook: generated output"
+      ],
+      "risk_ids": [
+        "python-excel-risk-not-production-scheduler"
+      ]
+    },
+    {
+      "id": "decision-credentialed-workflow",
+      "decision_name": "Credentialed workflow",
+      "context": "The task requires tokens, passwords, local files, or network access.",
+      "default": "Keep credentials out of workbook cells; use approved connector, Power Query credential store, or external service.",
+      "excel_when": [
+        "manual export/import avoids credentials in workbook"
+      ],
+      "python_in_excel_when": [
+        "Python-in-Excel can analyze already-imported non-secret data"
+      ],
+      "external_python_when": [
+        "secrets, API clients, local/network files, or secure vault access are required"
+      ],
+      "power_query_or_other_when": [
+        "Power Query credential management is appropriate and governed"
+      ],
+      "avoid_python": [
+        "Python cell would contain secrets or assume network access"
+      ],
+      "avoid_excel": [
+        "workbook stores secrets or unprotected connection strings"
+      ],
+      "wrong_choice_breaks": [
+        "credential leakage and failed automation are high-risk"
+      ],
+      "examples": [
+        "OAuth API pull: external service; loaded table analysis: Python-in-Excel"
+      ],
+      "risk_ids": [
+        "python-excel-risk-privacy-boundary",
+        "excel-risk-external-links"
+      ]
+    },
+    {
+      "id": "decision-multi-user-workflow",
+      "decision_name": "Multi-user workflow",
+      "context": "Several users will edit, refresh, or consume the workbook.",
+      "default": "Use locked templates, controlled input zones, and tool choices available to all users.",
+      "excel_when": [
+        "shared report uses protected formulas/pivots and standard Excel features"
+      ],
+      "python_in_excel_when": [
+        "all required users have Python-in-Excel and governance approval; Python cells are analyst-maintained"
+      ],
+      "external_python_when": [
+        "backend processing is shared, audited, or needs role-based access"
+      ],
+      "power_query_or_other_when": [
+        "shared source refresh is better centralized"
+      ],
+      "avoid_python": [
+        "any required user lacks Python-in-Excel or cannot inspect code"
+      ],
+      "avoid_excel": [
+        "uncontrolled collaboration creates formula drift"
+      ],
+      "wrong_choice_breaks": [
+        "feature mismatch or simultaneous edits can break report trust"
+      ],
+      "examples": [
+        "store manager template: Excel; analyst QA workbook: Python; central data mart: external"
+      ],
+      "risk_ids": [
+        "python-excel-risk-cloud-execution",
+        "excel-risk-formula-drift"
+      ]
+    },
+    {
+      "id": "decision-executive-dashboard",
+      "decision_name": "Executive dashboard",
+      "context": "Output goes to owners/executives and must be concise, stable, and trustworthy.",
+      "default": "Use validated source tables, pivots/charts, and explicit refresh/status indicators; keep Python behind review tabs when used.",
+      "excel_when": [
+        "standard KPI cards/charts and slicers meet the need",
+        "refresh status and filters are visible"
+      ],
+      "python_in_excel_when": [
+        "Python supplies validated advanced visual or statistical insight with caveats"
+      ],
+      "external_python_when": [
+        "dashboard is regenerated/distributed automatically or pulls from enterprise systems"
+      ],
+      "power_query_or_other_when": [
+        "source shaping and refresh should be centralized before dashboard"
+      ],
+      "avoid_python": [
+        "Python availability or privacy creates presentation risk"
+      ],
+      "avoid_excel": [
+        "manual workbook lacks refresh log, definitions, or data validation"
+      ],
+      "wrong_choice_breaks": [
+        "executives may act on stale, filtered, or unexplained metrics"
+      ],
+      "examples": [
+        "weekly owner dashboard: Excel pivots + refresh log; customer review sentiment chart: Python aid"
+      ],
+      "risk_ids": [
+        "excel-risk-chart-without-data-validation",
+        "excel-risk-stale-refresh-timestamp"
+      ]
+    },
+    {
+      "id": "decision-nontechnical-user-template",
+      "decision_name": "Nontechnical-user template",
+      "context": "Workbook will be maintained by users who do not write code.",
+      "default": "Prefer Excel Tables, protected formulas, validation gates, and clear instructions; avoid Python cells unless hidden from routine operation and supported.",
+      "excel_when": [
+        "user enters/export data and refreshes standard pivots",
+        "formulas are protected and explainable"
+      ],
+      "python_in_excel_when": [
+        "analyst-only validation tab is available and documented"
+      ],
+      "external_python_when": [
+        "template generation, complex validation, or upload creation must be governed"
+      ],
+      "power_query_or_other_when": [
+        "Power Query refresh is configured and trained"
+      ],
+      "avoid_python": [
+        "users cannot view/debug Python errors or lack licenses"
+      ],
+      "avoid_excel": [
+        "formula/template is too complex to protect"
+      ],
+      "wrong_choice_breaks": [
+        "code cells can make the workbook unusable to the intended audience"
+      ],
+      "examples": [
+        "store weekly input workbook: Excel; analyst QA pack: Python-in-Excel"
+      ],
+      "risk_ids": [
+        "python-excel-risk-cloud-execution",
+        "excel-risk-manual-overrides"
+      ]
+    }
+  ],
+  "excel_technique_active_digest": [
+    {
+      "id": "excel-tech-conditional-format-thresholds",
+      "technique": "Criteria-based conditional formatting",
+      "decision": "Identify values that meet threshold or rule-based review criteria.",
+      "best_fit_context": [
+        "exception review",
+        "scorecard variance scans",
+        "first-pass workbook QA"
+      ],
+      "required_shape": [
+        "rectangular range with comparable values",
+        "known threshold or rule"
+      ],
+      "specific_quality_checks": [
+        "confirm threshold units and percent/currency conventions",
+        "inspect rule manager for overlapping rules",
+        "test one known pass and fail case"
+      ],
+      "common_errors": [
+        "format applied to wrong range",
+        "text numbers not meeting numeric criteria",
+        "old rules left active"
+      ],
+      "use_when": [
+        "visual triage before deeper analysis",
+        "nontechnical reviewers need visible exceptions"
+      ],
+      "do_not_use_when": [
+        "final numeric validation or upload blocking without a data-quality gate"
+      ],
+      "inspect_before_applying": [
+        "inspect rule manager",
+        "read number formats and raw values",
+        "capture cells affected"
+      ],
+      "human_review_triggers": [
+        "policy threshold is not documented",
+        "formatting is used as approval evidence"
+      ],
+      "related_ids": [
+        "excel-risk-percent-convention",
+        "excel-risk-currency-format-vs-value"
+      ]
+    },
+    {
+      "id": "excel-tech-duplicate-value-highlight",
+      "technique": "Duplicate-value conditional formatting",
+      "decision": "Find accidental repeated identifiers or repeated records for review.",
+      "best_fit_context": [
+        "dedupe review",
+        "import staging",
+        "metric/key QA"
+      ],
+      "required_shape": [
+        "one or more key columns with expected uniqueness"
+      ],
+      "specific_quality_checks": [
+        "separate exact duplicate rows from duplicate business keys",
+        "confirm blank handling",
+        "verify sorted/filtered context before deleting"
+      ],
+      "common_errors": [
+        "deleting legitimate repeats",
+        "ignoring duplicates split by whitespace/case",
+        "treating blanks as duplicate IDs"
+      ],
+      "use_when": [
+        "visual duplicate triage before Power Query/pandas merge"
+      ],
+      "do_not_use_when": [
+        "deleting rows without source owner approval"
+      ],
+      "inspect_before_applying": [
+        "build composite key if needed",
+        "count duplicates",
+        "preserve raw data"
+      ],
+      "human_review_triggers": [
+        "duplicate removal changes accounting or upload totals"
+      ],
+      "related_ids": [
+        "excel-risk-duplicate-keys",
+        "dqg-no-duplicate-metric-ids"
+      ]
+    },
+    {
+      "id": "excel-tech-subtotals-outline",
+      "technique": "Subtotals with outline grouping",
+      "decision": "Summarize sorted lists by category without creating a PivotTable.",
+      "best_fit_context": [
+        "quick category summaries",
+        "single-sheet operational list review"
+      ],
+      "required_shape": [
+        "flat list sorted by grouping column",
+        "numeric measure columns"
+      ],
+      "specific_quality_checks": [
+        "source sorted by grouping field",
+        "subtotal rows not included in later imports",
+        "function matches measure meaning"
+      ],
+      "common_errors": [
+        "subtotals applied to unsorted data",
+        "subtotal rows double counted in formulas",
+        "mixed units in same measure"
+      ],
+      "use_when": [
+        "one-off summary for humans",
+        "simple grouped review"
+      ],
+      "do_not_use_when": [
+        "raw data feeds, uploads, or repeatable models where inserted subtotal rows contaminate detail"
+      ],
+      "inspect_before_applying": [
+        "detect existing subtotal rows",
+        "copy raw sheet before applying",
+        "check formulas using source range"
+      ],
+      "human_review_triggers": [
+        "output used for upload or database import"
+      ],
+      "related_ids": [
+        "excel-risk-filtered-rows",
+        "arch-raw-clean-analysis-output"
+      ]
+    },
+    {
+      "id": "excel-tech-consolidate-by-category",
+      "technique": "Consolidate by category across sheets",
+      "decision": "Combine similarly labeled categories from multiple sheets into one summary.",
+      "best_fit_context": [
+        "regional/store/location rollups",
+        "monthly worksheet consolidation"
+      ],
+      "required_shape": [
+        "separate sheets with category labels and numeric values",
+        "labels sufficiently consistent"
+      ],
+      "specific_quality_checks": [
+        "labels standardized",
+        "all intended sheets included",
+        "linked consolidation formulas reviewed"
+      ],
+      "common_errors": [
+        "category spelling differences split totals",
+        "position-based consolidation used when category labels differ",
+        "source links broken"
+      ],
+      "use_when": [
+        "moderate number of comparable worksheets",
+        "human-created departmental sheets"
+      ],
+      "do_not_use_when": [
+        "large repeatable pipelines or inconsistent exports better handled by Power Query/pandas"
+      ],
+      "inspect_before_applying": [
+        "list worksheets",
+        "compare total before/after",
+        "flag unmatched labels"
+      ],
+      "human_review_triggers": [
+        "summary changes owner-facing totals"
+      ],
+      "related_ids": [
+        "excel-risk-external-links",
+        "arch-mapping-table"
+      ]
+    },
+    {
+      "id": "excel-tech-one-input-data-table",
+      "technique": "One-input what-if data table",
+      "decision": "Show how a formula output changes as one input changes.",
+      "best_fit_context": [
+        "pricing sensitivity",
+        "loan/finance analysis",
+        "single-driver forecasting"
+      ],
+      "required_shape": [
+        "model formula with one clearly identified input cell",
+        "candidate input values in a column or row"
+      ],
+      "specific_quality_checks": [
+        "input values are realistic and same unit",
+        "output formula depends on target input cell",
+        "workbook calculation mode understood"
+      ],
+      "common_errors": [
+        "wrong row/column input cell",
+        "formula not linked to input",
+        "data table recalculation disabled"
+      ],
+      "use_when": [
+        "one variable drives decision",
+        "need transparent workbook-native what-if view"
+      ],
+      "do_not_use_when": [
+        "multiple nonlinear constraints or optimization problem better served by Solver/external model"
+      ],
+      "inspect_before_applying": [
+        "trace formula dependency",
+        "test one scenario manually",
+        "preserve original value"
+      ],
+      "human_review_triggers": [
+        "used for pricing/accounting decision without model review"
+      ],
+      "related_ids": [
+        "excel-risk-formula-drift",
+        "arch-assumption-sheet"
+      ]
+    },
+    {
+      "id": "excel-tech-two-input-data-table",
+      "technique": "Two-input what-if data table",
+      "decision": "Evaluate output sensitivity to two drivers at once.",
+      "best_fit_context": [
+        "margin matrix",
+        "sales/labor sensitivity",
+        "loan/interest scenarios"
+      ],
+      "required_shape": [
+        "model formula with two independent input cells",
+        "row and column scenario values"
+      ],
+      "specific_quality_checks": [
+        "row and column inputs not swapped",
+        "units and value ranges documented",
+        "headers are not accidentally included in calculation"
+      ],
+      "common_errors": [
+        "misassigned input cells",
+        "values represented as whole percents instead of decimals",
+        "scenario grid reused with stale formula"
+      ],
+      "use_when": [
+        "two drivers are enough for a human-readable sensitivity table"
+      ],
+      "do_not_use_when": [
+        "more than two drivers, constraints, or stochastic simulations"
+      ],
+      "inspect_before_applying": [
+        "check formula precedents",
+        "validate one intersection manually",
+        "confirm percent convention"
+      ],
+      "human_review_triggers": [
+        "business decision depends on unapproved assumptions"
+      ],
+      "related_ids": [
+        "excel-risk-percent-convention",
+        "arch-assumption-sheet"
+      ]
+    },
+    {
+      "id": "excel-tech-goal-seek-target-input",
+      "technique": "Goal Seek target-input solving",
+      "decision": "Find the input value needed to make a formula reach a target.",
+      "best_fit_context": [
+        "break-even questions",
+        "target margin",
+        "required sales/labor hour estimates"
+      ],
+      "required_shape": [
+        "single formula cell dependent on one changing cell"
+      ],
+      "specific_quality_checks": [
+        "objective cell contains formula",
+        "changing cell is a true precedent",
+        "solution is feasible and within allowed range"
+      ],
+      "common_errors": [
+        "objective cell is hard-coded",
+        "changing wrong assumption",
+        "accepting unrealistic negative/large input"
+      ],
+      "use_when": [
+        "one unknown input and transparent formula dependency"
+      ],
+      "do_not_use_when": [
+        "multiple changing cells or constraints; use Solver or external optimization"
+      ],
+      "inspect_before_applying": [
+        "trace precedents",
+        "preserve starting value",
+        "document target and solved value"
+      ],
+      "human_review_triggers": [
+        "solved input used in budget or staffing plan"
+      ],
+      "related_ids": [
+        "arch-assumption-sheet",
+        "excel-tech-solver-constrained-optimization"
+      ]
+    },
+    {
+      "id": "excel-tech-scenario-manager",
+      "technique": "Scenario Manager assumption sets",
+      "decision": "Store and compare named sets of changing cell values.",
+      "best_fit_context": [
+        "budget scenarios",
+        "forecast assumptions",
+        "owner review packs"
+      ],
+      "required_shape": [
+        "small set of changing cells",
+        "clearly named scenario definitions"
+      ],
+      "specific_quality_checks": [
+        "changing cells are adjacent or documented",
+        "scenario values use consistent units",
+        "scenario summary uses correct result cells"
+      ],
+      "common_errors": [
+        "scenario names vague",
+        "changing cells moved after setup",
+        "base values overwritten without log"
+      ],
+      "use_when": [
+        "human-reviewable alternate assumption cases"
+      ],
+      "do_not_use_when": [
+        "high-dimensional models or automated pipelines"
+      ],
+      "inspect_before_applying": [
+        "list scenario cells",
+        "compare scenario values to assumption table",
+        "backup before applying"
+      ],
+      "human_review_triggers": [
+        "scenario values drive financial forecast or pricing"
+      ],
+      "related_ids": [
+        "arch-assumption-sheet",
+        "arch-version-change-log"
+      ]
+    },
+    {
+      "id": "excel-tech-solver-constrained-optimization",
+      "technique": "Solver constrained optimization",
+      "decision": "Choose decision variables that optimize an objective subject to constraints.",
+      "best_fit_context": [
+        "staffing allocation",
+        "menu mix",
+        "budget allocation",
+        "capacity planning"
+      ],
+      "required_shape": [
+        "objective formula",
+        "changing variable cells",
+        "constraint formulas/limits"
+      ],
+      "specific_quality_checks": [
+        "objective truly represents business goal",
+        "constraints encode policy/capacity",
+        "solution status is acceptable",
+        "integer/nonnegative constraints applied when needed"
+      ],
+      "common_errors": [
+        "missing constraints",
+        "objective maximizes wrong metric",
+        "accepting infeasible or local solution without review"
+      ],
+      "use_when": [
+        "small-to-medium workbook optimization with visible formulas"
+      ],
+      "do_not_use_when": [
+        "production optimizer, large nonlinear model, or regulated decision without specialized review"
+      ],
+      "inspect_before_applying": [
+        "inspect objective and variable cells",
+        "list constraints",
+        "save pre-solver workbook copy"
+      ],
+      "human_review_triggers": [
+        "business-critical allocation or labor scheduling"
+      ],
+      "related_ids": [
+        "arch-assumption-sheet",
+        "decision-simple-formula-vs-python"
+      ]
+    },
+    {
+      "id": "excel-tech-excel-table-structured-source",
+      "technique": "Excel Table as structured source",
+      "decision": "Create a durable source range for sorting, filtering, formulas, and pivots.",
+      "best_fit_context": [
+        "repeatable reports",
+        "pivot sources",
+        "formula-based workbooks",
+        "nontechnical data entry"
+      ],
+      "required_shape": [
+        "rectangular data with one header row",
+        "no blank header cells"
+      ],
+      "specific_quality_checks": [
+        "headers unique and descriptive",
+        "no merged cells in table",
+        "new rows included automatically",
+        "table name documented"
+      ],
+      "common_errors": [
+        "blank/duplicate headers",
+        "totals row mistaken for data",
+        "merged cells inside table"
+      ],
+      "use_when": [
+        "source grows over time",
+        "formulas or pivots need stable references"
+      ],
+      "do_not_use_when": [
+        "presentation-only matrices or cross-tab reports"
+      ],
+      "inspect_before_applying": [
+        "find table names",
+        "inspect header row",
+        "test new row expansion"
+      ],
+      "human_review_triggers": [
+        "table feeds upload or executive dashboard"
+      ],
+      "related_ids": [
+        "excel-risk-merged-cells",
+        "excel-risk-named-range-broken"
+      ]
+    },
+    {
+      "id": "excel-tech-sort-filter-table-review",
+      "technique": "Sort and filter table records",
+      "decision": "Narrow a dataset to records that meet review conditions.",
+      "best_fit_context": [
+        "record review",
+        "exception triage",
+        "ad hoc analysis"
+      ],
+      "required_shape": [
+        "Excel Table or list with headers"
+      ],
+      "specific_quality_checks": [
+        "filter applies to all columns",
+        "totals account for hidden rows",
+        "sort did not break row integrity"
+      ],
+      "common_errors": [
+        "sorting one column outside table",
+        "forgetting active filters",
+        "using visible rows as full population"
+      ],
+      "use_when": [
+        "human needs to inspect subset interactively"
+      ],
+      "do_not_use_when": [
+        "repeatable transformations better handled by Power Query or pandas"
+      ],
+      "inspect_before_applying": [
+        "record active filters",
+        "avoid deleting hidden rows accidentally",
+        "compare row counts"
+      ],
+      "human_review_triggers": [
+        "filtered workbook is distributed as final source"
+      ],
+      "related_ids": [
+        "excel-risk-filtered-rows",
+        "arch-refresh-log"
+      ]
+    },
+    {
+      "id": "excel-tech-advanced-filter-extract",
+      "technique": "Advanced Filter extract",
+      "decision": "Create a copied subset based on criteria without manually deleting rows.",
+      "best_fit_context": [
+        "criteria-based extracts",
+        "upload staging subset",
+        "exception list generation"
+      ],
+      "required_shape": [
+        "list with headers",
+        "criteria range with matching headers",
+        "optional output range"
+      ],
+      "specific_quality_checks": [
+        "criteria header names match source",
+        "criteria logic is documented",
+        "output range is clear"
+      ],
+      "common_errors": [
+        "criteria range mis-specified",
+        "copying over existing data",
+        "assuming criteria range uses OR/AND as intended"
+      ],
+      "use_when": [
+        "one-time criteria extract with visible source"
+      ],
+      "do_not_use_when": [
+        "complex repeatable ETL or joins better handled by Power Query/pandas"
+      ],
+      "inspect_before_applying": [
+        "preserve source sheet",
+        "inspect criteria range",
+        "compare row counts"
+      ],
+      "human_review_triggers": [
+        "extract feeds upload or compliance report"
+      ],
+      "related_ids": [
+        "arch-raw-clean-analysis-output",
+        "dqg-required-column-exists"
+      ]
+    },
+    {
+      "id": "excel-tech-external-text-import",
+      "technique": "External text/data import into Excel",
+      "decision": "Bring non-Excel data into workbook for analysis.",
+      "best_fit_context": [
+        "CSV/text exports",
+        "system extracts",
+        "report staging"
+      ],
+      "required_shape": [
+        "delimited or fixed-width external source",
+        "known schema"
+      ],
+      "specific_quality_checks": [
+        "row count matches source",
+        "delimiter and text qualifier correct",
+        "leading zeros preserved",
+        "dates/currency parsed intentionally"
+      ],
+      "common_errors": [
+        "CSV delimiter wrong",
+        "IDs converted to numbers",
+        "dates localized incorrectly"
+      ],
+      "use_when": [
+        "business user needs workbook-native import"
+      ],
+      "do_not_use_when": [
+        "large transformations, multi-file folders, or scheduled refresh; use Power Query/external Python"
+      ],
+      "inspect_before_applying": [
+        "inspect import settings",
+        "compare row/column count",
+        "record source path/date"
+      ],
+      "human_review_triggers": [
+        "import is upload-bound or accounting-critical"
+      ],
+      "related_ids": [
+        "excel-risk-date-serials",
+        "excel-risk-currency-format-vs-value",
+        "excel-risk-stale-refresh-timestamp"
+      ]
+    },
+    {
+      "id": "excel-tech-database-functions-dget-dsum",
+      "technique": "Database functions on criteria ranges",
+      "decision": "Calculate criteria-based values from a list using database-style functions.",
+      "best_fit_context": [
+        "small criteria-driven lists",
+        "legacy templates",
+        "controlled criteria tables"
+      ],
+      "required_shape": [
+        "database list with headers",
+        "criteria range with headers",
+        "single-value or aggregate objective"
+      ],
+      "specific_quality_checks": [
+        "criteria headers match database headers",
+        "DGET returns only when one record matches",
+        "criteria range visible and protected"
+      ],
+      "common_errors": [
+        "criteria range blank causing broad result",
+        "DGET multiple-match error",
+        "field name typo"
+      ],
+      "use_when": [
+        "simple auditable criteria-driven templates"
+      ],
+      "do_not_use_when": [
+        "large relational queries or many joins; use Power Query/pandas/database"
+      ],
+      "inspect_before_applying": [
+        "locate criteria ranges",
+        "test no-match/multi-match behavior",
+        "protect criteria formulas"
+      ],
+      "human_review_triggers": [
+        "template used by nontechnical user"
+      ],
+      "related_ids": [
+        "excel-risk-duplicate-keys",
+        "arch-control-sheet"
+      ]
+    },
+    {
+      "id": "excel-tech-conditional-aggregate-functions",
+      "technique": "COUNTIF/SUMIF/AVERAGEIF criteria aggregation",
+      "decision": "Summarize numeric or count metrics by a condition without a PivotTable.",
+      "best_fit_context": [
+        "small scorecards",
+        "metric summaries",
+        "template formulas"
+      ],
+      "required_shape": [
+        "criteria range aligned to values range",
+        "single clear criterion"
+      ],
+      "specific_quality_checks": [
+        "ranges same size",
+        "criterion matches data type",
+        "blank/error handling documented",
+        "structured references expand with table"
+      ],
+      "common_errors": [
+        "misaligned ranges",
+        "criteria typed as text when numbers/dates expected",
+        "wildcards used unintentionally"
+      ],
+      "use_when": [
+        "one or a few transparent criteria formulas"
+      ],
+      "do_not_use_when": [
+        "many criteria, exploratory slicing, or nontechnical drag/drop summaries; use PivotTable"
+      ],
+      "inspect_before_applying": [
+        "trace references",
+        "compare to pivot/groupby",
+        "check criteria cell values"
+      ],
+      "human_review_triggers": [
+        "formula feeds accounting/reporting output"
+      ],
+      "related_ids": [
+        "excel-risk-blank-vs-zero",
+        "excel-risk-date-serials"
+      ]
+    },
+    {
+      "id": "excel-tech-pivottable-source-refresh",
+      "technique": "PivotTable source and refresh control",
+      "decision": "Summarize table data while preserving ability to change aggregation, filters, and layout.",
+      "best_fit_context": [
+        "sales/labor summaries",
+        "food-cost rollups",
+        "executive summaries",
+        "ad hoc slicing"
+      ],
+      "required_shape": [
+        "rectangular source table with headers and consistent grain"
+      ],
+      "specific_quality_checks": [
+        "source range includes all rows",
+        "cache refreshed",
+        "value fields use intended aggregation",
+        "filters/slicers documented"
+      ],
+      "common_errors": [
+        "source range excludes new rows",
+        "sum vs count mistake",
+        "stale cache",
+        "blank category buckets ignored"
+      ],
+      "use_when": [
+        "interactive summary by categories/time is needed"
+      ],
+      "do_not_use_when": [
+        "row-level transformations or joins before summarization; use Power Query/pandas first"
+      ],
+      "inspect_before_applying": [
+        "inspect source data setting",
+        "refresh and compare totals",
+        "list active filters"
+      ],
+      "human_review_triggers": [
+        "PivotTable drives executive or upload numbers"
+      ],
+      "related_ids": [
+        "excel-risk-stale-pivot-cache",
+        "dqg-pivot-cache-refreshed"
+      ]
+    },
+    {
+      "id": "excel-tech-pivottable-group-filter-slicer",
+      "technique": "PivotTable grouping, filters, and slicers",
+      "decision": "Compare metrics by date periods, categories, or selected segments.",
+      "best_fit_context": [
+        "weekly/monthly scorecards",
+        "store/segment filtering",
+        "interactive dashboards"
+      ],
+      "required_shape": [
+        "PivotTable source with date/category fields"
+      ],
+      "specific_quality_checks": [
+        "date field is true date type",
+        "filters visible to reviewer",
+        "grouping does not span unintended years",
+        "blank dates reviewed"
+      ],
+      "common_errors": [
+        "text dates cannot group correctly",
+        "active slicer hidden off-screen",
+        "grouped months from multiple years merged"
+      ],
+      "use_when": [
+        "interactive review by period or segment"
+      ],
+      "do_not_use_when": [
+        "locked upload outputs where filters could hide rows"
+      ],
+      "inspect_before_applying": [
+        "inspect slicers/filters",
+        "ungroup/regroup dates as needed",
+        "compare period row counts"
+      ],
+      "human_review_triggers": [
+        "owner dashboard or accounting close packet"
+      ],
+      "related_ids": [
+        "excel-risk-date-serials",
+        "excel-risk-filtered-rows"
+      ]
+    },
+    {
+      "id": "excel-tech-pivottable-calculated-fields",
+      "technique": "PivotTable calculated fields and value calculations",
+      "decision": "Add derived measures inside a PivotTable when calculation logic belongs at summary level.",
+      "best_fit_context": [
+        "summary-level margins",
+        "percent of total",
+        "variance view"
+      ],
+      "required_shape": [
+        "PivotTable with fields needed for numerator/denominator",
+        "defined aggregation semantics"
+      ],
+      "specific_quality_checks": [
+        "row-level vs aggregate-level calculation choice documented",
+        "denominator field not filtered unexpectedly",
+        "grand total meaning reviewed"
+      ],
+      "common_errors": [
+        "using calculated field for weighted metric incorrectly",
+        "percent of total affected by filters",
+        "field names ambiguous"
+      ],
+      "use_when": [
+        "summary-level calculation over pivot fields"
+      ],
+      "do_not_use_when": [
+        "complex row-level transformations better handled in source table/Power Query/pandas"
+      ],
+      "inspect_before_applying": [
+        "inspect calculation formula",
+        "test against source subtotal",
+        "document denominator"
+      ],
+      "human_review_triggers": [
+        "metric appears in executive KPI"
+      ],
+      "related_ids": [
+        "excel-risk-percent-convention",
+        "excel-risk-stale-pivot-cache"
+      ]
+    },
+    {
+      "id": "excel-tech-getpivotdata-stable-reference",
+      "technique": "GETPIVOTDATA stable PivotTable references",
+      "decision": "Reference PivotTable results in formulas without fragile cell coordinates.",
+      "best_fit_context": [
+        "dashboard KPI cells",
+        "summary templates",
+        "controlled pivot outputs"
+      ],
+      "required_shape": [
+        "PivotTable with stable field names and item labels"
+      ],
+      "specific_quality_checks": [
+        "pivot fields/items exist",
+        "pivot table name/anchor stable",
+        "missing item behavior handled"
+      ],
+      "common_errors": [
+        "hardcoding labels that change",
+        "turning off GETPIVOTDATA and using coordinates",
+        "stale pivot cache"
+      ],
+      "use_when": [
+        "dashboard pulls selected pivot metrics"
+      ],
+      "do_not_use_when": [
+        "raw extraction or bulk transformation"
+      ],
+      "inspect_before_applying": [
+        "inspect formulas using GETPIVOTDATA",
+        "refresh pivot",
+        "test missing/new category"
+      ],
+      "human_review_triggers": [
+        "executive summary metrics depend on pivot"
+      ],
+      "related_ids": [
+        "excel-risk-stale-pivot-cache",
+        "excel-risk-named-range-broken"
+      ]
+    },
+    {
+      "id": "excel-tech-pivotchart-filtered-analysis",
+      "technique": "PivotChart connected to PivotTable",
+      "decision": "Visualize pivot summaries while preserving filter interaction.",
+      "best_fit_context": [
+        "interactive dashboards",
+        "period/category visuals",
+        "executive summaries"
+      ],
+      "required_shape": [
+        "PivotTable with validated source and aggregation"
+      ],
+      "specific_quality_checks": [
+        "chart source is intended pivot",
+        "axis scale not misleading",
+        "missing values treated intentionally",
+        "filters visible"
+      ],
+      "common_errors": [
+        "chart from wrong pivot",
+        "hidden filters change story",
+        "axis starts/truncates misleadingly"
+      ],
+      "use_when": [
+        "dashboard needs visual linked to pivot analysis"
+      ],
+      "do_not_use_when": [
+        "highly customized statistical visuals; use Python chart or BI tool"
+      ],
+      "inspect_before_applying": [
+        "trace chart source",
+        "inspect filters",
+        "compare visual totals to pivot"
+      ],
+      "human_review_triggers": [
+        "chart goes to owner/executive audience"
+      ],
+      "related_ids": [
+        "excel-risk-chart-without-data-validation",
+        "excel-risk-filtered-rows"
+      ]
+    },
+    {
+      "id": "excel-tech-data-model-relationships",
+      "technique": "Data Model relationships for multi-table analysis",
+      "decision": "Analyze related tables without flattening everything into one sheet.",
+      "best_fit_context": [
+        "fact/dimension data",
+        "sales by product/location",
+        "multi-table pivoting"
+      ],
+      "required_shape": [
+        "tables with keys and defined relationships",
+        "one-to-many relationship structure"
+      ],
+      "specific_quality_checks": [
+        "keys are unique on dimension side",
+        "fact rows all match dimension keys",
+        "relationship direction understood"
+      ],
+      "common_errors": [
+        "many-to-many relationship hidden by duplicates",
+        "unmatched keys omitted or grouped blank",
+        "using labels instead of stable IDs"
+      ],
+      "use_when": [
+        "multi-table analysis remains inside workbook and users need pivot output"
+      ],
+      "do_not_use_when": [
+        "complex ETL, very large data, or enterprise semantic model better in database/BI tool"
+      ],
+      "inspect_before_applying": [
+        "profile key uniqueness",
+        "validate unmatched keys",
+        "compare totals before/after relationship"
+      ],
+      "human_review_triggers": [
+        "owner dashboard or accounting output depends on relationships"
+      ],
+      "related_ids": [
+        "excel-risk-duplicate-keys",
+        "arch-mapping-table"
+      ]
+    },
+    {
+      "id": "excel-tech-trendline-forecast-sheet",
+      "technique": "Trendline and Forecast Sheet",
+      "decision": "Estimate future values or trend direction from historical series.",
+      "best_fit_context": [
+        "sales forecast draft",
+        "trend communication",
+        "rough operational planning"
+      ],
+      "required_shape": [
+        "time series with consistent intervals",
+        "numeric measure values"
+      ],
+      "specific_quality_checks": [
+        "dates are true dates and regularly spaced",
+        "outliers reviewed",
+        "forecast horizon reasonable",
+        "seasonality not assumed blindly"
+      ],
+      "common_errors": [
+        "text dates sorted alphabetically",
+        "forecasting from too few points",
+        "ignoring structural breaks"
+      ],
+      "use_when": [
+        "quick workbook-native forecast or trend display"
+      ],
+      "do_not_use_when": [
+        "production forecasting, causal modeling, or complex seasonality; use statistical model/external Python"
+      ],
+      "inspect_before_applying": [
+        "check date intervals",
+        "count observations",
+        "flag missing periods"
+      ],
+      "human_review_triggers": [
+        "forecast used for staffing/budget commitments"
+      ],
+      "related_ids": [
+        "excel-risk-date-serials",
+        "rpt-forecast-uncertainty-disclosure"
+      ]
+    },
+    {
+      "id": "excel-tech-descriptive-statistics",
+      "technique": "Descriptive statistics summary",
+      "decision": "Summarize center, spread, min/max, skewness, and other distribution properties.",
+      "best_fit_context": [
+        "metric profiling",
+        "data-quality review",
+        "operational performance distribution"
+      ],
+      "required_shape": [
+        "numeric sample values with defined population/sample meaning"
+      ],
+      "specific_quality_checks": [
+        "numeric values not text",
+        "blanks handled intentionally",
+        "sample vs population function choice documented",
+        "outliers inspected"
+      ],
+      "common_errors": [
+        "averaging percentages with mixed denominators",
+        "including subtotal rows",
+        "ignoring blank/error cells"
+      ],
+      "use_when": [
+        "profiling a metric before charting/modeling"
+      ],
+      "do_not_use_when": [
+        "small nonnumeric categories or highly segmented data without grouping"
+      ],
+      "inspect_before_applying": [
+        "count observations",
+        "check blanks/errors",
+        "compare summary by segment"
+      ],
+      "human_review_triggers": [
+        "statistic supports decision threshold"
+      ],
+      "related_ids": [
+        "excel-risk-blank-vs-zero",
+        "excel-risk-currency-format-vs-value"
+      ]
+    },
+    {
+      "id": "excel-tech-correlation-regression-toolpak",
+      "technique": "Correlation and regression with Analysis ToolPak",
+      "decision": "Assess linear association or estimate a linear relationship between variables.",
+      "best_fit_context": [
+        "exploratory driver analysis",
+        "sales/labor relationship review",
+        "forecast feature screening"
+      ],
+      "required_shape": [
+        "aligned numeric observations",
+        "clear dependent and independent variables"
+      ],
+      "specific_quality_checks": [
+        "rows aligned by same observation",
+        "missing values handled consistently",
+        "sample size adequate",
+        "outliers reviewed"
+      ],
+      "common_errors": [
+        "correlation treated as causation",
+        "misaligned X/Y rows",
+        "categorical IDs entered as numeric predictors"
+      ],
+      "use_when": [
+        "exploratory linear relationship screening"
+      ],
+      "do_not_use_when": [
+        "regulated decisions, causal claims, nonlinear/complex model without review"
+      ],
+      "inspect_before_applying": [
+        "check row alignment",
+        "inspect scatterplot/residuals",
+        "summarize assumptions"
+      ],
+      "human_review_triggers": [
+        "result influences staffing, pricing, or budget"
+      ],
+      "related_ids": [
+        "rpt-statistical-result-disclaimer",
+        "python-excel-tech-statsmodels-regression"
+      ]
+    }
+  ],
+  "python_in_excel_active_digest": [
+    {
+      "id": "python-excel-tech-py-cell-output-mode",
+      "technique": "PY cell entry and output mode",
+      "decision": "Decide whether a Python result should remain a Python object or spill as Excel values.",
+      "excel_boundary": "Excel grid hosts the PY cell and receives either a Python object card or Excel values.",
+      "python_boundary": "Python code runs in the PY cell and returns the last expression/object.",
+      "data_shape_expected": [
+        "single PY cell",
+        "optional spill range",
+        "scalar, DataFrame, or plot output"
+      ],
+      "quality_checks": [
+        "return type matches downstream use",
+        "spill range is empty",
+        "output shape is stable"
+      ],
+      "common_errors": [
+        "#SPILL! from occupied cells",
+        "object card expected where formula needs values",
+        "print output used unintentionally"
+      ],
+      "performance": [
+        "large DataFrame spill can slow workbook",
+        "recalculate only when needed"
+      ],
+      "security_privacy": [
+        "do not put secrets in cell text",
+        "avoid external file/network expectations"
+      ],
+      "availability_constraints": [
+        "Python in Excel availability, return behavior, and compute level must be verified in current tenant"
+      ],
+      "use_when": [
+        "interactive analysis result must live in workbook"
+      ],
+      "do_not_use_when": [
+        "production extracts, upload files, or unattended jobs"
+      ],
+      "inspect_before_applying": [
+        "inspect PY formulas and return_type",
+        "reserve spill area",
+        "test one recalc"
+      ],
+      "human_review_triggers": [
+        "output feeds accounting/upload cells"
+      ],
+      "related_ids": [
+        "python-excel-risk-spill-output",
+        "cvf-python-in-excel-py-function-return-type"
+      ]
+    },
+    {
+      "id": "python-excel-tech-python-editor-review",
+      "technique": "Python Editor for multi-cell review",
+      "decision": "Review and edit multiple Python cells with syntax help and dependency visibility.",
+      "excel_boundary": "Excel cells still contain PY formulas; the editor is an authoring/review pane.",
+      "python_boundary": "Python code remains workbook-scoped and cell ordered.",
+      "data_shape_expected": [
+        "workbook with multiple Python cells",
+        "multi-line Python code"
+      ],
+      "quality_checks": [
+        "all Python cells reviewed",
+        "variables defined before use",
+        "comments identify business purpose"
+      ],
+      "common_errors": [
+        "syntax error hidden in collapsed cell",
+        "variable overwritten in earlier cell",
+        "editor availability differs by subscription/channel"
+      ],
+      "performance": [
+        "many Python cells can increase recalc time"
+      ],
+      "security_privacy": [
+        "do not treat editor as a backend IDE with local file access"
+      ],
+      "availability_constraints": [
+        "Python Editor availability is channel/subscription dependent"
+      ],
+      "use_when": [
+        "workbook contains more than trivial Python code"
+      ],
+      "do_not_use_when": [
+        "simple one-line formula or production script outside Excel"
+      ],
+      "inspect_before_applying": [
+        "open editor and enumerate cells",
+        "map variable dependencies",
+        "flag long code for human review"
+      ],
+      "human_review_triggers": [
+        "business logic is embedded in Python cell"
+      ],
+      "related_ids": [
+        "python-excel-risk-cloud-execution",
+        "cvf-python-editor-availability"
+      ]
+    },
+    {
+      "id": "python-excel-tech-calc-order-dependency",
+      "technique": "Python cell calculation order dependency",
+      "decision": "Prevent undefined-variable errors caused by cell order or sheet order.",
+      "excel_boundary": "Excel workbook calculation order controls when PY cells execute.",
+      "python_boundary": "Python variables persist according to Python-in-Excel calculation/session behavior and must be defined before use.",
+      "data_shape_expected": [
+        "multiple PY cells sharing variables"
+      ],
+      "quality_checks": [
+        "definitions precede uses",
+        "hidden sheets not supplying critical variables silently",
+        "recalc produces stable result"
+      ],
+      "common_errors": [
+        "#PYTHON! undefined variable",
+        "circular dependency",
+        "renamed variable not updated"
+      ],
+      "performance": [
+        "wide dependency chains slow recalculation"
+      ],
+      "security_privacy": [
+        "avoid secrets and network expectations in shared variables"
+      ],
+      "availability_constraints": [
+        "feature behavior must be verified when calculation settings/channel change"
+      ],
+      "use_when": [
+        "small number of Python cells share intermediate objects"
+      ],
+      "do_not_use_when": [
+        "complex dependency graph better in external script/notebook"
+      ],
+      "inspect_before_applying": [
+        "enumerate PY cells by sheet/cell",
+        "trace variable names",
+        "test full recalc"
+      ],
+      "human_review_triggers": [
+        "Python outputs feed published report"
+      ],
+      "related_ids": [
+        "python-excel-risk-cloud-execution",
+        "aiwf-review-python-in-excel-cell"
+      ]
+    },
+    {
+      "id": "python-excel-tech-xl-table-read",
+      "technique": "Read Excel range or Table with xl()",
+      "decision": "Move workbook data into Python for analysis while preserving headers and shape.",
+      "excel_boundary": "Excel Table/range remains the data source and should be validated before use.",
+      "python_boundary": "Python receives a scalar, list-like object, array, or DataFrame from xl().",
+      "data_shape_expected": [
+        "Excel Table or rectangular range",
+        "headers if DataFrame needed"
+      ],
+      "quality_checks": [
+        "shape matches source",
+        "headers are unique",
+        "dates/numbers read as expected",
+        "no merged cells in source"
+      ],
+      "common_errors": [
+        "header row imported as data",
+        "range excludes new rows",
+        "mixed types in a column"
+      ],
+      "performance": [
+        "large ranges increase compute and workbook size"
+      ],
+      "security_privacy": [
+        "Python cell processes workbook data in supported cloud boundary"
+      ],
+      "availability_constraints": [
+        "xl() syntax/return behavior and Python availability require current verification"
+      ],
+      "use_when": [
+        "interactive cleaning/profiling of workbook table"
+      ],
+      "do_not_use_when": [
+        "credentialed imports or local file reads; use Power Query/external Python"
+      ],
+      "inspect_before_applying": [
+        "inspect source table/range",
+        "check type(df), df.shape",
+        "compare counts"
+      ],
+      "human_review_triggers": [
+        "source contains sensitive data or output used for upload"
+      ],
+      "related_ids": [
+        "python-excel-risk-xl-reference-shape",
+        "excel-risk-merged-cells"
+      ]
+    },
+    {
+      "id": "python-excel-tech-power-query-input",
+      "technique": "Use Power Query as external-data boundary for Python in Excel",
+      "decision": "Import and shape external data into Excel before Python analysis.",
+      "excel_boundary": "Power Query handles external import and transformation into workbook tables.",
+      "python_boundary": "Python analyzes data already loaded into Excel tables/ranges via xl().",
+      "data_shape_expected": [
+        "external data source loaded through Power Query",
+        "Excel table output"
+      ],
+      "quality_checks": [
+        "query refreshed",
+        "row count logged",
+        "table columns match contract",
+        "Python does not call blocked external IO"
+      ],
+      "common_errors": [
+        "stale query output",
+        "renamed query table",
+        "Python code tries pandas.read_csv/read_excel"
+      ],
+      "performance": [
+        "large query outputs may be slow in Python-in-Excel"
+      ],
+      "security_privacy": [
+        "Power Query credential/privacy settings must be governed outside Python cell"
+      ],
+      "availability_constraints": [
+        "Microsoft currently documents Power Query as external data path for Python in Excel"
+      ],
+      "use_when": [
+        "external data needs Python analysis inside workbook"
+      ],
+      "do_not_use_when": [
+        "unattended ETL or API workflows; use external pipeline"
+      ],
+      "inspect_before_applying": [
+        "inspect queries and refresh times",
+        "confirm table loaded",
+        "scan Python code for file/network IO"
+      ],
+      "human_review_triggers": [
+        "query credentials or privacy levels involved"
+      ],
+      "related_ids": [
+        "cvf-python-in-excel-power-query-import",
+        "python-excel-risk-privacy-boundary"
+      ]
+    },
+    {
+      "id": "python-excel-tech-pandas-profile",
+      "technique": "pandas profiling and cleaning in workbook",
+      "decision": "Profile missing values, types, duplicates, and simple cleaning before analysis.",
+      "excel_boundary": "Excel provides source table and receives summary/cleaned output.",
+      "python_boundary": "pandas DataFrame methods profile and transform the data.",
+      "data_shape_expected": [
+        "rectangular table",
+        "moderate row count",
+        "stable headers"
+      ],
+      "quality_checks": [
+        "cleaning rules documented",
+        "original table untouched",
+        "row counts before/after captured",
+        "dtype conversions checked"
+      ],
+      "common_errors": [
+        "dropping rows without business rule",
+        "coercing IDs to numbers",
+        "in-place mutation hides original"
+      ],
+      "performance": [
+        "large DataFrames can be slow; return summaries when possible"
+      ],
+      "security_privacy": [
+        "do not expose sensitive fields unnecessarily in outputs"
+      ],
+      "availability_constraints": [
+        "package availability and compute limits need verification"
+      ],
+      "use_when": [
+        "interactive data-quality profiling or repeatable light cleaning"
+      ],
+      "do_not_use_when": [
+        "large production data cleaning or scheduled pipelines"
+      ],
+      "inspect_before_applying": [
+        "capture before/after counts",
+        "show code to human reviewer",
+        "preserve raw data"
+      ],
+      "human_review_triggers": [
+        "rows are dropped or values overwritten"
+      ],
+      "related_ids": [
+        "python-excel-risk-performance",
+        "excel-risk-blank-vs-zero"
+      ]
+    },
+    {
+      "id": "python-excel-tech-pandas-merge-reconcile",
+      "technique": "pandas merge/reconciliation inside workbook",
+      "decision": "Join two workbook tables and identify unmatched or duplicated keys.",
+      "excel_boundary": "Excel tables hold source datasets and exception outputs.",
+      "python_boundary": "pandas merge with indicator and duplicate checks performs reconciliation.",
+      "data_shape_expected": [
+        "two tables with join keys",
+        "defined expected grain"
+      ],
+      "quality_checks": [
+        "keys unique where expected",
+        "join type documented",
+        "row counts reconcile",
+        "null keys handled"
+      ],
+      "common_errors": [
+        "many-to-many merge explosion",
+        "whitespace/case mismatches",
+        "left/right key names confused"
+      ],
+      "performance": [
+        "large joins can slow workbook; summarize exceptions"
+      ],
+      "security_privacy": [
+        "source data may include customer/vendor data; review privacy"
+      ],
+      "availability_constraints": [
+        "pandas available but feature availability still current-verification dependent"
+      ],
+      "use_when": [
+        "interactive reconciliation and exception reporting"
+      ],
+      "do_not_use_when": [
+        "enterprise master-data integration or automated backend matching"
+      ],
+      "inspect_before_applying": [
+        "count duplicates before merge",
+        "compare row counts after merge",
+        "return exceptions not full sensitive data"
+      ],
+      "human_review_triggers": [
+        "unmatched records affect upload or accounting"
+      ],
+      "related_ids": [
+        "excel-risk-duplicate-keys",
+        "dqg-no-duplicate-metric-ids"
+      ]
+    },
+    {
+      "id": "python-excel-tech-pandas-groupby-summary",
+      "technique": "pandas groupby summary",
+      "decision": "Summarize data by multiple dimensions with explicit aggregation choices.",
+      "excel_boundary": "Excel table/range is input; returned summary can spill to Excel.",
+      "python_boundary": "pandas groupby/agg creates deterministic summary DataFrame.",
+      "data_shape_expected": [
+        "tidy table",
+        "categorical grouping fields",
+        "numeric measures"
+      ],
+      "quality_checks": [
+        "aggregation methods match metric meaning",
+        "grouping columns not blank",
+        "numeric columns numeric"
+      ],
+      "common_errors": [
+        "averaging ratios incorrectly",
+        "grouping text dates",
+        "dropping NA groups silently"
+      ],
+      "performance": [
+        "large high-cardinality summaries can spill too much data"
+      ],
+      "security_privacy": [
+        "return only necessary columns for privacy"
+      ],
+      "availability_constraints": [
+        "requires current Python-in-Excel support and pandas package"
+      ],
+      "use_when": [
+        "repeatable analysis summary embedded in workbook"
+      ],
+      "do_not_use_when": [
+        "nontechnical interactive slicing; use PivotTable"
+      ],
+      "inspect_before_applying": [
+        "inspect group keys",
+        "compare totals to source",
+        "limit output columns"
+      ],
+      "human_review_triggers": [
+        "summary used as official KPI"
+      ],
+      "related_ids": [
+        "excel-risk-percent-convention",
+        "python-excel-risk-spill-output"
+      ]
+    },
+    {
+      "id": "python-excel-tech-datetime-conversion",
+      "technique": "Date/time conversion in pandas",
+      "decision": "Normalize text dates before grouping, merging, or forecasting.",
+      "excel_boundary": "Excel may store dates as serials, text, or formatted display values.",
+      "python_boundary": "pandas parses and validates dates with explicit error handling.",
+      "data_shape_expected": [
+        "date-like column",
+        "expected period range"
+      ],
+      "quality_checks": [
+        "unparsed count zero or reviewed",
+        "min/max dates plausible",
+        "week-ending convention documented"
+      ],
+      "common_errors": [
+        "text dates parsed month/day backwards",
+        "Excel serial treated as integer",
+        "timezone ignored when relevant"
+      ],
+      "performance": [
+        "date parsing on large tables can be expensive but manageable for moderate data"
+      ],
+      "security_privacy": [
+        "date fields may imply customer/employee activity; minimize output"
+      ],
+      "availability_constraints": [
+        "pandas and Python-in-Excel current support needed"
+      ],
+      "use_when": [
+        "workbook has inconsistent date text or needs period grouping"
+      ],
+      "do_not_use_when": [
+        "official financial calendar logic not yet defined by organization"
+      ],
+      "inspect_before_applying": [
+        "profile raw date types",
+        "output parse failures",
+        "compare to expected period"
+      ],
+      "human_review_triggers": [
+        "period controls accounting/reporting cycle"
+      ],
+      "related_ids": [
+        "excel-risk-date-serials",
+        "dqg-week-ending-matches-period"
+      ]
+    },
+    {
+      "id": "python-excel-tech-python-visualization",
+      "technique": "Python visualization inside Excel",
+      "decision": "Create statistical or customized visuals beyond basic Excel chart types.",
+      "excel_boundary": "Excel workbook supplies validated data and displays final image/output.",
+      "python_boundary": "Matplotlib/seaborn create visual output in the Python cell.",
+      "data_shape_expected": [
+        "validated DataFrame",
+        "moderate rows",
+        "clear visual question"
+      ],
+      "quality_checks": [
+        "source data validated",
+        "axis labels and units present",
+        "missing values handled",
+        "filters documented"
+      ],
+      "common_errors": [
+        "plotting unvalidated data",
+        "overplotting unreadable categories",
+        "using misleading axis/scale"
+      ],
+      "performance": [
+        "plot generation can slow recalculation; cache or simplify where possible"
+      ],
+      "security_privacy": [
+        "charts may expose sensitive outliers; aggregate when needed"
+      ],
+      "availability_constraints": [
+        "Matplotlib/seaborn availability and output behavior require verification"
+      ],
+      "use_when": [
+        "distribution/statistical/custom plot needed in workbook"
+      ],
+      "do_not_use_when": [
+        "standard business chart is enough or dashboard requires BI platform"
+      ],
+      "inspect_before_applying": [
+        "trace data source",
+        "inspect labels/scale",
+        "confirm active filters"
+      ],
+      "human_review_triggers": [
+        "chart appears in executive report"
+      ],
+      "related_ids": [
+        "excel-risk-chart-without-data-validation",
+        "rpt-chart-source-validation"
+      ]
+    },
+    {
+      "id": "python-excel-tech-error-triage",
+      "technique": "Python-in-Excel error triage",
+      "decision": "Diagnose #PYTHON!, #BLOCKED!, #VALUE!, spill, and object-shape failures.",
+      "excel_boundary": "Excel displays cell errors and dependency cells.",
+      "python_boundary": "Python code, package availability, calculation order, and environment state determine result.",
+      "data_shape_expected": [
+        "workbook with PY errors"
+      ],
+      "quality_checks": [
+        "error type documented",
+        "root cause mapped",
+        "no raw data overwritten",
+        "dependency recalculated after fix"
+      ],
+      "common_errors": [
+        "treating #BLOCKED! as formula typo",
+        "fixing visible output only",
+        "deleting upstream Python cell"
+      ],
+      "performance": [
+        "repeated errors can trigger slow recalculation"
+      ],
+      "security_privacy": [
+        "errors may reflect policy/privacy restrictions; escalate"
+      ],
+      "availability_constraints": [
+        "availability and subscription issues are current-state dependent"
+      ],
+      "use_when": [
+        "repairing workbook with Python errors"
+      ],
+      "do_not_use_when": [
+        "unknown policy restriction without admin review"
+      ],
+      "inspect_before_applying": [
+        "capture screenshot/value of error",
+        "inspect formula/code",
+        "create backup before edit"
+      ],
+      "human_review_triggers": [
+        "error affects final report or upload"
+      ],
+      "related_ids": [
+        "python-excel-risk-package-availability",
+        "cvf-python-in-excel-error-codes"
+      ]
+    },
+    {
+      "id": "python-excel-tech-copilot-prompt-review",
+      "technique": "Copilot-assisted Python analysis review",
+      "decision": "Use Copilot-generated Python or insights as a draft requiring validation.",
+      "excel_boundary": "Excel workbook context and user prompts define requested output.",
+      "python_boundary": "Copilot may generate Python analysis that must be inspected before trust.",
+      "data_shape_expected": [
+        "worksheet data",
+        "prompted analysis",
+        "generated Python/result"
+      ],
+      "quality_checks": [
+        "columns exist",
+        "assumptions explicit",
+        "totals reconcile",
+        "prompt did not invent policy thresholds"
+      ],
+      "common_errors": [
+        "hallucinated field name",
+        "unsupported forecast method",
+        "business threshold invented"
+      ],
+      "performance": [
+        "generated code may be inefficient on larger tables"
+      ],
+      "security_privacy": [
+        "do not provide secrets or unauthorized data in prompts/workbook"
+      ],
+      "availability_constraints": [
+        "Copilot and Python in Excel features require current availability verification"
+      ],
+      "use_when": [
+        "accelerating exploratory analysis with human review"
+      ],
+      "do_not_use_when": [
+        "official accounting close or upload creation without validation"
+      ],
+      "inspect_before_applying": [
+        "compare generated output to source totals",
+        "inspect code for assumptions",
+        "flag invented formulas"
+      ],
+      "human_review_triggers": [
+        "generated result goes to executive/accounting audience"
+      ],
+      "related_ids": [
+        "cvf-copilot-python-in-excel-availability",
+        "aiwf-review-python-in-excel-cell"
+      ]
+    },
+    {
+      "id": "python-excel-tech-statsmodels-regression",
+      "technique": "statsmodels regression in Python-in-Excel",
+      "decision": "Run richer regression output than Excel ToolPak when exploratory modeling is workbook-bound.",
+      "excel_boundary": "Excel table supplies model data and displays summary/diagnostics.",
+      "python_boundary": "Python uses pandas/statsmodels to fit model inside current Python-in-Excel environment.",
+      "data_shape_expected": [
+        "numeric model dataset",
+        "dependent variable",
+        "predictor variables"
+      ],
+      "quality_checks": [
+        "row alignment",
+        "missing values handled",
+        "predictors meaningful",
+        "diagnostics reviewed"
+      ],
+      "common_errors": [
+        "overfitting",
+        "categorical columns treated as numeric IDs",
+        "statistical significance overclaimed"
+      ],
+      "performance": [
+        "model fitting can be compute-heavy; keep exploratory"
+      ],
+      "security_privacy": [
+        "avoid sensitive row-level exposure in outputs"
+      ],
+      "availability_constraints": [
+        "statsmodels/package availability and compute limits require current verification"
+      ],
+      "use_when": [
+        "exploratory model in analyst workbook"
+      ],
+      "do_not_use_when": [
+        "production model scoring or causal/business-critical decisions"
+      ],
+      "inspect_before_applying": [
+        "inspect variable definitions",
+        "check missing rows dropped",
+        "summarize caveats"
+      ],
+      "human_review_triggers": [
+        "model affects staffing/pricing/budget"
+      ],
+      "related_ids": [
+        "excel-tech-correlation-regression-toolpak",
+        "rpt-statistical-result-disclaimer"
+      ]
+    }
+  ],
+  "business_application_active_digest": [
+    {
+      "id": "biz-restaurant365-export-validation",
+      "application": "Restaurant365 export validation",
+      "business_question": "Is the system export complete, current, typed correctly, and ready for analysis or upload staging?",
+      "grain": "one row per exported transaction/metric/date/location as defined by export",
+      "required_fields": [
+        "export_timestamp",
+        "location_id",
+        "business_date or week_ending",
+        "account_or_metric_id",
+        "amount or value"
+      ],
+      "recommended_excel_tools": [
+        "Excel Tables",
+        "filters",
+        "SUMIFS/PivotTables",
+        "Power Query import where available"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas profiling",
+        "date/currency/duplicate exception summaries"
+      ],
+      "when_external_python_is_better": [
+        "scheduled exports, authenticated API pulls, multi-file ingestion, credentialed workflows"
+      ],
+      "quality_gates": [
+        "dqg-required-table-exists",
+        "dqg-required-column-exists",
+        "dqg-date-column-parses",
+        "dqg-currency-values-numeric",
+        "dqg-row-count-reconciles",
+        "dqg-stale-refresh-timestamp"
+      ],
+      "outputs": [
+        "export validation report",
+        "rejected-row table",
+        "ready/not-ready status"
+      ],
+      "manual_review_required": [
+        "unmapped accounts/metrics",
+        "unexpected period",
+        "manual adjustments"
+      ],
+      "do_not_invent": [
+        "account mappings",
+        "acceptable freshness window",
+        "metric formulas",
+        "posting/upload rules"
+      ],
+      "lowest_complexity_safe_approach": "Excel table + gates + pivot/control totals.",
+      "advanced_approach": "Power Query or external Python ingestion plus workbook review pack."
+    },
+    {
+      "id": "biz-weekly-scorecard-workbook",
+      "application": "Weekly scorecard workbook",
+      "business_question": "What changed this week and which KPIs need management attention?",
+      "grain": "one row per metric/location/week",
+      "required_fields": [
+        "week_ending",
+        "location_id",
+        "metric_id",
+        "metric_value"
+      ],
+      "recommended_excel_tools": [
+        "Excel Tables",
+        "PivotTables",
+        "PivotCharts",
+        "SUMIFS",
+        "conditional formatting"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas profile for missing/duplicate metric rows",
+        "Python chart for distributions if needed"
+      ],
+      "when_external_python_is_better": [
+        "automated multi-source scorecard generation or Slack/email distribution"
+      ],
+      "quality_gates": [
+        "dqg-week-ending-matches-period",
+        "dqg-no-duplicate-metric-ids",
+        "dqg-percent-convention-known",
+        "dqg-no-formula-errors-output",
+        "dqg-chart-source-validated"
+      ],
+      "outputs": [
+        "weekly KPI table",
+        "exceptions list",
+        "executive summary tab"
+      ],
+      "manual_review_required": [
+        "metric definition approval",
+        "threshold/target definitions",
+        "manual commentary"
+      ],
+      "do_not_invent": [
+        "KPI formulas",
+        "red/yellow/green thresholds",
+        "labor/food cost definitions"
+      ],
+      "lowest_complexity_safe_approach": "Excel template with protected formulas and pivot/charts.",
+      "advanced_approach": "Power Query load + optional Python QA + external distribution."
+    },
+    {
+      "id": "biz-sales-labor-analysis",
+      "application": "Sales and labor analysis",
+      "business_question": "How do sales, labor hours, and labor cost relate by location/period?",
+      "grain": "location-date or location-week",
+      "required_fields": [
+        "date or week_ending",
+        "location_id",
+        "sales_amount",
+        "labor_hours",
+        "labor_cost"
+      ],
+      "recommended_excel_tools": [
+        "Excel Tables",
+        "PivotTables by location/week",
+        "SUMIFS/AVERAGEIFS",
+        "charts"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas merge/reconcile",
+        "groupby summaries",
+        "scatter/regression exploratory checks"
+      ],
+      "when_external_python_is_better": [
+        "large historical labor model, scheduling optimization, API integrations"
+      ],
+      "quality_gates": [
+        "dqg-date-column-parses",
+        "dqg-percent-convention-known",
+        "dqg-currency-values-numeric",
+        "dqg-row-count-reconciles"
+      ],
+      "outputs": [
+        "labor % summary",
+        "hours vs sales trend",
+        "exception list"
+      ],
+      "manual_review_required": [
+        "labor allocation rules",
+        "overtime treatment",
+        "sales net/gross definition"
+      ],
+      "do_not_invent": [
+        "labor % formula",
+        "overtime policy",
+        "sales definition"
+      ],
+      "lowest_complexity_safe_approach": "PivotTable summary with explicit labor % convention.",
+      "advanced_approach": "pandas reconciliation and external forecasting if productionized."
+    },
+    {
+      "id": "biz-food-cost-analysis",
+      "application": "Food cost analysis",
+      "business_question": "Are food cost values complete, numeric, and explainable by category/location/period?",
+      "grain": "category/location/period or item/location/period",
+      "required_fields": [
+        "period",
+        "location_id",
+        "category_or_item",
+        "cost_amount",
+        "sales_amount or denominator field"
+      ],
+      "recommended_excel_tools": [
+        "Excel Tables",
+        "PivotTables",
+        "SUMIFS",
+        "conditional formatting"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas duplicate invoice/item checks",
+        "outlier profiling"
+      ],
+      "when_external_python_is_better": [
+        "inventory/API integrations, large item-level recipe models"
+      ],
+      "quality_gates": [
+        "dqg-currency-values-numeric",
+        "dqg-percent-convention-known",
+        "dqg-no-duplicate-metric-ids",
+        "dqg-row-count-reconciles"
+      ],
+      "outputs": [
+        "food cost summary",
+        "unmapped category list",
+        "outlier review"
+      ],
+      "manual_review_required": [
+        "COGS formula policy",
+        "category mapping",
+        "waste treatment"
+      ],
+      "do_not_invent": [
+        "food cost formula",
+        "category mapping",
+        "inventory adjustment policy"
+      ],
+      "lowest_complexity_safe_approach": "Excel/PivotTable category summary with mapping table.",
+      "advanced_approach": "External pipeline when item-level inventory/recipe logic is complex."
+    },
+    {
+      "id": "biz-management-cost-analysis",
+      "application": "Management cost analysis",
+      "business_question": "How do management costs compare to sales, budget, and prior periods?",
+      "grain": "cost category/location/period",
+      "required_fields": [
+        "period",
+        "location_id",
+        "cost_category",
+        "cost_amount"
+      ],
+      "recommended_excel_tools": [
+        "Excel Tables",
+        "PivotTables",
+        "SUMIFS",
+        "budget vs actual formulas"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas merge to budget/mapping tables",
+        "variance exception output"
+      ],
+      "when_external_python_is_better": [
+        "allocation engine, scheduled accounting close package"
+      ],
+      "quality_gates": [
+        "dqg-currency-values-numeric",
+        "dqg-required-column-exists",
+        "dqg-row-count-reconciles",
+        "dqg-manual-overrides-documented"
+      ],
+      "outputs": [
+        "management cost variance report",
+        "mapping exceptions"
+      ],
+      "manual_review_required": [
+        "allocation rules",
+        "bonus/accrual policy",
+        "management cost definition"
+      ],
+      "do_not_invent": [
+        "cost allocation formulas",
+        "account classifications",
+        "accrual rules"
+      ],
+      "lowest_complexity_safe_approach": "Excel budget-vs-actual workbook with protected formulas.",
+      "advanced_approach": "External governed pipeline for close/accounting upload."
+    },
+    {
+      "id": "biz-sevenrooms-guest-satisfaction",
+      "application": "SevenRooms guest satisfaction analysis",
+      "business_question": "What guest satisfaction themes, ratings, and operational issues need attention?",
+      "grain": "review/location/date or tag/location/week",
+      "required_fields": [
+        "review_date",
+        "location_id",
+        "rating_or_score",
+        "comment_or_tag"
+      ],
+      "recommended_excel_tools": [
+        "Excel Tables",
+        "PivotTables",
+        "charts",
+        "conditional formatting"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas text/profile summaries",
+        "rating distribution visualization"
+      ],
+      "when_external_python_is_better": [
+        "NLP/text analytics service, scheduled sentiment pipeline, API pull"
+      ],
+      "quality_gates": [
+        "dqg-date-column-parses",
+        "dqg-required-column-exists",
+        "dqg-blank-required-keys",
+        "dqg-chart-source-validated"
+      ],
+      "outputs": [
+        "rating trend",
+        "theme/tag counts",
+        "response follow-up list"
+      ],
+      "manual_review_required": [
+        "sentiment scoring method",
+        "response SLA",
+        "guest privacy rules"
+      ],
+      "do_not_invent": [
+        "sentiment formula/threshold",
+        "guest privacy policy",
+        "response rules"
+      ],
+      "lowest_complexity_safe_approach": "Excel pivots/charts on exported tags/ratings.",
+      "advanced_approach": "Python-in-Excel text profiling or external NLP with privacy review."
+    },
+    {
+      "id": "biz-ubereats-reviews-analysis",
+      "application": "Uber Eats reviews analysis",
+      "business_question": "What delivery-review patterns, ratings, and order issues require action?",
+      "grain": "review/order/location/date",
+      "required_fields": [
+        "review_date",
+        "location_id",
+        "rating",
+        "review_text or issue_code"
+      ],
+      "recommended_excel_tools": [
+        "Excel Tables",
+        "PivotTables",
+        "charts",
+        "filters"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas duplicate/order issue profiling",
+        "Python distribution/keyword summaries"
+      ],
+      "when_external_python_is_better": [
+        "API ingestion, NLP, multi-platform review consolidation"
+      ],
+      "quality_gates": [
+        "dqg-date-column-parses",
+        "dqg-required-column-exists",
+        "dqg-no-duplicate-metric-ids",
+        "dqg-chart-source-validated"
+      ],
+      "outputs": [
+        "rating trend",
+        "issue exception list",
+        "menu/location summary"
+      ],
+      "manual_review_required": [
+        "issue taxonomy",
+        "rating threshold",
+        "response policy"
+      ],
+      "do_not_invent": [
+        "issue taxonomy",
+        "sentiment rules",
+        "refund policy"
+      ],
+      "lowest_complexity_safe_approach": "Excel export validation + pivots.",
+      "advanced_approach": "External multi-channel review pipeline if recurring and large."
+    },
+    {
+      "id": "biz-marketing-spend-performance",
+      "application": "Marketing spend and performance analysis",
+      "business_question": "Which campaigns/channels produced measurable performance relative to spend?",
+      "grain": "campaign/channel/period",
+      "required_fields": [
+        "period",
+        "campaign_or_channel",
+        "spend_amount",
+        "performance_metric"
+      ],
+      "recommended_excel_tools": [
+        "Excel Tables",
+        "PivotTables",
+        "charts",
+        "SUMIFS"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas merge/groupby",
+        "outlier and missing campaign checks"
+      ],
+      "when_external_python_is_better": [
+        "API-connected ad platforms, attribution model, scheduled refresh"
+      ],
+      "quality_gates": [
+        "dqg-currency-values-numeric",
+        "dqg-percent-convention-known",
+        "dqg-required-column-exists",
+        "dqg-row-count-reconciles"
+      ],
+      "outputs": [
+        "spend vs result table",
+        "campaign exceptions",
+        "budget variance"
+      ],
+      "manual_review_required": [
+        "attribution rules",
+        "ROI formula",
+        "campaign naming conventions"
+      ],
+      "do_not_invent": [
+        "ROI/ROAS formula",
+        "attribution window",
+        "campaign taxonomy"
+      ],
+      "lowest_complexity_safe_approach": "Excel pivot budget/performance report.",
+      "advanced_approach": "External attribution/ETL when joining many platforms or using APIs."
+    },
+    {
+      "id": "biz-budget-vs-actual-report",
+      "application": "Budget versus actual report",
+      "business_question": "Where do actual results differ from budget, and why?",
+      "grain": "account/metric/location/period",
+      "required_fields": [
+        "period",
+        "location_id",
+        "account_or_metric",
+        "actual_amount",
+        "budget_amount"
+      ],
+      "recommended_excel_tools": [
+        "Excel Tables",
+        "PivotTables",
+        "variance formulas",
+        "conditional formatting"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas reconciliation to mapping/budget tables"
+      ],
+      "when_external_python_is_better": [
+        "accounting close pipeline, ERP integrations, multi-entity consolidation"
+      ],
+      "quality_gates": [
+        "dqg-currency-values-numeric",
+        "dqg-percent-convention-known",
+        "dqg-manual-overrides-documented",
+        "dqg-row-count-reconciles"
+      ],
+      "outputs": [
+        "variance report",
+        "unmapped accounts",
+        "commentary request list"
+      ],
+      "manual_review_required": [
+        "variance threshold",
+        "budget version",
+        "mapping rules"
+      ],
+      "do_not_invent": [
+        "variance formulas/thresholds",
+        "budget version policy",
+        "account mappings"
+      ],
+      "lowest_complexity_safe_approach": "Excel protected budget vs actual template.",
+      "advanced_approach": "Power Query/external pipeline for close-grade multi-entity report."
+    },
+    {
+      "id": "biz-owner-executive-dashboard",
+      "application": "Owner/executive dashboard",
+      "business_question": "What is the concise, current state of performance and exceptions?",
+      "grain": "metric/location/period or company-level metric/period",
+      "required_fields": [
+        "period",
+        "metric_id",
+        "metric_value",
+        "status_or_variance"
+      ],
+      "recommended_excel_tools": [
+        "PivotTables",
+        "PivotCharts",
+        "GETPIVOTDATA",
+        "conditional formatting"
+      ],
+      "recommended_python_in_excel_tools": [
+        "Python visuals only for approved advanced insights"
+      ],
+      "when_external_python_is_better": [
+        "BI dashboard or scheduled executive distribution"
+      ],
+      "quality_gates": [
+        "dqg-control-sheet-complete",
+        "dqg-chart-source-validated",
+        "dqg-no-formula-errors-output",
+        "dqg-stale-refresh-timestamp"
+      ],
+      "outputs": [
+        "executive summary tab",
+        "exception list",
+        "drill links"
+      ],
+      "manual_review_required": [
+        "KPI definitions",
+        "thresholds",
+        "who can approve commentary"
+      ],
+      "do_not_invent": [
+        "KPI selection",
+        "thresholds",
+        "commentary rules"
+      ],
+      "lowest_complexity_safe_approach": "Excel executive tab fed by validated pivots/tables.",
+      "advanced_approach": "BI/external reporting for scheduled or multi-user dashboards."
+    },
+    {
+      "id": "biz-accounting-upload-template",
+      "application": "Accounting upload template",
+      "business_question": "Can accounting upload this file without schema, period, or formula errors?",
+      "grain": "one row per upload transaction according to accounting schema",
+      "required_fields": [
+        "upload_period",
+        "account_id",
+        "location_id",
+        "amount",
+        "description_or_memo"
+      ],
+      "recommended_excel_tools": [
+        "Excel Tables",
+        "data validation/gates",
+        "protected formulas",
+        "SUMIFS control totals"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas schema/duplicate/date/currency prechecks"
+      ],
+      "when_external_python_is_better": [
+        "actual upload, API call, scheduled posting"
+      ],
+      "quality_gates": [
+        "dqg-upload-schema-contract",
+        "dqg-date-column-parses",
+        "dqg-currency-values-numeric",
+        "dqg-blank-required-keys",
+        "dqg-no-formula-errors-output"
+      ],
+      "outputs": [
+        "ready upload table",
+        "control totals",
+        "rejected-row list"
+      ],
+      "manual_review_required": [
+        "account mappings",
+        "posting rules",
+        "approval workflow"
+      ],
+      "do_not_invent": [
+        "account codes",
+        "debit/credit sign convention",
+        "posting rules"
+      ],
+      "lowest_complexity_safe_approach": "Excel staging table with strict gates and manual accounting review.",
+      "advanced_approach": "External governed upload service after workbook validation."
+    },
+    {
+      "id": "biz-api-upload-staging-workbook",
+      "application": "API upload staging workbook",
+      "business_question": "Is workbook data shaped and validated for an external API handoff without storing credentials?",
+      "grain": "one row per API record/action",
+      "required_fields": [
+        "record_id",
+        "operation",
+        "required API fields",
+        "ready_status"
+      ],
+      "recommended_excel_tools": [
+        "Excel Table staging",
+        "gates",
+        "control sheet",
+        "protected formulas"
+      ],
+      "recommended_python_in_excel_tools": [
+        "pandas schema/type checks and JSON-like preview generation"
+      ],
+      "when_external_python_is_better": [
+        "authenticated API calls, retries, scheduling, monitoring"
+      ],
+      "quality_gates": [
+        "dqg-upload-schema-contract",
+        "dqg-blank-required-keys",
+        "dqg-no-duplicate-metric-ids",
+        "dqg-python-output-spill-safe",
+        "dqg-control-sheet-complete"
+      ],
+      "outputs": [
+        "API-ready staging table",
+        "rejected-record table",
+        "handoff manifest"
+      ],
+      "manual_review_required": [
+        "API contract version",
+        "operation mapping",
+        "error/retry policy"
+      ],
+      "do_not_invent": [
+        "API endpoint behavior",
+        "credential handling",
+        "retry/idempotency rules"
+      ],
+      "lowest_complexity_safe_approach": "Excel validates and stages; external system uploads.",
+      "advanced_approach": "External API service with workbook-generated validation manifest."
+    }
+  ],
+  "current_verification_active_digest": [
+    {
+      "id": "cvf-python-in-excel-availability",
+      "flag": "Python in Excel availability",
+      "why": "Python-in-Excel access depends on Microsoft 365 plan, platform, update channel, and rollout state.",
+      "check_now": "Confirm user tenant/subscription, platform, update channel, and whether PY formulas can be authored/edited.",
+      "status_summary": "Microsoft Support documents plan/platform/channel-specific availability, including preview states for some subscriptions/platforms.",
+      "sources": [
+        "https://support.microsoft.com/en-us/excel/python/python-in-excel-availability"
+      ],
+      "impacted_records": [
+        "decision-python-in-excel-vs-external-script",
+        "python-excel-tech-py-cell-output-mode"
+      ]
+    },
+    {
+      "id": "cvf-python-in-excel-cloud-runtime",
+      "flag": "Python in Excel cloud runtime",
+      "why": "Workbook data processed by Python in Excel runs in Microsoft Cloud containers, which matters for privacy and governance.",
+      "check_now": "Confirm organization allows the workbook data to be processed by Python in Excel cloud runtime.",
+      "status_summary": "Microsoft Support states Python code runs in secure Microsoft Cloud containers and does not persist data in Microsoft Cloud.",
+      "sources": [
+        "https://support.microsoft.com/en-us/excel/python/data-security-and-python-in-excel"
+      ],
+      "impacted_records": [
+        "python-excel-risk-cloud-execution",
+        "decision-accounting-review-vs-exploratory"
+      ]
+    },
+    {
+      "id": "cvf-python-in-excel-network-access",
+      "flag": "Python in Excel network and local access",
+      "why": "Python-in-Excel code should not be assumed to access local files, network resources, or user tokens.",
+      "check_now": "Check for pandas.read_csv/read_excel, requests, API tokens, local paths, and network assumptions.",
+      "status_summary": "Microsoft Support states Python code lacks access to computer/devices/account/user token and common external data functions are not compatible.",
+      "sources": [
+        "https://support.microsoft.com/en-us/excel/python/data-security-and-python-in-excel",
+        "https://support.microsoft.com/en-us/excel/python/get-started-with-python-in-excel"
+      ],
+      "impacted_records": [
+        "decision-credentialed-workflow",
+        "biz-api-upload-staging-workbook"
+      ]
+    },
+    {
+      "id": "cvf-python-in-excel-power-query-import",
+      "flag": "Power Query import boundary for Python in Excel",
+      "why": "External data for Python-in-Excel workflows should be loaded through Power Query according to Microsoft docs.",
+      "check_now": "Confirm Power Query connection, credentials, refresh behavior, and loaded table name.",
+      "status_summary": "Microsoft Support states Power Query is the way to import external data for use with Python in Excel.",
+      "sources": [
+        "https://support.microsoft.com/en-us/excel/python/use-power-query-to-import-data-for-python-in-excel"
+      ],
+      "impacted_records": [
+        "python-excel-tech-power-query-input",
+        "decision-power-query-vs-python-in-excel"
+      ]
+    },
+    {
+      "id": "cvf-python-in-excel-package-set",
+      "flag": "Python package/library availability",
+      "why": "Python-in-Excel package set is curated and may change; custom libraries may not be available.",
+      "check_now": "Check current Microsoft/Anaconda package list and test imports in target workbook.",
+      "status_summary": "Microsoft Support says Python in Excel comes with a standard/core set of libraries provided by Anaconda.",
+      "sources": [
+        "https://support.microsoft.com/en-us/excel/python/open-source-libraries-and-python-in-excel"
+      ],
+      "impacted_records": [
+        "python-excel-tech-pandas-profile",
+        "python-excel-tech-statsmodels-regression"
+      ]
+    },
+    {
+      "id": "cvf-python-in-excel-compute-licensing",
+      "flag": "Python compute and licensing limits",
+      "why": "Performance and calculation modes can depend on subscription/add-on/compute level.",
+      "check_now": "Confirm standard vs premium compute, calculation mode support, and workbook performance in target tenant.",
+      "status_summary": "Microsoft Support documents Python in Excel add-on differences including compute and calculation mode support.",
+      "sources": [
+        "https://support.microsoft.com/en-us/office/python-in-excel-add-on-licensing-faq-6d90fc0e-f080-4799-9d28-9754c77fb308"
+      ],
+      "impacted_records": [
+        "decision-small-vs-large-dataset",
+        "python-excel-risk-performance"
+      ]
+    },
+    {
+      "id": "cvf-python-editor-availability",
+      "flag": "Python Editor availability",
+      "why": "The Python Editor is not guaranteed across all plans/channels/platforms.",
+      "check_now": "Confirm the target user can open the Python Editor or provide alternate review method.",
+      "status_summary": "Microsoft Support documents version/channel availability for Python in Excel Code Editor.",
+      "sources": [
+        "https://support.microsoft.com/en-us/excel/python/python-in-excel-code-editor"
+      ],
+      "impacted_records": [
+        "python-excel-tech-python-editor-review",
+        "aiwf-review-python-in-excel-cell"
+      ]
+    },
+    {
+      "id": "cvf-python-in-excel-py-function-return-type",
+      "flag": "PY function return type behavior",
+      "why": "PY function syntax/return types determine whether output is Excel value or Python object.",
+      "check_now": "Check return_type, spill behavior, and downstream formula compatibility.",
+      "status_summary": "Microsoft Support documents PY(python_code, return_type) with return_type 0 Excel value and 1 Python object.",
+      "sources": [
+        "https://support.microsoft.com/en-us/excel/python/py-function"
+      ],
+      "impacted_records": [
+        "python-excel-tech-py-cell-output-mode",
+        "dqg-python-output-spill-safe"
+      ]
+    },
+    {
+      "id": "cvf-python-in-excel-error-codes",
+      "flag": "Python in Excel error codes",
+      "why": "Error causes and restrictions change; #BLOCKED! may indicate policy/availability, not formula logic.",
+      "check_now": "Check current troubleshoot page when #PYTHON!, #BLOCKED!, or availability errors appear.",
+      "status_summary": "Microsoft Support provides current troubleshooting guidance for Python in Excel errors and subscription limitations.",
+      "sources": [
+        "https://support.microsoft.com/en-us/excel/python/troubleshoot-python-in-excel-errors"
+      ],
+      "impacted_records": [
+        "python-excel-tech-error-triage",
+        "dqg-python-cell-review-required"
+      ]
+    },
+    {
+      "id": "cvf-python-visualization-libraries",
+      "flag": "Python visualization libraries",
+      "why": "Plot behavior and supported libraries depend on current Python-in-Excel environment.",
+      "check_now": "Test Matplotlib/seaborn imports and plot display in target workbook.",
+      "status_summary": "Microsoft Support describes creating plots with libraries such as seaborn and Matplotlib in Python in Excel.",
+      "sources": [
+        "https://support.microsoft.com/en-us/excel/python/create-plots-and-charts-with-python-in-excel"
+      ],
+      "impacted_records": [
+        "python-excel-tech-python-visualization",
+        "rpt-python-output-caveat"
+      ]
+    },
+    {
+      "id": "cvf-copilot-python-in-excel-availability",
+      "flag": "Copilot + Python-in-Excel availability",
+      "why": "Copilot features and Python-backed analysis depend on licensing, platform, and rollout.",
+      "check_now": "Confirm Copilot availability and generated-code review workflow in target tenant.",
+      "status_summary": "Microsoft Support says Copilot in Excel can use Python in Excel for advanced analysis and insights.",
+      "sources": [
+        "https://support.microsoft.com/en-us/excel/copilot/get-started-with-copilot-in-excel"
+      ],
+      "impacted_records": [
+        "python-excel-tech-copilot-prompt-review",
+        "decision-executive-dashboard"
+      ]
+    },
+    {
+      "id": "cvf-excel-dynamic-array-functions",
+      "flag": "Modern Excel function availability",
+      "why": "Dynamic array/text functions may not exist in older Excel versions used by recipients.",
+      "check_now": "Check target Excel version before using VSTACK, TEXTSPLIT, FILTER, UNIQUE, etc.",
+      "status_summary": "Microsoft Support maintains function-specific pages for current Excel function availability and behavior.",
+      "sources": [
+        "https://support.microsoft.com/en-us/excel/vstack-function",
+        "https://support.microsoft.com/en-us/excel/textsplit-function"
+      ],
+      "impacted_records": [
+        "decision-nontechnical-user-template",
+        "excel_data_analysis_checklists_v2.json"
+      ]
+    },
+    {
+      "id": "cvf-organization-accounting-policy",
+      "flag": "Organization accounting/reporting policy",
+      "why": "The source books do not define company-specific formulas, thresholds, mappings, or posting rules.",
+      "check_now": "Confirm metric definitions, account mappings, thresholds, sign conventions, and approval workflow with the business owner.",
+      "status_summary": "No universal external source can replace organization policy; this is a required human verification flag.",
+      "sources": [
+        "organization accounting policy",
+        "business owner metric definitions"
+      ],
+      "impacted_records": [
+        "business_apps",
+        "decision-accounting-review-vs-exploratory"
+      ]
+    },
+    {
+      "id": "cvf-api-contract-version",
+      "flag": "API/upload contract version",
+      "why": "API schemas and upload field requirements can change independently of the workbook.",
+      "check_now": "Verify current schema, required fields, type rules, idempotency keys, and retry/error handling before staging/upload.",
+      "status_summary": "Current API contract or system upload template is authoritative, not the source books or v1 package.",
+      "sources": [
+        "current API documentation or system upload template"
+      ],
+      "impacted_records": [
+        "biz-api-upload-staging-workbook",
+        "aiwf-prepare-workbook-data-for-api-upload"
+      ]
+    }
+  ],
+  "source_separation_rules": {
+    "direct_book_claims": "Use canonical records with source_traceability. Do not upgrade operational extensions into book claims.",
+    "operational_extensions": "Allowed for workbook safety, AI-agent workflows, and business templates when derivation labels them clearly.",
+    "current_flags": "Current Microsoft/product behavior and organization policy must be verified at use time.",
+    "business_placeholders": "Restaurant365, SevenRooms, Uber Eats, marketing, accounting, and API examples use placeholder fields; exact schemas and formulas must come from the organization."
+  }
+}

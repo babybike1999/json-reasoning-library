@@ -1,0 +1,2230 @@
+{
+  "batch_processing": [
+    {
+      "id": "ddia_concept_batch_jobs_process_bounded_input",
+      "record_type": "concept",
+      "name": "Batch jobs process bounded input",
+      "summary": "Use this concept to reason about treating input as a fixed collection that can be re-run. It helps explain partial output or non-repeatable input breaks recovery and improves decisions about whether reprocessing from source data is feasible.",
+      "engineering_question_answered": "When facing treating input as a fixed collection that can be re-run, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "treating input as a fixed collection that can be re-run",
+      "failure_mode_addressed": "partial output or non-repeatable input breaks recovery",
+      "decision_improved": "whether reprocessing from source data is feasible",
+      "operating_condition": "Relevant when a system design, incident, or code path involves batch, bounded input, reprocessing.",
+      "assumptions": [
+        "The workload or architecture actually involves batch.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether reprocessing from source data is feasible, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble partial output or non-repeatable input breaks recovery.",
+        "The team must decide about whether reprocessing from source data is feasible.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test treating input as a fixed collection that can be re-run.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "partial output or non-repeatable input breaks recovery",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for treating input as a fixed collection that can be re-run?",
+        "What evidence shows that partial output or non-repeatable input breaks recovery is or is not occurring?",
+        "Which current component guarantee is being relied on for whether reprocessing from source data is feasible?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "10",
+        "chapter_title": "Batch Processing",
+        "section_heading": "Batch Processing with Unix Tools",
+        "page_or_anchor": "MOBI_TEXT_CHAR_876395",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about treating input as a fixed collection that can be re-run.",
+          "It connects the topic to tradeoffs or failure behavior involving partial output or non-repeatable input breaks recovery."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_unix_pipeline_design_favors_composability",
+        "ddia_concept_mapreduce_moves_computation_to_data",
+        "ddia_concept_reduce_side_joins_group_related_records",
+        "ddia_concept_map_side_joins_trade_preprocessing_for_efficiency"
+      ],
+      "tags": [
+        "batch",
+        "bounded input",
+        "reprocessing",
+        "chapter-10"
+      ]
+    },
+    {
+      "id": "ddia_concept_unix_pipeline_design_favors_composability",
+      "record_type": "concept",
+      "name": "Unix pipeline design favors composability",
+      "summary": "Use this concept to reason about composing small tools via explicit input and output streams. It helps explain hidden side effects make batch behavior hard to audit and improves decisions about whether a pipeline can use simple deterministic stages.",
+      "engineering_question_answered": "When facing composing small tools via explicit input and output streams, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "composing small tools via explicit input and output streams",
+      "failure_mode_addressed": "hidden side effects make batch behavior hard to audit",
+      "decision_improved": "whether a pipeline can use simple deterministic stages",
+      "operating_condition": "Relevant when a system design, incident, or code path involves unix, pipeline, composability.",
+      "assumptions": [
+        "The workload or architecture actually involves unix.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether a pipeline can use simple deterministic stages, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble hidden side effects make batch behavior hard to audit.",
+        "The team must decide about whether a pipeline can use simple deterministic stages.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test composing small tools via explicit input and output streams.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "hidden side effects make batch behavior hard to audit",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for composing small tools via explicit input and output streams?",
+        "What evidence shows that hidden side effects make batch behavior hard to audit is or is not occurring?",
+        "Which current component guarantee is being relied on for whether a pipeline can use simple deterministic stages?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "10",
+        "chapter_title": "Batch Processing",
+        "section_heading": "Batch Processing with Unix Tools",
+        "page_or_anchor": "MOBI_TEXT_CHAR_876395",
+        "figure_table_diagram_or_example": "",
+        "support_role": "technical_example",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about composing small tools via explicit input and output streams.",
+          "It connects the topic to tradeoffs or failure behavior involving hidden side effects make batch behavior hard to audit."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "demonstrated_by_source_example",
+        "explanation": "The record abstracts a practical pattern illustrated by an example in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_batch_jobs_process_bounded_input",
+        "ddia_concept_mapreduce_moves_computation_to_data",
+        "ddia_concept_reduce_side_joins_group_related_records",
+        "ddia_concept_map_side_joins_trade_preprocessing_for_efficiency"
+      ],
+      "tags": [
+        "unix",
+        "pipeline",
+        "composability",
+        "chapter-10"
+      ]
+    },
+    {
+      "id": "ddia_concept_mapreduce_moves_computation_to_data",
+      "record_type": "concept",
+      "name": "MapReduce moves computation to data",
+      "summary": "Use this concept to reason about parallelizing large scans over distributed filesystems. It helps explain single-machine processing cannot complete within time or capacity and improves decisions about when batch parallelism is worth framework overhead.",
+      "engineering_question_answered": "When facing parallelizing large scans over distributed filesystems, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "parallelizing large scans over distributed filesystems",
+      "failure_mode_addressed": "single-machine processing cannot complete within time or capacity",
+      "decision_improved": "when batch parallelism is worth framework overhead",
+      "operating_condition": "Relevant when a system design, incident, or code path involves mapreduce, batch, hdfs.",
+      "assumptions": [
+        "The workload or architecture actually involves mapreduce.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about when batch parallelism is worth framework overhead, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble single-machine processing cannot complete within time or capacity.",
+        "The team must decide about when batch parallelism is worth framework overhead.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test parallelizing large scans over distributed filesystems.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "single-machine processing cannot complete within time or capacity",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for parallelizing large scans over distributed filesystems?",
+        "What evidence shows that single-machine processing cannot complete within time or capacity is or is not occurring?",
+        "Which current component guarantee is being relied on for when batch parallelism is worth framework overhead?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "10",
+        "chapter_title": "Batch Processing",
+        "section_heading": "MapReduce and Distributed Filesystems",
+        "page_or_anchor": "MOBI_TEXT_CHAR_891950",
+        "figure_table_diagram_or_example": "",
+        "support_role": "technical_example",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about parallelizing large scans over distributed filesystems.",
+          "It connects the topic to tradeoffs or failure behavior involving single-machine processing cannot complete within time or capacity."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "demonstrated_by_source_example",
+        "explanation": "The record abstracts a practical pattern illustrated by an example in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_batch_jobs_process_bounded_input",
+        "ddia_concept_unix_pipeline_design_favors_composability",
+        "ddia_concept_reduce_side_joins_group_related_records",
+        "ddia_concept_map_side_joins_trade_preprocessing_for_efficiency"
+      ],
+      "tags": [
+        "mapreduce",
+        "batch",
+        "hdfs",
+        "chapter-10"
+      ]
+    },
+    {
+      "id": "ddia_concept_reduce_side_joins_group_related_records",
+      "record_type": "concept",
+      "name": "Reduce-side joins group related records",
+      "summary": "Use this concept to reason about joining large datasets by routing same keys to reducers. It helps explain skewed keys overload a reducer or produce incomplete joins and improves decisions about which join key distribution must be measured.",
+      "engineering_question_answered": "When facing joining large datasets by routing same keys to reducers, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "joining large datasets by routing same keys to reducers",
+      "failure_mode_addressed": "skewed keys overload a reducer or produce incomplete joins",
+      "decision_improved": "which join key distribution must be measured",
+      "operating_condition": "Relevant when a system design, incident, or code path involves join, batch, skew.",
+      "assumptions": [
+        "The workload or architecture actually involves join.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which join key distribution must be measured, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble skewed keys overload a reducer or produce incomplete joins.",
+        "The team must decide about which join key distribution must be measured.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test joining large datasets by routing same keys to reducers.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "skewed keys overload a reducer or produce incomplete joins",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for joining large datasets by routing same keys to reducers?",
+        "What evidence shows that skewed keys overload a reducer or produce incomplete joins is or is not occurring?",
+        "Which current component guarantee is being relied on for which join key distribution must be measured?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "10",
+        "chapter_title": "Batch Processing",
+        "section_heading": "MapReduce and Distributed Filesystems",
+        "page_or_anchor": "MOBI_TEXT_CHAR_891950",
+        "figure_table_diagram_or_example": "",
+        "support_role": "technical_example",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about joining large datasets by routing same keys to reducers.",
+          "It connects the topic to tradeoffs or failure behavior involving skewed keys overload a reducer or produce incomplete joins."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "demonstrated_by_source_example",
+        "explanation": "The record abstracts a practical pattern illustrated by an example in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_batch_jobs_process_bounded_input",
+        "ddia_concept_unix_pipeline_design_favors_composability",
+        "ddia_concept_mapreduce_moves_computation_to_data",
+        "ddia_concept_map_side_joins_trade_preprocessing_for_efficiency"
+      ],
+      "tags": [
+        "join",
+        "batch",
+        "skew",
+        "chapter-10"
+      ]
+    },
+    {
+      "id": "ddia_concept_map_side_joins_trade_preprocessing_for_efficiency",
+      "record_type": "concept",
+      "name": "Map-side joins trade preprocessing for efficiency",
+      "summary": "Use this concept to reason about avoiding shuffle when data is prepartitioned or small enough to broadcast. It helps explain incorrect assumptions about partitioning produce wrong joins and improves decisions about whether input layout satisfies join prerequisites.",
+      "engineering_question_answered": "When facing avoiding shuffle when data is prepartitioned or small enough to broadcast, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "avoiding shuffle when data is prepartitioned or small enough to broadcast",
+      "failure_mode_addressed": "incorrect assumptions about partitioning produce wrong joins",
+      "decision_improved": "whether input layout satisfies join prerequisites",
+      "operating_condition": "Relevant when a system design, incident, or code path involves map-side join, batch, partitioning.",
+      "assumptions": [
+        "The workload or architecture actually involves map-side join.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether input layout satisfies join prerequisites, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble incorrect assumptions about partitioning produce wrong joins.",
+        "The team must decide about whether input layout satisfies join prerequisites.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test avoiding shuffle when data is prepartitioned or small enough to broadcast.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "incorrect assumptions about partitioning produce wrong joins",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for avoiding shuffle when data is prepartitioned or small enough to broadcast?",
+        "What evidence shows that incorrect assumptions about partitioning produce wrong joins is or is not occurring?",
+        "Which current component guarantee is being relied on for whether input layout satisfies join prerequisites?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "10",
+        "chapter_title": "Batch Processing",
+        "section_heading": "MapReduce and Distributed Filesystems",
+        "page_or_anchor": "MOBI_TEXT_CHAR_891950",
+        "figure_table_diagram_or_example": "",
+        "support_role": "tradeoff_explanation",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about avoiding shuffle when data is prepartitioned or small enough to broadcast.",
+          "It connects the topic to tradeoffs or failure behavior involving incorrect assumptions about partitioning produce wrong joins."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_batch_jobs_process_bounded_input",
+        "ddia_concept_unix_pipeline_design_favors_composability",
+        "ddia_concept_mapreduce_moves_computation_to_data",
+        "ddia_concept_reduce_side_joins_group_related_records"
+      ],
+      "tags": [
+        "map-side join",
+        "batch",
+        "partitioning",
+        "chapter-10"
+      ]
+    },
+    {
+      "id": "ddia_concept_dataflow_engines_reduce_materialization_overhead",
+      "record_type": "concept",
+      "name": "Dataflow engines reduce materialization overhead",
+      "summary": "Use this concept to reason about executing multi-stage pipelines without writing every intermediate result. It helps explain failure recovery and observability become framework-specific and improves decisions about whether latency and repeated stages justify dataflow complexity.",
+      "engineering_question_answered": "When facing executing multi-stage pipelines without writing every intermediate result, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "executing multi-stage pipelines without writing every intermediate result",
+      "failure_mode_addressed": "failure recovery and observability become framework-specific",
+      "decision_improved": "whether latency and repeated stages justify dataflow complexity",
+      "operating_condition": "Relevant when a system design, incident, or code path involves dataflow, batch, spark.",
+      "assumptions": [
+        "The workload or architecture actually involves dataflow.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether latency and repeated stages justify dataflow complexity, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble failure recovery and observability become framework-specific.",
+        "The team must decide about whether latency and repeated stages justify dataflow complexity.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test executing multi-stage pipelines without writing every intermediate result.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "failure recovery and observability become framework-specific",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for executing multi-stage pipelines without writing every intermediate result?",
+        "What evidence shows that failure recovery and observability become framework-specific is or is not occurring?",
+        "Which current component guarantee is being relied on for whether latency and repeated stages justify dataflow complexity?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "10",
+        "chapter_title": "Batch Processing",
+        "section_heading": "Beyond MapReduce",
+        "page_or_anchor": "MOBI_TEXT_CHAR_940512",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about executing multi-stage pipelines without writing every intermediate result.",
+          "It connects the topic to tradeoffs or failure behavior involving failure recovery and observability become framework-specific."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_batch_jobs_process_bounded_input",
+        "ddia_concept_unix_pipeline_design_favors_composability",
+        "ddia_concept_mapreduce_moves_computation_to_data",
+        "ddia_concept_reduce_side_joins_group_related_records"
+      ],
+      "tags": [
+        "dataflow",
+        "batch",
+        "spark",
+        "chapter-10"
+      ]
+    },
+    {
+      "id": "ddia_concept_batch_outputs_should_be_atomic_or_replaceable",
+      "record_type": "concept",
+      "name": "Batch outputs should be atomic or replaceable",
+      "summary": "Use this concept to reason about producing complete results before making them visible. It helps explain readers observe mixed old and new outputs and improves decisions about how output commits avoid partial publication.",
+      "engineering_question_answered": "When facing producing complete results before making them visible, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "producing complete results before making them visible",
+      "failure_mode_addressed": "readers observe mixed old and new outputs",
+      "decision_improved": "how output commits avoid partial publication",
+      "operating_condition": "Relevant when a system design, incident, or code path involves batch output, atomic publish.",
+      "assumptions": [
+        "The workload or architecture actually involves batch output.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about how output commits avoid partial publication, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble readers observe mixed old and new outputs.",
+        "The team must decide about how output commits avoid partial publication.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test producing complete results before making them visible.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "readers observe mixed old and new outputs",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for producing complete results before making them visible?",
+        "What evidence shows that readers observe mixed old and new outputs is or is not occurring?",
+        "Which current component guarantee is being relied on for how output commits avoid partial publication?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "10",
+        "chapter_title": "Batch Processing",
+        "section_heading": "Beyond MapReduce",
+        "page_or_anchor": "MOBI_TEXT_CHAR_940512",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_recommendation",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about producing complete results before making them visible.",
+          "It connects the topic to tradeoffs or failure behavior involving readers observe mixed old and new outputs."
+        ],
+        "inferred_claims": [
+          "Batch outputs should be atomic or replaceable can guide engineering triage when the stated operating condition is present."
+        ]
+      },
+      "derivation": {
+        "classification": "strongly_implied_by_source",
+        "explanation": "The record is a near implication of the cited discussion and is useful for engineering diagnosis.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_batch_jobs_process_bounded_input",
+        "ddia_concept_unix_pipeline_design_favors_composability",
+        "ddia_concept_mapreduce_moves_computation_to_data",
+        "ddia_concept_reduce_side_joins_group_related_records"
+      ],
+      "tags": [
+        "batch output",
+        "atomic publish",
+        "chapter-10"
+      ]
+    }
+  ],
+  "stream_processing": [
+    {
+      "id": "ddia_concept_event_streams_model_unbounded_data",
+      "record_type": "concept",
+      "name": "Event streams model unbounded data",
+      "summary": "Use this concept to reason about treating records as arriving over time rather than as a fixed input. It helps explain systems assume completeness and mishandle late records and improves decisions about which computations need continuous updates.",
+      "engineering_question_answered": "When facing treating records as arriving over time rather than as a fixed input, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "treating records as arriving over time rather than as a fixed input",
+      "failure_mode_addressed": "systems assume completeness and mishandle late records",
+      "decision_improved": "which computations need continuous updates",
+      "operating_condition": "Relevant when a system design, incident, or code path involves stream, event, unbounded.",
+      "assumptions": [
+        "The workload or architecture actually involves stream.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which computations need continuous updates, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble systems assume completeness and mishandle late records.",
+        "The team must decide about which computations need continuous updates.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test treating records as arriving over time rather than as a fixed input.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "systems assume completeness and mishandle late records",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for treating records as arriving over time rather than as a fixed input?",
+        "What evidence shows that systems assume completeness and mishandle late records is or is not occurring?",
+        "Which current component guarantee is being relied on for which computations need continuous updates?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "11",
+        "chapter_title": "Stream Processing",
+        "section_heading": "Transmitting Event Streams",
+        "page_or_anchor": "MOBI_TEXT_CHAR_997523",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_definition",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about treating records as arriving over time rather than as a fixed input.",
+          "It connects the topic to tradeoffs or failure behavior involving systems assume completeness and mishandle late records."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_message_acknowledgments_define_delivery_outcome",
+        "ddia_concept_partitioned_logs_preserve_order_only_within_partitions",
+        "ddia_concept_change_data_capture_links_databases_to_streams",
+        "ddia_concept_event_sourcing_stores_facts_as_events"
+      ],
+      "tags": [
+        "stream",
+        "event",
+        "unbounded",
+        "chapter-11"
+      ]
+    },
+    {
+      "id": "ddia_concept_message_acknowledgments_define_delivery_outcome",
+      "record_type": "concept",
+      "name": "Message acknowledgments define delivery outcome",
+      "summary": "Use this concept to reason about deciding when a message is considered processed. It helps explain consumer crash loses or duplicates effects and improves decisions about where ack happens relative to durable side effects.",
+      "engineering_question_answered": "When facing deciding when a message is considered processed, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "deciding when a message is considered processed",
+      "failure_mode_addressed": "consumer crash loses or duplicates effects",
+      "decision_improved": "where ack happens relative to durable side effects",
+      "operating_condition": "Relevant when a system design, incident, or code path involves message broker, ack, delivery.",
+      "assumptions": [
+        "The workload or architecture actually involves message broker.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about where ack happens relative to durable side effects, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble consumer crash loses or duplicates effects.",
+        "The team must decide about where ack happens relative to durable side effects.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test deciding when a message is considered processed.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "consumer crash loses or duplicates effects",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for deciding when a message is considered processed?",
+        "What evidence shows that consumer crash loses or duplicates effects is or is not occurring?",
+        "Which current component guarantee is being relied on for where ack happens relative to durable side effects?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "11",
+        "chapter_title": "Stream Processing",
+        "section_heading": "Transmitting Event Streams",
+        "page_or_anchor": "MOBI_TEXT_CHAR_997523",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about deciding when a message is considered processed.",
+          "It connects the topic to tradeoffs or failure behavior involving consumer crash loses or duplicates effects."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_event_streams_model_unbounded_data",
+        "ddia_concept_partitioned_logs_preserve_order_only_within_partitions",
+        "ddia_concept_change_data_capture_links_databases_to_streams",
+        "ddia_concept_event_sourcing_stores_facts_as_events"
+      ],
+      "tags": [
+        "message broker",
+        "ack",
+        "delivery",
+        "chapter-11"
+      ]
+    },
+    {
+      "id": "ddia_concept_partitioned_logs_preserve_order_only_within_partitions",
+      "record_type": "concept",
+      "name": "Partitioned logs preserve order only within partitions",
+      "summary": "Use this concept to reason about scaling streams while narrowing ordering guarantees. It helps explain consumers assume global order that the log does not provide and improves decisions about which operations require same-partition ordering.",
+      "engineering_question_answered": "When facing scaling streams while narrowing ordering guarantees, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "scaling streams while narrowing ordering guarantees",
+      "failure_mode_addressed": "consumers assume global order that the log does not provide",
+      "decision_improved": "which operations require same-partition ordering",
+      "operating_condition": "Relevant when a system design, incident, or code path involves partitioned log, ordering, kafka.",
+      "assumptions": [
+        "The workload or architecture actually involves partitioned log.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which operations require same-partition ordering, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble consumers assume global order that the log does not provide.",
+        "The team must decide about which operations require same-partition ordering.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test scaling streams while narrowing ordering guarantees.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "consumers assume global order that the log does not provide",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for scaling streams while narrowing ordering guarantees?",
+        "What evidence shows that consumers assume global order that the log does not provide is or is not occurring?",
+        "Which current component guarantee is being relied on for which operations require same-partition ordering?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "11",
+        "chapter_title": "Stream Processing",
+        "section_heading": "Transmitting Event Streams",
+        "page_or_anchor": "MOBI_TEXT_CHAR_997523",
+        "figure_table_diagram_or_example": "",
+        "support_role": "tradeoff_explanation",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about scaling streams while narrowing ordering guarantees.",
+          "It connects the topic to tradeoffs or failure behavior involving consumers assume global order that the log does not provide."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_event_streams_model_unbounded_data",
+        "ddia_concept_message_acknowledgments_define_delivery_outcome",
+        "ddia_concept_change_data_capture_links_databases_to_streams",
+        "ddia_concept_event_sourcing_stores_facts_as_events"
+      ],
+      "tags": [
+        "partitioned log",
+        "ordering",
+        "kafka",
+        "chapter-11"
+      ]
+    },
+    {
+      "id": "ddia_concept_change_data_capture_links_databases_to_streams",
+      "record_type": "concept",
+      "name": "Change data capture links databases to streams",
+      "summary": "Use this concept to reason about publishing database changes as an event stream. It helps explain polling misses changes or dual writes become inconsistent and improves decisions about whether the database log can drive derived systems.",
+      "engineering_question_answered": "When facing publishing database changes as an event stream, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "publishing database changes as an event stream",
+      "failure_mode_addressed": "polling misses changes or dual writes become inconsistent",
+      "decision_improved": "whether the database log can drive derived systems",
+      "operating_condition": "Relevant when a system design, incident, or code path involves cdc, stream, database log.",
+      "assumptions": [
+        "The workload or architecture actually involves cdc.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether the database log can drive derived systems, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble polling misses changes or dual writes become inconsistent.",
+        "The team must decide about whether the database log can drive derived systems.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test publishing database changes as an event stream.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "polling misses changes or dual writes become inconsistent",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for publishing database changes as an event stream?",
+        "What evidence shows that polling misses changes or dual writes become inconsistent is or is not occurring?",
+        "Which current component guarantee is being relied on for whether the database log can drive derived systems?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "11",
+        "chapter_title": "Stream Processing",
+        "section_heading": "Databases and Streams",
+        "page_or_anchor": "MOBI_TEXT_CHAR_997262",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about publishing database changes as an event stream.",
+          "It connects the topic to tradeoffs or failure behavior involving polling misses changes or dual writes become inconsistent."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_event_streams_model_unbounded_data",
+        "ddia_concept_message_acknowledgments_define_delivery_outcome",
+        "ddia_concept_partitioned_logs_preserve_order_only_within_partitions",
+        "ddia_concept_event_sourcing_stores_facts_as_events"
+      ],
+      "tags": [
+        "cdc",
+        "stream",
+        "database log",
+        "chapter-11"
+      ]
+    },
+    {
+      "id": "ddia_concept_event_sourcing_stores_facts_as_events",
+      "record_type": "concept",
+      "name": "Event sourcing stores facts as events",
+      "summary": "Use this concept to reason about using an append-only event log as primary record. It helps explain state reconstruction or schema evolution becomes hard and improves decisions about whether domain events are the right source of truth.",
+      "engineering_question_answered": "When facing using an append-only event log as primary record, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "using an append-only event log as primary record",
+      "failure_mode_addressed": "state reconstruction or schema evolution becomes hard",
+      "decision_improved": "whether domain events are the right source of truth",
+      "operating_condition": "Relevant when a system design, incident, or code path involves event sourcing, event log.",
+      "assumptions": [
+        "The workload or architecture actually involves event sourcing.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether domain events are the right source of truth, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble state reconstruction or schema evolution becomes hard.",
+        "The team must decide about whether domain events are the right source of truth.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test using an append-only event log as primary record.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "state reconstruction or schema evolution becomes hard",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for using an append-only event log as primary record?",
+        "What evidence shows that state reconstruction or schema evolution becomes hard is or is not occurring?",
+        "Which current component guarantee is being relied on for whether domain events are the right source of truth?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "11",
+        "chapter_title": "Stream Processing",
+        "section_heading": "Databases and Streams",
+        "page_or_anchor": "MOBI_TEXT_CHAR_997262",
+        "figure_table_diagram_or_example": "",
+        "support_role": "tradeoff_explanation",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about using an append-only event log as primary record.",
+          "It connects the topic to tradeoffs or failure behavior involving state reconstruction or schema evolution becomes hard."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_event_streams_model_unbounded_data",
+        "ddia_concept_message_acknowledgments_define_delivery_outcome",
+        "ddia_concept_partitioned_logs_preserve_order_only_within_partitions",
+        "ddia_concept_change_data_capture_links_databases_to_streams"
+      ],
+      "tags": [
+        "event sourcing",
+        "event log",
+        "chapter-11"
+      ]
+    },
+    {
+      "id": "ddia_concept_immutability_supports_audit_and_reprocessing",
+      "record_type": "concept",
+      "name": "Immutability supports audit and reprocessing",
+      "summary": "Use this concept to reason about keeping historical events instead of overwriting state. It helps explain unbounded retention and correction semantics become challenging and improves decisions about when replay and audit outweigh storage and model costs.",
+      "engineering_question_answered": "When facing keeping historical events instead of overwriting state, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "keeping historical events instead of overwriting state",
+      "failure_mode_addressed": "unbounded retention and correction semantics become challenging",
+      "decision_improved": "when replay and audit outweigh storage and model costs",
+      "operating_condition": "Relevant when a system design, incident, or code path involves immutability, audit, reprocessing.",
+      "assumptions": [
+        "The workload or architecture actually involves immutability.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about when replay and audit outweigh storage and model costs, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble unbounded retention and correction semantics become challenging.",
+        "The team must decide about when replay and audit outweigh storage and model costs.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test keeping historical events instead of overwriting state.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "unbounded retention and correction semantics become challenging",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for keeping historical events instead of overwriting state?",
+        "What evidence shows that unbounded retention and correction semantics become challenging is or is not occurring?",
+        "Which current component guarantee is being relied on for when replay and audit outweigh storage and model costs?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "11",
+        "chapter_title": "Stream Processing",
+        "section_heading": "Databases and Streams",
+        "page_or_anchor": "MOBI_TEXT_CHAR_997262",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about keeping historical events instead of overwriting state.",
+          "It connects the topic to tradeoffs or failure behavior involving unbounded retention and correction semantics become challenging."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_event_streams_model_unbounded_data",
+        "ddia_concept_message_acknowledgments_define_delivery_outcome",
+        "ddia_concept_partitioned_logs_preserve_order_only_within_partitions",
+        "ddia_concept_change_data_capture_links_databases_to_streams"
+      ],
+      "tags": [
+        "immutability",
+        "audit",
+        "reprocessing",
+        "chapter-11"
+      ]
+    },
+    {
+      "id": "ddia_concept_stream_joins_and_windows_depend_on_time_semantics",
+      "record_type": "concept",
+      "name": "Stream joins and windows depend on time semantics",
+      "summary": "Use this concept to reason about joining or aggregating events that arrive at different times. It helps explain late or out-of-order events produce wrong results and improves decisions about which event-time, processing-time, and watermark rules apply.",
+      "engineering_question_answered": "When facing joining or aggregating events that arrive at different times, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "joining or aggregating events that arrive at different times",
+      "failure_mode_addressed": "late or out-of-order events produce wrong results",
+      "decision_improved": "which event-time, processing-time, and watermark rules apply",
+      "operating_condition": "Relevant when a system design, incident, or code path involves stream join, window, watermark.",
+      "assumptions": [
+        "The workload or architecture actually involves stream join.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which event-time, processing-time, and watermark rules apply, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble late or out-of-order events produce wrong results.",
+        "The team must decide about which event-time, processing-time, and watermark rules apply.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test joining or aggregating events that arrive at different times.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "late or out-of-order events produce wrong results",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for joining or aggregating events that arrive at different times?",
+        "What evidence shows that late or out-of-order events produce wrong results is or is not occurring?",
+        "Which current component guarantee is being relied on for which event-time, processing-time, and watermark rules apply?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "11",
+        "chapter_title": "Stream Processing",
+        "section_heading": "Processing Streams",
+        "page_or_anchor": "MOBI_TEXT_CHAR_997370",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about joining or aggregating events that arrive at different times.",
+          "It connects the topic to tradeoffs or failure behavior involving late or out-of-order events produce wrong results."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_event_streams_model_unbounded_data",
+        "ddia_concept_message_acknowledgments_define_delivery_outcome",
+        "ddia_concept_partitioned_logs_preserve_order_only_within_partitions",
+        "ddia_concept_change_data_capture_links_databases_to_streams"
+      ],
+      "tags": [
+        "stream join",
+        "window",
+        "watermark",
+        "chapter-11"
+      ]
+    },
+    {
+      "id": "ddia_concept_exactly_once_means_carefully_scoped_effect_semantics",
+      "record_type": "concept",
+      "name": "Exactly-once means carefully scoped effect semantics",
+      "summary": "Use this concept to reason about distinguishing processing guarantees from external side effects. It helps explain teams believe duplicates are impossible everywhere and improves decisions about which sink operations and retries are idempotent or transactional.",
+      "engineering_question_answered": "When facing distinguishing processing guarantees from external side effects, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "distinguishing processing guarantees from external side effects",
+      "failure_mode_addressed": "teams believe duplicates are impossible everywhere",
+      "decision_improved": "which sink operations and retries are idempotent or transactional",
+      "operating_condition": "Relevant when a system design, incident, or code path involves exactly once, idempotence, stream.",
+      "assumptions": [
+        "The workload or architecture actually involves exactly once.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which sink operations and retries are idempotent or transactional, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble teams believe duplicates are impossible everywhere.",
+        "The team must decide about which sink operations and retries are idempotent or transactional.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test distinguishing processing guarantees from external side effects.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "teams believe duplicates are impossible everywhere",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for distinguishing processing guarantees from external side effects?",
+        "What evidence shows that teams believe duplicates are impossible everywhere is or is not occurring?",
+        "Which current component guarantee is being relied on for which sink operations and retries are idempotent or transactional?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "11",
+        "chapter_title": "Stream Processing",
+        "section_heading": "Processing Streams",
+        "page_or_anchor": "MOBI_TEXT_CHAR_997370",
+        "figure_table_diagram_or_example": "",
+        "support_role": "caution",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about distinguishing processing guarantees from external side effects.",
+          "It connects the topic to tradeoffs or failure behavior involving teams believe duplicates are impossible everywhere."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_event_streams_model_unbounded_data",
+        "ddia_concept_message_acknowledgments_define_delivery_outcome",
+        "ddia_concept_partitioned_logs_preserve_order_only_within_partitions",
+        "ddia_concept_change_data_capture_links_databases_to_streams"
+      ],
+      "tags": [
+        "exactly once",
+        "idempotence",
+        "stream",
+        "chapter-11"
+      ]
+    }
+  ],
+  "future_of_data_systems": [
+    {
+      "id": "ddia_concept_derived_data_needs_clear_authority_boundaries",
+      "record_type": "concept",
+      "name": "Derived data needs clear authority boundaries",
+      "summary": "Use this concept to reason about separating source-of-truth records from indexes, caches, and views. It helps explain derived systems disagree and no one knows which is authoritative and improves decisions about which data is canonical and which can be rebuilt.",
+      "engineering_question_answered": "When facing separating source-of-truth records from indexes, caches, and views, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "separating source-of-truth records from indexes, caches, and views",
+      "failure_mode_addressed": "derived systems disagree and no one knows which is authoritative",
+      "decision_improved": "which data is canonical and which can be rebuilt",
+      "operating_condition": "Relevant when a system design, incident, or code path involves derived data, authority, integration.",
+      "assumptions": [
+        "The workload or architecture actually involves derived data.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which data is canonical and which can be rebuilt, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble derived systems disagree and no one knows which is authoritative.",
+        "The team must decide about which data is canonical and which can be rebuilt.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test separating source-of-truth records from indexes, caches, and views.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "derived systems disagree and no one knows which is authoritative",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for separating source-of-truth records from indexes, caches, and views?",
+        "What evidence shows that derived systems disagree and no one knows which is authoritative is or is not occurring?",
+        "Which current component guarantee is being relied on for which data is canonical and which can be rebuilt?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "12",
+        "chapter_title": "The Future of Data Systems",
+        "section_heading": "Data Integration",
+        "page_or_anchor": "MOBI_TEXT_CHAR_1118309",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about separating source-of-truth records from indexes, caches, and views.",
+          "It connects the topic to tradeoffs or failure behavior involving derived systems disagree and no one knows which is authoritative."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": false,
+      "related_record_ids": [
+        "ddia_concept_data_integration_combines_specialized_systems",
+        "ddia_concept_unbundling_database_components_via_logs",
+        "ddia_concept_end_to_end_correctness_beats_local_guarantees_alone",
+        "ddia_concept_idempotent_operations_enable_safe_retries"
+      ],
+      "tags": [
+        "derived data",
+        "authority",
+        "integration",
+        "chapter-12"
+      ]
+    },
+    {
+      "id": "ddia_concept_data_integration_combines_specialized_systems",
+      "record_type": "concept",
+      "name": "Data integration combines specialized systems",
+      "summary": "Use this concept to reason about using multiple stores for different query needs. It helps explain dual writes and divergent representations create inconsistency and improves decisions about how changes propagate among systems.",
+      "engineering_question_answered": "When facing using multiple stores for different query needs, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "using multiple stores for different query needs",
+      "failure_mode_addressed": "dual writes and divergent representations create inconsistency",
+      "decision_improved": "how changes propagate among systems",
+      "operating_condition": "Relevant when a system design, incident, or code path involves data integration, polyglot persistence.",
+      "assumptions": [
+        "The workload or architecture actually involves data integration.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about how changes propagate among systems, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble dual writes and divergent representations create inconsistency.",
+        "The team must decide about how changes propagate among systems.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test using multiple stores for different query needs.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "dual writes and divergent representations create inconsistency",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for using multiple stores for different query needs?",
+        "What evidence shows that dual writes and divergent representations create inconsistency is or is not occurring?",
+        "Which current component guarantee is being relied on for how changes propagate among systems?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "12",
+        "chapter_title": "The Future of Data Systems",
+        "section_heading": "Data Integration",
+        "page_or_anchor": "MOBI_TEXT_CHAR_1118309",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about using multiple stores for different query needs.",
+          "It connects the topic to tradeoffs or failure behavior involving dual writes and divergent representations create inconsistency."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_derived_data_needs_clear_authority_boundaries",
+        "ddia_concept_unbundling_database_components_via_logs",
+        "ddia_concept_end_to_end_correctness_beats_local_guarantees_alone",
+        "ddia_concept_idempotent_operations_enable_safe_retries"
+      ],
+      "tags": [
+        "data integration",
+        "polyglot persistence",
+        "chapter-12"
+      ]
+    },
+    {
+      "id": "ddia_concept_unbundling_database_components_via_logs",
+      "record_type": "concept",
+      "name": "Unbundling database components via logs",
+      "summary": "Use this concept to reason about combining storage, indexing, search, and processing around explicit dataflow. It helps explain implicit coupling hides failure and replay semantics and improves decisions about whether an event log clarifies integration boundaries.",
+      "engineering_question_answered": "When facing combining storage, indexing, search, and processing around explicit dataflow, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "combining storage, indexing, search, and processing around explicit dataflow",
+      "failure_mode_addressed": "implicit coupling hides failure and replay semantics",
+      "decision_improved": "whether an event log clarifies integration boundaries",
+      "operating_condition": "Relevant when a system design, incident, or code path involves unbundling, event log, architecture.",
+      "assumptions": [
+        "The workload or architecture actually involves unbundling.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether an event log clarifies integration boundaries, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble implicit coupling hides failure and replay semantics.",
+        "The team must decide about whether an event log clarifies integration boundaries.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test combining storage, indexing, search, and processing around explicit dataflow.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "implicit coupling hides failure and replay semantics",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for combining storage, indexing, search, and processing around explicit dataflow?",
+        "What evidence shows that implicit coupling hides failure and replay semantics is or is not occurring?",
+        "Which current component guarantee is being relied on for whether an event log clarifies integration boundaries?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "12",
+        "chapter_title": "The Future of Data Systems",
+        "section_heading": "Unbundling Databases",
+        "page_or_anchor": "MOBI_TEXT_CHAR_1142572",
+        "figure_table_diagram_or_example": "",
+        "support_role": "editorial_synthesis",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about combining storage, indexing, search, and processing around explicit dataflow.",
+          "It connects the topic to tradeoffs or failure behavior involving implicit coupling hides failure and replay semantics."
+        ],
+        "inferred_claims": [
+          "Unbundling database components via logs can guide engineering triage when the stated operating condition is present."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_chapters",
+        "explanation": "The record links recurring arguments across chapters and should be treated as synthesis.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_derived_data_needs_clear_authority_boundaries",
+        "ddia_concept_data_integration_combines_specialized_systems",
+        "ddia_concept_end_to_end_correctness_beats_local_guarantees_alone",
+        "ddia_concept_idempotent_operations_enable_safe_retries"
+      ],
+      "tags": [
+        "unbundling",
+        "event log",
+        "architecture",
+        "chapter-12"
+      ]
+    },
+    {
+      "id": "ddia_concept_end_to_end_correctness_beats_local_guarantees_alone",
+      "record_type": "concept",
+      "name": "End-to-end correctness beats local guarantees alone",
+      "summary": "Use this concept to reason about checking whole workflows rather than isolated component promises. It helps explain each component is correct but the workflow loses or duplicates effects and improves decisions about which handoffs need idempotence, transactions, or reconciliation.",
+      "engineering_question_answered": "When facing checking whole workflows rather than isolated component promises, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "checking whole workflows rather than isolated component promises",
+      "failure_mode_addressed": "each component is correct but the workflow loses or duplicates effects",
+      "decision_improved": "which handoffs need idempotence, transactions, or reconciliation",
+      "operating_condition": "Relevant when a system design, incident, or code path involves correctness, end to end, workflow.",
+      "assumptions": [
+        "The workload or architecture actually involves correctness.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which handoffs need idempotence, transactions, or reconciliation, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble each component is correct but the workflow loses or duplicates effects.",
+        "The team must decide about which handoffs need idempotence, transactions, or reconciliation.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test checking whole workflows rather than isolated component promises.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "each component is correct but the workflow loses or duplicates effects",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for checking whole workflows rather than isolated component promises?",
+        "What evidence shows that each component is correct but the workflow loses or duplicates effects is or is not occurring?",
+        "Which current component guarantee is being relied on for which handoffs need idempotence, transactions, or reconciliation?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "12",
+        "chapter_title": "The Future of Data Systems",
+        "section_heading": "Aiming for Correctness",
+        "page_or_anchor": "MOBI_TEXT_CHAR_1126164",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about checking whole workflows rather than isolated component promises.",
+          "It connects the topic to tradeoffs or failure behavior involving each component is correct but the workflow loses or duplicates effects."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": false,
+      "related_record_ids": [
+        "ddia_concept_derived_data_needs_clear_authority_boundaries",
+        "ddia_concept_data_integration_combines_specialized_systems",
+        "ddia_concept_unbundling_database_components_via_logs",
+        "ddia_concept_idempotent_operations_enable_safe_retries"
+      ],
+      "tags": [
+        "correctness",
+        "end to end",
+        "workflow",
+        "chapter-12"
+      ]
+    },
+    {
+      "id": "ddia_concept_idempotent_operations_enable_safe_retries",
+      "record_type": "concept",
+      "name": "Idempotent operations enable safe retries",
+      "summary": "Use this concept to reason about making repeated attempts have the same intended effect. It helps explain timeouts and retries create duplicate state and improves decisions about which write or message effects need deduplication.",
+      "engineering_question_answered": "When facing making repeated attempts have the same intended effect, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "making repeated attempts have the same intended effect",
+      "failure_mode_addressed": "timeouts and retries create duplicate state",
+      "decision_improved": "which write or message effects need deduplication",
+      "operating_condition": "Relevant when a system design, incident, or code path involves idempotence, retry, correctness.",
+      "assumptions": [
+        "The workload or architecture actually involves idempotence.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which write or message effects need deduplication, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble timeouts and retries create duplicate state.",
+        "The team must decide about which write or message effects need deduplication.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test making repeated attempts have the same intended effect.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "timeouts and retries create duplicate state",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for making repeated attempts have the same intended effect?",
+        "What evidence shows that timeouts and retries create duplicate state is or is not occurring?",
+        "Which current component guarantee is being relied on for which write or message effects need deduplication?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "12",
+        "chapter_title": "The Future of Data Systems",
+        "section_heading": "Aiming for Correctness",
+        "page_or_anchor": "MOBI_TEXT_CHAR_1126164",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_recommendation",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about making repeated attempts have the same intended effect.",
+          "It connects the topic to tradeoffs or failure behavior involving timeouts and retries create duplicate state."
+        ],
+        "inferred_claims": [
+          "Idempotent operations enable safe retries can guide engineering triage when the stated operating condition is present."
+        ]
+      },
+      "derivation": {
+        "classification": "strongly_implied_by_source",
+        "explanation": "The record is a near implication of the cited discussion and is useful for engineering diagnosis.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_derived_data_needs_clear_authority_boundaries",
+        "ddia_concept_data_integration_combines_specialized_systems",
+        "ddia_concept_unbundling_database_components_via_logs",
+        "ddia_concept_end_to_end_correctness_beats_local_guarantees_alone"
+      ],
+      "tags": [
+        "idempotence",
+        "retry",
+        "correctness",
+        "chapter-12"
+      ]
+    },
+    {
+      "id": "ddia_concept_duplicate_suppression_needs_durable_identifiers",
+      "record_type": "concept",
+      "name": "Duplicate suppression needs durable identifiers",
+      "summary": "Use this concept to reason about tracking operation identities across retries and crashes. It helps explain dedupe state is lost or scoped too narrowly and improves decisions about where request IDs, event IDs, or transaction IDs are stored.",
+      "engineering_question_answered": "When facing tracking operation identities across retries and crashes, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "tracking operation identities across retries and crashes",
+      "failure_mode_addressed": "dedupe state is lost or scoped too narrowly",
+      "decision_improved": "where request IDs, event IDs, or transaction IDs are stored",
+      "operating_condition": "Relevant when a system design, incident, or code path involves dedupe, idempotence, retry.",
+      "assumptions": [
+        "The workload or architecture actually involves dedupe.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about where request IDs, event IDs, or transaction IDs are stored, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble dedupe state is lost or scoped too narrowly.",
+        "The team must decide about where request IDs, event IDs, or transaction IDs are stored.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test tracking operation identities across retries and crashes.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "dedupe state is lost or scoped too narrowly",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for tracking operation identities across retries and crashes?",
+        "What evidence shows that dedupe state is lost or scoped too narrowly is or is not occurring?",
+        "Which current component guarantee is being relied on for where request IDs, event IDs, or transaction IDs are stored?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "12",
+        "chapter_title": "The Future of Data Systems",
+        "section_heading": "Aiming for Correctness",
+        "page_or_anchor": "MOBI_TEXT_CHAR_1126164",
+        "figure_table_diagram_or_example": "",
+        "support_role": "engineering_application",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited discussion supports the underlying concept behind Duplicate suppression needs durable identifiers."
+        ],
+        "inferred_claims": [
+          "Duplicate suppression needs durable identifiers can guide engineering triage when the stated operating condition is present."
+        ]
+      },
+      "derivation": {
+        "classification": "operationalized_for_engineering_use",
+        "explanation": "The record translates a source-supported idea into a concrete engineering check.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_derived_data_needs_clear_authority_boundaries",
+        "ddia_concept_data_integration_combines_specialized_systems",
+        "ddia_concept_unbundling_database_components_via_logs",
+        "ddia_concept_end_to_end_correctness_beats_local_guarantees_alone"
+      ],
+      "tags": [
+        "dedupe",
+        "idempotence",
+        "retry",
+        "chapter-12"
+      ]
+    },
+    {
+      "id": "ddia_concept_auditable_derivation_supports_repair",
+      "record_type": "concept",
+      "name": "Auditable derivation supports repair",
+      "summary": "Use this concept to reason about keeping enough history to explain and recompute outputs. It helps explain incorrect derived data cannot be diagnosed or rebuilt and improves decisions about which lineage and replay data must be retained.",
+      "engineering_question_answered": "When facing keeping enough history to explain and recompute outputs, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "keeping enough history to explain and recompute outputs",
+      "failure_mode_addressed": "incorrect derived data cannot be diagnosed or rebuilt",
+      "decision_improved": "which lineage and replay data must be retained",
+      "operating_condition": "Relevant when a system design, incident, or code path involves audit, lineage, reprocessing.",
+      "assumptions": [
+        "The workload or architecture actually involves audit.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which lineage and replay data must be retained, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble incorrect derived data cannot be diagnosed or rebuilt.",
+        "The team must decide about which lineage and replay data must be retained.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test keeping enough history to explain and recompute outputs.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "incorrect derived data cannot be diagnosed or rebuilt",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for keeping enough history to explain and recompute outputs?",
+        "What evidence shows that incorrect derived data cannot be diagnosed or rebuilt is or is not occurring?",
+        "Which current component guarantee is being relied on for which lineage and replay data must be retained?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "12",
+        "chapter_title": "The Future of Data Systems",
+        "section_heading": "Aiming for Correctness",
+        "page_or_anchor": "MOBI_TEXT_CHAR_1126164",
+        "figure_table_diagram_or_example": "",
+        "support_role": "editorial_synthesis",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about keeping enough history to explain and recompute outputs.",
+          "It connects the topic to tradeoffs or failure behavior involving incorrect derived data cannot be diagnosed or rebuilt."
+        ],
+        "inferred_claims": [
+          "Auditable derivation supports repair can guide engineering triage when the stated operating condition is present."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_sections",
+        "explanation": "The record joins related ideas within the same chapter while preserving the source boundary.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_derived_data_needs_clear_authority_boundaries",
+        "ddia_concept_data_integration_combines_specialized_systems",
+        "ddia_concept_unbundling_database_components_via_logs",
+        "ddia_concept_end_to_end_correctness_beats_local_guarantees_alone"
+      ],
+      "tags": [
+        "audit",
+        "lineage",
+        "reprocessing",
+        "chapter-12"
+      ]
+    },
+    {
+      "id": "ddia_concept_data_systems_create_social_consequences",
+      "record_type": "concept",
+      "name": "Data systems create social consequences",
+      "summary": "Use this concept to reason about recognizing that collection and automated decisions affect people. It helps explain technically correct pipelines still cause harm and improves decisions about which uses require ethical, privacy, or governance review.",
+      "engineering_question_answered": "When facing recognizing that collection and automated decisions affect people, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "recognizing that collection and automated decisions affect people",
+      "failure_mode_addressed": "technically correct pipelines still cause harm",
+      "decision_improved": "which uses require ethical, privacy, or governance review",
+      "operating_condition": "Relevant when a system design, incident, or code path involves ethics, privacy, governance.",
+      "assumptions": [
+        "The workload or architecture actually involves ethics.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which uses require ethical, privacy, or governance review, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble technically correct pipelines still cause harm.",
+        "The team must decide about which uses require ethical, privacy, or governance review.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test recognizing that collection and automated decisions affect people.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "technically correct pipelines still cause harm",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for recognizing that collection and automated decisions affect people?",
+        "What evidence shows that technically correct pipelines still cause harm is or is not occurring?",
+        "Which current component guarantee is being relied on for which uses require ethical, privacy, or governance review?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "12",
+        "chapter_title": "The Future of Data Systems",
+        "section_heading": "Doing the Right Thing",
+        "page_or_anchor": "MOBI_TEXT_CHAR_1234944",
+        "figure_table_diagram_or_example": "",
+        "support_role": "caution",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about recognizing that collection and automated decisions affect people.",
+          "It connects the topic to tradeoffs or failure behavior involving technically correct pipelines still cause harm."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_derived_data_needs_clear_authority_boundaries",
+        "ddia_concept_data_integration_combines_specialized_systems",
+        "ddia_concept_unbundling_database_components_via_logs",
+        "ddia_concept_end_to_end_correctness_beats_local_guarantees_alone"
+      ],
+      "tags": [
+        "ethics",
+        "privacy",
+        "governance",
+        "chapter-12"
+      ]
+    },
+    {
+      "id": "ddia_concept_purpose_limitation_for_collected_data",
+      "record_type": "concept",
+      "name": "Purpose limitation for collected data",
+      "summary": "Use this concept to reason about questioning reuse of data beyond the context in which it was collected. It helps explain secondary uses violate user expectations or policy and improves decisions about which uses of data have legitimate purpose and consent.",
+      "engineering_question_answered": "When facing questioning reuse of data beyond the context in which it was collected, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "questioning reuse of data beyond the context in which it was collected",
+      "failure_mode_addressed": "secondary uses violate user expectations or policy",
+      "decision_improved": "which uses of data have legitimate purpose and consent",
+      "operating_condition": "Relevant when a system design, incident, or code path involves privacy, governance, data use.",
+      "assumptions": [
+        "The workload or architecture actually involves privacy.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which uses of data have legitimate purpose and consent, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble secondary uses violate user expectations or policy.",
+        "The team must decide about which uses of data have legitimate purpose and consent.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test questioning reuse of data beyond the context in which it was collected.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "secondary uses violate user expectations or policy",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for questioning reuse of data beyond the context in which it was collected?",
+        "What evidence shows that secondary uses violate user expectations or policy is or is not occurring?",
+        "Which current component guarantee is being relied on for which uses of data have legitimate purpose and consent?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "12",
+        "chapter_title": "The Future of Data Systems",
+        "section_heading": "Doing the Right Thing",
+        "page_or_anchor": "MOBI_TEXT_CHAR_1234944",
+        "figure_table_diagram_or_example": "",
+        "support_role": "caution",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about questioning reuse of data beyond the context in which it was collected.",
+          "It connects the topic to tradeoffs or failure behavior involving secondary uses violate user expectations or policy."
+        ],
+        "inferred_claims": [
+          "Purpose limitation for collected data can guide engineering triage when the stated operating condition is present."
+        ]
+      },
+      "derivation": {
+        "classification": "strongly_implied_by_source",
+        "explanation": "The record is a near implication of the cited discussion and is useful for engineering diagnosis.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_derived_data_needs_clear_authority_boundaries",
+        "ddia_concept_data_integration_combines_specialized_systems",
+        "ddia_concept_unbundling_database_components_via_logs",
+        "ddia_concept_end_to_end_correctness_beats_local_guarantees_alone"
+      ],
+      "tags": [
+        "privacy",
+        "governance",
+        "data use",
+        "chapter-12"
+      ]
+    }
+  ],
+  "derived_data_records": [
+    {
+      "id": "ddia_concept_derived_data_needs_clear_authority_boundaries",
+      "record_type": "concept",
+      "name": "Derived data needs clear authority boundaries",
+      "summary": "Use this concept to reason about separating source-of-truth records from indexes, caches, and views. It helps explain derived systems disagree and no one knows which is authoritative and improves decisions about which data is canonical and which can be rebuilt.",
+      "engineering_question_answered": "When facing separating source-of-truth records from indexes, caches, and views, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "separating source-of-truth records from indexes, caches, and views",
+      "failure_mode_addressed": "derived systems disagree and no one knows which is authoritative",
+      "decision_improved": "which data is canonical and which can be rebuilt",
+      "operating_condition": "Relevant when a system design, incident, or code path involves derived data, authority, integration.",
+      "assumptions": [
+        "The workload or architecture actually involves derived data.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which data is canonical and which can be rebuilt, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble derived systems disagree and no one knows which is authoritative.",
+        "The team must decide about which data is canonical and which can be rebuilt.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test separating source-of-truth records from indexes, caches, and views.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "derived systems disagree and no one knows which is authoritative",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for separating source-of-truth records from indexes, caches, and views?",
+        "What evidence shows that derived systems disagree and no one knows which is authoritative is or is not occurring?",
+        "Which current component guarantee is being relied on for which data is canonical and which can be rebuilt?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "12",
+        "chapter_title": "The Future of Data Systems",
+        "section_heading": "Data Integration",
+        "page_or_anchor": "MOBI_TEXT_CHAR_1118309",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about separating source-of-truth records from indexes, caches, and views.",
+          "It connects the topic to tradeoffs or failure behavior involving derived systems disagree and no one knows which is authoritative."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": false,
+      "related_record_ids": [
+        "ddia_concept_data_integration_combines_specialized_systems",
+        "ddia_concept_unbundling_database_components_via_logs",
+        "ddia_concept_end_to_end_correctness_beats_local_guarantees_alone",
+        "ddia_concept_idempotent_operations_enable_safe_retries"
+      ],
+      "tags": [
+        "derived data",
+        "authority",
+        "integration",
+        "chapter-12"
+      ]
+    },
+    {
+      "id": "ddia_concept_auditable_derivation_supports_repair",
+      "record_type": "concept",
+      "name": "Auditable derivation supports repair",
+      "summary": "Use this concept to reason about keeping enough history to explain and recompute outputs. It helps explain incorrect derived data cannot be diagnosed or rebuilt and improves decisions about which lineage and replay data must be retained.",
+      "engineering_question_answered": "When facing keeping enough history to explain and recompute outputs, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "keeping enough history to explain and recompute outputs",
+      "failure_mode_addressed": "incorrect derived data cannot be diagnosed or rebuilt",
+      "decision_improved": "which lineage and replay data must be retained",
+      "operating_condition": "Relevant when a system design, incident, or code path involves audit, lineage, reprocessing.",
+      "assumptions": [
+        "The workload or architecture actually involves audit.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which lineage and replay data must be retained, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble incorrect derived data cannot be diagnosed or rebuilt.",
+        "The team must decide about which lineage and replay data must be retained.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test keeping enough history to explain and recompute outputs.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "incorrect derived data cannot be diagnosed or rebuilt",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for keeping enough history to explain and recompute outputs?",
+        "What evidence shows that incorrect derived data cannot be diagnosed or rebuilt is or is not occurring?",
+        "Which current component guarantee is being relied on for which lineage and replay data must be retained?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "12",
+        "chapter_title": "The Future of Data Systems",
+        "section_heading": "Aiming for Correctness",
+        "page_or_anchor": "MOBI_TEXT_CHAR_1126164",
+        "figure_table_diagram_or_example": "",
+        "support_role": "editorial_synthesis",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about keeping enough history to explain and recompute outputs.",
+          "It connects the topic to tradeoffs or failure behavior involving incorrect derived data cannot be diagnosed or rebuilt."
+        ],
+        "inferred_claims": [
+          "Auditable derivation supports repair can guide engineering triage when the stated operating condition is present."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_sections",
+        "explanation": "The record joins related ideas within the same chapter while preserving the source boundary.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_derived_data_needs_clear_authority_boundaries",
+        "ddia_concept_data_integration_combines_specialized_systems",
+        "ddia_concept_unbundling_database_components_via_logs",
+        "ddia_concept_end_to_end_correctness_beats_local_guarantees_alone"
+      ],
+      "tags": [
+        "audit",
+        "lineage",
+        "reprocessing",
+        "chapter-12"
+      ]
+    }
+  ]
+}

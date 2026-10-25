@@ -1,0 +1,3360 @@
+{
+  "package_metadata": {
+    "package_name": "JavaScript Language, Runtime, and Code-Quality Reasoning OS V2",
+    "module_name": "core_language_concepts",
+    "repair_type": "focused_v2_repair_not_full_rebuild",
+    "generated_at": "2026-06-21T05:00:11.155979+00:00",
+    "primary_source": {
+      "title": "JavaScript: The Definitive Guide",
+      "edition": "Seventh Edition",
+      "author": "David Flanagan",
+      "publisher": "O'Reilly Media",
+      "release_year": 2020,
+      "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+      "source_sha256": "b511aca2b98ae4eec4966c87d5e6b6c1704cbafe7dd076b924db46cb8d20ae07"
+    },
+    "v1_package_reference": {
+      "source_zip": "Javascript Reasoning.zip",
+      "source_zip_sha256": "60242e2ad2cfcc9bdf79f2fc73b392b7f149339dc95d6234f00db683f368d98d",
+      "not_overwritten": true
+    },
+    "authority_order": [
+      "Original uploaded book source",
+      "Current generated JavaScript Reasoning OS package",
+      "User repair prompt",
+      "Current official documentation only if available",
+      "General engineering reasoning"
+    ],
+    "source_limitation_warning": "Current browser, Node, npm, bundler, tool, framework, and Google Apps Script behavior is not asserted unless explicitly verified. V2 flags such items for current documentation checks.",
+    "purpose": "Sharpened core language semantics plus reusable risk records."
+  },
+  "reusable_risk_records": [
+    {
+      "id": "js-risk-implicit-coercion",
+      "risk_name": "Implicit coercion changes the value being compared or combined",
+      "risk_area": "type_conversion",
+      "plain_language_description": "A comparison, arithmetic operation, string concatenation, or truthiness check relies on JavaScript converting a value first.",
+      "failure_consequences": [
+        "Unexpected equality result",
+        "Numeric operation produces NaN or a string",
+        "Branch executes for a value the reader expected to be false"
+      ],
+      "diagnostic_prompts": [
+        "List every ==, !=, <, >, <=, >=, +, Boolean(), if, ||, &&, ?? and template/string conversion site.",
+        "Check object-to-primitive hooks such as valueOf(), toString(), Symbol.toPrimitive when objects participate in operators."
+      ],
+      "preferred_mitigations": [
+        "Prefer explicit conversion near the boundary.",
+        "Prefer ===/!== unless the loose comparison is intentional and documented.",
+        "Add tests for numeric strings, empty strings, 0, false, null, undefined, NaN, and objects."
+      ],
+      "related_record_ids": [
+        "js-sem-implicit-conversion",
+        "js-sem-equality-comparison"
+      ],
+      "runtime_or_environment": "varies_by_record; see referencing record",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.9 Type Conversions",
+          "4.8 Arithmetic Expressions",
+          "4.9 Relational Expressions"
+        ],
+        "source_basis": "Reusable risk abstracted from source-covered JavaScript behavior and V2 review needs.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Reusable risk created in V2 so concrete records can reference a stable risk ID instead of repeating broad warnings."
+      }
+    },
+    {
+      "id": "js-risk-null-undefined-access",
+      "risk_name": "Nullish value reaches property access or call",
+      "risk_area": "nullish_values",
+      "plain_language_description": "A variable may be null or undefined before a property read, element read, method call, destructuring step, or function invocation.",
+      "failure_consequences": [
+        "TypeError at runtime",
+        "Optional chaining hides a missing required value",
+        "Defaulting with || overwrites valid falsy values"
+      ],
+      "diagnostic_prompts": [
+        "Trace the first assignment and every branch that may return no object.",
+        "Ask whether missing, empty, null, undefined, and false are distinct states here."
+      ],
+      "preferred_mitigations": [
+        "Use explicit guards or ?? defaults.",
+        "Use ?. only when absence is an accepted outcome.",
+        "Preserve distinction between null and undefined when APIs depend on it."
+      ],
+      "related_record_ids": [
+        "js-sem-null-vs-undefined",
+        "js-sem-property-access",
+        "js-sem-optional-chaining"
+      ],
+      "runtime_or_environment": "varies_by_record; see referencing record",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.5 null and undefined",
+          "4.4 Property Access Expressions"
+        ],
+        "source_basis": "Reusable risk abstracted from source-covered JavaScript behavior and V2 review needs.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Reusable risk created in V2 so concrete records can reference a stable risk ID instead of repeating broad warnings."
+      }
+    },
+    {
+      "id": "js-risk-shared-object-mutation",
+      "risk_name": "Mutation through shared object or array reference",
+      "risk_area": "objects_arrays",
+      "plain_language_description": "Two variables, containers, closures, or modules point at the same object and one path mutates it.",
+      "failure_consequences": [
+        "State changes appear far from the assignment site",
+        "A refactor changes caller-visible state",
+        "Tests pass alone but fail in sequence"
+      ],
+      "diagnostic_prompts": [
+        "Identify which values are primitives and which are object references.",
+        "Find push/splice/sort/reverse/Object.assign/direct property writes."
+      ],
+      "preferred_mitigations": [
+        "Clone intentionally when ownership changes.",
+        "Document mutating APIs.",
+        "Prefer returning new values for safe refactors unless performance or identity requires mutation."
+      ],
+      "related_record_ids": [
+        "js-sem-object-references",
+        "js-sem-arrays-length-sparse"
+      ],
+      "runtime_or_environment": "varies_by_record; see referencing record",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.8 Immutable Primitive Values and Mutable Object References"
+        ],
+        "source_basis": "Reusable risk abstracted from source-covered JavaScript behavior and V2 review needs.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Reusable risk created in V2 so concrete records can reference a stable risk ID instead of repeating broad warnings."
+      }
+    },
+    {
+      "id": "js-risk-sparse-array-assumption",
+      "risk_name": "Sparse array holes are treated like present elements",
+      "risk_area": "arrays",
+      "plain_language_description": "Code assumes every index below length has a value, but the array contains holes or deleted elements.",
+      "failure_consequences": [
+        "Iteration skips elements unexpectedly",
+        "JSON output changes holes to null",
+        "map/filter/forEach behavior differs from for/of or indexed loops"
+      ],
+      "diagnostic_prompts": [
+        "Check array creation with Array(n), delete, manual length changes, and out-of-range assignments.",
+        "Inspect whether method callbacks run for holes."
+      ],
+      "preferred_mitigations": [
+        "Avoid sparse arrays for ordinary lists.",
+        "Initialize arrays explicitly.",
+        "Test Array(n), missing elements, and undefined elements separately."
+      ],
+      "related_record_ids": [
+        "js-sem-arrays-length-sparse",
+        "js-sem-array-iteration-methods"
+      ],
+      "runtime_or_environment": "varies_by_record; see referencing record",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 7,
+        "chapter_title": "Arrays",
+        "sections": [
+          "7.3 Sparse Arrays",
+          "7.6 Iterating Arrays",
+          "7.8 Array Methods"
+        ],
+        "source_basis": "Reusable risk abstracted from source-covered JavaScript behavior and V2 review needs.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Reusable risk created in V2 so concrete records can reference a stable risk ID instead of repeating broad warnings."
+      }
+    },
+    {
+      "id": "js-risk-this-binding",
+      "risk_name": "Function depends on this but invocation loses receiver",
+      "risk_area": "functions_objects",
+      "plain_language_description": "A method is extracted, passed as a callback, or called through a different form so this is not the expected object.",
+      "failure_consequences": [
+        "TypeError reading this.x",
+        "Writes land on wrong object in non-strict legacy code",
+        "Callback works as method but fails when passed directly"
+      ],
+      "diagnostic_prompts": [
+        "Identify every function using this and the exact invocation form.",
+        "Check arrow function versus function expression choice."
+      ],
+      "preferred_mitigations": [
+        "Bind explicitly, wrap in a closure, or use an arrow only when lexical this is intended.",
+        "Avoid this-dependent callbacks unless the API documents receiver behavior."
+      ],
+      "related_record_ids": [
+        "js-sem-this-binding"
+      ],
+      "runtime_or_environment": "varies_by_record; see referencing record",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 8,
+        "chapter_title": "Functions",
+        "sections": [
+          "8.2 Invoking Functions",
+          "8.7 Function Properties, Methods, and Constructor"
+        ],
+        "source_basis": "Reusable risk abstracted from source-covered JavaScript behavior and V2 review needs.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Reusable risk created in V2 so concrete records can reference a stable risk ID instead of repeating broad warnings."
+      }
+    },
+    {
+      "id": "js-risk-closure-state",
+      "risk_name": "Closure keeps state longer or differently than expected",
+      "risk_area": "functions",
+      "plain_language_description": "A nested function captures variables by lexical scope, so later calls observe the captured variable state rather than a snapshot unless code creates one.",
+      "failure_consequences": [
+        "Loop callback sees final or shared state",
+        "Hidden state persists across invocations",
+        "Tests fail when functions are reused"
+      ],
+      "diagnostic_prompts": [
+        "List variables captured by returned functions or callbacks.",
+        "Check whether the variable is reassigned after capture."
+      ],
+      "preferred_mitigations": [
+        "Use block-scoped let/const for per-iteration bindings.",
+        "Pass values as parameters when snapshot semantics are needed.",
+        "Reset captured state deliberately in tests."
+      ],
+      "related_record_ids": [
+        "js-sem-closures"
+      ],
+      "runtime_or_environment": "varies_by_record; see referencing record",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 8,
+        "chapter_title": "Functions",
+        "sections": [
+          "8.6 Closures"
+        ],
+        "source_basis": "Reusable risk abstracted from source-covered JavaScript behavior and V2 review needs.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Reusable risk created in V2 so concrete records can reference a stable risk ID instead of repeating broad warnings."
+      }
+    },
+    {
+      "id": "js-risk-prototype-shadowing",
+      "risk_name": "Own property shadows inherited behavior",
+      "risk_area": "objects_prototypes",
+      "plain_language_description": "Property lookup finds an own property before a prototype property, or mutation creates a new own property instead of changing inherited behavior.",
+      "failure_consequences": [
+        "Method appears missing or overridden",
+        "in and hasOwnProperty/Object.hasOwn disagree",
+        "Subclass or instance behaves differently from prototype expectation"
+      ],
+      "diagnostic_prompts": [
+        "Check own keys and prototype chain separately.",
+        "Inspect Object.create(), class inheritance, and direct prototype mutation."
+      ],
+      "preferred_mitigations": [
+        "Use Object.hasOwn for ownership checks.",
+        "Avoid mutating built-in prototypes.",
+        "Prefer clear composition over opaque prototype tricks."
+      ],
+      "related_record_ids": [
+        "js-sem-property-lookup-prototype",
+        "js-sem-classes-prototypes"
+      ],
+      "runtime_or_environment": "varies_by_record; see referencing record",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 6,
+        "chapter_title": "Objects",
+        "sections": [
+          "6.3 Querying and Setting Properties",
+          "9.1 Classes and Prototypes"
+        ],
+        "source_basis": "Reusable risk abstracted from source-covered JavaScript behavior and V2 review needs.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Reusable risk created in V2 so concrete records can reference a stable risk ID instead of repeating broad warnings."
+      }
+    },
+    {
+      "id": "js-risk-module-system-mismatch",
+      "risk_name": "Module format or loader does not match runtime configuration",
+      "risk_area": "modules",
+      "plain_language_description": "A file mixes ES module and CommonJS expectations or is loaded by a browser, Node, bundler, or test runner configured for a different module system.",
+      "failure_consequences": [
+        "SyntaxError on import/export",
+        "default export shape mismatch",
+        "require is not defined",
+        "module is not defined"
+      ],
+      "diagnostic_prompts": [
+        "Identify file extension, package/module configuration, script type, bundler transform, and test runner loader.",
+        "Check whether imported value is namespace, default, or named binding."
+      ],
+      "preferred_mitigations": [
+        "Choose one module system per boundary.",
+        "Write adapter files at interop edges.",
+        "Verify runtime loader behavior before refactor."
+      ],
+      "related_record_ids": [
+        "js-sem-es-modules",
+        "js-sem-commonjs-modules"
+      ],
+      "runtime_or_environment": "varies_by_record; see referencing record",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 10,
+        "chapter_title": "Modules",
+        "sections": [
+          "10.2 Modules in Node",
+          "10.3 Modules in ES6"
+        ],
+        "source_basis": "Reusable risk abstracted from source-covered JavaScript behavior and V2 review needs.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Reusable risk created in V2 so concrete records can reference a stable risk ID instead of repeating broad warnings."
+      }
+    },
+    {
+      "id": "js-risk-browser-node-api-confusion",
+      "risk_name": "Host API is used in the wrong JavaScript environment",
+      "risk_area": "runtime_boundary",
+      "plain_language_description": "Code assumes browser APIs exist in Node or Node APIs exist in a browser bundle.",
+      "failure_consequences": [
+        "ReferenceError for document/window/process/Buffer/fs",
+        "Bundle grows unexpectedly due polyfills",
+        "Security model differs from the assumed host"
+      ],
+      "diagnostic_prompts": [
+        "Identify which runtime executes each file.",
+        "Search for DOM, Web APIs, Node core modules, process, Buffer, fs, path, and browser globals."
+      ],
+      "preferred_mitigations": [
+        "Separate language-core code from host-adapter code.",
+        "Use dependency injection for environment-specific APIs.",
+        "Verify target platform documentation."
+      ],
+      "related_record_ids": [
+        "js-boundary-browser-dom",
+        "js-boundary-node-files"
+      ],
+      "runtime_or_environment": "varies_by_record; see referencing record",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 1,
+        "chapter_title": "Introduction to JavaScript",
+        "sections": [
+          "Introduction to JavaScript platform discussion",
+          "Chapter 15",
+          "Chapter 16"
+        ],
+        "source_basis": "Reusable risk abstracted from source-covered JavaScript behavior and V2 review needs.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Reusable risk created in V2 so concrete records can reference a stable risk ID instead of repeating broad warnings."
+      }
+    },
+    {
+      "id": "js-risk-apps-script-runtime-confusion",
+      "risk_name": "Apps Script is treated as browser or Node JavaScript",
+      "risk_area": "google_apps_script",
+      "plain_language_description": "Apps Script code is reviewed as if it has DOM/Node APIs or ordinary web server lifecycle behavior.",
+      "failure_consequences": [
+        "google.script.run boundary misunderstood",
+        "Spreadsheet service calls are made from client HTML",
+        "Triggers, quotas, auth scopes, or file handling assumptions break"
+      ],
+      "diagnostic_prompts": [
+        "Mark each file as server-side Apps Script, HtmlService client HTML, or generated browser code.",
+        "Check current Google docs for services, quotas, triggers, scopes, and web app behavior."
+      ],
+      "preferred_mitigations": [
+        "Keep Apps Script records as operational extension.",
+        "Verify current docs before asserting service behavior.",
+        "Write tests or small probes for platform-bound behavior."
+      ],
+      "related_record_ids": [
+        "js-boundary-google-apps-script-extension"
+      ],
+      "runtime_or_environment": "google_apps_script_extension",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Reusable risk abstracted from source-covered JavaScript behavior and V2 review needs.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "google_apps_script_extension",
+        "authority_order_position": 4,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Reusable risk created in V2 so concrete records can reference a stable risk ID instead of repeating broad warnings."
+      },
+      "current_verification_required": true
+    },
+    {
+      "id": "js-risk-json-serialization-loss",
+      "risk_name": "JSON serialization changes or drops JavaScript values",
+      "risk_area": "standard_library",
+      "plain_language_description": "JSON.stringify cannot represent all JavaScript values and can invoke toJSON behavior.",
+      "failure_consequences": [
+        "undefined/function/symbol values disappear or change",
+        "Date becomes a string",
+        "NaN and Infinity do not round-trip as numbers",
+        "Prototype and methods are lost"
+      ],
+      "diagnostic_prompts": [
+        "List every value type crossing JSON boundary.",
+        "Check toJSON methods and replacer/reviver functions."
+      ],
+      "preferred_mitigations": [
+        "Use custom serialization for Dates, Maps, Sets, Errors, BigInt-like needs, cycles, or class instances.",
+        "Add round-trip tests."
+      ],
+      "related_record_ids": [
+        "js-sem-json-serialization"
+      ],
+      "runtime_or_environment": "varies_by_record; see referencing record",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.6 JSON Serialization and Parsing",
+          "6.8 Serializing Objects"
+        ],
+        "source_basis": "Reusable risk abstracted from source-covered JavaScript behavior and V2 review needs.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Reusable risk created in V2 so concrete records can reference a stable risk ID instead of repeating broad warnings."
+      }
+    },
+    {
+      "id": "js-risk-date-timezone",
+      "risk_name": "Date/time code relies on an unstated timezone or parse format",
+      "risk_area": "standard_library",
+      "plain_language_description": "Date creation, parsing, display, or comparison depends on local timezone, UTC, implementation-supported parsing, or daylight-saving behavior.",
+      "failure_consequences": [
+        "Off-by-one day",
+        "Different result between server and browser",
+        "Tests fail across timezone or DST transition"
+      ],
+      "diagnostic_prompts": [
+        "Inspect every Date constructor, Date.parse, toString/toISOString, getFullYear/getUTCFullYear call.",
+        "Identify whether input is instant, local date, or display-only date."
+      ],
+      "preferred_mitigations": [
+        "Use ISO strings with timezone when representing instants.",
+        "Store instants and local dates distinctly.",
+        "Test around midnight and DST changes."
+      ],
+      "related_record_ids": [
+        "js-sem-date-time"
+      ],
+      "runtime_or_environment": "varies_by_record; see referencing record",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.4 Dates and Times"
+        ],
+        "source_basis": "Reusable risk abstracted from source-covered JavaScript behavior and V2 review needs.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Reusable risk created in V2 so concrete records can reference a stable risk ID instead of repeating broad warnings."
+      }
+    },
+    {
+      "id": "js-risk-regex-overmatching",
+      "risk_name": "Regular expression matches more or less than intended",
+      "risk_area": "standard_library",
+      "plain_language_description": "Pattern, flags, anchors, greediness, groups, or escaping do not encode the full input grammar.",
+      "failure_consequences": [
+        "Validation accepts bad input",
+        "replace removes too much",
+        "Performance issue with pathological input",
+        "Unicode text does not match as expected"
+      ],
+      "diagnostic_prompts": [
+        "Check anchors, character classes, global/sticky flags, greediness, and escaping.",
+        "Test representative valid, invalid, empty, multiline, and Unicode inputs."
+      ],
+      "preferred_mitigations": [
+        "Use a parser for nested or ambiguous grammar.",
+        "Limit regex scope and document expected input.",
+        "Add negative tests."
+      ],
+      "related_record_ids": [
+        "js-sem-regexp-patterns"
+      ],
+      "runtime_or_environment": "varies_by_record; see referencing record",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.3 Pattern Matching with Regular Expressions"
+        ],
+        "source_basis": "Reusable risk abstracted from source-covered JavaScript behavior and V2 review needs.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Reusable risk created in V2 so concrete records can reference a stable risk ID instead of repeating broad warnings."
+      }
+    },
+    {
+      "id": "js-risk-unhandled-promise-rejection",
+      "risk_name": "Promise rejection has no reliable handling path",
+      "risk_area": "async",
+      "plain_language_description": "A Promise can reject and the code neither awaits it in a try/catch nor returns/catches it in the chain.",
+      "failure_consequences": [
+        "Unhandled rejection warning or process policy action",
+        "Failure is lost while UI continues",
+        "Tests complete before async failure surfaces"
+      ],
+      "diagnostic_prompts": [
+        "Trace every Promise-returning call.",
+        "Check returned chains, await sites, catch/finally, and fire-and-forget comments."
+      ],
+      "preferred_mitigations": [
+        "Return or await promises.",
+        "Catch at the boundary that can recover or report.",
+        "Test rejection paths."
+      ],
+      "related_record_ids": [
+        "js-sem-promises",
+        "js-async-promise-rejection-handling"
+      ],
+      "runtime_or_environment": "varies_by_record; see referencing record",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.2 Promises",
+          "13.3 async and await"
+        ],
+        "source_basis": "Reusable risk abstracted from source-covered JavaScript behavior and V2 review needs.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Reusable risk created in V2 so concrete records can reference a stable risk ID instead of repeating broad warnings."
+      }
+    },
+    {
+      "id": "js-risk-async-ordering",
+      "risk_name": "Async completion order is assumed but not guaranteed",
+      "risk_area": "async",
+      "plain_language_description": "Timers, events, network callbacks, promises, streams, or workers are assumed to finish in source-code order.",
+      "failure_consequences": [
+        "Race condition",
+        "State update after stale response",
+        "UI renders old data",
+        "Return happens before async work completes"
+      ],
+      "diagnostic_prompts": [
+        "Identify each async boundary and the condition that must hold before using the result.",
+        "Check missing await, Promise.all ordering, event listener sequencing, and stream completion."
+      ],
+      "preferred_mitigations": [
+        "Await dependencies explicitly.",
+        "Use cancellation/sequence tokens for stale results.",
+        "Test with delayed, reordered, and failing operations."
+      ],
+      "related_record_ids": [
+        "js-async-await-ordering",
+        "js-async-timers",
+        "js-async-browser-events"
+      ],
+      "runtime_or_environment": "varies_by_record; see referencing record",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.1 Callbacks",
+          "13.2 Promises",
+          "13.3 async and await"
+        ],
+        "source_basis": "Reusable risk abstracted from source-covered JavaScript behavior and V2 review needs.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Reusable risk created in V2 so concrete records can reference a stable risk ID instead of repeating broad warnings."
+      }
+    },
+    {
+      "id": "js-risk-callback-error-path",
+      "risk_name": "Callback API failure channel is ignored",
+      "risk_area": "async",
+      "plain_language_description": "A Node-style or host callback can report an error separately from a success result and code only handles success.",
+      "failure_consequences": [
+        "Silent data loss",
+        "Promise wrapper never rejects",
+        "Exception thrown in async callback bypasses surrounding try/catch"
+      ],
+      "diagnostic_prompts": [
+        "Inspect callback signature and documented error argument/event.",
+        "Check conversion wrappers for both resolve and reject paths."
+      ],
+      "preferred_mitigations": [
+        "Handle error-first callback conventions where applicable.",
+        "Reject Promise wrappers on callback errors.",
+        "Test error callback branch."
+      ],
+      "related_record_ids": [
+        "js-async-callback-error-conventions"
+      ],
+      "runtime_or_environment": "varies_by_record; see referencing record",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.1 Asynchronous Programming with Callbacks",
+          "16.2 Node Is Asynchronous by Default"
+        ],
+        "source_basis": "Reusable risk abstracted from source-covered JavaScript behavior and V2 review needs.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Reusable risk created in V2 so concrete records can reference a stable risk ID instead of repeating broad warnings."
+      }
+    },
+    {
+      "id": "js-risk-worker-message-boundary",
+      "risk_name": "Worker message boundary loses identity or capability assumptions",
+      "risk_area": "browser_node_workers",
+      "plain_language_description": "Values crossing worker/thread/message boundaries are copied/transferred/serialized according to host rules rather than sharing ordinary object identity.",
+      "failure_consequences": [
+        "Mutation in worker does not update main object",
+        "Non-transferable value fails",
+        "Message order or lifecycle differs from expectation"
+      ],
+      "diagnostic_prompts": [
+        "List values crossing postMessage/workerData/message events.",
+        "Check transfer list, structured clone support, lifecycle, and termination path."
+      ],
+      "preferred_mitigations": [
+        "Use explicit message schemas.",
+        "Transfer only supported values.",
+        "Test large payloads, errors, and termination."
+      ],
+      "related_record_ids": [
+        "js-boundary-workers",
+        "js-boundary-node-worker-threads"
+      ],
+      "runtime_or_environment": "varies_by_record; see referencing record",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.13 Worker Threads and Messaging"
+        ],
+        "source_basis": "Reusable risk abstracted from source-covered JavaScript behavior and V2 review needs.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Reusable risk created in V2 so concrete records can reference a stable risk ID instead of repeating broad warnings."
+      }
+    },
+    {
+      "id": "js-risk-stream-lifecycle",
+      "risk_name": "Stream code ignores lifecycle, backpressure, or error events",
+      "risk_area": "node_streams",
+      "plain_language_description": "A stream is treated like a fully available buffer or only its data event is handled.",
+      "failure_consequences": [
+        "Truncated output",
+        "Memory pressure",
+        "Unhandled error event",
+        "Process exits before finish"
+      ],
+      "diagnostic_prompts": [
+        "Check pipe/pipeline usage, error handlers, finish/end/close events, and backpressure handling.",
+        "Test large input and injected errors."
+      ],
+      "preferred_mitigations": [
+        "Use stream.pipeline or equivalent lifecycle-aware pattern when available.",
+        "Prefer buffered read only for known-small data.",
+        "Handle error and completion."
+      ],
+      "related_record_ids": [
+        "js-boundary-node-streams",
+        "js-async-node-streams"
+      ],
+      "runtime_or_environment": "varies_by_record; see referencing record",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 16,
+        "chapter_title": "Server-Side JavaScript with Node",
+        "sections": [
+          "16.5 Streams"
+        ],
+        "source_basis": "Reusable risk abstracted from source-covered JavaScript behavior and V2 review needs.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Reusable risk created in V2 so concrete records can reference a stable risk ID instead of repeating broad warnings."
+      }
+    },
+    {
+      "id": "js-risk-tooling-version-drift",
+      "risk_name": "Tool, transpiler, package, or runtime version changes semantics",
+      "risk_area": "tooling",
+      "plain_language_description": "Build, lint, transpile, package, or test behavior depends on versions and configuration outside JavaScript source.",
+      "failure_consequences": [
+        "Works locally but fails in CI/deploy",
+        "Syntax accepted by build but not runtime",
+        "Dependency upgrade changes exported shape"
+      ],
+      "diagnostic_prompts": [
+        "Inspect package lock, runtime version, tool config, target environments, and test transform pipeline.",
+        "Compare source code with emitted code when behavior is surprising."
+      ],
+      "preferred_mitigations": [
+        "Pin or declare versions.",
+        "Verify target runtimes.",
+        "Make tooling assumptions visible in review."
+      ],
+      "related_record_ids": [
+        "js-tooling-npm",
+        "js-tooling-babel",
+        "js-tooling-bundling"
+      ],
+      "runtime_or_environment": "varies_by_record; see referencing record",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 17,
+        "chapter_title": "JavaScript Tools and Extensions",
+        "sections": [
+          "17.4 npm",
+          "17.5 Code Bundling",
+          "17.6 Babel"
+        ],
+        "source_basis": "Reusable risk abstracted from source-covered JavaScript behavior and V2 review needs.",
+        "derivation_classification": "coding_practice_extension",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "coding_practice_extension",
+        "authority_order_position": 5,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Reusable risk created in V2 so concrete records can reference a stable risk ID instead of repeating broad warnings."
+      }
+    },
+    {
+      "id": "js-risk-metaprogramming-opacity",
+      "risk_name": "Proxy, descriptor, or dynamic behavior hides ordinary operations",
+      "risk_area": "metaprogramming",
+      "plain_language_description": "Property access, enumeration, construction, or function calls are intercepted or controlled by descriptors/proxies/symbol hooks.",
+      "failure_consequences": [
+        "Debug logs do not match simple object expectations",
+        "Object.keys/spread/JSON miss values",
+        "Refactor breaks hidden trap invariants"
+      ],
+      "diagnostic_prompts": [
+        "Check descriptors, getters/setters, proxies, Symbol.iterator/toPrimitive/toStringTag, and Reflect usage.",
+        "Use small probes to observe get/set/ownKeys/has behavior."
+      ],
+      "preferred_mitigations": [
+        "Avoid Proxy/metaprogramming in ordinary app code unless it solves a specific boundary problem.",
+        "Document traps and invariants.",
+        "Add behavior tests before refactor."
+      ],
+      "related_record_ids": [
+        "js-sem-property-descriptors",
+        "js-sem-proxy-reflect"
+      ],
+      "runtime_or_environment": "varies_by_record; see referencing record",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 14,
+        "chapter_title": "Metaprogramming",
+        "sections": [
+          "14.1 Property Attributes",
+          "14.7 Proxy Objects"
+        ],
+        "source_basis": "Reusable risk abstracted from source-covered JavaScript behavior and V2 review needs.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Reusable risk created in V2 so concrete records can reference a stable risk ID instead of repeating broad warnings."
+      }
+    }
+  ],
+  "language_semantics_records": [
+    {
+      "id": "js-sem-null-vs-undefined",
+      "concept_name": "null versus undefined",
+      "language_area": "types_values_variables",
+      "plain_language_meaning": "JavaScript has two nullish values: one commonly used to mean intentional absence and one commonly produced when a value has not been assigned or a property is missing.",
+      "precise_behavior": "null is a language value denoting no object. undefined is the value of uninitialized variables, missing parameters, and absent object properties. They compare loosely equal to each other but are distinct under strict equality.",
+      "syntax_or_api_shape": "null, undefined, value == null, value === undefined, parameter defaults, property reads",
+      "why_it_matters": "Most property-access crashes begin as a nullish-state modeling problem. The distinction also affects JSON, defaults, APIs, and optional chaining.",
+      "common_use": [
+        "Represent intentional no-result states",
+        "Detect omitted arguments",
+        "Distinguish absent property from present null value"
+      ],
+      "common_misuse": [
+        "Using || when null/undefined must be distinguished from 0, empty string, or false",
+        "Treating optional chaining as proof a required value exists",
+        "Serializing and expecting undefined properties to survive JSON"
+      ],
+      "debugging_symptoms": [
+        "TypeError: Cannot read properties of undefined/null",
+        "Branch takes fallback for valid falsy value",
+        "API receives null where omitted argument was intended"
+      ],
+      "tests_or_checks": [
+        "Test null and undefined separately",
+        "Check == null usage is deliberate",
+        "Inspect defaulting with ?? versus ||",
+        "Verify JSON round-trip expectations"
+      ],
+      "safe_refactor_notes": [
+        "Keep nullish guards near property access",
+        "When replacing guards with ?., ensure absence is acceptable",
+        "Preserve public API distinction in refactors"
+      ],
+      "related_risk_ids": [
+        "js-risk-null-undefined-access",
+        "js-risk-json-serialization-loss"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.5 null and undefined",
+          "3.9 Type Conversions",
+          "4.4 Property Access Expressions"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-truthiness",
+      "concept_name": "truthiness",
+      "language_area": "types_values_variables",
+      "plain_language_meaning": "Conditionals do not require booleans; JavaScript converts many values to true or false in Boolean contexts.",
+      "precise_behavior": "Falsy values include false, 0, -0, 0n where applicable, empty string, null, undefined, and NaN. Other ordinary object values are truthy. Boolean conversion is used by if, while, !, &&, ||, and the conditional operator.",
+      "syntax_or_api_shape": "if (value), !value, value && expr, value || fallback, Boolean(value)",
+      "why_it_matters": "Truthiness is compact but can collapse distinct states such as empty string, zero, missing value, and false.",
+      "common_use": [
+        "Check presence only when all falsy values mean absent",
+        "Guard optional code paths",
+        "Short-circuit expensive work"
+      ],
+      "common_misuse": [
+        "Using if (count) when zero is valid",
+        "Using value || fallback for empty string or 0",
+        "Assuming [] or {} are falsy"
+      ],
+      "debugging_symptoms": [
+        "Valid zero/empty input rejected",
+        "Fallback overwrites user-provided value",
+        "Object branch always executes"
+      ],
+      "tests_or_checks": [
+        "Create tests for 0, \"\", false, null, undefined, NaN, [], {}",
+        "Prefer value != null for nullish-only checks",
+        "Prefer ?? for nullish defaulting"
+      ],
+      "safe_refactor_notes": [
+        "Do not replace explicit comparisons with truthiness unless all falsy values are equivalent",
+        "Document sentinel values"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion",
+        "js-risk-null-undefined-access"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.4 Boolean Values",
+          "3.9 Type Conversions",
+          "4.10 Logical Expressions"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-equality-comparison",
+      "concept_name": "equality and comparison",
+      "language_area": "expressions_operators",
+      "plain_language_meaning": "JavaScript has strict equality and loose equality, plus relational comparisons that may convert operands.",
+      "precise_behavior": "=== and !== compare without the broad coercions of == and !=. Loose equality follows conversion rules, with null and undefined equal to each other. Relational operators compare numbers or strings after conversions and may invoke object-to-primitive conversion.",
+      "syntax_or_api_shape": "a === b, a !== b, a == b, a != b, a < b, a <= b, Object.is(a,b)",
+      "why_it_matters": "Comparison bugs are often hidden because individual test inputs look reasonable while edge inputs cross type boundaries.",
+      "common_use": [
+        "Use strict equality for ordinary application code",
+        "Use == null only as deliberate null-or-undefined check",
+        "Use relational operators after normalizing input type"
+      ],
+      "common_misuse": [
+        "Comparing numeric strings to numbers without conversion",
+        "Assuming NaN equals itself",
+        "Sorting with a comparator that returns booleans instead of negative/zero/positive"
+      ],
+      "debugging_symptoms": [
+        "Filter includes/excludes unexpected rows",
+        "Sort order differs by input shape",
+        "NaN checks fail"
+      ],
+      "tests_or_checks": [
+        "Search for == and !=",
+        "Test numeric strings, empty strings, null, undefined, NaN, objects, and arrays",
+        "Verify comparator return values"
+      ],
+      "safe_refactor_notes": [
+        "When changing == to ===, add tests for the old accepted input types",
+        "Normalize at API boundaries before comparison"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 4,
+        "chapter_title": "Expressions and Operators",
+        "sections": [
+          "4.9 Relational Expressions",
+          "3.9 Type Conversions"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-implicit-conversion",
+      "concept_name": "implicit type conversion",
+      "language_area": "types_values_variables",
+      "plain_language_meaning": "Operators and standard functions often convert values before operating on them.",
+      "precise_behavior": "JavaScript conversion includes ToBoolean, ToNumber, ToString, object-to-primitive, and special rules for equality, relational comparison, +, template/string conversion, and JSON serialization.",
+      "syntax_or_api_shape": "Number(x), String(x), Boolean(x), x + y, `${x}`, x == y, x < y, JSON.stringify(x)",
+      "why_it_matters": "Implicit conversion is a major source of JavaScript-specific surprises, especially at input boundaries where strings represent numbers or booleans.",
+      "common_use": [
+        "Accept flexible user input after normalization",
+        "Build string output deliberately",
+        "Model JSON crossing behavior"
+      ],
+      "common_misuse": [
+        "Relying on + when one operand may be a string",
+        "Letting arrays/objects participate in arithmetic",
+        "Assuming JSON preserves every value"
+      ],
+      "debugging_symptoms": [
+        "\"3\" + 2 yields string concatenation",
+        "NaN appears in arithmetic",
+        "[object Object] appears in output",
+        "JSON drops properties"
+      ],
+      "tests_or_checks": [
+        "Normalize form/query/CSV values explicitly",
+        "Test + with both numeric and string operands",
+        "Inspect valueOf/toString/Symbol.toPrimitive",
+        "Round-trip JSON test"
+      ],
+      "safe_refactor_notes": [
+        "Make conversions explicit before refactor",
+        "Separate parse/validate/compute steps"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion",
+        "js-risk-json-serialization-loss"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.9 Type Conversions",
+          "4.8 Arithmetic Expressions",
+          "11.6 JSON Serialization and Parsing"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-object-to-primitive",
+      "concept_name": "object-to-primitive conversion",
+      "language_area": "expressions_operators",
+      "plain_language_meaning": "When an object is used where a primitive is expected, JavaScript asks the object for a primitive representation.",
+      "precise_behavior": "Conversion can use Symbol.toPrimitive, valueOf(), or toString() depending on the operation and hint. The result affects arithmetic, comparison, property keys, string output, and template literals.",
+      "syntax_or_api_shape": "obj.valueOf(), obj.toString(), obj[Symbol.toPrimitive], `${obj}`, +obj, obj < other",
+      "why_it_matters": "Custom conversion hooks make ordinary-looking operators run user code and can hide side effects or surprising values.",
+      "common_use": [
+        "Define human-readable string output",
+        "Implement domain-specific numeric objects only with care",
+        "Debug operator behavior on custom objects"
+      ],
+      "common_misuse": [
+        "Using objects in comparisons without knowing conversion result",
+        "Adding valueOf side effects",
+        "Assuming template literal output is diagnostic enough"
+      ],
+      "debugging_symptoms": [
+        "Unexpected string/number in logs",
+        "Comparison runs code",
+        "Map/object keys collapse to same string in plain objects"
+      ],
+      "tests_or_checks": [
+        "Check for Symbol.toPrimitive, valueOf, toString overrides",
+        "Probe String(obj), Number(obj), obj + \"\"",
+        "Avoid object operands in arithmetic unless designed"
+      ],
+      "safe_refactor_notes": [
+        "Preserve conversion hooks when moving methods",
+        "Prefer explicit method calls for domain values"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion",
+        "js-risk-metaprogramming-opacity"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.9 Type Conversions",
+          "14.4 Well-Known Symbols"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-numbers-nan-infinity",
+      "concept_name": "numbers NaN and Infinity",
+      "language_area": "types_values_variables",
+      "plain_language_meaning": "JavaScript numbers are floating-point values with special values for not-a-number and infinities.",
+      "precise_behavior": "The Number type represents integers and real values using floating-point semantics. NaN is not equal to itself under ===, and arithmetic can produce Infinity, -Infinity, or NaN.",
+      "syntax_or_api_shape": "Number.isNaN(x), Number.isFinite(x), isNaN(x), x / 0, Math.*",
+      "why_it_matters": "Numeric edge cases leak into comparisons, JSON, sorting, and validation.",
+      "common_use": [
+        "Represent ordinary numeric calculations",
+        "Detect invalid parse results",
+        "Use Math APIs for common operations"
+      ],
+      "common_misuse": [
+        "Checking x === NaN",
+        "Assuming decimal arithmetic is exact",
+        "Serializing Infinity/NaN through JSON without checking"
+      ],
+      "debugging_symptoms": [
+        "Validation lets NaN pass",
+        "Totals show imprecise decimals",
+        "JSON output changes special numbers"
+      ],
+      "tests_or_checks": [
+        "Use Number.isNaN for NaN",
+        "Test division by zero and failed parse",
+        "Check JSON output of special values"
+      ],
+      "safe_refactor_notes": [
+        "Separate parsing errors from numeric domain values",
+        "Avoid refactors that change Number() versus parseInt/parseFloat behavior without tests"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion",
+        "js-risk-json-serialization-loss"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.2 Numbers",
+          "3.9 Type Conversions"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-strings-unicode",
+      "concept_name": "strings and Unicode",
+      "language_area": "types_values_variables",
+      "plain_language_meaning": "Strings are immutable text values, but indexing and length involve JavaScript string representation details.",
+      "precise_behavior": "String methods return new strings. JavaScript source and strings use Unicode; code units, code points, combining characters, normalization, and regular expression flags can affect visible character handling.",
+      "syntax_or_api_shape": "\"text\", \\uXXXX, \\u{...}, str.length, str[i], for (const ch of str), str.normalize()",
+      "why_it_matters": "Text bugs appear with non-ASCII input, emoji, accents, case mapping, regex, and storage boundaries.",
+      "common_use": [
+        "Store and display user text",
+        "Use template literals for interpolation",
+        "Iterate text by code point when appropriate"
+      ],
+      "common_misuse": [
+        "Assuming length equals visible characters",
+        "Comparing visually identical unnormalized strings",
+        "Slicing in the middle of a surrogate pair"
+      ],
+      "debugging_symptoms": [
+        "Duplicate-looking identifiers or values differ",
+        "Emoji breaks validation",
+        "Regex misses accented text"
+      ],
+      "tests_or_checks": [
+        "Test non-ASCII, combining marks, emoji, and empty strings",
+        "Normalize where comparison requires canonical form",
+        "Inspect regex unicode flag needs"
+      ],
+      "safe_refactor_notes": [
+        "Do not optimize text handling by changing iteration form without Unicode tests",
+        "Keep encoding assumptions explicit at I/O boundaries"
+      ],
+      "related_risk_ids": [
+        "js-risk-regex-overmatching"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 2,
+        "chapter_title": "Lexical Structure",
+        "sections": [
+          "2.5 Unicode",
+          "3.3 Text"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-symbols",
+      "concept_name": "symbols",
+      "language_area": "types_values_variables",
+      "plain_language_meaning": "Symbols are unique primitive values often used as property keys that avoid accidental name collision.",
+      "precise_behavior": "Symbol() creates a unique value. Symbols can be property keys, may be omitted by ordinary string-key enumeration, and well-known symbols customize language protocols.",
+      "syntax_or_api_shape": "const s = Symbol(\"desc\"), obj[s], Symbol.iterator, Symbol.toPrimitive",
+      "why_it_matters": "Symbols are powerful for protocols and hidden-ish keys but can make object shape less obvious.",
+      "common_use": [
+        "Define iterator or conversion protocols",
+        "Avoid property name collisions in library code",
+        "Store metadata not meant for normal string-key loops"
+      ],
+      "common_misuse": [
+        "Expecting JSON.stringify or Object.keys to include symbol-keyed properties",
+        "Using Symbol for secrecy",
+        "Forgetting global symbol registry distinction when using Symbol.for"
+      ],
+      "debugging_symptoms": [
+        "Property appears missing during enumeration",
+        "Protocol method not discovered",
+        "Debug output omits symbol property"
+      ],
+      "tests_or_checks": [
+        "Check Object.getOwnPropertySymbols",
+        "Check Reflect.ownKeys",
+        "Verify JSON and spread behavior"
+      ],
+      "safe_refactor_notes": [
+        "Preserve symbol keys in cloning and reflection code",
+        "Document well-known symbol protocols"
+      ],
+      "related_risk_ids": [
+        "js-risk-metaprogramming-opacity"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.6 Symbols",
+          "14.4 Well-Known Symbols"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-variable-declarations",
+      "concept_name": "const let and var declarations",
+      "language_area": "types_values_variables",
+      "plain_language_meaning": "Variable declarations control binding lifetime, reassignment, and scope.",
+      "precise_behavior": "let and const are block scoped. const prevents reassignment of the binding but does not freeze the referenced object. var is function scoped and has legacy hoisting behavior.",
+      "syntax_or_api_shape": "const x = value; let y; var z;",
+      "why_it_matters": "Declaration choice affects safe refactoring, loop closures, accidental globals, and mutability expectations.",
+      "common_use": [
+        "Use const by default for bindings that are not reassigned",
+        "Use let for reassignment",
+        "Read legacy var carefully"
+      ],
+      "common_misuse": [
+        "Assuming const makes an object immutable",
+        "Using var in loops with callbacks expecting per-iteration bindings",
+        "Creating globals through undeclared assignment in non-strict code"
+      ],
+      "debugging_symptoms": [
+        "Unexpected closure value",
+        "Mutation despite const",
+        "Name collision across blocks"
+      ],
+      "tests_or_checks": [
+        "Search for var and undeclared assignments",
+        "Check reassignment versus object mutation",
+        "Test loop callbacks"
+      ],
+      "safe_refactor_notes": [
+        "Replace var with let/const only after checking scope and hoisting dependencies",
+        "Do not use const as a mutation guarantee"
+      ],
+      "related_risk_ids": [
+        "js-risk-shared-object-mutation",
+        "js-risk-closure-state"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.10 Variable Declaration and Assignment",
+          "5.7 Declarations"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-property-access",
+      "concept_name": "property access",
+      "language_area": "expressions_operators",
+      "plain_language_meaning": "Objects expose values through property names using dot or bracket notation.",
+      "precise_behavior": "obj.name uses an identifier property name. obj[expr] evaluates expr and converts it to a property key. Accessing a property of null or undefined throws. Lookup may continue through the prototype chain.",
+      "syntax_or_api_shape": "obj.prop, obj[dynamicKey], obj?.prop, obj?.[key]",
+      "why_it_matters": "Most JavaScript objects, arrays, functions, modules, DOM objects, and API results are manipulated through property access.",
+      "common_use": [
+        "Read and write object properties",
+        "Use computed keys",
+        "Access array elements"
+      ],
+      "common_misuse": [
+        "Reading nested properties before nullish guard",
+        "Using dot notation when the key is dynamic",
+        "Confusing missing own property with inherited property"
+      ],
+      "debugging_symptoms": [
+        "Cannot read properties error",
+        "undefined value from misspelled key",
+        "Prototype value appears unexpectedly"
+      ],
+      "tests_or_checks": [
+        "Check nullish source before access",
+        "Check own versus inherited property",
+        "Test dynamic keys with unusual strings"
+      ],
+      "safe_refactor_notes": [
+        "When moving properties, preserve accessor/getter semantics and prototype lookup assumptions",
+        "Use destructuring only after nullish checks"
+      ],
+      "related_risk_ids": [
+        "js-risk-null-undefined-access",
+        "js-risk-prototype-shadowing"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 4,
+        "chapter_title": "Expressions and Operators",
+        "sections": [
+          "4.4 Property Access Expressions",
+          "6.3 Querying and Setting Properties"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-optional-chaining",
+      "concept_name": "optional chaining",
+      "language_area": "expressions_operators",
+      "plain_language_meaning": "Optional chaining stops a property access or call when the base is nullish and returns undefined instead of throwing.",
+      "precise_behavior": "?. applies only at the guarded step. It does not validate later required values unless each access is guarded. It changes failure mode from exception to undefined.",
+      "syntax_or_api_shape": "obj?.prop, obj?.[expr], func?.(args)",
+      "why_it_matters": "Optional chaining is useful at unreliable boundaries but can hide bugs if a value should always exist.",
+      "common_use": [
+        "Read optional API fields",
+        "Handle missing DOM/API elements when absence is valid",
+        "Guard optional callbacks"
+      ],
+      "common_misuse": [
+        "Replacing a required invariant with ?. and letting undefined flow downstream",
+        "Assuming ?. catches all errors inside a called function",
+        "Combining ?. with || defaults that erase valid falsy values"
+      ],
+      "debugging_symptoms": [
+        "Later NaN or undefined output instead of early TypeError",
+        "Missing UI/data silently ignored",
+        "Tests pass without asserting required structure"
+      ],
+      "tests_or_checks": [
+        "Ask whether missing base is valid",
+        "Test absent intermediate object and present falsy values",
+        "Use ?? for nullish fallback"
+      ],
+      "safe_refactor_notes": [
+        "Use explicit assertion for required values",
+        "Keep error visibility for invariants"
+      ],
+      "related_risk_ids": [
+        "js-risk-null-undefined-access"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 1,
+        "chapter_title": "Introduction to JavaScript",
+        "sections": [
+          "1.3 A Tour of JavaScript optional chaining example"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_demonstrated_by_code",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_demonstrated_by_code",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-arithmetic-plus",
+      "concept_name": "arithmetic operators and plus",
+      "language_area": "expressions_operators",
+      "plain_language_meaning": "Arithmetic operators compute numeric results, while + also concatenates strings.",
+      "precise_behavior": "Most arithmetic operators convert operands to numbers. + performs string concatenation if either operand is or becomes a string in the relevant conversion path; otherwise it performs numeric addition.",
+      "syntax_or_api_shape": "a + b, a - b, a * b, a / b, a % b, ++x, x++",
+      "why_it_matters": "The same plus token is both addition and concatenation, so mixed input types are a common bug source.",
+      "common_use": [
+        "Add validated numbers",
+        "Concatenate strings deliberately",
+        "Increment numeric counters"
+      ],
+      "common_misuse": [
+        "Adding form/query values without parsing",
+        "Using ++ across line breaks incorrectly",
+        "Assuming arrays in arithmetic are invalid before conversion"
+      ],
+      "debugging_symptoms": [
+        "\"12\" + 3 becomes \"123\"",
+        "NaN after subtraction",
+        "Counter update uses stale coerced type"
+      ],
+      "tests_or_checks": [
+        "Test numeric strings and empty strings",
+        "Use Number()/parse functions before arithmetic",
+        "Search for + near external input"
+      ],
+      "safe_refactor_notes": [
+        "Separate formatting from arithmetic",
+        "Do not change + to template literal without checking numeric intent"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 4,
+        "chapter_title": "Expressions and Operators",
+        "sections": [
+          "4.8 Arithmetic Expressions",
+          "3.9 Type Conversions"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-logical-short-circuit",
+      "concept_name": "logical short-circuiting",
+      "language_area": "expressions_operators",
+      "plain_language_meaning": "Logical operators return operand values, not necessarily booleans, and skip work when the result is already known.",
+      "precise_behavior": "&& returns the first falsy operand or the last operand. || returns the first truthy operand or the last operand. ?? returns the right side only when the left side is null or undefined. ! converts to boolean.",
+      "syntax_or_api_shape": "a && b, a || fallback, a ?? fallback, !a",
+      "why_it_matters": "Short-circuit operators are concise control flow and defaulting tools, but they can accidentally treat valid falsy values as missing.",
+      "common_use": [
+        "Guard optional calls",
+        "Choose defaults",
+        "Compose simple conditionals"
+      ],
+      "common_misuse": [
+        "Using || for numeric/string defaults where 0 or \"\" is valid",
+        "Depending on side effects in skipped operands",
+        "Assuming result type is boolean"
+      ],
+      "debugging_symptoms": [
+        "Function not called",
+        "Default overwrites value",
+        "Variable holds object/string instead of boolean"
+      ],
+      "tests_or_checks": [
+        "Test false, 0, \"\", null, undefined",
+        "Review side effects in operands",
+        "Use Boolean(expr) when boolean output is required"
+      ],
+      "safe_refactor_notes": [
+        "When refactoring to if statements, preserve returned operand value semantics",
+        "Prefer ?? for nullish-only fallback"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion",
+        "js-risk-null-undefined-access"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 4,
+        "chapter_title": "Expressions and Operators",
+        "sections": [
+          "4.10 Logical Expressions"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-automatic-semicolon-insertion",
+      "concept_name": "optional semicolons and ASI",
+      "language_area": "lexical_structure",
+      "plain_language_meaning": "JavaScript can insert semicolons at line breaks, but not at every line break.",
+      "precise_behavior": "Line terminators may be treated as statement separators when parsing otherwise fails, with important exceptions such as return/throw/yield/break/continue, postfix ++/--, and arrow functions. Lines starting with (, [, /, +, or - can be parsed as continuation of the prior statement.",
+      "syntax_or_api_shape": "return expr; return\nexpr; ;[...].forEach(...); x\n++",
+      "why_it_matters": "ASI can turn visually reasonable code into different code, especially around return statements and leading parentheses/brackets.",
+      "common_use": [
+        "Omit semicolons consistently with defensive leading semicolons",
+        "Use semicolons explicitly to reduce ambiguity",
+        "Review minified/generated code boundaries"
+      ],
+      "common_misuse": [
+        "Putting return value on the next line",
+        "Starting an IIFE or array literal after a semicolonless statement",
+        "Breaking before =>"
+      ],
+      "debugging_symptoms": [
+        "Function returns undefined",
+        "Previous expression is called as a function",
+        "SyntaxError around arrow function"
+      ],
+      "tests_or_checks": [
+        "Search for return/throw/yield/break/continue followed by newline",
+        "Check lines beginning with ( or [ after semicolonless code",
+        "Run formatter/linter"
+      ],
+      "safe_refactor_notes": [
+        "Do not move expressions across line breaks near restricted productions without tests",
+        "Prefer explicit semicolons in generated/concatenated snippets"
+      ],
+      "related_risk_ids": [
+        "js-risk-tooling-version-drift"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 2,
+        "chapter_title": "Lexical Structure",
+        "sections": [
+          "2.6 Optional Semicolons"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-strict-mode",
+      "concept_name": "strict mode",
+      "language_area": "statements",
+      "plain_language_meaning": "Strict mode disables or changes selected legacy JavaScript behaviors.",
+      "precise_behavior": "Strict mode is enabled by a \"use strict\" directive or implicitly in ES modules and classes. It makes some silent errors throw, changes this in function calls, restricts eval/arguments behavior, and removes certain legacy features.",
+      "syntax_or_api_shape": "\"use strict\"; ES modules; class bodies",
+      "why_it_matters": "Strictness affects refactors from scripts to modules/classes and changes behavior of legacy code.",
+      "common_use": [
+        "Make errors visible",
+        "Write modern modules/classes",
+        "Avoid accidental globals"
+      ],
+      "common_misuse": [
+        "Moving legacy script into module without checking this and globals",
+        "Depending on non-strict function-call this",
+        "Using restricted identifiers"
+      ],
+      "debugging_symptoms": [
+        "ReferenceError for undeclared assignment",
+        "this is undefined in function call",
+        "SyntaxError in migrated code"
+      ],
+      "tests_or_checks": [
+        "Check strict directive/module/class boundaries",
+        "Search undeclared assignments",
+        "Test function invocation this"
+      ],
+      "safe_refactor_notes": [
+        "Treat script-to-module conversion as behavior change",
+        "Preserve intentional global writes explicitly"
+      ],
+      "related_risk_ids": [
+        "js-risk-this-binding",
+        "js-risk-module-system-mismatch"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 1,
+        "chapter_title": "Introduction to JavaScript",
+        "sections": [
+          "JavaScript Names Versions and Modes",
+          "5.6 Miscellaneous Statements"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-object-references",
+      "concept_name": "object references and mutability",
+      "language_area": "objects_arrays_functions",
+      "plain_language_meaning": "Primitive values are immutable, while object values are mutable and assigned by reference.",
+      "precise_behavior": "Assigning an object or array copies the reference, not the object. Mutating through any reference changes the shared object. const protects binding reassignment, not object contents.",
+      "syntax_or_api_shape": "const a = {}; const b = a; b.x = 1; Object.freeze(obj)",
+      "why_it_matters": "Shared references are central to state bugs, safe refactors, and API design.",
+      "common_use": [
+        "Pass objects as structured state",
+        "Mutate local working objects intentionally",
+        "Share identity when identity matters"
+      ],
+      "common_misuse": [
+        "Assuming assignment clones",
+        "Mutating input parameters without documenting",
+        "Using shallow clone for nested state"
+      ],
+      "debugging_symptoms": [
+        "Caller data changes after function call",
+        "Two tests interfere",
+        "Nested object still shared after spread"
+      ],
+      "tests_or_checks": [
+        "Check every mutation method and property write",
+        "Test aliasing by keeping original reference",
+        "Distinguish shallow and deep copy needs"
+      ],
+      "safe_refactor_notes": [
+        "Document ownership of objects",
+        "Use copies at boundaries when caller-owned data must be preserved",
+        "Do not replace mutation with copying if identity observers rely on it"
+      ],
+      "related_risk_ids": [
+        "js-risk-shared-object-mutation"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.8 Immutable Primitive Values and Mutable Object References",
+          "6 Objects",
+          "7 Arrays"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-property-lookup-prototype",
+      "concept_name": "prototype property lookup",
+      "language_area": "objects_arrays_functions",
+      "plain_language_meaning": "Objects can inherit properties from a prototype chain.",
+      "precise_behavior": "Property reads search own properties first, then prototypes. Property writes usually create or set own properties unless accessors or special cases apply. Classes use prototypes for methods.",
+      "syntax_or_api_shape": "Object.create(proto), obj.__proto__ legacy, Object.getPrototypeOf(obj), class C { method(){} }",
+      "why_it_matters": "Prototype lookup explains method sharing, inheritance, shadowing, and many confusing ownership checks.",
+      "common_use": [
+        "Share methods across instances",
+        "Implement inheritance",
+        "Use Object.create for controlled prototypes"
+      ],
+      "common_misuse": [
+        "Using in when own-property check is required",
+        "Mutating built-in prototypes",
+        "Assuming class fields and prototype methods are equivalent"
+      ],
+      "debugging_symptoms": [
+        "Method exists but not as own property",
+        "Enumeration includes inherited key with for/in",
+        "Shadowed method not called"
+      ],
+      "tests_or_checks": [
+        "Use Object.hasOwn or hasOwnProperty carefully",
+        "Inspect Object.getPrototypeOf",
+        "Check for prototype mutation"
+      ],
+      "safe_refactor_notes": [
+        "Moving methods between instance and prototype changes identity and memory behavior",
+        "Preserve accessors and super behavior"
+      ],
+      "related_risk_ids": [
+        "js-risk-prototype-shadowing"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 6,
+        "chapter_title": "Objects",
+        "sections": [
+          "6.1 Introduction to Objects",
+          "6.3 Querying and Setting Properties",
+          "9.1 Classes and Prototypes"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-enumeration-ownership",
+      "concept_name": "property ownership and enumeration",
+      "language_area": "objects_arrays_functions",
+      "plain_language_meaning": "Different reflection APIs report different sets of properties.",
+      "precise_behavior": "Own versus inherited, enumerable versus non-enumerable, string-keyed versus symbol-keyed properties determine what Object.keys, for/in, JSON.stringify, spread, Object.getOwnPropertyNames, Object.getOwnPropertySymbols, and Reflect.ownKeys see.",
+      "syntax_or_api_shape": "Object.keys(obj), for (let k in obj), Object.hasOwn(obj,k), Reflect.ownKeys(obj)",
+      "why_it_matters": "Copying, serialization, validation, and review tools can miss properties if they use the wrong reflection API.",
+      "common_use": [
+        "Copy plain data objects",
+        "Inspect object shape",
+        "Validate allowed fields"
+      ],
+      "common_misuse": [
+        "Using for/in without ownership filter",
+        "Expecting JSON/spread to preserve non-enumerable or symbol keys",
+        "Ignoring getters during spread/copy"
+      ],
+      "debugging_symptoms": [
+        "Property missing from clone",
+        "Inherited field accepted as input",
+        "Getter side effect during copy"
+      ],
+      "tests_or_checks": [
+        "Compare Object.keys and Reflect.ownKeys",
+        "Check descriptors",
+        "Filter inherited keys explicitly"
+      ],
+      "safe_refactor_notes": [
+        "Choose reflection API intentionally before refactoring copies",
+        "Preserve descriptors when required"
+      ],
+      "related_risk_ids": [
+        "js-risk-prototype-shadowing",
+        "js-risk-metaprogramming-opacity"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 6,
+        "chapter_title": "Objects",
+        "sections": [
+          "6.5 Testing Properties",
+          "6.6 Enumerating Properties",
+          "14.1 Property Attributes"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-arrays-length-sparse",
+      "concept_name": "arrays length and sparse arrays",
+      "language_area": "objects_arrays_functions",
+      "plain_language_meaning": "Arrays are objects with special indexed properties and a length property; they may have holes.",
+      "precise_behavior": "length is one greater than the largest array index and can be set directly. Sparse arrays have missing elements rather than present undefined values. Methods differ in how they handle holes.",
+      "syntax_or_api_shape": "arr.length, arr[i], Array(n), delete arr[i], arr.push(x), arr.splice(i,1)",
+      "why_it_matters": "List-like code breaks when length is treated as proof every element exists.",
+      "common_use": [
+        "Represent ordered lists",
+        "Append/remove elements",
+        "Use dense arrays for collections"
+      ],
+      "common_misuse": [
+        "Creating Array(n) and expecting values",
+        "delete for removal instead of splice",
+        "Assuming map/forEach callbacks visit holes"
+      ],
+      "debugging_symptoms": [
+        "Skipped callback invocation",
+        "Unexpected JSON nulls for holes",
+        "Length larger than count of present elements"
+      ],
+      "tests_or_checks": [
+        "Test dense, sparse, and explicit undefined arrays",
+        "Inspect indexes with Object.keys",
+        "Avoid delete on arrays"
+      ],
+      "safe_refactor_notes": [
+        "Do not refactor loops/methods across sparse arrays without hole tests",
+        "Normalize to dense arrays when list semantics are needed"
+      ],
+      "related_risk_ids": [
+        "js-risk-sparse-array-assumption"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 7,
+        "chapter_title": "Arrays",
+        "sections": [
+          "7.3 Sparse Arrays",
+          "7.4 Array Length",
+          "7.8 Array Methods"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-array-iteration-methods",
+      "concept_name": "array iteration methods",
+      "language_area": "objects_arrays_functions",
+      "plain_language_meaning": "Array methods encode common traversal and transformation patterns.",
+      "precise_behavior": "forEach, map, filter, reduce, find, some, every, sort and related methods call callbacks with element, index, and array. Mutating during iteration or relying on sparse behavior can surprise.",
+      "syntax_or_api_shape": "arr.map(fn), arr.filter(fn), arr.reduce(fn, init), arr.sort(compare), for...of",
+      "why_it_matters": "Array method choice directly affects returned value, mutation, order, and edge cases.",
+      "common_use": [
+        "Transform dense arrays",
+        "Filter values",
+        "Reduce with explicit initial value",
+        "Sort with comparator"
+      ],
+      "common_misuse": [
+        "Using forEach expecting a returned array",
+        "Using sort without numeric comparator",
+        "Mutating the iterated array in callback",
+        "Omitting reduce initial value for possible empty array"
+      ],
+      "debugging_symptoms": [
+        "undefined returned from helper",
+        "Lexicographic numeric sort",
+        "Skipped or duplicated effects",
+        "TypeError on empty reduce"
+      ],
+      "tests_or_checks": [
+        "Test empty, one-element, sparse, and mixed-type arrays",
+        "Review callback return values",
+        "Check comparator contract"
+      ],
+      "safe_refactor_notes": [
+        "Switch between loops and methods only with tests for holes and mutation",
+        "Keep sort mutation visible"
+      ],
+      "related_risk_ids": [
+        "js-risk-sparse-array-assumption",
+        "js-risk-shared-object-mutation"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 7,
+        "chapter_title": "Arrays",
+        "sections": [
+          "7.6 Iterating Arrays",
+          "7.8 Array Methods"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-array-like-objects",
+      "concept_name": "array-like objects",
+      "language_area": "objects_arrays_functions",
+      "plain_language_meaning": "Some objects look like arrays because they have length and numeric properties but are not arrays.",
+      "precise_behavior": "Array-like objects may not inherit Array.prototype methods. They can often be converted with Array.from or spread if iterable, but length-only array-like and iterable are distinct concepts.",
+      "syntax_or_api_shape": "Array.from(obj), [...iterable], arguments, NodeList-like values",
+      "why_it_matters": "Browser and legacy APIs often return list-like values where array methods or live/static behavior matter.",
+      "common_use": [
+        "Normalize external collection APIs",
+        "Handle arguments-like values",
+        "Review DOM collections"
+      ],
+      "common_misuse": [
+        "Calling array methods directly on non-arrays",
+        "Assuming spread works on every length object",
+        "Assuming DOM collection liveness without checking"
+      ],
+      "debugging_symptoms": [
+        "method is not a function",
+        "List changes while iterating",
+        "Missing elements after conversion"
+      ],
+      "tests_or_checks": [
+        "Check Array.isArray",
+        "Check typeof obj[Symbol.iterator]",
+        "Use Array.from with mapping when needed"
+      ],
+      "safe_refactor_notes": [
+        "Normalize once at boundary",
+        "Do not change live collection behavior without browser tests"
+      ],
+      "related_risk_ids": [
+        "js-risk-sparse-array-assumption",
+        "js-risk-browser-node-api-confusion"
+      ],
+      "runtime_or_environment": "ECMAScript plus host APIs",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 7,
+        "chapter_title": "Arrays",
+        "sections": [
+          "7.9 Array-Like Objects",
+          "15.3 Scripting Documents"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-functions-as-values",
+      "concept_name": "functions as values",
+      "language_area": "objects_arrays_functions",
+      "plain_language_meaning": "Functions can be stored, passed, returned, and invoked like other values.",
+      "precise_behavior": "Function declarations, function expressions, and arrow functions create callable objects. Functions may have properties, close over scope, and differ in this/arguments/new behavior.",
+      "syntax_or_api_shape": "function f(){}, const f = function(){}, const f = x => x, callback(fn)",
+      "why_it_matters": "Callbacks, higher-order APIs, modules, and event handlers depend on functions as first-class values.",
+      "common_use": [
+        "Pass callbacks",
+        "Return specialized functions",
+        "Store behavior in objects or maps"
+      ],
+      "common_misuse": [
+        "Invoking when a reference is needed",
+        "Passing this-dependent method without binding",
+        "Assuming arrow and function are interchangeable"
+      ],
+      "debugging_symptoms": [
+        "Callback runs too early",
+        "this is undefined",
+        "Function cannot be used as constructor"
+      ],
+      "tests_or_checks": [
+        "Check call site parentheses",
+        "Check this, arguments, and new requirements",
+        "Test callback invocation timing"
+      ],
+      "safe_refactor_notes": [
+        "Preserve function form when this/arguments/constructor behavior matters",
+        "Name functions when stack traces matter"
+      ],
+      "related_risk_ids": [
+        "js-risk-this-binding",
+        "js-risk-closure-state"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 8,
+        "chapter_title": "Functions",
+        "sections": [
+          "8.1 Defining Functions",
+          "8.4 Functions as Values"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-closures",
+      "concept_name": "closures",
+      "language_area": "objects_arrays_functions",
+      "plain_language_meaning": "A function can remember variables from the lexical scope where it was created.",
+      "precise_behavior": "Nested functions and returned callbacks retain access to outer lexical bindings. They observe the variable binding, not an automatic deep snapshot of every value.",
+      "syntax_or_api_shape": "function outer(){ let x=0; return () => ++x; }",
+      "why_it_matters": "Closures power callbacks, modules, private state patterns, and many asynchronous bugs.",
+      "common_use": [
+        "Keep private state",
+        "Create specialized callbacks",
+        "Build module-like namespaces"
+      ],
+      "common_misuse": [
+        "Expecting captured variable to reset automatically",
+        "Capturing mutable loop/state by accident",
+        "Leaking memory through long-lived closures over large objects"
+      ],
+      "debugging_symptoms": [
+        "Callbacks see updated value",
+        "State persists between tests",
+        "Unexpected retained data"
+      ],
+      "tests_or_checks": [
+        "List captured variables",
+        "Check mutation after capture",
+        "Test repeated calls and concurrent callbacks"
+      ],
+      "safe_refactor_notes": [
+        "Pass explicit parameters when snapshot is intended",
+        "Reset closure state in test setup",
+        "Avoid capturing broad objects unnecessarily"
+      ],
+      "related_risk_ids": [
+        "js-risk-closure-state"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 8,
+        "chapter_title": "Functions",
+        "sections": [
+          "8.6 Closures",
+          "10.1 Modules with Classes Objects and Closures"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-this-binding",
+      "concept_name": "this binding",
+      "language_area": "objects_arrays_functions",
+      "plain_language_meaning": "The value of this depends on how a function is invoked, not only where it is defined.",
+      "precise_behavior": "Method calls set this to the receiver. Plain function calls, constructor calls, call/apply/bind, event callbacks, and arrow functions differ. Arrow functions capture lexical this and cannot be used as ordinary methods requiring dynamic this.",
+      "syntax_or_api_shape": "obj.m(), f(), new C(), f.call(obj), f.bind(obj), () => this.x",
+      "why_it_matters": "this bugs are uniquely common in methods, callbacks, classes, event handlers, and extracted functions.",
+      "common_use": [
+        "Define methods",
+        "Bind callbacks",
+        "Use lexical this inside nested arrows"
+      ],
+      "common_misuse": [
+        "Passing obj.method directly as callback",
+        "Using arrow for prototype method needing receiver",
+        "Forgetting strict-mode plain-call this"
+      ],
+      "debugging_symptoms": [
+        "Cannot read this.prop",
+        "Method works in object call but not event/timer callback",
+        "Shared global/object state modified"
+      ],
+      "tests_or_checks": [
+        "Identify every this use and invocation form",
+        "Test extracted method call",
+        "Check bind/call/apply and arrow use"
+      ],
+      "safe_refactor_notes": [
+        "Refactor methods to arrows only when receiver semantics are irrelevant",
+        "Bind at construction or call boundary, not randomly inside logic"
+      ],
+      "related_risk_ids": [
+        "js-risk-this-binding"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 8,
+        "chapter_title": "Functions",
+        "sections": [
+          "8.2 Invoking Functions",
+          "8.7 Function Properties Methods and Constructor"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-classes-prototypes",
+      "concept_name": "classes and prototypes",
+      "language_area": "classes_prototypes_modules",
+      "plain_language_meaning": "JavaScript class syntax is modern syntax over prototype-based objects.",
+      "precise_behavior": "class declarations define constructor functions and prototype methods. Instance state is initialized in constructors or fields. Inheritance uses prototype chains and super. Class bodies are strict.",
+      "syntax_or_api_shape": "class C { constructor(x){ this.x=x } method(){} } new C(1)",
+      "why_it_matters": "Class syntax improves readability but does not erase prototype, this, or object-reference semantics.",
+      "common_use": [
+        "Model objects with shared behavior",
+        "Use subclassing where substitutability is clear",
+        "Expose constructor-based APIs"
+      ],
+      "common_misuse": [
+        "Assuming class methods are copied per instance",
+        "Using instance arrow fields for every method without memory/identity reason",
+        "Treating private state, prototype methods, and closures as identical"
+      ],
+      "debugging_symptoms": [
+        "Method missing after destructuring",
+        "Subclass method cannot access super as expected",
+        "Memory growth from per-instance methods"
+      ],
+      "tests_or_checks": [
+        "Inspect prototype versus own methods",
+        "Check new requirement",
+        "Test subclass behavior"
+      ],
+      "safe_refactor_notes": [
+        "Move methods between prototype and instance only after checking this binding and identity",
+        "Avoid subclassing refactors without tests for constructor/super order"
+      ],
+      "related_risk_ids": [
+        "js-risk-prototype-shadowing",
+        "js-risk-this-binding"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 9,
+        "chapter_title": "Classes",
+        "sections": [
+          "9.1 Classes and Prototypes",
+          "9.3 Classes with the class Keyword",
+          "9.5 Subclasses"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-subclassing-super",
+      "concept_name": "subclassing and super",
+      "language_area": "classes_prototypes_modules",
+      "plain_language_meaning": "Subclasses extend behavior while relying on superclass initialization and methods.",
+      "precise_behavior": "extends sets up prototype inheritance. Derived constructors must call super before using this. super.method resolves against the superclass prototype in method context.",
+      "syntax_or_api_shape": "class D extends B { constructor(){ super(); } method(){ return super.method(); } }",
+      "why_it_matters": "Subclass bugs often involve initialization order, method override contracts, and this/prototype expectations.",
+      "common_use": [
+        "Specialize existing class behavior",
+        "Reuse superclass initialization",
+        "Override methods deliberately"
+      ],
+      "common_misuse": [
+        "Using this before super",
+        "Breaking superclass invariants",
+        "Assuming super is a dynamic property read from this"
+      ],
+      "debugging_symptoms": [
+        "ReferenceError in constructor",
+        "Overridden method skips required work",
+        "Instance fails instanceof/behavior expectations"
+      ],
+      "tests_or_checks": [
+        "Test constructor arguments and superclass invariants",
+        "Inspect override calls to super",
+        "Check prototype chain"
+      ],
+      "safe_refactor_notes": [
+        "Prefer composition if subclass contract is unclear",
+        "Do not reorder super and this initialization casually"
+      ],
+      "related_risk_ids": [
+        "js-risk-prototype-shadowing",
+        "js-risk-this-binding"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 9,
+        "chapter_title": "Classes",
+        "sections": [
+          "9.5 Subclasses"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-es-modules",
+      "concept_name": "ES modules",
+      "language_area": "classes_prototypes_modules",
+      "plain_language_meaning": "ES modules define explicit imports and exports with static structure.",
+      "precise_behavior": "import/export declarations are parsed statically. Module code is strict. Bindings are live where specified by module semantics. Loading behavior depends on host environment and configuration.",
+      "syntax_or_api_shape": "import x from \"m\"; import {y} from \"m\"; export default value; export {name}; <script type=\"module\">",
+      "why_it_matters": "Modules improve boundaries but create loader, file-type, and interop decisions across browser, Node, bundlers, and tests.",
+      "common_use": [
+        "Organize browser or Node code with explicit dependencies",
+        "Expose named/default APIs",
+        "Enable static analysis and bundling"
+      ],
+      "common_misuse": [
+        "Mixing require/module.exports in ES module without interop plan",
+        "Assuming default import shape matches CommonJS export",
+        "Ignoring file/runtime configuration"
+      ],
+      "debugging_symptoms": [
+        "SyntaxError on import",
+        "undefined imported binding",
+        "Works under bundler but not Node/browser directly"
+      ],
+      "tests_or_checks": [
+        "Identify host loader and package config",
+        "Check default versus named exports",
+        "Run minimal import test in target runtime"
+      ],
+      "safe_refactor_notes": [
+        "Treat module conversion as runtime-boundary refactor",
+        "Keep side-effect imports visible"
+      ],
+      "related_risk_ids": [
+        "js-risk-module-system-mismatch",
+        "js-risk-tooling-version-drift"
+      ],
+      "runtime_or_environment": "ECMAScript language core plus host loaders",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 10,
+        "chapter_title": "Modules",
+        "sections": [
+          "10.3 Modules in ES6"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-commonjs-modules",
+      "concept_name": "CommonJS modules",
+      "language_area": "classes_prototypes_modules",
+      "plain_language_meaning": "CommonJS is Node’s historical module system built around require and module.exports.",
+      "precise_behavior": "A CommonJS module exports by assigning to exports or module.exports and imports synchronously with require. Interop with ES modules depends on Node/tooling behavior that must be verified for the current runtime.",
+      "syntax_or_api_shape": "const x = require(\"x\"); module.exports = value; exports.name = value",
+      "why_it_matters": "Legacy Node packages and tools often use CommonJS, so review must check module shape and loader configuration.",
+      "common_use": [
+        "Use in CommonJS Node codebases",
+        "Load JSON or built-in modules in legacy style",
+        "Adapter at package boundary"
+      ],
+      "common_misuse": [
+        "Reassigning exports instead of module.exports",
+        "Mixing top-level import/export without config",
+        "Assuming named ES imports work from all CommonJS packages"
+      ],
+      "debugging_symptoms": [
+        "require is not defined",
+        "Imported value nested under default",
+        "Circular dependency exposes partial object"
+      ],
+      "tests_or_checks": [
+        "Inspect package.json and file extension",
+        "Search for module.exports/exports/require/import",
+        "Test import/require both sides if interop"
+      ],
+      "safe_refactor_notes": [
+        "Do not rewrite require to import without runtime/tool tests",
+        "Document interop adapters"
+      ],
+      "related_risk_ids": [
+        "js-risk-module-system-mismatch"
+      ],
+      "runtime_or_environment": "Node host environment and tooling",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 10,
+        "chapter_title": "Modules",
+        "sections": [
+          "10.2 Modules in Node"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-map-set",
+      "concept_name": "Map Set WeakMap and WeakSet",
+      "language_area": "standard_library",
+      "plain_language_meaning": "Map and Set are standard collection types for keys/values and unique membership.",
+      "precise_behavior": "Map stores key-value associations with keys not limited to strings. Set stores unique values. WeakMap/WeakSet have object-key/value constraints and garbage-collection-oriented behavior.",
+      "syntax_or_api_shape": "new Map(), map.set(k,v), map.get(k), new Set(), set.add(v), WeakMap",
+      "why_it_matters": "Collection choice determines key identity, iteration order expectations, serialization, and performance shape.",
+      "common_use": [
+        "Use Map for object keys or non-string keys",
+        "Use Set for membership uniqueness",
+        "Use WeakMap for private metadata tied to object lifetime"
+      ],
+      "common_misuse": [
+        "Using plain object as map with arbitrary user keys",
+        "Expecting JSON.stringify Map/Set to preserve entries",
+        "Using WeakMap when iteration is required"
+      ],
+      "debugging_symptoms": [
+        "Keys collide as strings",
+        "Serialized output is {}",
+        "Cannot inspect WeakMap contents"
+      ],
+      "tests_or_checks": [
+        "Check key types",
+        "Test JSON serialization",
+        "Verify iteration needs"
+      ],
+      "safe_refactor_notes": [
+        "Switch object to Map only after updating access/serialization code",
+        "Keep conversion helpers at boundaries"
+      ],
+      "related_risk_ids": [
+        "js-risk-json-serialization-loss"
+      ],
+      "runtime_or_environment": "ECMAScript standard library",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.1 Sets and Maps"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-json-serialization",
+      "concept_name": "JSON serialization and parsing",
+      "language_area": "standard_library",
+      "plain_language_meaning": "JSON converts compatible JavaScript values to text and parses JSON text back to data.",
+      "precise_behavior": "JSON.stringify handles objects, arrays, strings, finite numbers, booleans, and null, with special behavior for undefined, functions, symbols, Dates/toJSON, non-finite numbers, and unsupported/cyclic values. JSON.parse can use a reviver.",
+      "syntax_or_api_shape": "JSON.stringify(value, replacer, space), JSON.parse(text, reviver)",
+      "why_it_matters": "JSON is a data boundary, not a faithful snapshot of arbitrary JavaScript objects.",
+      "common_use": [
+        "Send plain data over network/storage",
+        "Persist configuration-like values",
+        "Clone limited JSON-compatible data"
+      ],
+      "common_misuse": [
+        "Serializing class instances, Maps, Sets, Errors, Dates, functions, undefined, cycles, or special numbers without custom logic",
+        "Assuming parse restores prototypes"
+      ],
+      "debugging_symptoms": [
+        "Dropped fields",
+        "Date comes back as string",
+        "TypeError for circular structure",
+        "Methods lost"
+      ],
+      "tests_or_checks": [
+        "Round-trip representative data",
+        "Check toJSON/replacer/reviver",
+        "List non-JSON value types before boundary"
+      ],
+      "safe_refactor_notes": [
+        "Use explicit schema/custom serialization for non-plain data",
+        "Keep parse validation separate from parsing"
+      ],
+      "related_risk_ids": [
+        "js-risk-json-serialization-loss",
+        "js-risk-date-timezone"
+      ],
+      "runtime_or_environment": "ECMAScript standard library",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.6 JSON Serialization and Parsing",
+          "6.8 Serializing Objects"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-date-time",
+      "concept_name": "Date and time",
+      "language_area": "standard_library",
+      "plain_language_meaning": "Date represents moments in time but many methods expose local or UTC views.",
+      "precise_behavior": "Date stores a timestamp and provides constructors/parsing/formatting/accessors. Local timezone, UTC methods, string parsing, and daylight-saving transitions affect results.",
+      "syntax_or_api_shape": "new Date(), Date.now(), Date.parse(s), date.toISOString(), date.getFullYear(), date.getUTCFullYear()",
+      "why_it_matters": "Date bugs are common at browser/server boundaries and when local dates are treated as instants.",
+      "common_use": [
+        "Timestamp events",
+        "Format dates for display",
+        "Compare instants"
+      ],
+      "common_misuse": [
+        "Parsing ambiguous date strings",
+        "Using local getter when UTC intended",
+        "Serializing date without timezone expectations"
+      ],
+      "debugging_symptoms": [
+        "Off-by-one day",
+        "Different output in CI/server/browser",
+        "DST transition failure"
+      ],
+      "tests_or_checks": [
+        "Test timezone-specific cases",
+        "Prefer ISO with timezone for instants",
+        "Check local versus UTC methods"
+      ],
+      "safe_refactor_notes": [
+        "Do not change parse/format without timezone tests",
+        "Separate date-only domain values from instants"
+      ],
+      "related_risk_ids": [
+        "js-risk-date-timezone",
+        "js-risk-json-serialization-loss"
+      ],
+      "runtime_or_environment": "ECMAScript standard library",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.4 Dates and Times"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-regexp-patterns",
+      "concept_name": "regular expressions",
+      "language_area": "standard_library",
+      "plain_language_meaning": "Regular expressions describe text patterns for search, validation, split, and replace.",
+      "precise_behavior": "RegExp objects and regex literals use pattern syntax plus flags. Capturing, greediness, anchors, global/sticky behavior, Unicode handling, and lastIndex can affect results.",
+      "syntax_or_api_shape": "/pattern/flags, new RegExp(s), re.test(str), str.match(re), str.replace(re, repl)",
+      "why_it_matters": "Regex is powerful but can overmatch, undermatch, or become unreadable when used as a parser.",
+      "common_use": [
+        "Simple token validation",
+        "Search and replace",
+        "Extract flat patterns"
+      ],
+      "common_misuse": [
+        "Using regex for nested grammar",
+        "Forgetting anchors in validation",
+        "Reusing global regex with test without considering state",
+        "Not escaping user input"
+      ],
+      "debugging_symptoms": [
+        "Validation accepts partial string",
+        "Replace removes too much",
+        "Alternating test results",
+        "Slow pathological match"
+      ],
+      "tests_or_checks": [
+        "Positive and negative cases",
+        "Multiline and Unicode tests",
+        "Check flags and anchors",
+        "Fuzz unexpected input"
+      ],
+      "safe_refactor_notes": [
+        "Prefer parser/manual logic for nested formats",
+        "Comment complex patterns",
+        "Avoid hidden global state in shared regex"
+      ],
+      "related_risk_ids": [
+        "js-risk-regex-overmatching"
+      ],
+      "runtime_or_environment": "ECMAScript standard library",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.3 Pattern Matching with Regular Expressions"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-errors",
+      "concept_name": "errors and exceptions",
+      "language_area": "standard_library",
+      "plain_language_meaning": "JavaScript reports exceptional failures through thrown values, commonly Error objects.",
+      "precise_behavior": "throw transfers control to nearest matching catch/finally. Error classes capture messages and, in many environments, stacks. Promise rejections are async error channels, not caught by surrounding synchronous try/catch unless awaited.",
+      "syntax_or_api_shape": "throw new Error(msg); try { } catch (e) { } finally { }",
+      "why_it_matters": "Error handling must match sync, callback, promise, event, stream, and worker boundaries.",
+      "common_use": [
+        "Signal unrecoverable local failure",
+        "Wrap code needing cleanup",
+        "Convert failures at API boundaries"
+      ],
+      "common_misuse": [
+        "Catching too broadly and continuing with corrupt state",
+        "Throwing inside async callback expecting outer try/catch",
+        "Ignoring Error object details"
+      ],
+      "debugging_symptoms": [
+        "Swallowed exception",
+        "Unhandled rejection",
+        "finally masks original error"
+      ],
+      "tests_or_checks": [
+        "Test throw path",
+        "Check async boundaries",
+        "Preserve cause/message/stack when wrapping"
+      ],
+      "safe_refactor_notes": [
+        "Do not change throw to return error without API contract update",
+        "Use finally for cleanup, not normal result substitution"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-callback-error-path"
+      ],
+      "runtime_or_environment": "ECMAScript language core and standard library",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.5 Error Classes",
+          "5.5 Jumps",
+          "13 Asynchronous JavaScript"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-iterables-iterators",
+      "concept_name": "iterables and iterators",
+      "language_area": "iterators_generators_async",
+      "plain_language_meaning": "An iterable is an object that can produce a sequence of values for for/of and spread-like consumers.",
+      "precise_behavior": "An iterable has a Symbol.iterator method returning an iterator. An iterator has next() returning {value, done}. Built-in collections and strings are iterable; plain objects are not iterable by default.",
+      "syntax_or_api_shape": "for (const x of iterable), [...iterable], obj[Symbol.iterator](), iterator.next()",
+      "why_it_matters": "Iteration protocols connect arrays, maps, sets, strings, generators, async iteration, and custom data sources.",
+      "common_use": [
+        "Define custom sequence APIs",
+        "Consume Map/Set/string entries",
+        "Lazily traverse data"
+      ],
+      "common_misuse": [
+        "Using for/of on plain object",
+        "Assuming every array-like is iterable",
+        "Returning malformed next results"
+      ],
+      "debugging_symptoms": [
+        "TypeError: not iterable",
+        "Spread fails",
+        "Loop never ends"
+      ],
+      "tests_or_checks": [
+        "Check Symbol.iterator",
+        "Call next manually in test",
+        "Test empty and early termination"
+      ],
+      "safe_refactor_notes": [
+        "When materializing an iterable, consider one-shot/lazy behavior",
+        "Preserve iterator close behavior if implemented"
+      ],
+      "related_risk_ids": [
+        "js-risk-metaprogramming-opacity"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 12,
+        "chapter_title": "Iterators and Generators",
+        "sections": [
+          "12.1 How Iterators Work",
+          "12.2 Implementing Iterable Objects"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-generators",
+      "concept_name": "generators",
+      "language_area": "iterators_generators_async",
+      "plain_language_meaning": "Generator functions make it easier to define iterators and lazy sequences.",
+      "precise_behavior": "function* returns a generator object. yield produces a value and pauses execution. return, throw, and delegation with yield* affect control flow between consumer and generator.",
+      "syntax_or_api_shape": "function* g(){ yield x; } const it = g(); it.next(); yield* other",
+      "why_it_matters": "Generator control flow is bidirectional enough to surprise reviewers unfamiliar with pause/resume behavior.",
+      "common_use": [
+        "Create lazy sequences",
+        "Implement custom iterables",
+        "Model stepwise algorithms"
+      ],
+      "common_misuse": [
+        "Expecting function* body to run before next()",
+        "Ignoring return/throw path",
+        "Using generator where a simple array is clearer"
+      ],
+      "debugging_symptoms": [
+        "No side effect until iterated",
+        "Cleanup not run until iterator closed",
+        "Consumer sees unexpected done/value"
+      ],
+      "tests_or_checks": [
+        "Call next() manually",
+        "Test early break from for/of",
+        "Check yield* delegation"
+      ],
+      "safe_refactor_notes": [
+        "Do not replace materialized arrays with generators without consumption tests",
+        "Document one-shot versus reusable iterable behavior"
+      ],
+      "related_risk_ids": [
+        "js-risk-metaprogramming-opacity"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 12,
+        "chapter_title": "Iterators and Generators",
+        "sections": [
+          "12.3 Generators",
+          "12.4 Advanced Generator Features"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-promises",
+      "concept_name": "Promises",
+      "language_area": "iterators_generators_async",
+      "plain_language_meaning": "A Promise represents a future fulfillment or rejection.",
+      "precise_behavior": "A Promise settles once, either fulfilled with a value or rejected with a reason. then/catch/finally return promises and schedule handlers asynchronously according to the host event loop/microtask model.",
+      "syntax_or_api_shape": "new Promise((resolve,reject)=>{}), p.then(onFulfilled,onRejected), p.catch(fn), Promise.all(list)",
+      "why_it_matters": "Promises structure async code but do not cancel work automatically or make ordering implicit.",
+      "common_use": [
+        "Wrap async results",
+        "Compose concurrent operations",
+        "Propagate failures through chains"
+      ],
+      "common_misuse": [
+        "Forgetting to return nested promise",
+        "Using try/catch around unawaited promise",
+        "Leaving rejection unhandled"
+      ],
+      "debugging_symptoms": [
+        "then receives undefined",
+        "Unhandled rejection",
+        "Operation completes after caller returned"
+      ],
+      "tests_or_checks": [
+        "Trace every returned promise",
+        "Test rejection path",
+        "Check Promise.all/allSettled choice"
+      ],
+      "safe_refactor_notes": [
+        "Return promise chains from helper functions",
+        "Do not fire-and-forget without explicit reporting policy"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-async-ordering"
+      ],
+      "runtime_or_environment": "ECMAScript language core plus host async APIs",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.2 Promises"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-async-await",
+      "concept_name": "async functions and await",
+      "language_area": "iterators_generators_async",
+      "plain_language_meaning": "async/await lets Promise-based code read like sequential code, while still returning promises.",
+      "precise_behavior": "An async function always returns a Promise. await pauses the async function until the awaited value resolves or rejects. try/catch catches awaited rejections inside the async function, not unrelated async callbacks.",
+      "syntax_or_api_shape": "async function f(){ const x = await p; return x; }",
+      "why_it_matters": "async/await improves readability but does not remove rejection handling, cancellation, concurrency, or ordering design.",
+      "common_use": [
+        "Write sequential async flows",
+        "Use try/catch for awaited rejections",
+        "Bridge Promise APIs into clearer code"
+      ],
+      "common_misuse": [
+        "Forgetting that async function return value is a Promise",
+        "Awaiting operations sequentially that should run concurrently",
+        "Not awaiting a call whose rejection matters"
+      ],
+      "debugging_symptoms": [
+        "Caller receives Promise instead of value",
+        "Slow code due sequential awaits",
+        "Unhandled rejection"
+      ],
+      "tests_or_checks": [
+        "Check callers of async functions",
+        "Test rejected awaits",
+        "Compare sequential versus Promise.all requirements"
+      ],
+      "safe_refactor_notes": [
+        "Adding async to a function is API change unless callers already expect Promise",
+        "Preserve concurrency intentionally"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-async-ordering"
+      ],
+      "runtime_or_environment": "ECMAScript language core plus host async APIs",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.3 async and await"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-async-iteration",
+      "concept_name": "asynchronous iteration",
+      "language_area": "iterators_generators_async",
+      "plain_language_meaning": "Async iteration consumes values that arrive over time.",
+      "precise_behavior": "An async iterable has Symbol.asyncIterator and is consumed by for await...of. Each next step can await a Promise. It is useful for streams and paged/network-like sources.",
+      "syntax_or_api_shape": "for await (const chunk of asyncIterable) { } async function* g(){ yield await x; }",
+      "why_it_matters": "Async iteration combines iteration and async failure/lifecycle concerns.",
+      "common_use": [
+        "Consume readable streams or paged async sources",
+        "Expose lazy async data",
+        "Process chunks in order"
+      ],
+      "common_misuse": [
+        "Forgetting loop is async and needs await at caller",
+        "Ignoring errors thrown during iteration",
+        "Buffering everything when streaming was intended"
+      ],
+      "debugging_symptoms": [
+        "Function returns before loop completes",
+        "Unhandled rejection from iterator",
+        "Memory spike"
+      ],
+      "tests_or_checks": [
+        "Test early break, error, and empty source",
+        "Check caller awaits enclosing async function",
+        "Verify cleanup on break"
+      ],
+      "safe_refactor_notes": [
+        "Do not convert async iterable to array unless bounded",
+        "Preserve backpressure/lifecycle behavior"
+      ],
+      "related_risk_ids": [
+        "js-risk-async-ordering",
+        "js-risk-stream-lifecycle"
+      ],
+      "runtime_or_environment": "ECMAScript language core plus host async APIs",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.4 Asynchronous Iteration"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-property-descriptors",
+      "concept_name": "property descriptors",
+      "language_area": "metaprogramming",
+      "plain_language_meaning": "Object properties have attributes beyond their value.",
+      "precise_behavior": "Descriptors can be data or accessor descriptors and control writable, enumerable, configurable, get, and set behavior. Reflection/copying APIs may not preserve descriptors by default.",
+      "syntax_or_api_shape": "Object.defineProperty(obj,k,desc), Object.getOwnPropertyDescriptor(obj,k)",
+      "why_it_matters": "Descriptors explain read-only properties, getters/setters, enumeration differences, and clone/refactor surprises.",
+      "common_use": [
+        "Define non-enumerable or read-only properties",
+        "Inspect accessor side effects",
+        "Create library-level object APIs"
+      ],
+      "common_misuse": [
+        "Copying with spread and expecting descriptors preserved",
+        "Assigning to read-only/accessor property without checking strict mode behavior",
+        "Ignoring getter side effects during serialization/copy"
+      ],
+      "debugging_symptoms": [
+        "Assignment fails or is ignored",
+        "Property missing from Object.keys",
+        "Getter runs during copy"
+      ],
+      "tests_or_checks": [
+        "Inspect descriptors",
+        "Test assignment in strict mode",
+        "Use Reflect.ownKeys plus descriptors for faithful clone"
+      ],
+      "safe_refactor_notes": [
+        "Preserve descriptors when exact object behavior matters",
+        "Avoid descriptor tricks in ordinary data objects"
+      ],
+      "related_risk_ids": [
+        "js-risk-metaprogramming-opacity"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 14,
+        "chapter_title": "Metaprogramming",
+        "sections": [
+          "14.1 Property Attributes"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-proxy-reflect",
+      "concept_name": "Proxy and Reflect",
+      "language_area": "metaprogramming",
+      "plain_language_meaning": "Proxy can intercept fundamental object operations; Reflect exposes corresponding operation functions.",
+      "precise_behavior": "A Proxy wraps a target with traps such as get, set, has, ownKeys, apply, and construct. Traps must respect invariants. Reflect methods perform default-like operations and are useful inside traps.",
+      "syntax_or_api_shape": "new Proxy(target, { get(t,k,r){...} }), Reflect.get(target,key,receiver)",
+      "why_it_matters": "Proxy can solve boundary problems but makes property access, debugging, and refactoring opaque.",
+      "common_use": [
+        "Validation/logging wrappers",
+        "Virtual objects",
+        "Library-level membranes or adapters"
+      ],
+      "common_misuse": [
+        "Using Proxy for ordinary property defaults where plain functions suffice",
+        "Violating invariants",
+        "Hiding side effects in get traps"
+      ],
+      "debugging_symptoms": [
+        "Object.keys or in behaves unexpectedly",
+        "Performance/debuggability issues",
+        "TypeError from invariant violation"
+      ],
+      "tests_or_checks": [
+        "List all traps",
+        "Test get/set/has/ownKeys/apply/construct cases",
+        "Check descriptor invariants"
+      ],
+      "safe_refactor_notes": [
+        "Avoid introducing Proxy without clear boundary benefit",
+        "Document traps and add regression tests before changes"
+      ],
+      "related_risk_ids": [
+        "js-risk-metaprogramming-opacity"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 14,
+        "chapter_title": "Metaprogramming",
+        "sections": [
+          "14.6 The Reflect API",
+          "14.7 Proxy Objects"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-well-known-symbols",
+      "concept_name": "well-known symbols",
+      "language_area": "metaprogramming",
+      "plain_language_meaning": "Well-known symbols let objects participate in language protocols.",
+      "precise_behavior": "Symbol.iterator, Symbol.asyncIterator, Symbol.toPrimitive, Symbol.toStringTag, Symbol.hasInstance and others customize iteration, conversion, string tags, instanceof, and related behavior.",
+      "syntax_or_api_shape": "obj[Symbol.iterator], obj[Symbol.toPrimitive], obj[Symbol.toStringTag]",
+      "why_it_matters": "These hooks make ordinary syntax call custom code and therefore matter in debugging and review.",
+      "common_use": [
+        "Implement iterable objects",
+        "Customize conversion or branding",
+        "Build advanced libraries"
+      ],
+      "common_misuse": [
+        "Adding hooks that surprise users of operators",
+        "Forgetting symbol-keyed methods during clone",
+        "Assuming instanceof cannot be customized"
+      ],
+      "debugging_symptoms": [
+        "for/of works or fails unexpectedly",
+        "String output changes",
+        "instanceof result surprises"
+      ],
+      "tests_or_checks": [
+        "Inspect symbol keys with Object.getOwnPropertySymbols",
+        "Probe protocol operations directly",
+        "Test ordinary syntax that triggers hooks"
+      ],
+      "safe_refactor_notes": [
+        "Preserve protocol hooks in refactors",
+        "Prefer explicit methods unless language integration is necessary"
+      ],
+      "related_risk_ids": [
+        "js-risk-metaprogramming-opacity",
+        "js-risk-implicit-coercion"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 14,
+        "chapter_title": "Metaprogramming",
+        "sections": [
+          "14.4 Well-Known Symbols"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    }
+  ],
+  "record_policy": {
+    "removed_trivial_syntax_records": true,
+    "focus": "Concepts that prevent real JavaScript debugging, refactoring, and review bugs.",
+    "all_records_use_v2_schema": true
+  }
+}

@@ -1,0 +1,451 @@
+{
+  "package_metadata": {
+    "package_name": "JavaScript Language, Runtime, and Code-Quality Reasoning OS V2",
+    "module_name": "types_values_variables",
+    "repair_type": "focused_v2_repair_not_full_rebuild",
+    "generated_at": "2026-06-21T05:00:11.155979+00:00",
+    "primary_source": {
+      "title": "JavaScript: The Definitive Guide",
+      "edition": "Seventh Edition",
+      "author": "David Flanagan",
+      "publisher": "O'Reilly Media",
+      "release_year": 2020,
+      "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+      "source_sha256": "b511aca2b98ae4eec4966c87d5e6b6c1704cbafe7dd076b924db46cb8d20ae07"
+    },
+    "v1_package_reference": {
+      "source_zip": "Javascript Reasoning.zip",
+      "source_zip_sha256": "60242e2ad2cfcc9bdf79f2fc73b392b7f149339dc95d6234f00db683f368d98d",
+      "not_overwritten": true
+    },
+    "authority_order": [
+      "Original uploaded book source",
+      "Current generated JavaScript Reasoning OS package",
+      "User repair prompt",
+      "Current official documentation only if available",
+      "General engineering reasoning"
+    ],
+    "source_limitation_warning": "Current browser, Node, npm, bundler, tool, framework, and Google Apps Script behavior is not asserted unless explicitly verified. V2 flags such items for current documentation checks.",
+    "purpose": "V2 records for values, primitive/object distinction, coercion, nullish states, truthiness, symbols, strings, and declarations."
+  },
+  "language_semantics_records": [
+    {
+      "id": "js-sem-null-vs-undefined",
+      "concept_name": "null versus undefined",
+      "language_area": "types_values_variables",
+      "plain_language_meaning": "JavaScript has two nullish values: one commonly used to mean intentional absence and one commonly produced when a value has not been assigned or a property is missing.",
+      "precise_behavior": "null is a language value denoting no object. undefined is the value of uninitialized variables, missing parameters, and absent object properties. They compare loosely equal to each other but are distinct under strict equality.",
+      "syntax_or_api_shape": "null, undefined, value == null, value === undefined, parameter defaults, property reads",
+      "why_it_matters": "Most property-access crashes begin as a nullish-state modeling problem. The distinction also affects JSON, defaults, APIs, and optional chaining.",
+      "common_use": [
+        "Represent intentional no-result states",
+        "Detect omitted arguments",
+        "Distinguish absent property from present null value"
+      ],
+      "common_misuse": [
+        "Using || when null/undefined must be distinguished from 0, empty string, or false",
+        "Treating optional chaining as proof a required value exists",
+        "Serializing and expecting undefined properties to survive JSON"
+      ],
+      "debugging_symptoms": [
+        "TypeError: Cannot read properties of undefined/null",
+        "Branch takes fallback for valid falsy value",
+        "API receives null where omitted argument was intended"
+      ],
+      "tests_or_checks": [
+        "Test null and undefined separately",
+        "Check == null usage is deliberate",
+        "Inspect defaulting with ?? versus ||",
+        "Verify JSON round-trip expectations"
+      ],
+      "safe_refactor_notes": [
+        "Keep nullish guards near property access",
+        "When replacing guards with ?., ensure absence is acceptable",
+        "Preserve public API distinction in refactors"
+      ],
+      "related_risk_ids": [
+        "js-risk-null-undefined-access",
+        "js-risk-json-serialization-loss"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.5 null and undefined",
+          "3.9 Type Conversions",
+          "4.4 Property Access Expressions"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-truthiness",
+      "concept_name": "truthiness",
+      "language_area": "types_values_variables",
+      "plain_language_meaning": "Conditionals do not require booleans; JavaScript converts many values to true or false in Boolean contexts.",
+      "precise_behavior": "Falsy values include false, 0, -0, 0n where applicable, empty string, null, undefined, and NaN. Other ordinary object values are truthy. Boolean conversion is used by if, while, !, &&, ||, and the conditional operator.",
+      "syntax_or_api_shape": "if (value), !value, value && expr, value || fallback, Boolean(value)",
+      "why_it_matters": "Truthiness is compact but can collapse distinct states such as empty string, zero, missing value, and false.",
+      "common_use": [
+        "Check presence only when all falsy values mean absent",
+        "Guard optional code paths",
+        "Short-circuit expensive work"
+      ],
+      "common_misuse": [
+        "Using if (count) when zero is valid",
+        "Using value || fallback for empty string or 0",
+        "Assuming [] or {} are falsy"
+      ],
+      "debugging_symptoms": [
+        "Valid zero/empty input rejected",
+        "Fallback overwrites user-provided value",
+        "Object branch always executes"
+      ],
+      "tests_or_checks": [
+        "Create tests for 0, \"\", false, null, undefined, NaN, [], {}",
+        "Prefer value != null for nullish-only checks",
+        "Prefer ?? for nullish defaulting"
+      ],
+      "safe_refactor_notes": [
+        "Do not replace explicit comparisons with truthiness unless all falsy values are equivalent",
+        "Document sentinel values"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion",
+        "js-risk-null-undefined-access"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.4 Boolean Values",
+          "3.9 Type Conversions",
+          "4.10 Logical Expressions"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-implicit-conversion",
+      "concept_name": "implicit type conversion",
+      "language_area": "types_values_variables",
+      "plain_language_meaning": "Operators and standard functions often convert values before operating on them.",
+      "precise_behavior": "JavaScript conversion includes ToBoolean, ToNumber, ToString, object-to-primitive, and special rules for equality, relational comparison, +, template/string conversion, and JSON serialization.",
+      "syntax_or_api_shape": "Number(x), String(x), Boolean(x), x + y, `${x}`, x == y, x < y, JSON.stringify(x)",
+      "why_it_matters": "Implicit conversion is a major source of JavaScript-specific surprises, especially at input boundaries where strings represent numbers or booleans.",
+      "common_use": [
+        "Accept flexible user input after normalization",
+        "Build string output deliberately",
+        "Model JSON crossing behavior"
+      ],
+      "common_misuse": [
+        "Relying on + when one operand may be a string",
+        "Letting arrays/objects participate in arithmetic",
+        "Assuming JSON preserves every value"
+      ],
+      "debugging_symptoms": [
+        "\"3\" + 2 yields string concatenation",
+        "NaN appears in arithmetic",
+        "[object Object] appears in output",
+        "JSON drops properties"
+      ],
+      "tests_or_checks": [
+        "Normalize form/query/CSV values explicitly",
+        "Test + with both numeric and string operands",
+        "Inspect valueOf/toString/Symbol.toPrimitive",
+        "Round-trip JSON test"
+      ],
+      "safe_refactor_notes": [
+        "Make conversions explicit before refactor",
+        "Separate parse/validate/compute steps"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion",
+        "js-risk-json-serialization-loss"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.9 Type Conversions",
+          "4.8 Arithmetic Expressions",
+          "11.6 JSON Serialization and Parsing"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-numbers-nan-infinity",
+      "concept_name": "numbers NaN and Infinity",
+      "language_area": "types_values_variables",
+      "plain_language_meaning": "JavaScript numbers are floating-point values with special values for not-a-number and infinities.",
+      "precise_behavior": "The Number type represents integers and real values using floating-point semantics. NaN is not equal to itself under ===, and arithmetic can produce Infinity, -Infinity, or NaN.",
+      "syntax_or_api_shape": "Number.isNaN(x), Number.isFinite(x), isNaN(x), x / 0, Math.*",
+      "why_it_matters": "Numeric edge cases leak into comparisons, JSON, sorting, and validation.",
+      "common_use": [
+        "Represent ordinary numeric calculations",
+        "Detect invalid parse results",
+        "Use Math APIs for common operations"
+      ],
+      "common_misuse": [
+        "Checking x === NaN",
+        "Assuming decimal arithmetic is exact",
+        "Serializing Infinity/NaN through JSON without checking"
+      ],
+      "debugging_symptoms": [
+        "Validation lets NaN pass",
+        "Totals show imprecise decimals",
+        "JSON output changes special numbers"
+      ],
+      "tests_or_checks": [
+        "Use Number.isNaN for NaN",
+        "Test division by zero and failed parse",
+        "Check JSON output of special values"
+      ],
+      "safe_refactor_notes": [
+        "Separate parsing errors from numeric domain values",
+        "Avoid refactors that change Number() versus parseInt/parseFloat behavior without tests"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion",
+        "js-risk-json-serialization-loss"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.2 Numbers",
+          "3.9 Type Conversions"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-strings-unicode",
+      "concept_name": "strings and Unicode",
+      "language_area": "types_values_variables",
+      "plain_language_meaning": "Strings are immutable text values, but indexing and length involve JavaScript string representation details.",
+      "precise_behavior": "String methods return new strings. JavaScript source and strings use Unicode; code units, code points, combining characters, normalization, and regular expression flags can affect visible character handling.",
+      "syntax_or_api_shape": "\"text\", \\uXXXX, \\u{...}, str.length, str[i], for (const ch of str), str.normalize()",
+      "why_it_matters": "Text bugs appear with non-ASCII input, emoji, accents, case mapping, regex, and storage boundaries.",
+      "common_use": [
+        "Store and display user text",
+        "Use template literals for interpolation",
+        "Iterate text by code point when appropriate"
+      ],
+      "common_misuse": [
+        "Assuming length equals visible characters",
+        "Comparing visually identical unnormalized strings",
+        "Slicing in the middle of a surrogate pair"
+      ],
+      "debugging_symptoms": [
+        "Duplicate-looking identifiers or values differ",
+        "Emoji breaks validation",
+        "Regex misses accented text"
+      ],
+      "tests_or_checks": [
+        "Test non-ASCII, combining marks, emoji, and empty strings",
+        "Normalize where comparison requires canonical form",
+        "Inspect regex unicode flag needs"
+      ],
+      "safe_refactor_notes": [
+        "Do not optimize text handling by changing iteration form without Unicode tests",
+        "Keep encoding assumptions explicit at I/O boundaries"
+      ],
+      "related_risk_ids": [
+        "js-risk-regex-overmatching"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 2,
+        "chapter_title": "Lexical Structure",
+        "sections": [
+          "2.5 Unicode",
+          "3.3 Text"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-symbols",
+      "concept_name": "symbols",
+      "language_area": "types_values_variables",
+      "plain_language_meaning": "Symbols are unique primitive values often used as property keys that avoid accidental name collision.",
+      "precise_behavior": "Symbol() creates a unique value. Symbols can be property keys, may be omitted by ordinary string-key enumeration, and well-known symbols customize language protocols.",
+      "syntax_or_api_shape": "const s = Symbol(\"desc\"), obj[s], Symbol.iterator, Symbol.toPrimitive",
+      "why_it_matters": "Symbols are powerful for protocols and hidden-ish keys but can make object shape less obvious.",
+      "common_use": [
+        "Define iterator or conversion protocols",
+        "Avoid property name collisions in library code",
+        "Store metadata not meant for normal string-key loops"
+      ],
+      "common_misuse": [
+        "Expecting JSON.stringify or Object.keys to include symbol-keyed properties",
+        "Using Symbol for secrecy",
+        "Forgetting global symbol registry distinction when using Symbol.for"
+      ],
+      "debugging_symptoms": [
+        "Property appears missing during enumeration",
+        "Protocol method not discovered",
+        "Debug output omits symbol property"
+      ],
+      "tests_or_checks": [
+        "Check Object.getOwnPropertySymbols",
+        "Check Reflect.ownKeys",
+        "Verify JSON and spread behavior"
+      ],
+      "safe_refactor_notes": [
+        "Preserve symbol keys in cloning and reflection code",
+        "Document well-known symbol protocols"
+      ],
+      "related_risk_ids": [
+        "js-risk-metaprogramming-opacity"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.6 Symbols",
+          "14.4 Well-Known Symbols"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-variable-declarations",
+      "concept_name": "const let and var declarations",
+      "language_area": "types_values_variables",
+      "plain_language_meaning": "Variable declarations control binding lifetime, reassignment, and scope.",
+      "precise_behavior": "let and const are block scoped. const prevents reassignment of the binding but does not freeze the referenced object. var is function scoped and has legacy hoisting behavior.",
+      "syntax_or_api_shape": "const x = value; let y; var z;",
+      "why_it_matters": "Declaration choice affects safe refactoring, loop closures, accidental globals, and mutability expectations.",
+      "common_use": [
+        "Use const by default for bindings that are not reassigned",
+        "Use let for reassignment",
+        "Read legacy var carefully"
+      ],
+      "common_misuse": [
+        "Assuming const makes an object immutable",
+        "Using var in loops with callbacks expecting per-iteration bindings",
+        "Creating globals through undeclared assignment in non-strict code"
+      ],
+      "debugging_symptoms": [
+        "Unexpected closure value",
+        "Mutation despite const",
+        "Name collision across blocks"
+      ],
+      "tests_or_checks": [
+        "Search for var and undeclared assignments",
+        "Check reassignment versus object mutation",
+        "Test loop callbacks"
+      ],
+      "safe_refactor_notes": [
+        "Replace var with let/const only after checking scope and hoisting dependencies",
+        "Do not use const as a mutation guarantee"
+      ],
+      "related_risk_ids": [
+        "js-risk-shared-object-mutation",
+        "js-risk-closure-state"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.10 Variable Declaration and Assignment",
+          "5.7 Declarations"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    }
+  ]
+}

@@ -1,0 +1,3387 @@
+{
+  "test_suite_id": "ma-tests-v1",
+  "version": "1.0.0",
+  "data_policy": "All figures are original synthetic examples or the specific synthetic bridge supplied in the user brief. No textbook exercise, solution or real company result is reproduced.",
+  "expected_result_policy": "Expectations were derived arithmetically before running the separate implementation. Literal expected outputs and derivation notes are stored in this file. This is independent calculation, not an independent second-person audit.",
+  "numerical_tests": [
+    {
+      "id": "ma-test-manufacturing-flow",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-manufacturing-cost-flow",
+      "implementation_id": "manufacturing_cost_flow",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "begin_raw": 100,
+        "purchases": 500,
+        "end_raw": 80,
+        "indirect_material": 20,
+        "direct_labor": 300,
+        "applied_overhead": 200,
+        "begin_wip": 50,
+        "end_wip": 70,
+        "begin_finished": 60,
+        "end_finished": 40
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "direct_material_used": 500,
+          "manufacturing_cost": 1000,
+          "cost_goods_manufactured": 980,
+          "unadjusted_cogs": 1000
+        }
+      },
+      "independent_derivation": "Raw used:100+500−80=520; less20 indirect leaves500 direct. Manufacturing500+300+200=1000; goods completed50+1000−70=980; COGS60+980−40=1000.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "cost_flow"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-manufacturing-impossible-ending-stock",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-manufacturing-cost-flow",
+      "implementation_id": "manufacturing_cost_flow",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "begin_raw": 100,
+        "purchases": 500,
+        "end_raw": 900,
+        "indirect_material": 20,
+        "direct_labor": 300,
+        "applied_overhead": 200,
+        "begin_wip": 50,
+        "end_wip": 70,
+        "begin_finished": 60,
+        "end_finished": 40
+      },
+      "expected": {
+        "outcome": "blocked",
+        "error_code": "balance"
+      },
+      "independent_derivation": "Ending raw material900 exceeds available600; no supported positive usage can be reported.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "input_guard"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-job-overhead-reconciliation",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-job-overhead",
+      "implementation_id": "job_overhead",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "budget_overhead": 1200,
+        "budget_driver": 100,
+        "job_driver": 10,
+        "job_material": 80,
+        "job_labor": 50,
+        "period_actual_driver": 90,
+        "period_actual_overhead": 1150
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "overhead_rate": 12,
+          "job_applied_overhead": 120,
+          "job_cost": 250,
+          "period_applied_overhead": 1080,
+          "underapplied_overhead": 70
+        }
+      },
+      "independent_derivation": "Rate1200/100=12; job OH120 and cost80+50+120=250. Period applied90×12=1080; actual1150 leaves70 underapplied.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "job_cost",
+        "overhead_reconciliation"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-job-zero-denominator",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-job-overhead",
+      "implementation_id": "job_overhead",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "budget_overhead": 1200,
+        "budget_driver": 0,
+        "job_driver": 10,
+        "job_material": 80,
+        "job_labor": 50,
+        "period_actual_driver": 90,
+        "period_actual_overhead": 1150
+      },
+      "expected": {
+        "outcome": "blocked",
+        "error_code": "zero_divisor"
+      },
+      "independent_derivation": "A predetermined rate cannot divide a1200 pool by zero driver units.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "input_guard"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-weighted-average-process",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-process-weighted-average",
+      "implementation_id": "process_weighted_average",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "begin_units": 100,
+        "started_units": 900,
+        "completed_units": 800,
+        "end_units": 200,
+        "end_material_completion": 1,
+        "end_conversion_completion": 0.5,
+        "begin_material_cost": 100,
+        "added_material_cost": 900,
+        "begin_conversion_cost": 100,
+        "added_conversion_cost": 800
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "material_eu": 1000,
+          "conversion_eu": 900,
+          "material_unit_cost": 1,
+          "conversion_unit_cost": 1,
+          "transferred_cost": 1600,
+          "ending_wip_cost": 300,
+          "cost_reconciliation": 0
+        }
+      },
+      "independent_derivation": "Units100+900=800+200. Material EU800+200=1000; conversion EU800+100=900. Pooled costs1000 and900 give rates1,1. Transferred800×2=1600; WIP200+100=300; sum1900.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "process_cost",
+        "weighted_average"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-process-physical-balance-fails",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-process-weighted-average",
+      "implementation_id": "process_weighted_average",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "begin_units": 100,
+        "started_units": 800,
+        "completed_units": 800,
+        "end_units": 200,
+        "end_material_completion": 1,
+        "end_conversion_completion": 0.5,
+        "begin_material_cost": 100,
+        "added_material_cost": 900,
+        "begin_conversion_cost": 100,
+        "added_conversion_cost": 800
+      },
+      "expected": {
+        "outcome": "blocked",
+        "error_code": "balance"
+      },
+      "independent_derivation": "Available900 physical units cannot explain1000 units transferred/remaining without another source.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "input_guard"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-process-invalid-completion",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-process-weighted-average",
+      "implementation_id": "process_weighted_average",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "begin_units": 100,
+        "started_units": 900,
+        "completed_units": 800,
+        "end_units": 200,
+        "end_material_completion": 1,
+        "end_conversion_completion": 1.2,
+        "begin_material_cost": 100,
+        "added_material_cost": 900,
+        "begin_conversion_cost": 100,
+        "added_conversion_cost": 800
+      },
+      "expected": {
+        "outcome": "blocked",
+        "error_code": "domain"
+      },
+      "independent_derivation": "Completion120% is outside the stated zero-to-one equivalent-unit model.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "input_guard"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-abc-unassigned-pool",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-abc-pool-allocation",
+      "implementation_id": "abc_pool_allocation",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "pool_cost": 1000,
+        "denominator_driver": 100,
+        "object_driver": [
+          30,
+          40
+        ]
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "pool_rate": 10,
+          "assigned_costs": [
+            300,
+            400
+          ],
+          "total_assigned": 700,
+          "unassigned_balance": 300
+        }
+      },
+      "independent_derivation": "Pool1000/100=10 per driver unit; assignments300 and400 leave300. The denominator has not independently been identified as practical capacity.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "allocation",
+        "unassigned_not_automatically_unused"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-tdabc-unused-capacity",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-tdabc-capacity",
+      "implementation_id": "tdabc_capacity",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "supplied_resource_cost": 1000,
+        "practical_minutes": 100,
+        "used_minutes": 70
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "capacity_cost_rate": 10,
+          "used_resource_cost": 700,
+          "unused_minutes": 30,
+          "unused_capacity_cost": 300
+        }
+      },
+      "independent_derivation": "Supplied1000/100 practical minutes=10/minute. Used70 consumes700; unused30 is priced at300. This is modeled capacity cost, not demonstrated cash savings.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "unused_capacity"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-tdabc-over-capacity",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-tdabc-capacity",
+      "implementation_id": "tdabc_capacity",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "supplied_resource_cost": 1000,
+        "practical_minutes": 100,
+        "used_minutes": 110
+      },
+      "expected": {
+        "outcome": "blocked",
+        "error_code": "domain"
+      },
+      "independent_derivation": "Usage110 exceeds practical capacity100; the current capacity assumptions must be revisited.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "input_guard"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-high-low-inside-range",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-high-low",
+      "implementation_id": "high_low",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "high_activity": 300,
+        "low_activity": 100,
+        "cost_at_high": 1100,
+        "cost_at_low": 700,
+        "prediction_activity": 200
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "variable_rate": 2,
+          "fixed_component": 500,
+          "predicted_cost": 900
+        }
+      },
+      "independent_derivation": "Activity spread200 has cost spread400, giving2/unit. Intercept1100−600=500; at200, cost500+400=900.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "cost_estimation"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-high-low-outside-range",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-high-low",
+      "implementation_id": "high_low",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "high_activity": 300,
+        "low_activity": 100,
+        "cost_at_high": 1100,
+        "cost_at_low": 700,
+        "prediction_activity": 400
+      },
+      "expected": {
+        "outcome": "blocked",
+        "error_code": "out_of_range"
+      },
+      "independent_derivation": "Prediction400 is beyond the observed100–300 range; this implementation intentionally withholds extrapolation.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "input_guard"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-ols-exact-line",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-simple-least-squares",
+      "implementation_id": "simple_least_squares",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "activity": [
+          1,
+          2,
+          3
+        ],
+        "cost": [
+          5,
+          7,
+          9
+        ]
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "mean_activity": 2,
+          "mean_cost": 7,
+          "slope": 2,
+          "intercept": 3,
+          "sse": 0,
+          "sst": 8,
+          "r_squared": 1
+        }
+      },
+      "independent_derivation": "Means2 and7; centered cross-products4, activity squares2 =>slope2; intercept3. Residuals zero and total squares4+0+4=8.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "regression"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-ols-no-activity-variation",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-simple-least-squares",
+      "implementation_id": "simple_least_squares",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "activity": [
+          2,
+          2,
+          2
+        ],
+        "cost": [
+          5,
+          7,
+          9
+        ]
+      },
+      "expected": {
+        "outcome": "blocked",
+        "error_code": "zero_divisor"
+      },
+      "independent_derivation": "Identical activity values have zero explanatory variation, so the slope is not identifiable.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "input_guard"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-ols-constant-cost",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-simple-least-squares",
+      "implementation_id": "simple_least_squares",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "activity": [
+          1,
+          2,
+          3
+        ],
+        "cost": [
+          7,
+          7,
+          7
+        ]
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "mean_activity": 2,
+          "mean_cost": 7,
+          "slope": 0,
+          "intercept": 7,
+          "sse": 0,
+          "sst": 0,
+          "r_squared": null
+        }
+      },
+      "independent_derivation": "Cost is constantly7: slope0, intercept7, both residual and total squares0. R-squared0/0 is undefined, not automatically1.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "zero_variation"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-cvp-positive-contribution",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-single-product-cvp",
+      "implementation_id": "single_product_cvp",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "price": 20,
+        "variable_unit_cost": 12,
+        "fixed_cost": 800,
+        "quantity": 150,
+        "target_profit": 400
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "unit_contribution": 8,
+          "contribution_ratio": 0.4,
+          "profit": 400,
+          "break_even_units": 100,
+          "target_units": 150,
+          "break_even_sales": 2000
+        }
+      },
+      "independent_derivation": "Unit contribution20−12=8; ratio8/20=.4. At150 units contribution1200 less800=400. Break-even800/8=100; target(800+400)/8=150; break-even sales2000.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "unit_contribution",
+        "break_even"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-cvp-zero-contribution",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-single-product-cvp",
+      "implementation_id": "single_product_cvp",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "price": 12,
+        "variable_unit_cost": 12,
+        "fixed_cost": 800,
+        "quantity": 150,
+        "target_profit": 400
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "unit_contribution": 0,
+          "contribution_ratio": 0,
+          "profit": -800,
+          "break_even_units": null,
+          "target_units": null,
+          "break_even_sales": null
+        }
+      },
+      "independent_derivation": "No unit contributes toward800 fixed cost; operating loss stays800 and no finite nonnegative volume attains break-even or400 profit.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "zero_contribution"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-cvp-negative-contribution",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-single-product-cvp",
+      "implementation_id": "single_product_cvp",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "price": 10,
+        "variable_unit_cost": 12,
+        "fixed_cost": 800,
+        "quantity": 150,
+        "target_profit": 400
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "unit_contribution": -2,
+          "contribution_ratio": -0.2,
+          "profit": -1100,
+          "break_even_units": null,
+          "target_units": null,
+          "break_even_sales": null
+        }
+      },
+      "independent_derivation": "Each unit loses2 before fixed cost;150 units lose300+800=1100. A negative mathematical quotient is not a feasible break-even volume.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "negative_contribution"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-cvp-zero-fixed-negative-contribution",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-single-product-cvp",
+      "implementation_id": "single_product_cvp",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "price": 10,
+        "variable_unit_cost": 12,
+        "fixed_cost": 0,
+        "quantity": 5,
+        "target_profit": 0
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "unit_contribution": -2,
+          "contribution_ratio": -0.2,
+          "profit": -10,
+          "break_even_units": 0,
+          "target_units": 0,
+          "break_even_sales": 0
+        }
+      },
+      "independent_derivation": "With no fixed cost, zero units produces zero profit; any positive volume loses2 per unit. Zero is the sole nonnegative break-even quantity.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "zero_fixed"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-cvp-every-volume-breaks-even",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-single-product-cvp",
+      "implementation_id": "single_product_cvp",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "price": 12,
+        "variable_unit_cost": 12,
+        "fixed_cost": 0,
+        "quantity": 5,
+        "target_profit": 0
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "unit_contribution": 0,
+          "contribution_ratio": 0,
+          "profit": 0,
+          "break_even_units": null,
+          "target_units": null,
+          "break_even_sales": null
+        }
+      },
+      "independent_derivation": "Zero fixed cost and zero contribution give zero profit at every volume. Null denotes no unique threshold, not the impossibility of earning zero.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "nonunique_break_even"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-cvp-missing-input",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-single-product-cvp",
+      "implementation_id": "single_product_cvp",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "price": 20,
+        "variable_unit_cost": 12,
+        "quantity": 150,
+        "target_profit": 400
+      },
+      "expected": {
+        "outcome": "blocked",
+        "error_code": "missing"
+      },
+      "independent_derivation": "Missing fixed cost must withhold calculation, not substitute zero.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "input_guard"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-cvp-null-is-not-zero",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-single-product-cvp",
+      "implementation_id": "single_product_cvp",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "price": 20,
+        "variable_unit_cost": 12,
+        "fixed_cost": null,
+        "quantity": 150,
+        "target_profit": 400
+      },
+      "expected": {
+        "outcome": "blocked",
+        "error_code": "type"
+      },
+      "independent_derivation": "Null fixed cost is unavailable input, not an observed zero.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "input_guard"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-cvp-boolean-not-number",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-single-product-cvp",
+      "implementation_id": "single_product_cvp",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "price": 20,
+        "variable_unit_cost": 12,
+        "fixed_cost": 800,
+        "quantity": true,
+        "target_profit": 400
+      },
+      "expected": {
+        "outcome": "blocked",
+        "error_code": "type"
+      },
+      "independent_derivation": "True is a Boolean value, not a valid quantity even though Python booleans are integer subclasses.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "input_guard"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-cvp-string-not-number",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-single-product-cvp",
+      "implementation_id": "single_product_cvp",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "price": "20",
+        "variable_unit_cost": 12,
+        "fixed_cost": 800,
+        "quantity": 150,
+        "target_profit": 400
+      },
+      "expected": {
+        "outcome": "blocked",
+        "error_code": "type"
+      },
+      "independent_derivation": "Text20 requires an explicit validated conversion before numerical modeling.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "input_guard"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-cvp-unit-sales-mix",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-sales-mix-cvp",
+      "implementation_id": "sales_mix_cvp",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "unit_contributions": [
+          8,
+          4
+        ],
+        "unit_mix_weights": [
+          0.25,
+          0.75
+        ],
+        "fixed_cost": 500
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "weighted_unit_contribution": 5,
+          "break_even_total_units": 100,
+          "break_even_product_units": [
+            25,
+            75
+          ]
+        }
+      },
+      "independent_derivation": "Weighted contribution .25×8+.75×4=5. Fixed500 requires100 total units at the maintained unit mix:25 and75.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "weighted_sales_mix"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-cvp-changed-mix",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-sales-mix-cvp",
+      "implementation_id": "sales_mix_cvp",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "unit_contributions": [
+          8,
+          4
+        ],
+        "unit_mix_weights": [
+          0.75,
+          0.25
+        ],
+        "fixed_cost": 500
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "weighted_unit_contribution": 7,
+          "break_even_total_units": 71.42857142857143,
+          "break_even_product_units": [
+            53.57142857142857,
+            17.857142857142858
+          ]
+        }
+      },
+      "independent_derivation": "Changed unit mix gives .75×8+.25×4=7;500/7 total units, split three-to-one. Fractional thresholds are mathematical, not a production order.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "changed_mix"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-cvp-invalid-mix-sum",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-sales-mix-cvp",
+      "implementation_id": "sales_mix_cvp",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "unit_contributions": [
+          8,
+          4
+        ],
+        "unit_mix_weights": [
+          0.4,
+          0.4
+        ],
+        "fixed_cost": 500
+      },
+      "expected": {
+        "outcome": "blocked",
+        "error_code": "domain"
+      },
+      "independent_derivation": "Weights sum to.8 rather than1; no silent rescaling is permitted.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "input_guard"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-operating-leverage",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-operating-leverage",
+      "implementation_id": "operating_leverage",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "contribution_margin": 500,
+        "operating_profit": 100,
+        "sales_change_fraction": 0.1
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "leverage_factor": 5,
+          "profit_change_fraction": 0.5,
+          "new_profit": 150
+        }
+      },
+      "independent_derivation": "Contribution/profit500/100=5. Ten-percent sales growth at unchanged linear costs/mix increases profit by50%, from100 to150.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "operating_leverage"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-absorption-inventory-build",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-inventory-profit-reconciliation",
+      "implementation_id": "inventory_profit_reconciliation",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "variable_income": 500,
+        "begin_fixed_overhead_inventory": 100,
+        "end_fixed_overhead_inventory": 300
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "income_difference": 200,
+          "absorption_income": 700
+        }
+      },
+      "independent_derivation": "Ending fixed overhead in inventory300 exceeds beginning100 by200; absorption income is variable500+200=700.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "inventory_profit"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-absorption-inventory-release",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-inventory-profit-reconciliation",
+      "implementation_id": "inventory_profit_reconciliation",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "variable_income": 500,
+        "begin_fixed_overhead_inventory": 300,
+        "end_fixed_overhead_inventory": 100
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "income_difference": -200,
+          "absorption_income": 300
+        }
+      },
+      "independent_derivation": "Fixed overhead held in inventory falls by200; absorption income500−200=300. No cash movement follows from this profit reconciliation alone.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "inventory_profit"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-quality-cost-categories",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-quality-cost-report",
+      "implementation_id": "quality_cost_report",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "prevention": 10,
+        "appraisal": 20,
+        "internal_failure": 30,
+        "external_failure": 40
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "total_quality_cost": 100,
+          "category_shares": [
+            0.1,
+            0.2,
+            0.3,
+            0.4
+          ]
+        }
+      },
+      "independent_derivation": "Four mutually classified categories total100; dividing each by100 yields10%,20%,30%,40%.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "quality"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-zero-quality-cost-total",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-quality-cost-report",
+      "implementation_id": "quality_cost_report",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "prevention": 0,
+        "appraisal": 0,
+        "internal_failure": 0,
+        "external_failure": 0
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "total_quality_cost": 0,
+          "category_shares": null
+        }
+      },
+      "independent_derivation": "Recorded cost totals zero; dividing zero category costs by zero total cannot yield defined shares. Hidden costs may still exist.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "zero_denominator"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-linked-production-materials-budget",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-production-materials-budget",
+      "implementation_id": "production_materials_budget",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "sales_units": 100,
+        "begin_finished": 10,
+        "end_finished_target": 20,
+        "material_per_unit": 2,
+        "begin_material": 30,
+        "end_material_target": 40,
+        "material_price": 3
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "production_units": 110,
+          "material_usage": 220,
+          "material_purchases": 230,
+          "purchase_cost": 690
+        }
+      },
+      "independent_derivation": "Production100+20−10=110; material usage220; purchases220+40−30=230; purchase outlay value230×3=690, with cash date separately determined.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "linked_budget"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-profit-versus-cash-timing",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-accrual-cash-rollforward",
+      "implementation_id": "accrual_cash_rollforward",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "begin_cash": 50,
+        "begin_receivables": 20,
+        "begin_payables": 10,
+        "recognized_revenue": 100,
+        "recognized_expense": 60,
+        "collections": 40,
+        "payments": 50
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "profit": 40,
+          "end_receivables": 80,
+          "end_payables": 20,
+          "end_cash": 40,
+          "cash_change": -10
+        }
+      },
+      "independent_derivation": "Profit100−60=40. AR20+100−40=80; AP10+60−50=20. Cash40−50=−10; alternatively profit40−AR increase60+AP increase10=−10.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "accrual_cash",
+        "working_capital"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-receivables-overcollection",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-accrual-cash-rollforward",
+      "implementation_id": "accrual_cash_rollforward",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "begin_cash": 50,
+        "begin_receivables": 20,
+        "begin_payables": 10,
+        "recognized_revenue": 100,
+        "recognized_expense": 60,
+        "collections": 130,
+        "payments": 50
+      },
+      "expected": {
+        "outcome": "blocked",
+        "error_code": "balance"
+      },
+      "independent_derivation": "Available opening AR20 plus recognized revenue100 totals120; collecting130 is outside this simplified scope.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "input_guard"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-compatible-usage-price-quantity",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-material-usage-variances",
+      "implementation_id": "material_usage_variances",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "actual_used": 110,
+        "actual_price": 4,
+        "standard_price": 5,
+        "actual_output": 100,
+        "standard_input_per_output": 1
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "standard_allowed": 100,
+          "price_variance": -110,
+          "quantity_variance": 50,
+          "total_variance": -60
+        }
+      },
+      "independent_derivation": "Allowed100 units. Usage-basis price110×(4−5)=−110; quantity(110−100)×5=50; actual440 minus standard500=−60; −110+50=−60.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "compatible_price_quantity",
+        "favorable_with_possible_harm"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-purchase-price-different-basis",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-material-purchase-price",
+      "implementation_id": "material_purchase_price",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "purchased_quantity": 150,
+        "purchase_price": 4,
+        "standard_price": 5
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "purchase_price_variance": -150
+        }
+      },
+      "independent_derivation": "Purchased150 at4 rather than5 gives−150. This is not the−110 usage-basis price variance when only110 units are used.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "purchases_not_usage"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-labor-rate-efficiency",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-labor-variances",
+      "implementation_id": "labor_variances",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "actual_hours": 105,
+        "actual_rate": 18,
+        "standard_rate": 20,
+        "actual_output": 50,
+        "standard_hours_per_output": 2
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "standard_hours": 100,
+          "rate_variance": -210,
+          "efficiency_variance": 100,
+          "total_variance": -110
+        }
+      },
+      "independent_derivation": "Allowed100 hours; rate105×(18−20)=−210; efficiency(105−100)×20=100; actual1890 less allowed2000=−110.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "labor"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-required-static-flexible-actual-bridge",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-flexible-cost-bridge",
+      "implementation_id": "flexible_cost_bridge",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "budget_activity": 100,
+        "actual_activity": 150,
+        "fixed_cost": 500,
+        "variable_rate": 2,
+        "actual_cost": 830
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "static_budget": 700,
+          "flexible_budget": 800,
+          "activity_component": 100,
+          "spending_component": 30,
+          "total_difference": 130
+        }
+      },
+      "independent_derivation": "Independently:500+2×100=700;500+2×150=800. Activity800−700=100; spending830−800=30; total830−700=130=100+30. The arithmetic says nothing about why spending differed.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "required_user_bridge"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-voh-three-point-bridge",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-variable-overhead-variances",
+      "implementation_id": "variable_overhead_variances",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "actual_overhead": 650,
+        "actual_driver": 120,
+        "allowed_driver": 100,
+        "standard_rate": 5
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "projected_overhead": 600,
+          "applied_overhead": 500,
+          "spending_variance": 50,
+          "efficiency_variance": 100,
+          "total_variance": 150
+        }
+      },
+      "independent_derivation": "Actual650; budget at actual driver120×5=600; applied at allowed100×5=500. Spending50+efficiency100=total150.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "variable_overhead"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-voh-zero-driver-no-division",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-variable-overhead-variances",
+      "implementation_id": "variable_overhead_variances",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "actual_overhead": 20,
+        "actual_driver": 0,
+        "allowed_driver": 0,
+        "standard_rate": 5
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "projected_overhead": 0,
+          "applied_overhead": 0,
+          "spending_variance": 20,
+          "efficiency_variance": 0,
+          "total_variance": 20
+        }
+      },
+      "independent_derivation": "With zero driver usage, projected and applied variable overhead are zero. Actual20 is a spending difference; no invented actual rate requires division by zero.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "zero_activity"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-fixed-overhead-budget-volume",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-fixed-overhead-variances",
+      "implementation_id": "fixed_overhead_variances",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "actual_fixed": 1050,
+        "budget_fixed": 1000,
+        "denominator_driver": 100,
+        "allowed_driver": 80
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "fixed_rate": 10,
+          "applied_fixed": 800,
+          "budget_variance": 50,
+          "volume_variance": 200,
+          "total_underapplied": 250
+        }
+      },
+      "independent_derivation": "Fixed rate1000/100=10; applied80×10=800. Budget difference1050−1000=50; volume1000−800=200; total250. The positive volume number is not automatically unfavorable operational performance.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "fixed_overhead"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-sales-price-volume-interaction-choice",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-sales-revenue-variances",
+      "implementation_id": "sales_revenue_variances",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "actual_units": 120,
+        "budget_units": 100,
+        "actual_price": 9,
+        "budget_price": 10
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "price_variance": -120,
+          "volume_variance": 200,
+          "revenue_difference": 80
+        }
+      },
+      "independent_derivation": "Actual revenue1080 versus budget1000. Price120×(9−10)=−120 uses actual units; volume(120−100)×10=200. Their sum80 assigns the price-volume interaction to price.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "sales_variance",
+        "interaction_choice"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-segment-common-costs-reconcile",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-segmented-contribution",
+      "implementation_id": "segmented_contribution",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "segment_sales": [
+          1000,
+          2000
+        ],
+        "segment_variable_costs": [
+          600,
+          1000
+        ],
+        "segment_traceable_fixed": [
+          100,
+          400
+        ],
+        "common_fixed": 500
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "contributions": [
+            400,
+            1000
+          ],
+          "segment_margins": [
+            300,
+            600
+          ],
+          "group_income": 400
+        }
+      },
+      "independent_derivation": "Contributions400 and1000; traceable fixed costs leave300 and600. Common500 is deducted once: group400. Allocating all500 to the first segment would show−200, but that does not establish closure savings.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "segment_margin"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-roi-and-residual-income",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-roi-residual-income",
+      "implementation_id": "roi_residual_income",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "income": 120,
+        "sales": 1000,
+        "average_investment": 500,
+        "required_return": 0.2
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "roi": 0.24,
+          "sales_margin": 0.12,
+          "capital_turnover": 2,
+          "capital_charge": 100,
+          "residual_income": 20
+        }
+      },
+      "independent_derivation": "ROI120/500=.24; margin.12 times turnover2=.24. Required charge500×.2=100 and residual120−100=20.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "roi",
+        "residual_income"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-eva-edition-capital-base",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-eva-edition",
+      "implementation_id": "eva_edition",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "after_tax_operating_income": 100,
+        "average_total_assets": 1000,
+        "average_current_liabilities": 200,
+        "wacc": 0.1
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "capital_base": 800,
+          "capital_charge": 80,
+          "eva": 20
+        }
+      },
+      "independent_derivation": "Edition-specific capital base1000−200=800; charge80; after-tax operating income100 leaves20. This is not a universal corporate EVA policy.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "eva"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-transfer-opportunity-benchmark",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-transfer-economic-floor",
+      "implementation_id": "transfer_economic_floor",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "incremental_outlay_per_unit": 6,
+        "opportunity_cost_per_unit": 4
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "economic_transfer_benchmark": 10
+        }
+      },
+      "independent_derivation": "Incremental outlay6 plus forgone benefit4 gives economic benchmark10, not necessarily an approved negotiated transfer price.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "transfer"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-special-order-incremental-benefit",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-special-order",
+      "implementation_id": "special_order",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "order_units": 100,
+        "order_price": 12,
+        "incremental_unit_cost": 8,
+        "incremental_fixed": 50,
+        "opportunity_cost": 100
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "net_benefit": 250
+        }
+      },
+      "independent_derivation": "Order contribution100×4=400, less fixed50 and opportunity100 yields250. Acceptance remains conditional on capacity, contracts, quality and demand assumptions.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "special_order"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-make-buy-with-opportunity",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-make-or-buy",
+      "implementation_id": "make_or_buy",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "avoidable_make_cost": 500,
+        "supplier_total": 550,
+        "transition_cost": 0,
+        "freed_capacity_benefit": 100
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "buy_advantage": 50
+        }
+      },
+      "independent_derivation": "Buying avoids500 and permits100 alternate-use benefit while costing550: net+50. Opportunity benefit is counted once.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "make_buy_opportunity"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-make-buy-without-alternate-use",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-make-or-buy",
+      "implementation_id": "make_or_buy",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "avoidable_make_cost": 500,
+        "supplier_total": 550,
+        "transition_cost": 0,
+        "freed_capacity_benefit": 0
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "buy_advantage": -50
+        }
+      },
+      "independent_derivation": "With no proven alternate-use benefit, avoidable500 minus supplier550=−50; the conditional recommendation reverses.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "make_buy_sensitivity"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-allocated-loss-not-drop-savings",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-keep-or-drop",
+      "implementation_id": "keep_or_drop",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "lost_revenue": 1000,
+        "avoidable_variable": 600,
+        "avoidable_fixed": 100,
+        "other_lost_contribution": 0,
+        "alternative_use_benefit": 0,
+        "closure_cost": 0
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "drop_advantage": -300
+        }
+      },
+      "independent_derivation": "Avoided costs700 minus lost revenue1000 gives−300. A separately allocated common500 could have made reported segment profit−200, but that common expense continues and does not enter avoidable savings.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "allocated_loss",
+        "continuing_common_cost"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-further-processing-ignores-joint-allocation",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-further-processing",
+      "implementation_id": "further_processing",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "sales_at_splitoff": 500,
+        "sales_after_processing": 800,
+        "separable_cost": 200,
+        "opportunity_cost": 20
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "further_processing_benefit": 80
+        }
+      },
+      "independent_derivation": "Incremental revenue300 less separable200 and opportunity20 gives80. Joint cost already incurred before splitoff is not an incremental input.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "further_processing"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-actual-bottleneck-denominator",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-single-bottleneck-ranking",
+      "implementation_id": "single_bottleneck_ranking",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "unit_contribution": [
+          12,
+          15
+        ],
+        "scarce_resource_per_unit": [
+          2,
+          5
+        ]
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "contribution_per_resource": [
+            6,
+            3
+          ]
+        }
+      },
+      "independent_derivation": "Product A earns12/2=6 per scarce-resource unit; B earns15/5=3. B has higher contribution per product but lower contribution per bottleneck unit. Demand and capacity are still needed for a feasible plan.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "bottleneck"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-cost-plus-consistent-base",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-cost-plus-target-roi",
+      "implementation_id": "cost_plus_target_roi",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "unit_cost_base": 20,
+        "planned_units": 100,
+        "excluded_period_cost": 500,
+        "investment": 1000,
+        "target_roi": 0.1
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "target_profit": 100,
+          "markup_fraction": 0.3,
+          "price": 26
+        }
+      },
+      "independent_derivation": "Target income1000×.1=100; base revenue denominator100×20=2000; excluded costs500 plus profit100 give600/2000=.3 markup. Price26 ×100 less base2000 and excluded500 leaves100.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "cost_plus"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-target-price-minus-profit",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-target-cost",
+      "implementation_id": "target_cost",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "target_price": 50,
+        "target_profit_per_unit": 12
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "target_unit_cost": 38
+        }
+      },
+      "independent_derivation": "A target price50 with desired unit profit12 leaves allowable unit cost38; feasibility remains a design and market question.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "target_cost"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-dated-npv-terminal-explicit",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-dated-annual-npv",
+      "implementation_id": "dated_annual_npv",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "initial_date": "2025-12-31",
+        "cash_flows": [
+          {
+            "date": "2025-12-31",
+            "amount": -1200
+          },
+          {
+            "date": "2026-12-31",
+            "amount": 660
+          },
+          {
+            "date": "2027-12-31",
+            "amount": 847
+          }
+        ],
+        "annual_discount_rate": 0.1
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "present_values": [
+            -1200,
+            600,
+            700
+          ],
+          "npv": 100
+        }
+      },
+      "independent_derivation": "Synthetic initial cash1200 consists of equipment1079 plus working capital121. Year1 operating receipt660 has PV600. Year2 operating605 + net disposal121 + working-capital release121 =847;847/1.21=700. NPV−1200+600+700=100. Dates are exact annual anniversaries; no extra terminal flow or tax inference.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "dated_npv",
+        "working_capital",
+        "terminal_effects"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-npv-unspecified-daycount",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-dated-annual-npv",
+      "implementation_id": "dated_annual_npv",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "initial_date": "2025-12-31",
+        "cash_flows": [
+          {
+            "date": "2025-12-31",
+            "amount": -1200
+          },
+          {
+            "date": "2026-06-30",
+            "amount": 660
+          }
+        ],
+        "annual_discount_rate": 0.1
+      },
+      "expected": {
+        "outcome": "blocked",
+        "error_code": "domain"
+      },
+      "independent_derivation": "A half-year cash flow is outside this annual-anniversary implementation; no day-count or fractional-period assumption is silently invented.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "input_guard"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-conventional-irr-bracketed",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-conventional-irr",
+      "implementation_id": "conventional_irr",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "cash_flows": [
+          -1000,
+          1100
+        ],
+        "lower_rate": 0,
+        "upper_rate": 0.5
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "irr": 0.1,
+          "npv_at_irr": 0
+        }
+      },
+      "independent_derivation": "One-year equation−1000+1100/(1+r)=0 implies1+r=1.1 and r=.1. Bisection independently evaluates this root within the given bracket.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "irr"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-nonconventional-irr-withheld",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-conventional-irr",
+      "implementation_id": "conventional_irr",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "cash_flows": [
+          -1000,
+          2300,
+          -1320
+        ],
+        "lower_rate": 0,
+        "upper_rate": 0.5
+      },
+      "expected": {
+        "outcome": "blocked",
+        "error_code": "unsupported_cash_flow"
+      },
+      "independent_derivation": "More than one sign change violates the conventional-cash-flow implementation; do not select an arbitrary IRR root.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "input_guard"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-irr-no-bracket",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-conventional-irr",
+      "implementation_id": "conventional_irr",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "cash_flows": [
+          -1000,
+          1100
+        ],
+        "lower_rate": 0.2,
+        "upper_rate": 0.5
+      },
+      "expected": {
+        "outcome": "blocked",
+        "error_code": "not_bracketed"
+      },
+      "independent_derivation": "The known10% root is outside20%–50%; both endpoint NPVs are negative.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "input_guard"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-after-tax-cash-supplied-rate",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-after-tax-operating-cash",
+      "implementation_id": "after_tax_operating_cash",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "cash_revenue": 1000,
+        "cash_operating_cost": 600,
+        "tax_depreciation": 100,
+        "tax_rate": 0.25
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "taxable_income": 300,
+          "tax_cash": 75,
+          "operating_cash_flow": 325
+        }
+      },
+      "independent_derivation": "Taxable income1000−600−100=300; supplied hypothetical rate.25 gives75 tax cash. Cash operating benefit400−75=325; alternatively income225 plus noncash depreciation100=325.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "after_tax",
+        "noncash"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-level-payback",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-payback-level",
+      "implementation_id": "payback_level",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "initial_investment": 1000,
+        "annual_after_tax_inflow": 250
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "payback_years": 4
+        }
+      },
+      "independent_derivation": "1000 divided by250 level annual inflow equals4 years; no discounting or beyond-payback returns are measured.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "payback"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-uneven-yearend-payback",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-payback-uneven",
+      "implementation_id": "payback_uneven",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "initial_investment": 1000,
+        "annual_inflows": [
+          300,
+          400,
+          500
+        ]
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "payback_year_end": 3,
+          "unrecovered_amount": 0
+        }
+      },
+      "independent_derivation": "Cumulative year-end receipts300,700,1200 first reach1000 in year3. No unprovided within-year timing is used to interpolate2.6 years.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "payback_timing"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-uneven-no-payback-in-horizon",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-payback-uneven",
+      "implementation_id": "payback_uneven",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "initial_investment": 1000,
+        "annual_inflows": [
+          300,
+          400
+        ]
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "payback_year_end": null,
+          "unrecovered_amount": 300
+        }
+      },
+      "independent_derivation": "Only700 of1000 is recovered by the end of the supplied two-year horizon;300 remains and no payback date is asserted.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "no_payback"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-arr-initial-denominator",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-arr-initial",
+      "implementation_id": "arr_initial",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "average_annual_income": 120,
+        "initial_investment": 1000
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "accounting_return": 0.12
+        }
+      },
+      "independent_derivation": "Average accounting income120 / initial investment1000=.12; not a discounted cash-flow return.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "arr_initial"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-arr-average-denominator",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-arr-average",
+      "implementation_id": "arr_average",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "average_annual_income": 120,
+        "average_investment": 500
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "accounting_return": 0.24
+        }
+      },
+      "independent_derivation": "Same income120 / supplied average investment500=.24. Different denominator explains difference from12% initial-investment ARR.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "arr_average"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-profitability-index",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-profitability-index",
+      "implementation_id": "profitability_index",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "pv_future_cash_flows": 1300,
+        "initial_investment": 1000
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "profitability_index": 1.3,
+          "npv": 300
+        }
+      },
+      "independent_derivation": "Future-flow PV1300 / initial1000=1.3; net value1300−1000=300. Scale and project interactions still matter for allocation decisions.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "profitability_index"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-nominal-real-consistency",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-nominal-real-rate",
+      "implementation_id": "nominal_real_rate",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "real_rate": 0.04,
+        "inflation_rate": 0.025
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "nominal_rate": 0.066
+        }
+      },
+      "independent_derivation": "Gross real1.04 × price-level1.025=1.066, hence nominal6.6%, not the6.5% simple sum.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "nominal_real"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-service-direct-two-departments",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-service-direct",
+      "implementation_id": "service_direct",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "service_costs": [
+          100,
+          200
+        ],
+        "production_usage": [
+          [
+            0.4,
+            0.4
+          ],
+          [
+            0.3,
+            0.6
+          ]
+        ]
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "allocations_by_service": [
+            [
+              50,
+              50
+            ],
+            [
+              66.66666666666667,
+              133.33333333333334
+            ]
+          ],
+          "production_totals": [
+            116.66666666666667,
+            183.33333333333334
+          ]
+        }
+      },
+      "independent_derivation": "Direct method excludes support-to-support service. A100 splits equally50/50; B200 splits1:2, or66⅔/133⅓; production totals116⅔ and183⅓, summing300.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "service_direct"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-service-step-a-first",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-service-step-down",
+      "implementation_id": "service_step_down",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "service_costs": [
+          100,
+          200
+        ],
+        "usage": [
+          [
+            0,
+            0.2,
+            0.4,
+            0.4
+          ],
+          [
+            0.1,
+            0,
+            0.3,
+            0.6
+          ]
+        ],
+        "production_count": 2,
+        "sequence": [
+          0,
+          1
+        ]
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "step_allocations": [
+            [
+              0,
+              20,
+              40,
+              40
+            ],
+            [
+              0,
+              0,
+              73.33333333333333,
+              146.66666666666666
+            ]
+          ],
+          "production_totals": [
+            113.33333333333333,
+            186.66666666666666
+          ]
+        }
+      },
+      "independent_derivation": "A100 sends20 to B and40 to each production department. B now220 cannot allocate back to A; its production ratio1:2 sends73⅓ and146⅔. Production totals113⅓ and186⅔.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "service_step_down"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-service-step-b-first",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-service-step-down",
+      "implementation_id": "service_step_down",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "service_costs": [
+          100,
+          200
+        ],
+        "usage": [
+          [
+            0,
+            0.2,
+            0.4,
+            0.4
+          ],
+          [
+            0.1,
+            0,
+            0.3,
+            0.6
+          ]
+        ],
+        "production_count": 2,
+        "sequence": [
+          1,
+          0
+        ]
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "step_allocations": [
+            [
+              0,
+              0,
+              60,
+              60
+            ],
+            [
+              20,
+              0,
+              60,
+              120
+            ]
+          ],
+          "production_totals": [
+            120,
+            180
+          ]
+        }
+      },
+      "independent_derivation": "B200 sends20 to A,60 to production1 and120 to production2. A now120 allocates only to production,60/60. Totals120 and180 differ from A-first but still sum300.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "allocation_sequence"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-service-reciprocal",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-service-reciprocal",
+      "implementation_id": "service_reciprocal",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "service_costs": [
+          100,
+          200
+        ],
+        "usage_fractions": [
+          [
+            0,
+            0.2,
+            0.4,
+            0.4
+          ],
+          [
+            0.1,
+            0,
+            0.3,
+            0.6
+          ]
+        ],
+        "production_count": 2
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "service_total_costs": [
+            122.44897959183673,
+            224.48979591836735
+          ],
+          "production_totals": [
+            116.3265306122449,
+            183.67346938775512
+          ],
+          "reconciliation": 0
+        }
+      },
+      "independent_derivation": "Equations A=100+.1B and B=200+.2A imply.98A=120, A=120/.98 and B=200+.2A. Production1=.4A+.3B=116.3265306122; production2=.4A+.6B=183.6734693878; total300.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "service_reciprocal"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-reciprocal-singular-system",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-service-reciprocal",
+      "implementation_id": "service_reciprocal",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "service_costs": [
+          100,
+          200
+        ],
+        "usage_fractions": [
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            0,
+            0
+          ]
+        ],
+        "production_count": 1
+      },
+      "expected": {
+        "outcome": "blocked",
+        "error_code": "singular"
+      },
+      "independent_derivation": "Each support department allocates100% to the other and none to production. A=100+B and B=200+A cannot be reconciled; the system is singular.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "input_guard"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-dual-service-distinct-bases",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-dual-service-allocation",
+      "implementation_id": "dual_service_allocation",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "budget_variable_cost": 100,
+        "budget_fixed_cost": 200,
+        "short_run_usage": [
+          1,
+          3
+        ],
+        "long_run_usage": [
+          3,
+          1
+        ]
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "variable_allocations": [
+            25,
+            75
+          ],
+          "fixed_allocations": [
+            150,
+            50
+          ],
+          "total_allocations": [
+            175,
+            125
+          ]
+        }
+      },
+      "independent_derivation": "Variable100 splits1:3 =>25/75. Fixed200 splits long-run3:1 =>150/50. Combined175/125 totals300; the bases are deliberately different.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "dual_allocation"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-joint-physical-basis",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-joint-physical",
+      "implementation_id": "joint_physical",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "joint_cost": 300,
+        "physical_units": [
+          1,
+          2
+        ]
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "joint_allocations": [
+            100,
+            200
+          ]
+        }
+      },
+      "independent_derivation": "Joint300 split by physical quantities1:2 yields100/200. Physical units must be meaningfully comparable.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "joint_physical"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-joint-sales-basis",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-joint-sales",
+      "implementation_id": "joint_sales",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "joint_cost": 300,
+        "splitoff_sales_values": [
+          200,
+          400
+        ]
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "joint_allocations": [
+            100,
+            200
+          ]
+        }
+      },
+      "independent_derivation": "Splitoff sales values200:400 are1:2; allocate joint300 as100/200. This is a costing allocation, not an incremental processing decision.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "joint_sales"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-joint-nrv-basis",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-joint-nrv",
+      "implementation_id": "joint_nrv",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "joint_cost": 300,
+        "final_sales_values": [
+          300,
+          600
+        ],
+        "separable_costs": [
+          100,
+          200
+        ]
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "net_realizable_values": [
+            200,
+            400
+          ],
+          "joint_allocations": [
+            100,
+            200
+          ]
+        }
+      },
+      "independent_derivation": "NRVs300−100=200 and600−200=400; relative1:2 allocates300 as100/200.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "joint_nrv"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-negative-nrv-needs-policy",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-joint-nrv",
+      "implementation_id": "joint_nrv",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "joint_cost": 300,
+        "final_sales_values": [
+          300,
+          600
+        ],
+        "separable_costs": [
+          400,
+          200
+        ]
+      },
+      "expected": {
+        "outcome": "blocked",
+        "error_code": "domain"
+      },
+      "independent_derivation": "First NRV300−400=−100; this implementation refuses negative proportional weights rather than invent an accounting treatment.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "input_guard"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-single-payment-time-value",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-single-cash-flow-time-value",
+      "implementation_id": "single_cash_flow_time_value",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "principal": 200,
+        "future_cash_flow": 242,
+        "rate": 0.1,
+        "periods": 2
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "future_value": 242,
+          "present_value": 200
+        }
+      },
+      "independent_derivation": "Two-period compound factor1.1²=1.21;200×1.21=242 and242/1.21=200.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "time_value"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-eoq-order-holding-balance",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-eoq",
+      "implementation_id": "eoq",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "annual_demand": 1000,
+        "cost_per_order": 20,
+        "annual_holding_per_unit": 4
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "eoq": 100,
+          "annual_ordering_cost": 200,
+          "annual_holding_cost": 200,
+          "total_relevant_cost": 400
+        }
+      },
+      "independent_derivation": "2×1000×20/4=10000 under the square root gives EOQ100. Ten annual orders cost200; average stock50 at4 costs200; relevant total400.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "eoq"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-eoq-zero-demand",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-eoq",
+      "implementation_id": "eoq",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "annual_demand": 0,
+        "cost_per_order": 20,
+        "annual_holding_per_unit": 4
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "eoq": 0,
+          "annual_ordering_cost": 0,
+          "annual_holding_cost": 0,
+          "total_relevant_cost": 0
+        }
+      },
+      "independent_derivation": "Zero modeled annual demand requires no replenishment orders and no cycle stock in this restrictive EOQ model. Do not calculate0/0 orders.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "zero_demand"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-eoq-zero-holding-cost",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-eoq",
+      "implementation_id": "eoq",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "annual_demand": 1000,
+        "cost_per_order": 20,
+        "annual_holding_per_unit": 0
+      },
+      "expected": {
+        "outcome": "blocked",
+        "error_code": "zero_divisor"
+      },
+      "independent_derivation": "With no holding-cost tradeoff the finite EOQ formula divides by zero; a different decision model is required.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "input_guard"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-reorder-point-lead-and-buffer",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-reorder-point",
+      "implementation_id": "reorder_point",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "daily_usage": 10,
+        "lead_days": 4,
+        "safety_stock": 15
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "reorder_point": 55
+        }
+      },
+      "independent_derivation": "Expected lead-time use10×4=40 plus supplied buffer15 gives55. The model does not independently choose a service level or safety stock.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "reorder_point"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-percentage-points-vs-percent",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-percentage-comparison",
+      "implementation_id": "percentage_comparison",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "old_ratio": 0.3,
+        "new_ratio": 0.36
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "percentage_point_change": 6,
+          "relative_percent_change": 20
+        }
+      },
+      "independent_derivation": "36%−30%=6 percentage points. Difference.06 / old.30=.20, hence20% relative increase.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "percentage_points"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-zero-base-relative-change",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-percentage-comparison",
+      "implementation_id": "percentage_comparison",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "old_ratio": 0,
+        "new_ratio": 0.1
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "percentage_point_change": 10,
+          "relative_percent_change": null
+        }
+      },
+      "independent_derivation": "A change0% to10% is10 percentage points. Relative growth divides by a zero base and is withheld.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "zero_denominator"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-weighted-group-vs-average-percent",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-weighted-group-ratio",
+      "implementation_id": "weighted_group_ratio",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "numerators": [
+          30,
+          10
+        ],
+        "denominators": [
+          100,
+          1000
+        ]
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "total_numerator": 40,
+          "total_denominator": 1100,
+          "group_ratio": 0.03636363636363636,
+          "simple_mean_ratio": 0.155
+        }
+      },
+      "independent_derivation": "Component ratios30% and1% average15.5%, but group numerator40 / denominator1100=3.63636%. Different denominator weights explain the discrepancy.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "ratio_aggregation"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-group-ratio-zero-component",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-weighted-group-ratio",
+      "implementation_id": "weighted_group_ratio",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "numerators": [
+          0,
+          10
+        ],
+        "denominators": [
+          0,
+          100
+        ]
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "total_numerator": 10,
+          "total_denominator": 100,
+          "group_ratio": 0.1,
+          "simple_mean_ratio": null
+        }
+      },
+      "independent_derivation": "Group10/100=.1 is defined, while the first component0/0 makes the simple mean undefined.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "zero_component"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-food-yield-usage-residual",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-food-usage-yield",
+      "implementation_id": "food_usage_yield",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "begin_purchase_units": 20,
+        "purchases": 100,
+        "net_transfers_in": -5,
+        "end_purchase_units": 15,
+        "portions": 400,
+        "usable_units_per_portion": 0.2,
+        "yield_fraction": 0.8
+      },
+      "expected": {
+        "outcome": "numeric",
+        "outputs": {
+          "recorded_usage": 100,
+          "theoretical_usage": 100,
+          "unexplained_usage_difference": 0
+        }
+      },
+      "independent_derivation": "Recorded purchase-equivalent usage20+100−5−15=100.400 portions×.2 usable kg=80 usable kg;80/.8=100 purchased kg equivalent. Difference0 does not establish that every underlying entry is correct.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "yield",
+        "inventory_reconciliation"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    },
+    {
+      "id": "ma-test-food-zero-yield",
+      "test_type": "numerical",
+      "model_record_id": "ma-model-food-usage-yield",
+      "implementation_id": "food_usage_yield",
+      "data_origin": "original_synthetic",
+      "inputs": {
+        "begin_purchase_units": 20,
+        "purchases": 100,
+        "net_transfers_in": -5,
+        "end_purchase_units": 15,
+        "portions": 400,
+        "usable_units_per_portion": 0.2,
+        "yield_fraction": 0
+      },
+      "expected": {
+        "outcome": "blocked",
+        "error_code": "domain"
+      },
+      "independent_derivation": "A zero usable yield cannot convert portions into finite purchase-equivalent consumption; no100% yield substitution.",
+      "tolerances": {
+        "absolute": 1e-06,
+        "relative": 1e-09
+      },
+      "tags": [
+        "input_guard"
+      ],
+      "applicability_conditions": [
+        "This is a synthetic arithmetic/control test, not evidence that a real company meets the model assumptions."
+      ],
+      "interpretation_limit": "Numerical agreement does not establish causation, source completeness, current rules or project suitability."
+    }
+  ],
+  "reasoning_tests": [
+    {
+      "id": "ma-test-reasoning-favorable-price-adverse-quality",
+      "test_type": "reasoning",
+      "data_origin": "original_synthetic",
+      "prompt": "Did purchasing improve performance?",
+      "supplied_facts": {
+        "purchase_price_variance": -150,
+        "used_quantity": 110,
+        "standard_allowed": 100,
+        "synthetic_defect_rate_before": 0.01,
+        "synthetic_defect_rate_after": 0.04
+      },
+      "expected_distinctions": [
+        "Price variance is mathematically favorable on the purchase basis.",
+        "More usage and a higher defect rate are observed adverse signals; neither proves cheaper materials caused them.",
+        "Do not sum purchase-price variance with usage quantity variance as if quantities matched.",
+        "Investigate lot quality, recipe, mix, handling, timing and measurement before assigning responsibility."
+      ],
+      "record_ids": [
+        "ma-model-material-purchase-price",
+        "ma-model-material-usage-variances",
+        "ma-risk-favorable-not-operationally-good",
+        "ma-workflow-variance-investigation"
+      ],
+      "review_status": "requires_human_review",
+      "review_scope": "Expected distinctions authored and inspected; no independent expert or automated causal-reasoning certification performed."
+    },
+    {
+      "id": "ma-test-reasoning-allocated-loss",
+      "test_type": "reasoning",
+      "data_origin": "original_synthetic",
+      "prompt": "Should we close the segment?",
+      "supplied_facts": {
+        "sales": 1000,
+        "variable_cost": 600,
+        "avoidable_fixed": 100,
+        "allocated_common_continuing": 500
+      },
+      "expected_distinctions": [
+        "Allocated reported loss is200.",
+        "Segment contributes300 toward continuing common cost.",
+        "Absent other effects, closure lowers group income300, not saves200.",
+        "Capacity uses, contract costs, spillovers and timing could change the recommendation."
+      ],
+      "record_ids": [
+        "ma-model-keep-or-drop",
+        "ma-risk-allocated-cost-treated-as-avoidable"
+      ],
+      "review_status": "requires_human_review",
+      "review_scope": "Expected distinctions authored and inspected; no independent expert or automated causal-reasoning certification performed."
+    },
+    {
+      "id": "ma-test-reasoning-forecast-versus-flex",
+      "test_type": "reasoning",
+      "data_origin": "original_synthetic",
+      "prompt": "Can we replace the budget with the new forecast?",
+      "supplied_facts": {
+        "approved_budget_version": "B1",
+        "latest_forecast_version": "F2",
+        "actual_activity": 150
+      },
+      "expected_distinctions": [
+        "Keep B1 and F2 distinct and dated.",
+        "A flexible budget at150 activity is neither a new authorization nor necessarily F2.",
+        "Use a named comparison and preserve changes in assumptions; do not overwrite historical baseline."
+      ],
+      "record_ids": [
+        "ma-workflow-linked-planning-build"
+      ],
+      "review_status": "requires_human_review",
+      "review_scope": "Expected distinctions authored and inspected; no independent expert or automated causal-reasoning certification performed."
+    },
+    {
+      "id": "ma-test-reasoning-fixed-volume-not-cause",
+      "test_type": "reasoning",
+      "data_origin": "original_synthetic",
+      "prompt": "Does positive fixed-overhead volume variance prove waste?",
+      "supplied_facts": {
+        "fixed_budget": 1000,
+        "fixed_applied": 800,
+        "variance": 200
+      },
+      "expected_distinctions": [
+        "The200 is an allocation reconciliation.",
+        "It does not by itself measure avoidable spending or demonstrate inefficient operations.",
+        "Inspect denominator capacity, standard allowed driver and source sign terminology."
+      ],
+      "record_ids": [
+        "ma-model-fixed-overhead-variances",
+        "ma-risk-variance-does-not-prove-cause"
+      ],
+      "review_status": "requires_human_review",
+      "review_scope": "Expected distinctions authored and inspected; no independent expert or automated causal-reasoning certification performed."
+    },
+    {
+      "id": "ma-test-reasoning-capacity-saving",
+      "test_type": "reasoning",
+      "data_origin": "original_synthetic",
+      "prompt": "Does saving ten hours create a payroll saving?",
+      "supplied_facts": {
+        "hours_released": 10,
+        "hourly_loaded_cost": 30,
+        "payroll_commitment_changed": false
+      },
+      "expected_distinctions": [
+        "Ten hours priced at30 implies300 of modeled capacity value, not necessarily300 less payroll.",
+        "Actual cash savings need a feasible change in paid resources; alternative-use benefit needs evidence.",
+        "Keep service and staffing constraints visible."
+      ],
+      "record_ids": [
+        "ma-risk-capacity-is-not-cash-savings",
+        "ma-application-labor-capacity"
+      ],
+      "review_status": "requires_human_review",
+      "review_scope": "Expected distinctions authored and inspected; no independent expert or automated causal-reasoning certification performed."
+    },
+    {
+      "id": "ma-test-reasoning-method-choice",
+      "test_type": "reasoning",
+      "data_origin": "original_synthetic",
+      "prompt": "Are two ARR percentages inconsistent?",
+      "supplied_facts": {
+        "average_income": 120,
+        "initial_investment": 1000,
+        "average_investment": 500
+      },
+      "expected_distinctions": [
+        "Initial-base ARR12% and average-base ARR24% can both be arithmetically correct.",
+        "They are separately defined accounting ratios, neither automatically IRR.",
+        "State the denominator and compare like with like."
+      ],
+      "record_ids": [
+        "ma-model-arr-initial",
+        "ma-model-arr-average"
+      ],
+      "review_status": "requires_human_review",
+      "review_scope": "Expected distinctions authored and inspected; no independent expert or automated causal-reasoning certification performed."
+    },
+    {
+      "id": "ma-test-reasoning-missing-and-policy",
+      "test_type": "reasoning",
+      "data_origin": "original_synthetic",
+      "prompt": "Can we fill in tax and sales definitions from the book?",
+      "supplied_facts": {
+        "tax_rate": null,
+        "net_sales_definition": null
+      },
+      "expected_distinctions": [
+        "Withhold the tax-based numerical answer rather than assume an example rate.",
+        "Request the applicable supplied policy or current authoritative verification.",
+        "The uploaded edition and a historical company case do not establish present company definitions."
+      ],
+      "record_ids": [
+        "ma-risk-currentness-and-policy",
+        "ma-risk-missing-is-not-zero"
+      ],
+      "review_status": "requires_human_review",
+      "review_scope": "Expected distinctions authored and inspected; no independent expert or automated causal-reasoning certification performed."
+    },
+    {
+      "id": "ma-test-reasoning-inventory-profit",
+      "test_type": "reasoning",
+      "data_origin": "original_synthetic",
+      "prompt": "Did inventory growth prove a cash improvement?",
+      "supplied_facts": {
+        "variable_income": 500,
+        "absorption_income": 700,
+        "fixed_overhead_inventory_increase": 200
+      },
+      "expected_distinctions": [
+        "The200 method difference reconciles to fixed overhead retained in inventory.",
+        "Cash must be modeled separately from collections, payments and working capital.",
+        "Evaluate demand, storage and obsolescence; profit reconciliation is not a demand forecast."
+      ],
+      "record_ids": [
+        "ma-model-inventory-profit-reconciliation",
+        "ma-model-accrual-cash-rollforward"
+      ],
+      "review_status": "requires_human_review",
+      "review_scope": "Expected distinctions authored and inspected; no independent expert or automated causal-reasoning certification performed."
+    }
+  ],
+  "counts": {
+    "numerical_tests": 89,
+    "reasoning_tests": 8,
+    "models_exercised": 54
+  }
+}

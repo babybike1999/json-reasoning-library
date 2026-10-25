@@ -1,0 +1,1810 @@
+{
+  "package_metadata": {
+    "package_name": "JavaScript Language, Runtime, and Code-Quality Reasoning OS V2",
+    "module_name": "pitfalls_and_failure_modes",
+    "repair_type": "focused_v2_repair_not_full_rebuild",
+    "generated_at": "2026-06-21T05:00:11.155979+00:00",
+    "primary_source": {
+      "title": "JavaScript: The Definitive Guide",
+      "edition": "Seventh Edition",
+      "author": "David Flanagan",
+      "publisher": "O'Reilly Media",
+      "release_year": 2020,
+      "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+      "source_sha256": "b511aca2b98ae4eec4966c87d5e6b6c1704cbafe7dd076b924db46cb8d20ae07"
+    },
+    "v1_package_reference": {
+      "source_zip": "Javascript Reasoning.zip",
+      "source_zip_sha256": "60242e2ad2cfcc9bdf79f2fc73b392b7f149339dc95d6234f00db683f368d98d",
+      "not_overwritten": true
+    },
+    "authority_order": [
+      "Original uploaded book source",
+      "Current generated JavaScript Reasoning OS package",
+      "User repair prompt",
+      "Current official documentation only if available",
+      "General engineering reasoning"
+    ],
+    "source_limitation_warning": "Current browser, Node, npm, bundler, tool, framework, and Google Apps Script behavior is not asserted unless explicitly verified. V2 flags such items for current documentation checks.",
+    "purpose": "Concrete JavaScript pitfalls and failure modes with symptoms, root causes, examples, and diagnostics."
+  },
+  "pitfalls_and_failure_modes": [
+    {
+      "id": "js-pitfall-optional-semicolon-ambiguity",
+      "pitfall_or_failure_name": "Optional semicolon ambiguity after return or leading expression",
+      "plain_language_description": "A newline can change which statement JavaScript parses, especially after return or before a line beginning with ( or [.",
+      "technical_description": "Automatic semicolon insertion is not a simple newline rule. Restricted productions and continuation parsing can produce valid code with unintended meaning.",
+      "where_it_appears": [
+        "Semicolonless code",
+        "return/throw/yield/break/continue",
+        "IIFEs or array literals after another statement"
+      ],
+      "symptoms": [
+        "Function returns undefined",
+        "Previous expression is invoked unexpectedly",
+        "Formatter/linter disagreement"
+      ],
+      "root_cause_pattern": "Line break appears at a syntactically sensitive location and no explicit semicolon prevents continuation or restricted-production insertion.",
+      "conditions_required": [
+        "Semicolons omitted or generated code concatenated",
+        "A following line starts with (, [, /, +, or -",
+        "return expression split across lines"
+      ],
+      "minimal_example_shape": "return\n{ ok: true } or const x = f\n(a+b).toString()",
+      "why_it_surprises_developers": "The source layout looks like two separate statements to a human but the parser sees one continuation or an inserted semicolon.",
+      "prevention_or_mitigation": [
+        "Keep return value on same line",
+        "Use explicit semicolons at boundaries",
+        "Run formatter/linter with ASI-aware rules"
+      ],
+      "checks_or_diagnostics": [
+        "Search for restricted keywords followed by newline",
+        "Search for semicolonless lines followed by leading ( or [",
+        "Add a tiny runtime test for affected function"
+      ],
+      "related_concepts": [
+        "js-sem-automatic-semicolon-insertion"
+      ],
+      "related_risk_ids": [
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 2,
+        "chapter_title": "Lexical Structure",
+        "sections": [
+          "2.6 Optional Semicolons"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-implicit-coercion-surprise",
+      "pitfall_or_failure_name": "Implicit coercion in comparisons, arithmetic, and output",
+      "plain_language_description": "Values from forms, query strings, CSV, JSON, or DOM attributes arrive as strings and then participate in numeric or boolean logic.",
+      "technical_description": "JavaScript applies different conversions for equality, relational comparison, +, other arithmetic, truthiness, and object-to-primitive conversion.",
+      "where_it_appears": [
+        "Input parsing",
+        "if conditions",
+        "sort/filter logic",
+        "string templates",
+        "JSON boundaries"
+      ],
+      "symptoms": [
+        "\"10\" + 1 becomes \"101\"",
+        "0 or empty string rejected",
+        "Sort/filter includes wrong rows",
+        "NaN in calculations"
+      ],
+      "root_cause_pattern": "Boundary values are used before explicit normalization.",
+      "conditions_required": [
+        "Mixed string/number/boolean/nullish inputs",
+        "Operators or conditionals are applied directly",
+        "Tests cover only happy numeric path"
+      ],
+      "minimal_example_shape": "const total = formValue + 1; if (count) save(count); if (x == y) ...",
+      "why_it_surprises_developers": "JavaScript operator overloading and coercion are convenient in demos but dangerous when inputs cross runtime/API boundaries.",
+      "prevention_or_mitigation": [
+        "Parse and validate at the boundary",
+        "Prefer === except deliberate nullish checks",
+        "Use ?? instead of || for nullish defaults"
+      ],
+      "checks_or_diagnostics": [
+        "List every operator applied before normalization",
+        "Test \"\", \"0\", \"10\", 0, false, null, undefined, NaN",
+        "Inspect valueOf/toString hooks"
+      ],
+      "related_concepts": [
+        "js-sem-implicit-conversion",
+        "js-sem-equality-comparison",
+        "js-sem-truthiness"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.9 Type Conversions",
+          "4.8 Arithmetic Expressions",
+          "4.9 Relational Expressions"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-equality-comparison-surprise",
+      "pitfall_or_failure_name": "Loose equality or relational comparison accepts unintended values",
+      "plain_language_description": "Comparison appears to compare two values directly but first applies JavaScript conversion rules.",
+      "technical_description": "== and != perform loose equality conversions. Relational operators may compare as strings or numbers depending on operands and conversion.",
+      "where_it_appears": [
+        "Validation",
+        "deduplication",
+        "conditional branches",
+        "sorting"
+      ],
+      "symptoms": [
+        "Branch matches null/undefined unexpectedly",
+        "Numeric string passes check",
+        "Lexicographic order where numeric order expected"
+      ],
+      "root_cause_pattern": "Code uses loose comparison or relational comparison before type normalization.",
+      "conditions_required": [
+        "Operands can have different types",
+        "Objects/arrays may appear in comparison",
+        "Comparator contract is not tested"
+      ],
+      "minimal_example_shape": "if (id == input) ...; items.sort((a,b) => a.value > b.value)",
+      "why_it_surprises_developers": "The expression is visually simple and often works for one test value.",
+      "prevention_or_mitigation": [
+        "Prefer strict equality",
+        "Use explicit parsing and comparator functions",
+        "Use Object.is/Number.isNaN where appropriate"
+      ],
+      "checks_or_diagnostics": [
+        "Search for == != < > <= >= near external input",
+        "Test null/undefined/numeric string/NaN/object values",
+        "Verify sort comparator returns negative/zero/positive"
+      ],
+      "related_concepts": [
+        "js-sem-equality-comparison"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 4,
+        "chapter_title": "Expressions and Operators",
+        "sections": [
+          "4.9 Relational Expressions"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-null-undefined-property-access",
+      "pitfall_or_failure_name": "Null or undefined reaches a property access",
+      "plain_language_description": "A nested object is missing on one path and the next property read or method call throws.",
+      "technical_description": "Property access on null or undefined raises TypeError. Optional chaining changes the failure into undefined but does not validate required data.",
+      "where_it_appears": [
+        "API response processing",
+        "DOM lookup results",
+        "destructuring",
+        "method chains",
+        "configuration objects"
+      ],
+      "symptoms": [
+        "Cannot read properties of undefined/null",
+        "Later undefined or NaN instead of early failure",
+        "Fallback used for valid falsy value"
+      ],
+      "root_cause_pattern": "Code assumes a value exists because it exists in the common path.",
+      "conditions_required": [
+        "At least one branch/API result can omit the object",
+        "No guard before property access",
+        "Tests do not cover missing object"
+      ],
+      "minimal_example_shape": "user.profile.name or document.querySelector(sel).textContent without null check",
+      "why_it_surprises_developers": "JavaScript lets missing object properties return undefined, so the failure appears one step later at nested access.",
+      "prevention_or_mitigation": [
+        "Guard required values explicitly",
+        "Use ?. only for optional data",
+        "Use ?? for nullish fallback"
+      ],
+      "checks_or_diagnostics": [
+        "Trace source of each base object",
+        "Test absent parent, present null, and present value",
+        "Assert invariant before destructuring"
+      ],
+      "related_concepts": [
+        "js-sem-null-vs-undefined",
+        "js-sem-property-access",
+        "js-sem-optional-chaining"
+      ],
+      "related_risk_ids": [
+        "js-risk-null-undefined-access"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.5 null and undefined",
+          "4.4 Property Access Expressions"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-shared-object-mutation",
+      "pitfall_or_failure_name": "Shared object or array mutation leaks across callers",
+      "plain_language_description": "A helper mutates an object/array that another part of the program still owns.",
+      "technical_description": "Object and array assignments copy references. Mutating methods and property writes affect all aliases to the same object.",
+      "where_it_appears": [
+        "Reducers/state updates",
+        "configuration defaults",
+        "function parameters",
+        "module-level caches",
+        "tests"
+      ],
+      "symptoms": [
+        "Original input changes",
+        "Second test starts dirty",
+        "UI or API response changes unexpectedly"
+      ],
+      "root_cause_pattern": "Reference aliasing is not considered when writing mutating code.",
+      "conditions_required": [
+        "Object/array passed into helper",
+        "Helper uses push/splice/sort/reverse/property assignment",
+        "Caller expects immutability"
+      ],
+      "minimal_example_shape": "function addTag(item){ item.tags.push(\"x\"); return item; }",
+      "why_it_surprises_developers": "const gives a false sense of immutability, and shallow spread only copies one level.",
+      "prevention_or_mitigation": [
+        "Document mutating helpers",
+        "Clone at ownership boundaries",
+        "Use immutable update patterns where safe"
+      ],
+      "checks_or_diagnostics": [
+        "Search for mutating array methods and property writes",
+        "Create aliasing test",
+        "Check nested objects after clone"
+      ],
+      "related_concepts": [
+        "js-sem-object-references",
+        "js-sem-array-iteration-methods"
+      ],
+      "related_risk_ids": [
+        "js-risk-shared-object-mutation"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.8 Immutable Primitive Values and Mutable Object References"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-prototype-chain-lookup",
+      "pitfall_or_failure_name": "Prototype chain hides ownership mistakes",
+      "plain_language_description": "A property appears to exist because it is inherited, or an own property shadows inherited behavior.",
+      "technical_description": "Property reads traverse prototypes. for/in and in include inherited properties, while Object.keys and Object.hasOwn focus on own/enumerable properties.",
+      "where_it_appears": [
+        "Object validation",
+        "class instances",
+        "dictionary-like objects",
+        "prototype-based inheritance"
+      ],
+      "symptoms": [
+        "Unexpected property accepted",
+        "Method override not used",
+        "hasOwn/Object.keys disagree with in/for-in"
+      ],
+      "root_cause_pattern": "Ownership and inheritance are not distinguished.",
+      "conditions_required": [
+        "Object has non-null prototype",
+        "Input keys overlap prototype names",
+        "Class/subclass methods are involved"
+      ],
+      "minimal_example_shape": "if (key in obj) accept(obj[key]); or obj.method = ... shadows prototype method",
+      "why_it_surprises_developers": "JavaScript objects are not just flat dictionaries.",
+      "prevention_or_mitigation": [
+        "Use Map or Object.create(null) for dictionaries when appropriate",
+        "Use Object.hasOwn for own checks",
+        "Avoid mutating built-in prototypes"
+      ],
+      "checks_or_diagnostics": [
+        "Compare Object.keys, Object.hasOwn, and in",
+        "Inspect Object.getPrototypeOf",
+        "Test key names like constructor/toString"
+      ],
+      "related_concepts": [
+        "js-sem-property-lookup-prototype",
+        "js-sem-enumeration-ownership"
+      ],
+      "related_risk_ids": [
+        "js-risk-prototype-shadowing"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 6,
+        "chapter_title": "Objects",
+        "sections": [
+          "6.3 Querying and Setting Properties",
+          "6.5 Testing Properties"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-sparse-array-behavior",
+      "pitfall_or_failure_name": "Sparse array holes behave differently from undefined elements",
+      "plain_language_description": "Array length suggests elements exist, but callbacks or serialization treat holes specially.",
+      "technical_description": "Sparse arrays have missing indexed properties. Many array methods skip holes; JSON may represent holes in arrays differently than object undefined properties.",
+      "where_it_appears": [
+        "Array(n) initialization",
+        "delete arr[i]",
+        "manual length changes",
+        "CSV/table processing"
+      ],
+      "symptoms": [
+        "map callback not called",
+        "forEach skips row",
+        "JSON output differs from expectation",
+        "length is misleading"
+      ],
+      "root_cause_pattern": "Code equates array length with count of present values.",
+      "conditions_required": [
+        "Sparse construction or deletion",
+        "Iteration method sensitive to holes",
+        "No test for empty slots"
+      ],
+      "minimal_example_shape": "Array(3).map(fn) or delete rows[1]; rows.forEach(process)",
+      "why_it_surprises_developers": "A hole displays similarly to undefined in some tools but is a different property state.",
+      "prevention_or_mitigation": [
+        "Prefer dense arrays",
+        "Use fill/map creation patterns intentionally",
+        "Use splice instead of delete for removal"
+      ],
+      "checks_or_diagnostics": [
+        "Check Object.keys(arr).length versus arr.length",
+        "Test Array(n), [undefined], and [,] cases",
+        "Use i in arr to detect holes"
+      ],
+      "related_concepts": [
+        "js-sem-arrays-length-sparse",
+        "js-sem-array-iteration-methods"
+      ],
+      "related_risk_ids": [
+        "js-risk-sparse-array-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 7,
+        "chapter_title": "Arrays",
+        "sections": [
+          "7.3 Sparse Arrays",
+          "7.8 Array Methods"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-array-like-confusion",
+      "pitfall_or_failure_name": "Array-like object is treated as a real array",
+      "plain_language_description": "A collection has length and indexes but not Array methods or array iteration guarantees.",
+      "technical_description": "Array-like and iterable are distinct. Host objects can have special live/static behavior and may need Array.from before array methods.",
+      "where_it_appears": [
+        "DOM collections",
+        "arguments-like values",
+        "custom API return values"
+      ],
+      "symptoms": [
+        "map/filter is not a function",
+        "Spread fails",
+        "Collection changes while iterating"
+      ],
+      "root_cause_pattern": "Code assumes length plus indexes means Array instance.",
+      "conditions_required": [
+        "Object is not Array.isArray",
+        "Array method called directly",
+        "Host collection behavior unverified"
+      ],
+      "minimal_example_shape": "nodes.map(fn) where nodes is a DOM collection",
+      "why_it_surprises_developers": "The object prints like a list in devtools but has a different prototype and lifecycle.",
+      "prevention_or_mitigation": [
+        "Normalize with Array.from when appropriate",
+        "Check iterable support",
+        "Verify live/static host behavior"
+      ],
+      "checks_or_diagnostics": [
+        "Use Array.isArray",
+        "Check Symbol.iterator",
+        "Test collection after DOM mutation"
+      ],
+      "related_concepts": [
+        "js-sem-array-like-objects"
+      ],
+      "related_risk_ids": [
+        "js-risk-browser-node-api-confusion",
+        "js-risk-sparse-array-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 7,
+        "chapter_title": "Arrays",
+        "sections": [
+          "7.9 Array-Like Objects",
+          "15.3 Scripting Documents"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-this-binding-confusion",
+      "pitfall_or_failure_name": "this binding changes when method is passed around",
+      "plain_language_description": "A method that works as obj.method() fails when used as a callback or standalone function.",
+      "technical_description": "this is determined by invocation form for ordinary functions. Arrow functions capture lexical this and do not create their own dynamic receiver.",
+      "where_it_appears": [
+        "event handlers",
+        "timers",
+        "array callbacks",
+        "class methods",
+        "destructured methods"
+      ],
+      "symptoms": [
+        "Cannot read this.x",
+        "Callback updates wrong object",
+        "Method works in direct call only"
+      ],
+      "root_cause_pattern": "Function depends on receiver but call site loses receiver.",
+      "conditions_required": [
+        "Function body uses this",
+        "Reference passed without bind/wrapper",
+        "Strict mode/module/class changes this behavior"
+      ],
+      "minimal_example_shape": "const m = obj.method; m(); setTimeout(obj.method, 0)",
+      "why_it_surprises_developers": "The method name still looks attached to the object in source even when the value has been extracted.",
+      "prevention_or_mitigation": [
+        "Bind or wrap callbacks",
+        "Use arrow only for lexical this",
+        "Avoid this-dependent functions as bare callbacks"
+      ],
+      "checks_or_diagnostics": [
+        "List every this use",
+        "Test extracted method",
+        "Check event/timer callback receiver docs"
+      ],
+      "related_concepts": [
+        "js-sem-this-binding"
+      ],
+      "related_risk_ids": [
+        "js-risk-this-binding"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 8,
+        "chapter_title": "Functions",
+        "sections": [
+          "8.2 Invoking Functions"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-closure-state-surprise",
+      "pitfall_or_failure_name": "Closure captures changing or long-lived state",
+      "plain_language_description": "A returned or delayed function observes state that has changed since the function was created.",
+      "technical_description": "Closures retain lexical bindings. Captured objects remain mutable and long-lived closures can extend object lifetime.",
+      "where_it_appears": [
+        "loops",
+        "event handlers",
+        "module private state",
+        "test fixtures",
+        "async callbacks"
+      ],
+      "symptoms": [
+        "Callbacks see later value",
+        "State persists across calls/tests",
+        "Unexpected memory retention"
+      ],
+      "root_cause_pattern": "Captured binding is shared across invocations or mutated after capture.",
+      "conditions_required": [
+        "Nested function or callback",
+        "Outer variable reassigned or object mutated",
+        "Function outlives original scope"
+      ],
+      "minimal_example_shape": "let count = 0; return () => ++count; or callbacks capture mutable config",
+      "why_it_surprises_developers": "The source visually hides that the variable outlives the outer call.",
+      "prevention_or_mitigation": [
+        "Use let/const block scoping intentionally",
+        "Pass snapshot values as parameters",
+        "Reset private state in tests"
+      ],
+      "checks_or_diagnostics": [
+        "List captured variables",
+        "Test repeated calls and concurrent callbacks",
+        "Check memory/state lifecycle"
+      ],
+      "related_concepts": [
+        "js-sem-closures"
+      ],
+      "related_risk_ids": [
+        "js-risk-closure-state"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 8,
+        "chapter_title": "Functions",
+        "sections": [
+          "8.6 Closures"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-class-prototype-misunderstanding",
+      "pitfall_or_failure_name": "Class syntax hides prototype semantics",
+      "plain_language_description": "A reviewer treats class methods as instance data or forgets that class behavior still uses prototypes and this.",
+      "technical_description": "class creates constructor/prototype-based objects. Prototype methods are shared; instance fields or arrow methods are own per instance. super and subclassing depend on prototype relationships.",
+      "where_it_appears": [
+        "class refactors",
+        "subclassing",
+        "method extraction",
+        "performance-sensitive instances"
+      ],
+      "symptoms": [
+        "Method not found after extraction",
+        "Memory increase from per-instance functions",
+        "Subclass initialization error"
+      ],
+      "root_cause_pattern": "Class syntax is read as classical object model without checking JavaScript-specific method placement and this binding.",
+      "conditions_required": [
+        "class or extends used",
+        "Methods moved between prototype and instance",
+        "super/constructor order changed"
+      ],
+      "minimal_example_shape": "class C { m(){} } vs class C { m = () => {} }",
+      "why_it_surprises_developers": "The syntax resembles class-based languages but retains JavaScript prototypes.",
+      "prevention_or_mitigation": [
+        "Inspect own properties and prototype",
+        "Keep constructor/super order",
+        "Choose prototype methods by default unless lexical this/identity needed"
+      ],
+      "checks_or_diagnostics": [
+        "Check Object.getPrototypeOf(instance)",
+        "Test method extraction",
+        "Test subclass construction"
+      ],
+      "related_concepts": [
+        "js-sem-classes-prototypes",
+        "js-sem-subclassing-super"
+      ],
+      "related_risk_ids": [
+        "js-risk-prototype-shadowing",
+        "js-risk-this-binding"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 9,
+        "chapter_title": "Classes",
+        "sections": [
+          "9.1 Classes and Prototypes",
+          "9.3 Classes with class Keyword"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-module-system-mismatch",
+      "pitfall_or_failure_name": "CommonJS ES module or loader mismatch",
+      "plain_language_description": "A file is written for one module system but executed by another loader or transform path.",
+      "technical_description": "ES modules and CommonJS differ in syntax, strictness, binding/export shapes, loading configuration, and interop. Browser, Node, bundler, and test runner loaders differ.",
+      "where_it_appears": [
+        "Node projects",
+        "browser modules",
+        "bundled frontend code",
+        "Jest tests",
+        "package exports"
+      ],
+      "symptoms": [
+        "Cannot use import outside module",
+        "require is not defined",
+        "default export undefined",
+        "Works in build but not direct runtime"
+      ],
+      "root_cause_pattern": "Module format, file extension, package config, or bundler/test transform is inconsistent.",
+      "conditions_required": [
+        "Mixed import/export and require/module.exports",
+        "Package type or file extension changes",
+        "Dependency publishes different export shape"
+      ],
+      "minimal_example_shape": "const x = require(\"m\") in ESM; import x from CommonJS without adapter",
+      "why_it_surprises_developers": "The imported name often looks correct even when the actual object shape differs.",
+      "prevention_or_mitigation": [
+        "Identify runtime loader first",
+        "Choose one module system per boundary",
+        "Write explicit interop adapters"
+      ],
+      "checks_or_diagnostics": [
+        "Inspect package.json type/exports",
+        "Check file extension",
+        "Run minimal import/require probe in target runtime"
+      ],
+      "related_concepts": [
+        "js-sem-es-modules",
+        "js-sem-commonjs-modules"
+      ],
+      "related_risk_ids": [
+        "js-risk-module-system-mismatch",
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 10,
+        "chapter_title": "Modules",
+        "sections": [
+          "10.2 Modules in Node",
+          "10.3 Modules in ES6"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-json-serialization-loss",
+      "pitfall_or_failure_name": "JSON serialization drops or changes values",
+      "plain_language_description": "Data crossing JSON loses JavaScript-specific values and behavior.",
+      "technical_description": "JSON.stringify omits or transforms unsupported values and JSON.parse returns plain data without prototypes unless reviver logic handles it.",
+      "where_it_appears": [
+        "network payloads",
+        "browser storage",
+        "local files",
+        "Apps Script boundaries",
+        "test fixtures"
+      ],
+      "symptoms": [
+        "Date becomes string",
+        "undefined/function/symbol missing",
+        "Map/Set becomes empty object",
+        "Class instance methods lost",
+        "Cycle throws"
+      ],
+      "root_cause_pattern": "Code treats JSON as a deep clone or exact serialization of JavaScript objects.",
+      "conditions_required": [
+        "Non-plain values in payload",
+        "No replacer/reviver/schema",
+        "Round-trip not tested"
+      ],
+      "minimal_example_shape": "JSON.parse(JSON.stringify(objWithDateMapUndefined))",
+      "why_it_surprises_developers": "The output is valid JSON, so the loss may not look like an error.",
+      "prevention_or_mitigation": [
+        "Use explicit schema and custom serialization",
+        "Round-trip representative values",
+        "Avoid JSON clone for complex objects"
+      ],
+      "checks_or_diagnostics": [
+        "List value types crossing JSON",
+        "Check toJSON/replacer/reviver",
+        "Test undefined, Date, Map, Set, Error, NaN, Infinity, cycle"
+      ],
+      "related_concepts": [
+        "js-sem-json-serialization",
+        "js-sem-date-time"
+      ],
+      "related_risk_ids": [
+        "js-risk-json-serialization-loss"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.6 JSON Serialization and Parsing"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-date-timezone-confusion",
+      "pitfall_or_failure_name": "Date/timezone confusion",
+      "plain_language_description": "Date code changes meaning across timezone, locale, or parse context.",
+      "technical_description": "Date stores instants but constructors, parsing, and getters can use local timezone or UTC. String formats and display methods have different assumptions.",
+      "where_it_appears": [
+        "browser/server boundary",
+        "CSV imports",
+        "scheduling",
+        "JSON date strings",
+        "tests"
+      ],
+      "symptoms": [
+        "Off-by-one day",
+        "Different CI/local result",
+        "DST bug",
+        "Sorted dates wrong"
+      ],
+      "root_cause_pattern": "Code does not distinguish instant, local date, formatted string, and timezone-aware display.",
+      "conditions_required": [
+        "Date parsing from string",
+        "Local getters used",
+        "Tests run in one timezone only"
+      ],
+      "minimal_example_shape": "new Date(\"2020-01-01\").getDate() or date.toString() used for storage",
+      "why_it_surprises_developers": "Date values print as readable strings that hide timezone conversions.",
+      "prevention_or_mitigation": [
+        "Use explicit ISO instants with timezone for instants",
+        "Store local dates separately from timestamps",
+        "Test multiple timezones"
+      ],
+      "checks_or_diagnostics": [
+        "Check Date constructors/parsers",
+        "Compare get* and getUTC* use",
+        "Test around midnight/DST"
+      ],
+      "related_concepts": [
+        "js-sem-date-time"
+      ],
+      "related_risk_ids": [
+        "js-risk-date-timezone"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.4 Dates and Times"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-regex-overmatching",
+      "pitfall_or_failure_name": "Regular expression overmatches or undermatches input",
+      "plain_language_description": "A regex used for validation or parsing accepts invalid input or rejects valid input.",
+      "technical_description": "Pattern flags, anchors, greediness, Unicode handling, escaping, global state, and lastIndex affect matching.",
+      "where_it_appears": [
+        "form validation",
+        "CSV/text processing",
+        "replace/split",
+        "routing",
+        "security filters"
+      ],
+      "symptoms": [
+        "Partial invalid input accepted",
+        "Replace removes too much",
+        "test alternates true/false",
+        "Slow match on crafted input"
+      ],
+      "root_cause_pattern": "Regex is used as if it represented a full grammar and all edge cases.",
+      "conditions_required": [
+        "No anchors or negative tests",
+        "User text inserted without escaping",
+        "Global regex reused",
+        "Nested format parsed with regex"
+      ],
+      "minimal_example_shape": "/\\d+/.test(\"abc123def\") as full numeric validation",
+      "why_it_surprises_developers": "Regex success often means substring match, not whole-input validity.",
+      "prevention_or_mitigation": [
+        "Anchor validation patterns",
+        "Escape dynamic input",
+        "Use parser for nested/ambiguous formats",
+        "Add negative tests"
+      ],
+      "checks_or_diagnostics": [
+        "Test empty, multiline, Unicode, long, invalid, and malicious-like inputs",
+        "Inspect flags and lastIndex",
+        "Review greediness"
+      ],
+      "related_concepts": [
+        "js-sem-regexp-patterns"
+      ],
+      "related_risk_ids": [
+        "js-risk-regex-overmatching"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.3 Pattern Matching with Regular Expressions"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-unhandled-promise-rejection",
+      "pitfall_or_failure_name": "Unhandled Promise rejection",
+      "plain_language_description": "An async operation fails and no code awaits/catches/reports it reliably.",
+      "technical_description": "Promise rejections propagate through chains until handled. Fire-and-forget promises need explicit reporting policy. async functions return rejected promises when they throw.",
+      "where_it_appears": [
+        "fetch/networking",
+        "file operations",
+        "database/API calls",
+        "event handlers",
+        "test code"
+      ],
+      "symptoms": [
+        "Unhandled rejection warning/policy action",
+        "Test passes despite async failure",
+        "UI keeps loading or silently ignores error"
+      ],
+      "root_cause_pattern": "Promise-returning call is started but not returned, awaited, or caught.",
+      "conditions_required": [
+        "API returns Promise",
+        "Caller does not await/return",
+        "No catch at boundary"
+      ],
+      "minimal_example_shape": "doWork(); // promise ignored or async function handler(){ failingCall(); }",
+      "why_it_surprises_developers": "The function call syntax looks synchronous even though failure is delivered later.",
+      "prevention_or_mitigation": [
+        "Return/await promise",
+        "Catch at recover/report boundary",
+        "Mark intentional background work and attach reporting"
+      ],
+      "checks_or_diagnostics": [
+        "Search for floating promises",
+        "Test rejected dependency",
+        "Assert async test waits for failure"
+      ],
+      "related_concepts": [
+        "js-sem-promises",
+        "js-sem-async-await"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.2 Promises",
+          "13.3 async and await"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-async-function-returns-promise",
+      "pitfall_or_failure_name": "async function returns Promise unexpectedly",
+      "plain_language_description": "A caller treats an async function as if it returns the resolved value directly.",
+      "technical_description": "Every async function returns a Promise, even when returning a non-Promise value. Callers must await or chain it.",
+      "where_it_appears": [
+        "refactors adding async",
+        "API helpers",
+        "tests",
+        "event handlers"
+      ],
+      "symptoms": [
+        "Promise object rendered/logged",
+        "Condition always truthy",
+        "try/catch does not catch rejection without await"
+      ],
+      "root_cause_pattern": "Synchronous API contract changed by adding async.",
+      "conditions_required": [
+        "Function marked async",
+        "Caller not updated",
+        "Return type not asserted"
+      ],
+      "minimal_example_shape": "const value = getValueAsync(); if (value) ...",
+      "why_it_surprises_developers": "The body may look sequential due await syntax, hiding the Promise API at the boundary.",
+      "prevention_or_mitigation": [
+        "Update callers and tests",
+        "Do not add async unless API can change",
+        "Document Promise return"
+      ],
+      "checks_or_diagnostics": [
+        "Search callers of newly async function",
+        "Assert resolved value with await",
+        "Test rejection"
+      ],
+      "related_concepts": [
+        "js-sem-async-await"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.3 async and await"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-callback-error-path",
+      "pitfall_or_failure_name": "Callback error path ignored during promise conversion",
+      "plain_language_description": "A callback-style API is wrapped or used without handling the documented error branch.",
+      "technical_description": "Callback APIs may report errors through an error argument, separate callback, or event. Throwing inside async callback is not the same as rejecting an outer promise.",
+      "where_it_appears": [
+        "Node fs-style APIs",
+        "legacy browser APIs",
+        "custom wrappers",
+        "Apps Script client callbacks"
+      ],
+      "symptoms": [
+        "Promise never rejects",
+        "Success handler runs with invalid data",
+        "Outer try/catch misses failure"
+      ],
+      "root_cause_pattern": "Wrapper resolves success but forgets reject path or multiple-settle guard.",
+      "conditions_required": [
+        "Callback API has error channel",
+        "Manual Promise wrapper",
+        "No error test"
+      ],
+      "minimal_example_shape": "new Promise(resolve => api((err,data)=> resolve(data)))",
+      "why_it_surprises_developers": "The happy-path wrapper is short and appears correct until the API fails.",
+      "prevention_or_mitigation": [
+        "Handle documented error channel",
+        "Settle once",
+        "Prefer built-in Promise APIs when available and verified"
+      ],
+      "checks_or_diagnostics": [
+        "Stub error callback",
+        "Assert promise rejects",
+        "Check double-callback behavior"
+      ],
+      "related_concepts": [
+        "js-async-callback-error-conventions"
+      ],
+      "related_risk_ids": [
+        "js-risk-callback-error-path",
+        "js-risk-unhandled-promise-rejection"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 13,
+        "chapter_title": "Asynchronous JavaScript",
+        "sections": [
+          "13.1 Asynchronous Programming with Callbacks"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-browser-node-api-confusion",
+      "pitfall_or_failure_name": "Browser API used in Node or Node API used in browser",
+      "plain_language_description": "Host-specific global or module is referenced in the wrong runtime.",
+      "technical_description": "ECMAScript core does not include DOM, fs, process, Buffer, or many other host APIs. Browsers and Node provide different host environments.",
+      "where_it_appears": [
+        "shared modules",
+        "bundled frontend code",
+        "server rendering",
+        "tests",
+        "scripts"
+      ],
+      "symptoms": [
+        "document is not defined",
+        "fs not found in browser bundle",
+        "polyfill/security issue",
+        "works in Jest but fails in browser"
+      ],
+      "root_cause_pattern": "File role and execution runtime are not identified before review/refactor.",
+      "conditions_required": [
+        "Code imported by multiple runtimes",
+        "Bundler/test provides globals",
+        "No runtime boundary adapter"
+      ],
+      "minimal_example_shape": "import fs from \"fs\" in frontend code or document.querySelector in Node script",
+      "why_it_surprises_developers": "All files are JavaScript, so environment differences are easy to miss.",
+      "prevention_or_mitigation": [
+        "Create runtime map",
+        "Separate adapters from core logic",
+        "Verify bundler/test environment"
+      ],
+      "checks_or_diagnostics": [
+        "Search for browser and Node globals",
+        "Check package browser field/bundler aliases",
+        "Run in target runtime"
+      ],
+      "related_concepts": [
+        "js-boundary-browser-dom",
+        "js-boundary-node-files"
+      ],
+      "related_risk_ids": [
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 1,
+        "chapter_title": "Introduction to JavaScript",
+        "sections": [
+          "JavaScript host environments",
+          "15 Browser",
+          "16 Node"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-dom-event-assumption",
+      "pitfall_or_failure_name": "DOM event assumptions break UI behavior",
+      "plain_language_description": "Event code assumes target, timing, default action, or listener lifecycle incorrectly.",
+      "technical_description": "Browser event dispatch includes propagation, default actions, listener options, target/currentTarget distinctions, and async interaction with rendering/user input.",
+      "where_it_appears": [
+        "click/input/submit handlers",
+        "delegated listeners",
+        "dynamic DOM",
+        "single-page UI"
+      ],
+      "symptoms": [
+        "Wrong element read",
+        "Duplicate event handling",
+        "Form submits unexpectedly",
+        "Handler leaks after element removal"
+      ],
+      "root_cause_pattern": "Event lifecycle and propagation are not modeled.",
+      "conditions_required": [
+        "Browser event code",
+        "Listeners attached repeatedly",
+        "target/currentTarget not distinguished"
+      ],
+      "minimal_example_shape": "container.addEventListener(\"click\", e => e.target.value)",
+      "why_it_surprises_developers": "Events look like simple callbacks but carry browser-specific dispatch semantics.",
+      "prevention_or_mitigation": [
+        "Use currentTarget where receiver matters",
+        "Remove listeners when lifecycle ends",
+        "Use preventDefault deliberately"
+      ],
+      "checks_or_diagnostics": [
+        "Simulate bubbling and nested elements",
+        "Test double initialization",
+        "Check default action"
+      ],
+      "related_concepts": [
+        "js-async-browser-events"
+      ],
+      "related_risk_ids": [
+        "js-risk-async-ordering",
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.2 Events"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-fetch-networking-assumption",
+      "pitfall_or_failure_name": "Fetch/networking success assumption",
+      "plain_language_description": "Networking code assumes a fulfilled promise equals successful parsed data.",
+      "technical_description": "Fetch-style APIs and host networking have separate network, HTTP status, body parsing, CORS/security, abort, timeout, and application error concerns. Current behavior must be verified for the target environment.",
+      "where_it_appears": [
+        "browser fetch",
+        "Node fetch-like APIs",
+        "web app frontends"
+      ],
+      "symptoms": [
+        "HTTP 500 treated as success",
+        "JSON parse error unhandled",
+        "Stale response overwrites current state",
+        "CORS/deployment failure"
+      ],
+      "root_cause_pattern": "Only the happy path is modeled.",
+      "conditions_required": [
+        "Networking promise returned",
+        "Status/body/application errors possible",
+        "No stale request guard"
+      ],
+      "minimal_example_shape": "const data = await fetch(url).then(r => r.json())",
+      "why_it_surprises_developers": "The promise API hides multiple failure layers behind one await expression.",
+      "prevention_or_mitigation": [
+        "Check status before parsing",
+        "Handle parse/network/application errors separately",
+        "Use abort/sequence guards where appropriate"
+      ],
+      "checks_or_diagnostics": [
+        "Mock 200/400/500/malformed JSON/network failure/slow response",
+        "Verify current docs for environment"
+      ],
+      "related_concepts": [
+        "js-async-fetch-networking-promises"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.11 Networking"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-browser-storage-assumption",
+      "pitfall_or_failure_name": "Browser storage treated as durable secure database",
+      "plain_language_description": "Client storage is used without considering quota, lifetime, privacy, origin, or security.",
+      "technical_description": "Browser storage APIs are host features with evolving privacy/security/quota behavior. They are not ECMAScript core and must be verified for current platform and deployment.",
+      "where_it_appears": [
+        "frontend preferences",
+        "offline cache",
+        "session state",
+        "tokens/secrets"
+      ],
+      "symptoms": [
+        "Data missing in private mode or after policy change",
+        "Quota error",
+        "Secret exposed to client script",
+        "Cross-origin/origin surprise"
+      ],
+      "root_cause_pattern": "Storage API chosen without threat model or current support check.",
+      "conditions_required": [
+        "Browser storage used",
+        "Data considered important or sensitive",
+        "No quota/error path"
+      ],
+      "minimal_example_shape": "localStorage.setItem(\"token\", secret) or large JSON cache without quota handling",
+      "why_it_surprises_developers": "The API looks like a simple key/value map but has browser policy and security constraints.",
+      "prevention_or_mitigation": [
+        "Do not store secrets in ordinary client storage",
+        "Handle quota/errors",
+        "Verify current browser behavior"
+      ],
+      "checks_or_diagnostics": [
+        "Identify data sensitivity",
+        "Test quota/error path",
+        "Check origin/lifetime requirements"
+      ],
+      "related_concepts": [
+        "js-boundary-browser-storage"
+      ],
+      "related_risk_ids": [
+        "js-risk-browser-node-api-confusion",
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.12 Storage"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-worker-message-boundary",
+      "pitfall_or_failure_name": "Worker message boundary identity assumption",
+      "plain_language_description": "Main and worker code assume sent objects remain shared ordinary objects.",
+      "technical_description": "Worker communication uses host message passing and cloning/transfer rules. Mutation, methods, prototypes, and transferable ownership may not behave like local references.",
+      "where_it_appears": [
+        "browser workers",
+        "Node worker threads",
+        "CPU-heavy tasks"
+      ],
+      "symptoms": [
+        "Mutation not visible across boundary",
+        "Unsupported value error",
+        "Response matched to wrong request",
+        "Worker never terminates"
+      ],
+      "root_cause_pattern": "Message boundary is treated like a synchronous function call or shared object reference.",
+      "conditions_required": [
+        "postMessage/worker thread communication",
+        "Object/function/class instances sent",
+        "No correlation ID/lifecycle handling"
+      ],
+      "minimal_example_shape": "worker.postMessage(obj); obj.changed = true; expect worker to see change",
+      "why_it_surprises_developers": "Both sides use JavaScript objects, but the boundary is not ordinary reference passing.",
+      "prevention_or_mitigation": [
+        "Define message schema",
+        "Use correlation IDs",
+        "Handle error/exit/termination",
+        "Verify transfer/clone support"
+      ],
+      "checks_or_diagnostics": [
+        "Test round-trip payload",
+        "Send unsupported/large value",
+        "Test worker error and termination"
+      ],
+      "related_concepts": [
+        "js-async-worker-messaging"
+      ],
+      "related_risk_ids": [
+        "js-risk-worker-message-boundary"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 15,
+        "chapter_title": "JavaScript in Web Browsers",
+        "sections": [
+          "15.13 Worker Threads and Messaging",
+          "16.11 Worker Threads"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-node-stream-lifecycle",
+      "pitfall_or_failure_name": "Node stream lifecycle ignored",
+      "plain_language_description": "Stream code handles chunks but not completion, errors, or backpressure.",
+      "technical_description": "Node streams are asynchronous data sources/sinks with data/end/error/close/finish/backpressure behavior. APIs evolve and should be verified for current Node.",
+      "where_it_appears": [
+        "file/network streams",
+        "HTTP request/response",
+        "CLI pipelines"
+      ],
+      "symptoms": [
+        "Truncated output",
+        "Unhandled error event",
+        "Memory spike",
+        "Process exits early"
+      ],
+      "root_cause_pattern": "Stream is treated as a complete buffer.",
+      "conditions_required": [
+        "Readable/writable stream involved",
+        "Only data handler or write calls present",
+        "No error/completion test"
+      ],
+      "minimal_example_shape": "stream.on(\"data\", chunk => chunks.push(chunk)); return chunks.join(\"\")",
+      "why_it_surprises_developers": "Data chunks arrive over time and completion is a separate event/state.",
+      "prevention_or_mitigation": [
+        "Use lifecycle-aware helpers where available",
+        "Handle error and completion",
+        "Use buffered read only for bounded input"
+      ],
+      "checks_or_diagnostics": [
+        "Inject error",
+        "Use large input",
+        "Assert finish/end before result",
+        "Check backpressure"
+      ],
+      "related_concepts": [
+        "js-async-node-streams"
+      ],
+      "related_risk_ids": [
+        "js-risk-stream-lifecycle"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 16,
+        "chapter_title": "Server-Side JavaScript with Node",
+        "sections": [
+          "16.5 Streams"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-child-process-worker-complexity",
+      "pitfall_or_failure_name": "Child process or worker chosen without boundary plan",
+      "plain_language_description": "Parallel/external execution is added without accounting for messaging, lifecycle, security, and deployment support.",
+      "technical_description": "Node child processes and worker threads solve different problems and have different data, CPU, OS, security, and lifecycle behavior. Browser workers differ again.",
+      "where_it_appears": [
+        "Node automation",
+        "CPU-heavy tasks",
+        "tool invocation",
+        "image/file processing"
+      ],
+      "symptoms": [
+        "Command injection risk",
+        "Deployment lacks binary/process permission",
+        "Worker leaks",
+        "Large message overhead"
+      ],
+      "root_cause_pattern": "Execution boundary choice is made before defining workload, data flow, and trust boundary.",
+      "conditions_required": [
+        "External process/worker introduced",
+        "Untrusted input crosses boundary",
+        "Deployment restrictions unknown"
+      ],
+      "minimal_example_shape": "exec(`tool ${userInput}`) or worker for small trivial task",
+      "why_it_surprises_developers": "The API can look like a performance shortcut while adding a new failure domain.",
+      "prevention_or_mitigation": [
+        "Choose worker for CPU-bound JS; child process for trusted external program when deployment allows",
+        "Sanitize shell input or avoid shell",
+        "Define message/error/exit contract"
+      ],
+      "checks_or_diagnostics": [
+        "Verify deployment permissions",
+        "Test failure/exit/timeout",
+        "Measure serialization overhead"
+      ],
+      "related_concepts": [
+        "js-boundary-node-child-processes",
+        "js-boundary-node-worker-threads"
+      ],
+      "related_risk_ids": [
+        "js-risk-worker-message-boundary",
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 16,
+        "chapter_title": "Server-Side JavaScript with Node",
+        "sections": [
+          "16.10 Working with Child Processes",
+          "16.11 Worker Threads"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-tooling-transpilation-mismatch",
+      "pitfall_or_failure_name": "Tooling or transpilation mismatch",
+      "plain_language_description": "The code reviewed is not the code executed because a tool transforms it or a runtime target differs.",
+      "technical_description": "Bundlers, Babel, JSX transforms, test environments, linters, and package managers can change syntax support, module loading, globals, and output shape.",
+      "where_it_appears": [
+        "frontend builds",
+        "Jest tests",
+        "Node scripts",
+        "published packages",
+        "CI/deploy"
+      ],
+      "symptoms": [
+        "Works in dev but fails in production",
+        "Tests pass with transform missing in runtime",
+        "Source map points elsewhere",
+        "Syntax accepted by build but not runtime"
+      ],
+      "root_cause_pattern": "Tool configuration and runtime target are not part of the review.",
+      "conditions_required": [
+        "Build/test transform exists",
+        "Multiple runtimes/targets",
+        "Version/config drift"
+      ],
+      "minimal_example_shape": "Syntax supported by Babel in tests but not by deployed Node/browser without transform",
+      "why_it_surprises_developers": "Tools make non-native code appear normal in source.",
+      "prevention_or_mitigation": [
+        "Inspect configs and generated output",
+        "Verify target runtimes",
+        "Pin/record tool versions"
+      ],
+      "checks_or_diagnostics": [
+        "Compare source and emitted code for suspect file",
+        "Run tests in production-like target",
+        "Check lockfile/config changes"
+      ],
+      "related_concepts": [
+        "js-tooling-babel",
+        "js-tooling-bundling",
+        "js-tooling-jest"
+      ],
+      "related_risk_ids": [
+        "js-risk-tooling-version-drift",
+        "js-risk-module-system-mismatch"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 17,
+        "chapter_title": "JavaScript Tools and Extensions",
+        "sections": [
+          "17.5 Code Bundling",
+          "17.6 Transpilation with Babel"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-package-version-mismatch",
+      "pitfall_or_failure_name": "Package or version mismatch changes runtime shape",
+      "plain_language_description": "Dependency update or package entry selection changes exports, module format, or behavior.",
+      "technical_description": "npm packages expose versions, entry points, exports, peer dependencies, and lifecycle scripts that affect what code runs.",
+      "where_it_appears": [
+        "npm installs",
+        "bundler resolution",
+        "Node package imports",
+        "CI"
+      ],
+      "symptoms": [
+        "Imported function missing",
+        "Different code path in browser/Node",
+        "Install/build script surprise",
+        "Lockfile conflict"
+      ],
+      "root_cause_pattern": "Package metadata and lockfile are not reviewed with source code.",
+      "conditions_required": [
+        "Dependency ranges permit changes",
+        "Lockfile changed",
+        "Package has conditional exports or peer dependencies"
+      ],
+      "minimal_example_shape": "import {x} from \"pkg\" after package changed to default export or ESM-only",
+      "why_it_surprises_developers": "The application source did not change, but the dependency graph did.",
+      "prevention_or_mitigation": [
+        "Review lockfile and package metadata",
+        "Use exact/pinned versions where appropriate",
+        "Check release notes/provenance for updates"
+      ],
+      "checks_or_diagnostics": [
+        "Diff package-lock/yarn/pnpm lock",
+        "Inspect package exports/main/module/browser fields",
+        "Run import smoke tests"
+      ],
+      "related_concepts": [
+        "js-tooling-npm"
+      ],
+      "related_risk_ids": [
+        "js-risk-tooling-version-drift",
+        "js-risk-module-system-mismatch"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 17,
+        "chapter_title": "JavaScript Tools and Extensions",
+        "sections": [
+          "17.4 Package Management with npm"
+        ],
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "derivation_classification": "source_synthesis",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-pitfall-apps-script-runtime-confusion",
+      "pitfall_or_failure_name": "Apps Script runtime confused with browser or Node",
+      "plain_language_description": "Apps Script project code is reviewed as if every JavaScript file has the same APIs and lifecycle.",
+      "technical_description": "Apps Script server-side functions, HtmlService client HTML, triggers, Google services, quotas, scopes, and deployment behavior are Apps Script platform features outside the book.",
+      "where_it_appears": [
+        "Apps Script web apps",
+        "Spreadsheet automation",
+        "upload processing",
+        "trigger handlers"
+      ],
+      "symptoms": [
+        "SpreadsheetApp used in client HTML",
+        "document/window used in .gs server file",
+        "Node fs/npm package assumed",
+        "quota/auth/deployment failure"
+      ],
+      "root_cause_pattern": "Files are not classified by Apps Script runtime role and current docs are not checked.",
+      "conditions_required": [
+        "Google Apps Script project",
+        "HtmlService or services used",
+        "Platform behavior claimed without current docs"
+      ],
+      "minimal_example_shape": "Client HTML calls SpreadsheetApp directly or server .gs calls document.querySelector",
+      "why_it_surprises_developers": "All pieces are JavaScript-like, but they execute in different hosts with different services.",
+      "prevention_or_mitigation": [
+        "Make a file-role map",
+        "Verify current Google docs for every service/trigger/quota/scope",
+        "Use explicit client/server message data shapes"
+      ],
+      "checks_or_diagnostics": [
+        "Which file runs in browser vs server?",
+        "Which service APIs and scopes are used?",
+        "What current docs prove quota/deployment behavior?"
+      ],
+      "related_concepts": [
+        "js-apps-script-runtime-boundary",
+        "js-apps-script-htmlservice-browser-server-split"
+      ],
+      "related_risk_ids": [
+        "js-risk-apps-script-runtime-confusion",
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Concrete pitfall/failure-mode record rewritten for V2.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "google_apps_script_extension",
+        "authority_order_position": 4,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      },
+      "runtime_or_environment": "google_apps_script_extension",
+      "current_verification_required": true
+    }
+  ],
+  "pitfall_policy": {
+    "generic_pitfalls_removed": true,
+    "pitfalls_reference_reusable_risks": true,
+    "minimum_fields_enforced": true
+  }
+}

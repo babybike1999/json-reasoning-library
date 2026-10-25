@@ -1,0 +1,2462 @@
+{
+  "replication": [
+    {
+      "id": "ddia_concept_single_leader_replication_write_authority",
+      "record_type": "concept",
+      "name": "Single-leader replication write authority",
+      "summary": "Use this concept to reason about funneling writes through one leader while followers copy changes. It helps explain failover or lag makes read/write behavior surprising and improves decisions about whether a simple primary-replica topology is enough.",
+      "engineering_question_answered": "When facing funneling writes through one leader while followers copy changes, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "funneling writes through one leader while followers copy changes",
+      "failure_mode_addressed": "failover or lag makes read/write behavior surprising",
+      "decision_improved": "whether a simple primary-replica topology is enough",
+      "operating_condition": "Relevant when a system design, incident, or code path involves replication, leader, follower.",
+      "assumptions": [
+        "The workload or architecture actually involves replication.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether a simple primary-replica topology is enough, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble failover or lag makes read/write behavior surprising.",
+        "The team must decide about whether a simple primary-replica topology is enough.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test funneling writes through one leader while followers copy changes.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "failover or lag makes read/write behavior surprising",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for funneling writes through one leader while followers copy changes?",
+        "What evidence shows that failover or lag makes read/write behavior surprising is or is not occurring?",
+        "Which current component guarantee is being relied on for whether a simple primary-replica topology is enough?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "5",
+        "chapter_title": "Replication",
+        "section_heading": "Leaders and Followers",
+        "page_or_anchor": "MOBI_TEXT_CHAR_329050",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_definition",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about funneling writes through one leader while followers copy changes.",
+          "It connects the topic to tradeoffs or failure behavior involving failover or lag makes read/write behavior surprising."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_synchronous_versus_asynchronous_replicas",
+        "ddia_concept_follower_catch_up_and_bootstrapping",
+        "ddia_concept_replication_lag_creates_stale_reads",
+        "ddia_concept_read_your_writes_consistency"
+      ],
+      "tags": [
+        "replication",
+        "leader",
+        "follower",
+        "chapter-5"
+      ]
+    },
+    {
+      "id": "ddia_concept_synchronous_versus_asynchronous_replicas",
+      "record_type": "concept",
+      "name": "Synchronous versus asynchronous replicas",
+      "summary": "Use this concept to reason about trading durability and freshness against latency and availability. It helps explain acknowledged writes can be lost or requests block on slow replicas and improves decisions about which replicas must be synchronous for business correctness.",
+      "engineering_question_answered": "When facing trading durability and freshness against latency and availability, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "trading durability and freshness against latency and availability",
+      "failure_mode_addressed": "acknowledged writes can be lost or requests block on slow replicas",
+      "decision_improved": "which replicas must be synchronous for business correctness",
+      "operating_condition": "Relevant when a system design, incident, or code path involves replication, sync, async.",
+      "assumptions": [
+        "The workload or architecture actually involves replication.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which replicas must be synchronous for business correctness, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble acknowledged writes can be lost or requests block on slow replicas.",
+        "The team must decide about which replicas must be synchronous for business correctness.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test trading durability and freshness against latency and availability.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "acknowledged writes can be lost or requests block on slow replicas",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for trading durability and freshness against latency and availability?",
+        "What evidence shows that acknowledged writes can be lost or requests block on slow replicas is or is not occurring?",
+        "Which current component guarantee is being relied on for which replicas must be synchronous for business correctness?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "5",
+        "chapter_title": "Replication",
+        "section_heading": "Leaders and Followers",
+        "page_or_anchor": "MOBI_TEXT_CHAR_329050",
+        "figure_table_diagram_or_example": "",
+        "support_role": "tradeoff_explanation",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about trading durability and freshness against latency and availability.",
+          "It connects the topic to tradeoffs or failure behavior involving acknowledged writes can be lost or requests block on slow replicas."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_single_leader_replication_write_authority",
+        "ddia_concept_follower_catch_up_and_bootstrapping",
+        "ddia_concept_replication_lag_creates_stale_reads",
+        "ddia_concept_read_your_writes_consistency"
+      ],
+      "tags": [
+        "replication",
+        "sync",
+        "async",
+        "chapter-5"
+      ]
+    },
+    {
+      "id": "ddia_concept_follower_catch_up_and_bootstrapping",
+      "record_type": "concept",
+      "name": "Follower catch-up and bootstrapping",
+      "summary": "Use this concept to reason about adding replicas by copying a consistent snapshot then applying logs. It helps explain new replicas miss writes or serve inconsistent data and improves decisions about how replica initialization proves it caught up.",
+      "engineering_question_answered": "When facing adding replicas by copying a consistent snapshot then applying logs, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "adding replicas by copying a consistent snapshot then applying logs",
+      "failure_mode_addressed": "new replicas miss writes or serve inconsistent data",
+      "decision_improved": "how replica initialization proves it caught up",
+      "operating_condition": "Relevant when a system design, incident, or code path involves replica bootstrap, snapshot, log.",
+      "assumptions": [
+        "The workload or architecture actually involves replica bootstrap.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about how replica initialization proves it caught up, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble new replicas miss writes or serve inconsistent data.",
+        "The team must decide about how replica initialization proves it caught up.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test adding replicas by copying a consistent snapshot then applying logs.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "new replicas miss writes or serve inconsistent data",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for adding replicas by copying a consistent snapshot then applying logs?",
+        "What evidence shows that new replicas miss writes or serve inconsistent data is or is not occurring?",
+        "Which current component guarantee is being relied on for how replica initialization proves it caught up?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "5",
+        "chapter_title": "Replication",
+        "section_heading": "Leaders and Followers",
+        "page_or_anchor": "MOBI_TEXT_CHAR_329050",
+        "figure_table_diagram_or_example": "",
+        "support_role": "technical_example",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about adding replicas by copying a consistent snapshot then applying logs.",
+          "It connects the topic to tradeoffs or failure behavior involving new replicas miss writes or serve inconsistent data."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "demonstrated_by_source_example",
+        "explanation": "The record abstracts a practical pattern illustrated by an example in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_single_leader_replication_write_authority",
+        "ddia_concept_synchronous_versus_asynchronous_replicas",
+        "ddia_concept_replication_lag_creates_stale_reads",
+        "ddia_concept_read_your_writes_consistency"
+      ],
+      "tags": [
+        "replica bootstrap",
+        "snapshot",
+        "log",
+        "chapter-5"
+      ]
+    },
+    {
+      "id": "ddia_concept_replication_lag_creates_stale_reads",
+      "record_type": "concept",
+      "name": "Replication lag creates stale reads",
+      "summary": "Use this concept to reason about understanding that asynchronous followers can be behind the leader. It helps explain users see missing or old data after a successful write and improves decisions about which reads require freshness guarantees.",
+      "engineering_question_answered": "When facing understanding that asynchronous followers can be behind the leader, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "understanding that asynchronous followers can be behind the leader",
+      "failure_mode_addressed": "users see missing or old data after a successful write",
+      "decision_improved": "which reads require freshness guarantees",
+      "operating_condition": "Relevant when a system design, incident, or code path involves replication lag, stale reads.",
+      "assumptions": [
+        "The workload or architecture actually involves replication lag.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which reads require freshness guarantees, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble users see missing or old data after a successful write.",
+        "The team must decide about which reads require freshness guarantees.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test understanding that asynchronous followers can be behind the leader.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "users see missing or old data after a successful write",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for understanding that asynchronous followers can be behind the leader?",
+        "What evidence shows that users see missing or old data after a successful write is or is not occurring?",
+        "Which current component guarantee is being relied on for which reads require freshness guarantees?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "5",
+        "chapter_title": "Replication",
+        "section_heading": "Problems with Replication Lag",
+        "page_or_anchor": "MOBI_TEXT_CHAR_328890",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about understanding that asynchronous followers can be behind the leader.",
+          "It connects the topic to tradeoffs or failure behavior involving users see missing or old data after a successful write."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_single_leader_replication_write_authority",
+        "ddia_concept_synchronous_versus_asynchronous_replicas",
+        "ddia_concept_follower_catch_up_and_bootstrapping",
+        "ddia_concept_read_your_writes_consistency"
+      ],
+      "tags": [
+        "replication lag",
+        "stale reads",
+        "chapter-5"
+      ]
+    },
+    {
+      "id": "ddia_concept_read_your_writes_consistency",
+      "record_type": "concept",
+      "name": "Read-your-writes consistency",
+      "summary": "Use this concept to reason about ensuring a user sees their own recent writes. It helps explain profile or state changes appear to vanish after save and improves decisions about which read paths must route to fresh replicas.",
+      "engineering_question_answered": "When facing ensuring a user sees their own recent writes, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "ensuring a user sees their own recent writes",
+      "failure_mode_addressed": "profile or state changes appear to vanish after save",
+      "decision_improved": "which read paths must route to fresh replicas",
+      "operating_condition": "Relevant when a system design, incident, or code path involves read your writes, consistency, replication.",
+      "assumptions": [
+        "The workload or architecture actually involves read your writes.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which read paths must route to fresh replicas, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble profile or state changes appear to vanish after save.",
+        "The team must decide about which read paths must route to fresh replicas.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test ensuring a user sees their own recent writes.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "profile or state changes appear to vanish after save",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for ensuring a user sees their own recent writes?",
+        "What evidence shows that profile or state changes appear to vanish after save is or is not occurring?",
+        "Which current component guarantee is being relied on for which read paths must route to fresh replicas?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "5",
+        "chapter_title": "Replication",
+        "section_heading": "Problems with Replication Lag",
+        "page_or_anchor": "MOBI_TEXT_CHAR_328890",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_definition",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about ensuring a user sees their own recent writes.",
+          "It connects the topic to tradeoffs or failure behavior involving profile or state changes appear to vanish after save."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_single_leader_replication_write_authority",
+        "ddia_concept_synchronous_versus_asynchronous_replicas",
+        "ddia_concept_follower_catch_up_and_bootstrapping",
+        "ddia_concept_replication_lag_creates_stale_reads"
+      ],
+      "tags": [
+        "read your writes",
+        "consistency",
+        "replication",
+        "chapter-5"
+      ]
+    },
+    {
+      "id": "ddia_concept_monotonic_reads",
+      "record_type": "concept",
+      "name": "Monotonic reads",
+      "summary": "Use this concept to reason about preventing a user from moving backward in observed time across replicas. It helps explain refreshing or switching replicas makes data regress and improves decisions about whether session stickiness or version tracking is needed.",
+      "engineering_question_answered": "When facing preventing a user from moving backward in observed time across replicas, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "preventing a user from moving backward in observed time across replicas",
+      "failure_mode_addressed": "refreshing or switching replicas makes data regress",
+      "decision_improved": "whether session stickiness or version tracking is needed",
+      "operating_condition": "Relevant when a system design, incident, or code path involves monotonic reads, session consistency.",
+      "assumptions": [
+        "The workload or architecture actually involves monotonic reads.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether session stickiness or version tracking is needed, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble refreshing or switching replicas makes data regress.",
+        "The team must decide about whether session stickiness or version tracking is needed.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test preventing a user from moving backward in observed time across replicas.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "refreshing or switching replicas makes data regress",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for preventing a user from moving backward in observed time across replicas?",
+        "What evidence shows that refreshing or switching replicas makes data regress is or is not occurring?",
+        "Which current component guarantee is being relied on for whether session stickiness or version tracking is needed?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "5",
+        "chapter_title": "Replication",
+        "section_heading": "Problems with Replication Lag",
+        "page_or_anchor": "MOBI_TEXT_CHAR_328890",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_definition",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about preventing a user from moving backward in observed time across replicas.",
+          "It connects the topic to tradeoffs or failure behavior involving refreshing or switching replicas makes data regress."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_single_leader_replication_write_authority",
+        "ddia_concept_synchronous_versus_asynchronous_replicas",
+        "ddia_concept_follower_catch_up_and_bootstrapping",
+        "ddia_concept_replication_lag_creates_stale_reads"
+      ],
+      "tags": [
+        "monotonic reads",
+        "session consistency",
+        "chapter-5"
+      ]
+    },
+    {
+      "id": "ddia_concept_multi_leader_replication_conflicts",
+      "record_type": "concept",
+      "name": "Multi-leader replication conflicts",
+      "summary": "Use this concept to reason about accepting writes in multiple places while resolving conflicts. It helps explain concurrent edits diverge or one write overwrites another and improves decisions about whether offline, multi-region, or multi-datacenter writes justify conflicts.",
+      "engineering_question_answered": "When facing accepting writes in multiple places while resolving conflicts, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "accepting writes in multiple places while resolving conflicts",
+      "failure_mode_addressed": "concurrent edits diverge or one write overwrites another",
+      "decision_improved": "whether offline, multi-region, or multi-datacenter writes justify conflicts",
+      "operating_condition": "Relevant when a system design, incident, or code path involves multi leader, conflict resolution.",
+      "assumptions": [
+        "The workload or architecture actually involves multi leader.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether offline, multi-region, or multi-datacenter writes justify conflicts, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble concurrent edits diverge or one write overwrites another.",
+        "The team must decide about whether offline, multi-region, or multi-datacenter writes justify conflicts.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test accepting writes in multiple places while resolving conflicts.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "concurrent edits diverge or one write overwrites another",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for accepting writes in multiple places while resolving conflicts?",
+        "What evidence shows that concurrent edits diverge or one write overwrites another is or is not occurring?",
+        "Which current component guarantee is being relied on for whether offline, multi-region, or multi-datacenter writes justify conflicts?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "5",
+        "chapter_title": "Replication",
+        "section_heading": "Multi-Leader Replication",
+        "page_or_anchor": "MOBI_TEXT_CHAR_341997",
+        "figure_table_diagram_or_example": "",
+        "support_role": "tradeoff_explanation",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about accepting writes in multiple places while resolving conflicts.",
+          "It connects the topic to tradeoffs or failure behavior involving concurrent edits diverge or one write overwrites another."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_single_leader_replication_write_authority",
+        "ddia_concept_synchronous_versus_asynchronous_replicas",
+        "ddia_concept_follower_catch_up_and_bootstrapping",
+        "ddia_concept_replication_lag_creates_stale_reads"
+      ],
+      "tags": [
+        "multi leader",
+        "conflict resolution",
+        "chapter-5"
+      ]
+    },
+    {
+      "id": "ddia_concept_quorums_in_leaderless_replication",
+      "record_type": "concept",
+      "name": "Quorums in leaderless replication",
+      "summary": "Use this concept to reason about using read and write quorums to tolerate unavailable replicas. It helps explain sloppy quorums or stale replicas undermine assumed freshness and improves decisions about whether quorum math matches actual failure behavior.",
+      "engineering_question_answered": "When facing using read and write quorums to tolerate unavailable replicas, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "using read and write quorums to tolerate unavailable replicas",
+      "failure_mode_addressed": "sloppy quorums or stale replicas undermine assumed freshness",
+      "decision_improved": "whether quorum math matches actual failure behavior",
+      "operating_condition": "Relevant when a system design, incident, or code path involves quorum, leaderless, consistency.",
+      "assumptions": [
+        "The workload or architecture actually involves quorum.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether quorum math matches actual failure behavior, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble sloppy quorums or stale replicas undermine assumed freshness.",
+        "The team must decide about whether quorum math matches actual failure behavior.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test using read and write quorums to tolerate unavailable replicas.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "sloppy quorums or stale replicas undermine assumed freshness",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for using read and write quorums to tolerate unavailable replicas?",
+        "What evidence shows that sloppy quorums or stale replicas undermine assumed freshness is or is not occurring?",
+        "Which current component guarantee is being relied on for whether quorum math matches actual failure behavior?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "5",
+        "chapter_title": "Replication",
+        "section_heading": "Leaderless Replication",
+        "page_or_anchor": "MOBI_TEXT_CHAR_327812",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about using read and write quorums to tolerate unavailable replicas.",
+          "It connects the topic to tradeoffs or failure behavior involving sloppy quorums or stale replicas undermine assumed freshness."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_single_leader_replication_write_authority",
+        "ddia_concept_synchronous_versus_asynchronous_replicas",
+        "ddia_concept_follower_catch_up_and_bootstrapping",
+        "ddia_concept_replication_lag_creates_stale_reads"
+      ],
+      "tags": [
+        "quorum",
+        "leaderless",
+        "consistency",
+        "chapter-5"
+      ]
+    }
+  ],
+  "partitioning": [
+    {
+      "id": "ddia_concept_partitioning_spreads_data_and_load",
+      "record_type": "concept",
+      "name": "Partitioning spreads data and load",
+      "summary": "Use this concept to reason about splitting large datasets across machines. It helps explain one node cannot hold or serve the whole workload and improves decisions about which key determines load distribution and locality.",
+      "engineering_question_answered": "When facing splitting large datasets across machines, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "splitting large datasets across machines",
+      "failure_mode_addressed": "one node cannot hold or serve the whole workload",
+      "decision_improved": "which key determines load distribution and locality",
+      "operating_condition": "Relevant when a system design, incident, or code path involves partitioning, sharding, scale.",
+      "assumptions": [
+        "The workload or architecture actually involves partitioning.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which key determines load distribution and locality, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble one node cannot hold or serve the whole workload.",
+        "The team must decide about which key determines load distribution and locality.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test splitting large datasets across machines.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "one node cannot hold or serve the whole workload",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for splitting large datasets across machines?",
+        "What evidence shows that one node cannot hold or serve the whole workload is or is not occurring?",
+        "Which current component guarantee is being relied on for which key determines load distribution and locality?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "6",
+        "chapter_title": "Partitioning",
+        "section_heading": "Partitioning of Key-Value Data",
+        "page_or_anchor": "MOBI_TEXT_CHAR_434400",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_definition",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about splitting large datasets across machines.",
+          "It connects the topic to tradeoffs or failure behavior involving one node cannot hold or serve the whole workload."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_key_range_partitioning",
+        "ddia_concept_hash_partitioning",
+        "ddia_concept_secondary_indexes_across_partitions",
+        "ddia_concept_rebalancing_without_excessive_disruption"
+      ],
+      "tags": [
+        "partitioning",
+        "sharding",
+        "scale",
+        "chapter-6"
+      ]
+    },
+    {
+      "id": "ddia_concept_key_range_partitioning",
+      "record_type": "concept",
+      "name": "Key-range partitioning",
+      "summary": "Use this concept to reason about preserving ordered access by contiguous key ranges. It helps explain sequential keys or uneven ranges create hot spots and improves decisions about whether range scans outweigh hot-key risk.",
+      "engineering_question_answered": "When facing preserving ordered access by contiguous key ranges, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "preserving ordered access by contiguous key ranges",
+      "failure_mode_addressed": "sequential keys or uneven ranges create hot spots",
+      "decision_improved": "whether range scans outweigh hot-key risk",
+      "operating_condition": "Relevant when a system design, incident, or code path involves key range, partitioning, hot spots.",
+      "assumptions": [
+        "The workload or architecture actually involves key range.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether range scans outweigh hot-key risk, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble sequential keys or uneven ranges create hot spots.",
+        "The team must decide about whether range scans outweigh hot-key risk.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test preserving ordered access by contiguous key ranges.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "sequential keys or uneven ranges create hot spots",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for preserving ordered access by contiguous key ranges?",
+        "What evidence shows that sequential keys or uneven ranges create hot spots is or is not occurring?",
+        "Which current component guarantee is being relied on for whether range scans outweigh hot-key risk?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "6",
+        "chapter_title": "Partitioning",
+        "section_heading": "Partitioning of Key-Value Data",
+        "page_or_anchor": "MOBI_TEXT_CHAR_434400",
+        "figure_table_diagram_or_example": "",
+        "support_role": "tradeoff_explanation",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about preserving ordered access by contiguous key ranges.",
+          "It connects the topic to tradeoffs or failure behavior involving sequential keys or uneven ranges create hot spots."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_partitioning_spreads_data_and_load",
+        "ddia_concept_hash_partitioning",
+        "ddia_concept_secondary_indexes_across_partitions",
+        "ddia_concept_rebalancing_without_excessive_disruption"
+      ],
+      "tags": [
+        "key range",
+        "partitioning",
+        "hot spots",
+        "chapter-6"
+      ]
+    },
+    {
+      "id": "ddia_concept_hash_partitioning",
+      "record_type": "concept",
+      "name": "Hash partitioning",
+      "summary": "Use this concept to reason about spreading keys more evenly by hashing. It helps explain range queries become less efficient or require scatter-gather and improves decisions about whether uniform distribution matters more than range locality.",
+      "engineering_question_answered": "When facing spreading keys more evenly by hashing, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "spreading keys more evenly by hashing",
+      "failure_mode_addressed": "range queries become less efficient or require scatter-gather",
+      "decision_improved": "whether uniform distribution matters more than range locality",
+      "operating_condition": "Relevant when a system design, incident, or code path involves hash partitioning, sharding.",
+      "assumptions": [
+        "The workload or architecture actually involves hash partitioning.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether uniform distribution matters more than range locality, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble range queries become less efficient or require scatter-gather.",
+        "The team must decide about whether uniform distribution matters more than range locality.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test spreading keys more evenly by hashing.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "range queries become less efficient or require scatter-gather",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for spreading keys more evenly by hashing?",
+        "What evidence shows that range queries become less efficient or require scatter-gather is or is not occurring?",
+        "Which current component guarantee is being relied on for whether uniform distribution matters more than range locality?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "6",
+        "chapter_title": "Partitioning",
+        "section_heading": "Partitioning of Key-Value Data",
+        "page_or_anchor": "MOBI_TEXT_CHAR_434400",
+        "figure_table_diagram_or_example": "",
+        "support_role": "tradeoff_explanation",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about spreading keys more evenly by hashing.",
+          "It connects the topic to tradeoffs or failure behavior involving range queries become less efficient or require scatter-gather."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_partitioning_spreads_data_and_load",
+        "ddia_concept_key_range_partitioning",
+        "ddia_concept_secondary_indexes_across_partitions",
+        "ddia_concept_rebalancing_without_excessive_disruption"
+      ],
+      "tags": [
+        "hash partitioning",
+        "sharding",
+        "chapter-6"
+      ]
+    },
+    {
+      "id": "ddia_concept_secondary_indexes_across_partitions",
+      "record_type": "concept",
+      "name": "Secondary indexes across partitions",
+      "summary": "Use this concept to reason about supporting alternate lookup fields in a partitioned system. It helps explain queries fan out or writes update multiple index partitions and improves decisions about which query patterns justify global or local indexes.",
+      "engineering_question_answered": "When facing supporting alternate lookup fields in a partitioned system, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "supporting alternate lookup fields in a partitioned system",
+      "failure_mode_addressed": "queries fan out or writes update multiple index partitions",
+      "decision_improved": "which query patterns justify global or local indexes",
+      "operating_condition": "Relevant when a system design, incident, or code path involves secondary index, partitioning.",
+      "assumptions": [
+        "The workload or architecture actually involves secondary index.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which query patterns justify global or local indexes, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble queries fan out or writes update multiple index partitions.",
+        "The team must decide about which query patterns justify global or local indexes.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test supporting alternate lookup fields in a partitioned system.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "queries fan out or writes update multiple index partitions",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for supporting alternate lookup fields in a partitioned system?",
+        "What evidence shows that queries fan out or writes update multiple index partitions is or is not occurring?",
+        "Which current component guarantee is being relied on for which query patterns justify global or local indexes?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "6",
+        "chapter_title": "Partitioning",
+        "section_heading": "Partitioning and Secondary Indexes",
+        "page_or_anchor": "MOBI_TEXT_CHAR_444695",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about supporting alternate lookup fields in a partitioned system.",
+          "It connects the topic to tradeoffs or failure behavior involving queries fan out or writes update multiple index partitions."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_partitioning_spreads_data_and_load",
+        "ddia_concept_key_range_partitioning",
+        "ddia_concept_hash_partitioning",
+        "ddia_concept_rebalancing_without_excessive_disruption"
+      ],
+      "tags": [
+        "secondary index",
+        "partitioning",
+        "chapter-6"
+      ]
+    },
+    {
+      "id": "ddia_concept_rebalancing_without_excessive_disruption",
+      "record_type": "concept",
+      "name": "Rebalancing without excessive disruption",
+      "summary": "Use this concept to reason about moving partitions as load or cluster size changes. It helps explain data movement overloads nodes or changes routing mid-request and improves decisions about how the system throttles and validates rebalancing.",
+      "engineering_question_answered": "When facing moving partitions as load or cluster size changes, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "moving partitions as load or cluster size changes",
+      "failure_mode_addressed": "data movement overloads nodes or changes routing mid-request",
+      "decision_improved": "how the system throttles and validates rebalancing",
+      "operating_condition": "Relevant when a system design, incident, or code path involves rebalancing, operations.",
+      "assumptions": [
+        "The workload or architecture actually involves rebalancing.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about how the system throttles and validates rebalancing, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble data movement overloads nodes or changes routing mid-request.",
+        "The team must decide about how the system throttles and validates rebalancing.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test moving partitions as load or cluster size changes.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "data movement overloads nodes or changes routing mid-request",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for moving partitions as load or cluster size changes?",
+        "What evidence shows that data movement overloads nodes or changes routing mid-request is or is not occurring?",
+        "Which current component guarantee is being relied on for how the system throttles and validates rebalancing?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "6",
+        "chapter_title": "Partitioning",
+        "section_heading": "Rebalancing Partitions",
+        "page_or_anchor": "MOBI_TEXT_CHAR_53463",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about moving partitions as load or cluster size changes.",
+          "It connects the topic to tradeoffs or failure behavior involving data movement overloads nodes or changes routing mid-request."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_partitioning_spreads_data_and_load",
+        "ddia_concept_key_range_partitioning",
+        "ddia_concept_hash_partitioning",
+        "ddia_concept_secondary_indexes_across_partitions"
+      ],
+      "tags": [
+        "rebalancing",
+        "operations",
+        "chapter-6"
+      ]
+    },
+    {
+      "id": "ddia_concept_request_routing_to_the_right_partition",
+      "record_type": "concept",
+      "name": "Request routing to the right partition",
+      "summary": "Use this concept to reason about finding the node responsible for a key as topology changes. It helps explain clients read or write the wrong node during membership changes and improves decisions about which routing metadata is authoritative and fresh.",
+      "engineering_question_answered": "When facing finding the node responsible for a key as topology changes, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "finding the node responsible for a key as topology changes",
+      "failure_mode_addressed": "clients read or write the wrong node during membership changes",
+      "decision_improved": "which routing metadata is authoritative and fresh",
+      "operating_condition": "Relevant when a system design, incident, or code path involves routing, partitioning, metadata.",
+      "assumptions": [
+        "The workload or architecture actually involves routing.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which routing metadata is authoritative and fresh, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble clients read or write the wrong node during membership changes.",
+        "The team must decide about which routing metadata is authoritative and fresh.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test finding the node responsible for a key as topology changes.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "clients read or write the wrong node during membership changes",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for finding the node responsible for a key as topology changes?",
+        "What evidence shows that clients read or write the wrong node during membership changes is or is not occurring?",
+        "Which current component guarantee is being relied on for which routing metadata is authoritative and fresh?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "6",
+        "chapter_title": "Partitioning",
+        "section_heading": "Request Routing",
+        "page_or_anchor": "MOBI_TEXT_CHAR_299559",
+        "figure_table_diagram_or_example": "",
+        "support_role": "technical_example",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about finding the node responsible for a key as topology changes.",
+          "It connects the topic to tradeoffs or failure behavior involving clients read or write the wrong node during membership changes."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "demonstrated_by_source_example",
+        "explanation": "The record abstracts a practical pattern illustrated by an example in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_partitioning_spreads_data_and_load",
+        "ddia_concept_key_range_partitioning",
+        "ddia_concept_hash_partitioning",
+        "ddia_concept_secondary_indexes_across_partitions"
+      ],
+      "tags": [
+        "routing",
+        "partitioning",
+        "metadata",
+        "chapter-6"
+      ]
+    }
+  ],
+  "transactions": [
+    {
+      "id": "ddia_concept_transactions_bundle_correctness_boundaries",
+      "record_type": "concept",
+      "name": "Transactions bundle correctness boundaries",
+      "summary": "Use this concept to reason about grouping operations that must succeed or fail together. It helps explain partial writes leave invariants broken after crashes or errors and improves decisions about which invariants need atomicity and isolation.",
+      "engineering_question_answered": "When facing grouping operations that must succeed or fail together, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "grouping operations that must succeed or fail together",
+      "failure_mode_addressed": "partial writes leave invariants broken after crashes or errors",
+      "decision_improved": "which invariants need atomicity and isolation",
+      "operating_condition": "Relevant when a system design, incident, or code path involves transaction, acid, invariant.",
+      "assumptions": [
+        "The workload or architecture actually involves transaction.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which invariants need atomicity and isolation, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble partial writes leave invariants broken after crashes or errors.",
+        "The team must decide about which invariants need atomicity and isolation.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test grouping operations that must succeed or fail together.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "partial writes leave invariants broken after crashes or errors",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for grouping operations that must succeed or fail together?",
+        "What evidence shows that partial writes leave invariants broken after crashes or errors is or is not occurring?",
+        "Which current component guarantee is being relied on for which invariants need atomicity and isolation?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "The Slippery Concept of a Transaction",
+        "page_or_anchor": "MOBI_TEXT_CHAR_479908",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about grouping operations that must succeed or fail together.",
+          "It connects the topic to tradeoffs or failure behavior involving partial writes leave invariants broken after crashes or errors."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_acid_as_overloaded_terminology",
+        "ddia_concept_read_committed_prevents_dirty_reads_and_writes",
+        "ddia_concept_snapshot_isolation_prevents_read_skew",
+        "ddia_concept_lost_update_protection"
+      ],
+      "tags": [
+        "transaction",
+        "acid",
+        "invariant",
+        "chapter-7"
+      ]
+    },
+    {
+      "id": "ddia_concept_acid_as_overloaded_terminology",
+      "record_type": "concept",
+      "name": "ACID as overloaded terminology",
+      "summary": "Use this concept to reason about checking concrete guarantees instead of trusting the acronym. It helps explain teams assume stronger behavior than the database provides and improves decisions about what atomicity, consistency, isolation, durability mean in this system.",
+      "engineering_question_answered": "When facing checking concrete guarantees instead of trusting the acronym, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "checking concrete guarantees instead of trusting the acronym",
+      "failure_mode_addressed": "teams assume stronger behavior than the database provides",
+      "decision_improved": "what atomicity, consistency, isolation, durability mean in this system",
+      "operating_condition": "Relevant when a system design, incident, or code path involves acid, guarantees, transactions.",
+      "assumptions": [
+        "The workload or architecture actually involves acid.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about what atomicity, consistency, isolation, durability mean in this system, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble teams assume stronger behavior than the database provides.",
+        "The team must decide about what atomicity, consistency, isolation, durability mean in this system.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test checking concrete guarantees instead of trusting the acronym.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "teams assume stronger behavior than the database provides",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for checking concrete guarantees instead of trusting the acronym?",
+        "What evidence shows that teams assume stronger behavior than the database provides is or is not occurring?",
+        "Which current component guarantee is being relied on for what atomicity, consistency, isolation, durability mean in this system?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "The Slippery Concept of a Transaction",
+        "page_or_anchor": "MOBI_TEXT_CHAR_479908",
+        "figure_table_diagram_or_example": "",
+        "support_role": "caution",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about checking concrete guarantees instead of trusting the acronym.",
+          "It connects the topic to tradeoffs or failure behavior involving teams assume stronger behavior than the database provides."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_transactions_bundle_correctness_boundaries",
+        "ddia_concept_read_committed_prevents_dirty_reads_and_writes",
+        "ddia_concept_snapshot_isolation_prevents_read_skew",
+        "ddia_concept_lost_update_protection"
+      ],
+      "tags": [
+        "acid",
+        "guarantees",
+        "transactions",
+        "chapter-7"
+      ]
+    },
+    {
+      "id": "ddia_concept_read_committed_prevents_dirty_reads_and_writes",
+      "record_type": "concept",
+      "name": "Read committed prevents dirty reads and writes",
+      "summary": "Use this concept to reason about avoiding observations of uncommitted data and overwriting uncommitted writes. It helps explain transactions observe temporary data that later rolls back and improves decisions about whether minimal isolation is enough for the workflow.",
+      "engineering_question_answered": "When facing avoiding observations of uncommitted data and overwriting uncommitted writes, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "avoiding observations of uncommitted data and overwriting uncommitted writes",
+      "failure_mode_addressed": "transactions observe temporary data that later rolls back",
+      "decision_improved": "whether minimal isolation is enough for the workflow",
+      "operating_condition": "Relevant when a system design, incident, or code path involves read committed, isolation.",
+      "assumptions": [
+        "The workload or architecture actually involves read committed.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether minimal isolation is enough for the workflow, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble transactions observe temporary data that later rolls back.",
+        "The team must decide about whether minimal isolation is enough for the workflow.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test avoiding observations of uncommitted data and overwriting uncommitted writes.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "transactions observe temporary data that later rolls back",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for avoiding observations of uncommitted data and overwriting uncommitted writes?",
+        "What evidence shows that transactions observe temporary data that later rolls back is or is not occurring?",
+        "Which current component guarantee is being relied on for whether minimal isolation is enough for the workflow?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "Weak Isolation Levels",
+        "page_or_anchor": "MOBI_TEXT_CHAR_488682",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_definition",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about avoiding observations of uncommitted data and overwriting uncommitted writes.",
+          "It connects the topic to tradeoffs or failure behavior involving transactions observe temporary data that later rolls back."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_transactions_bundle_correctness_boundaries",
+        "ddia_concept_acid_as_overloaded_terminology",
+        "ddia_concept_snapshot_isolation_prevents_read_skew",
+        "ddia_concept_lost_update_protection"
+      ],
+      "tags": [
+        "read committed",
+        "isolation",
+        "chapter-7"
+      ]
+    },
+    {
+      "id": "ddia_concept_snapshot_isolation_prevents_read_skew",
+      "record_type": "concept",
+      "name": "Snapshot isolation prevents read skew",
+      "summary": "Use this concept to reason about letting a transaction read from a consistent snapshot. It helps explain reports or decisions combine data from different times and improves decisions about whether consistent reads matter more than latest reads.",
+      "engineering_question_answered": "When facing letting a transaction read from a consistent snapshot, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "letting a transaction read from a consistent snapshot",
+      "failure_mode_addressed": "reports or decisions combine data from different times",
+      "decision_improved": "whether consistent reads matter more than latest reads",
+      "operating_condition": "Relevant when a system design, incident, or code path involves snapshot isolation, read skew, mvcc.",
+      "assumptions": [
+        "The workload or architecture actually involves snapshot isolation.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether consistent reads matter more than latest reads, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble reports or decisions combine data from different times.",
+        "The team must decide about whether consistent reads matter more than latest reads.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test letting a transaction read from a consistent snapshot.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "reports or decisions combine data from different times",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for letting a transaction read from a consistent snapshot?",
+        "What evidence shows that reports or decisions combine data from different times is or is not occurring?",
+        "Which current component guarantee is being relied on for whether consistent reads matter more than latest reads?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "Weak Isolation Levels",
+        "page_or_anchor": "MOBI_TEXT_CHAR_488682",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about letting a transaction read from a consistent snapshot.",
+          "It connects the topic to tradeoffs or failure behavior involving reports or decisions combine data from different times."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_transactions_bundle_correctness_boundaries",
+        "ddia_concept_acid_as_overloaded_terminology",
+        "ddia_concept_read_committed_prevents_dirty_reads_and_writes",
+        "ddia_concept_lost_update_protection"
+      ],
+      "tags": [
+        "snapshot isolation",
+        "read skew",
+        "mvcc",
+        "chapter-7"
+      ]
+    },
+    {
+      "id": "ddia_concept_write_skew_under_snapshot_isolation",
+      "record_type": "concept",
+      "name": "Write skew under snapshot isolation",
+      "summary": "Use this concept to reason about recognizing invariant violations caused by concurrent writes to different rows. It helps explain each transaction looks valid alone but jointly breaks a rule and improves decisions about whether predicate locks or serializable isolation are needed.",
+      "engineering_question_answered": "When facing recognizing invariant violations caused by concurrent writes to different rows, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "recognizing invariant violations caused by concurrent writes to different rows",
+      "failure_mode_addressed": "each transaction looks valid alone but jointly breaks a rule",
+      "decision_improved": "whether predicate locks or serializable isolation are needed",
+      "operating_condition": "Relevant when a system design, incident, or code path involves write skew, snapshot isolation.",
+      "assumptions": [
+        "The workload or architecture actually involves write skew.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether predicate locks or serializable isolation are needed, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble each transaction looks valid alone but jointly breaks a rule.",
+        "The team must decide about whether predicate locks or serializable isolation are needed.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test recognizing invariant violations caused by concurrent writes to different rows.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "each transaction looks valid alone but jointly breaks a rule",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for recognizing invariant violations caused by concurrent writes to different rows?",
+        "What evidence shows that each transaction looks valid alone but jointly breaks a rule is or is not occurring?",
+        "Which current component guarantee is being relied on for whether predicate locks or serializable isolation are needed?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "Weak Isolation Levels",
+        "page_or_anchor": "MOBI_TEXT_CHAR_488682",
+        "figure_table_diagram_or_example": "",
+        "support_role": "anomaly_explanation",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about recognizing invariant violations caused by concurrent writes to different rows.",
+          "It connects the topic to tradeoffs or failure behavior involving each transaction looks valid alone but jointly breaks a rule."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_transactions_bundle_correctness_boundaries",
+        "ddia_concept_acid_as_overloaded_terminology",
+        "ddia_concept_read_committed_prevents_dirty_reads_and_writes",
+        "ddia_concept_snapshot_isolation_prevents_read_skew"
+      ],
+      "tags": [
+        "write skew",
+        "snapshot isolation",
+        "chapter-7"
+      ]
+    },
+    {
+      "id": "ddia_concept_serializability_as_strongest_isolation_model",
+      "record_type": "concept",
+      "name": "Serializability as strongest isolation model",
+      "summary": "Use this concept to reason about making concurrent execution equivalent to some serial order. It helps explain subtle anomalies persist under weaker isolation and improves decisions about when correctness justifies stronger coordination cost.",
+      "engineering_question_answered": "When facing making concurrent execution equivalent to some serial order, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "making concurrent execution equivalent to some serial order",
+      "failure_mode_addressed": "subtle anomalies persist under weaker isolation",
+      "decision_improved": "when correctness justifies stronger coordination cost",
+      "operating_condition": "Relevant when a system design, incident, or code path involves serializability, isolation.",
+      "assumptions": [
+        "The workload or architecture actually involves serializability.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about when correctness justifies stronger coordination cost, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble subtle anomalies persist under weaker isolation.",
+        "The team must decide about when correctness justifies stronger coordination cost.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test making concurrent execution equivalent to some serial order.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "subtle anomalies persist under weaker isolation",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for making concurrent execution equivalent to some serial order?",
+        "What evidence shows that subtle anomalies persist under weaker isolation is or is not occurring?",
+        "Which current component guarantee is being relied on for when correctness justifies stronger coordination cost?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "Serializability",
+        "page_or_anchor": "MOBI_TEXT_CHAR_479711",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_definition",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about making concurrent execution equivalent to some serial order.",
+          "It connects the topic to tradeoffs or failure behavior involving subtle anomalies persist under weaker isolation."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_transactions_bundle_correctness_boundaries",
+        "ddia_concept_acid_as_overloaded_terminology",
+        "ddia_concept_read_committed_prevents_dirty_reads_and_writes",
+        "ddia_concept_snapshot_isolation_prevents_read_skew"
+      ],
+      "tags": [
+        "serializability",
+        "isolation",
+        "chapter-7"
+      ]
+    },
+    {
+      "id": "ddia_concept_serializable_snapshot_isolation_detects_conflicts",
+      "record_type": "concept",
+      "name": "Serializable snapshot isolation detects conflicts",
+      "summary": "Use this concept to reason about using optimistic checks to abort dangerous concurrent transactions. It helps explain high contention causes aborts or retry storms and improves decisions about whether optimistic serializable execution fits workload contention.",
+      "engineering_question_answered": "When facing using optimistic checks to abort dangerous concurrent transactions, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "using optimistic checks to abort dangerous concurrent transactions",
+      "failure_mode_addressed": "high contention causes aborts or retry storms",
+      "decision_improved": "whether optimistic serializable execution fits workload contention",
+      "operating_condition": "Relevant when a system design, incident, or code path involves ssi, serializability, transactions.",
+      "assumptions": [
+        "The workload or architecture actually involves ssi.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether optimistic serializable execution fits workload contention, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble high contention causes aborts or retry storms.",
+        "The team must decide about whether optimistic serializable execution fits workload contention.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test using optimistic checks to abort dangerous concurrent transactions.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "high contention causes aborts or retry storms",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for using optimistic checks to abort dangerous concurrent transactions?",
+        "What evidence shows that high contention causes aborts or retry storms is or is not occurring?",
+        "Which current component guarantee is being relied on for whether optimistic serializable execution fits workload contention?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "Serializability",
+        "page_or_anchor": "MOBI_TEXT_CHAR_479711",
+        "figure_table_diagram_or_example": "",
+        "support_role": "technical_example",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about using optimistic checks to abort dangerous concurrent transactions.",
+          "It connects the topic to tradeoffs or failure behavior involving high contention causes aborts or retry storms."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_transactions_bundle_correctness_boundaries",
+        "ddia_concept_acid_as_overloaded_terminology",
+        "ddia_concept_read_committed_prevents_dirty_reads_and_writes",
+        "ddia_concept_snapshot_isolation_prevents_read_skew"
+      ],
+      "tags": [
+        "ssi",
+        "serializability",
+        "transactions",
+        "chapter-7"
+      ]
+    }
+  ],
+  "isolation_and_concurrency_anomalies": [
+    {
+      "id": "ddia_concept_transactions_bundle_correctness_boundaries",
+      "record_type": "concept",
+      "name": "Transactions bundle correctness boundaries",
+      "summary": "Use this concept to reason about grouping operations that must succeed or fail together. It helps explain partial writes leave invariants broken after crashes or errors and improves decisions about which invariants need atomicity and isolation.",
+      "engineering_question_answered": "When facing grouping operations that must succeed or fail together, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "grouping operations that must succeed or fail together",
+      "failure_mode_addressed": "partial writes leave invariants broken after crashes or errors",
+      "decision_improved": "which invariants need atomicity and isolation",
+      "operating_condition": "Relevant when a system design, incident, or code path involves transaction, acid, invariant.",
+      "assumptions": [
+        "The workload or architecture actually involves transaction.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which invariants need atomicity and isolation, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble partial writes leave invariants broken after crashes or errors.",
+        "The team must decide about which invariants need atomicity and isolation.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test grouping operations that must succeed or fail together.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "partial writes leave invariants broken after crashes or errors",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for grouping operations that must succeed or fail together?",
+        "What evidence shows that partial writes leave invariants broken after crashes or errors is or is not occurring?",
+        "Which current component guarantee is being relied on for which invariants need atomicity and isolation?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "The Slippery Concept of a Transaction",
+        "page_or_anchor": "MOBI_TEXT_CHAR_479908",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about grouping operations that must succeed or fail together.",
+          "It connects the topic to tradeoffs or failure behavior involving partial writes leave invariants broken after crashes or errors."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_acid_as_overloaded_terminology",
+        "ddia_concept_read_committed_prevents_dirty_reads_and_writes",
+        "ddia_concept_snapshot_isolation_prevents_read_skew",
+        "ddia_concept_lost_update_protection"
+      ],
+      "tags": [
+        "transaction",
+        "acid",
+        "invariant",
+        "chapter-7"
+      ]
+    },
+    {
+      "id": "ddia_concept_acid_as_overloaded_terminology",
+      "record_type": "concept",
+      "name": "ACID as overloaded terminology",
+      "summary": "Use this concept to reason about checking concrete guarantees instead of trusting the acronym. It helps explain teams assume stronger behavior than the database provides and improves decisions about what atomicity, consistency, isolation, durability mean in this system.",
+      "engineering_question_answered": "When facing checking concrete guarantees instead of trusting the acronym, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "checking concrete guarantees instead of trusting the acronym",
+      "failure_mode_addressed": "teams assume stronger behavior than the database provides",
+      "decision_improved": "what atomicity, consistency, isolation, durability mean in this system",
+      "operating_condition": "Relevant when a system design, incident, or code path involves acid, guarantees, transactions.",
+      "assumptions": [
+        "The workload or architecture actually involves acid.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about what atomicity, consistency, isolation, durability mean in this system, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble teams assume stronger behavior than the database provides.",
+        "The team must decide about what atomicity, consistency, isolation, durability mean in this system.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test checking concrete guarantees instead of trusting the acronym.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "teams assume stronger behavior than the database provides",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for checking concrete guarantees instead of trusting the acronym?",
+        "What evidence shows that teams assume stronger behavior than the database provides is or is not occurring?",
+        "Which current component guarantee is being relied on for what atomicity, consistency, isolation, durability mean in this system?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "The Slippery Concept of a Transaction",
+        "page_or_anchor": "MOBI_TEXT_CHAR_479908",
+        "figure_table_diagram_or_example": "",
+        "support_role": "caution",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about checking concrete guarantees instead of trusting the acronym.",
+          "It connects the topic to tradeoffs or failure behavior involving teams assume stronger behavior than the database provides."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_transactions_bundle_correctness_boundaries",
+        "ddia_concept_read_committed_prevents_dirty_reads_and_writes",
+        "ddia_concept_snapshot_isolation_prevents_read_skew",
+        "ddia_concept_lost_update_protection"
+      ],
+      "tags": [
+        "acid",
+        "guarantees",
+        "transactions",
+        "chapter-7"
+      ]
+    },
+    {
+      "id": "ddia_concept_read_committed_prevents_dirty_reads_and_writes",
+      "record_type": "concept",
+      "name": "Read committed prevents dirty reads and writes",
+      "summary": "Use this concept to reason about avoiding observations of uncommitted data and overwriting uncommitted writes. It helps explain transactions observe temporary data that later rolls back and improves decisions about whether minimal isolation is enough for the workflow.",
+      "engineering_question_answered": "When facing avoiding observations of uncommitted data and overwriting uncommitted writes, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "avoiding observations of uncommitted data and overwriting uncommitted writes",
+      "failure_mode_addressed": "transactions observe temporary data that later rolls back",
+      "decision_improved": "whether minimal isolation is enough for the workflow",
+      "operating_condition": "Relevant when a system design, incident, or code path involves read committed, isolation.",
+      "assumptions": [
+        "The workload or architecture actually involves read committed.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether minimal isolation is enough for the workflow, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble transactions observe temporary data that later rolls back.",
+        "The team must decide about whether minimal isolation is enough for the workflow.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test avoiding observations of uncommitted data and overwriting uncommitted writes.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "transactions observe temporary data that later rolls back",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for avoiding observations of uncommitted data and overwriting uncommitted writes?",
+        "What evidence shows that transactions observe temporary data that later rolls back is or is not occurring?",
+        "Which current component guarantee is being relied on for whether minimal isolation is enough for the workflow?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "Weak Isolation Levels",
+        "page_or_anchor": "MOBI_TEXT_CHAR_488682",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_definition",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about avoiding observations of uncommitted data and overwriting uncommitted writes.",
+          "It connects the topic to tradeoffs or failure behavior involving transactions observe temporary data that later rolls back."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_transactions_bundle_correctness_boundaries",
+        "ddia_concept_acid_as_overloaded_terminology",
+        "ddia_concept_snapshot_isolation_prevents_read_skew",
+        "ddia_concept_lost_update_protection"
+      ],
+      "tags": [
+        "read committed",
+        "isolation",
+        "chapter-7"
+      ]
+    },
+    {
+      "id": "ddia_concept_snapshot_isolation_prevents_read_skew",
+      "record_type": "concept",
+      "name": "Snapshot isolation prevents read skew",
+      "summary": "Use this concept to reason about letting a transaction read from a consistent snapshot. It helps explain reports or decisions combine data from different times and improves decisions about whether consistent reads matter more than latest reads.",
+      "engineering_question_answered": "When facing letting a transaction read from a consistent snapshot, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "letting a transaction read from a consistent snapshot",
+      "failure_mode_addressed": "reports or decisions combine data from different times",
+      "decision_improved": "whether consistent reads matter more than latest reads",
+      "operating_condition": "Relevant when a system design, incident, or code path involves snapshot isolation, read skew, mvcc.",
+      "assumptions": [
+        "The workload or architecture actually involves snapshot isolation.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether consistent reads matter more than latest reads, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble reports or decisions combine data from different times.",
+        "The team must decide about whether consistent reads matter more than latest reads.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test letting a transaction read from a consistent snapshot.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "reports or decisions combine data from different times",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for letting a transaction read from a consistent snapshot?",
+        "What evidence shows that reports or decisions combine data from different times is or is not occurring?",
+        "Which current component guarantee is being relied on for whether consistent reads matter more than latest reads?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "Weak Isolation Levels",
+        "page_or_anchor": "MOBI_TEXT_CHAR_488682",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about letting a transaction read from a consistent snapshot.",
+          "It connects the topic to tradeoffs or failure behavior involving reports or decisions combine data from different times."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_transactions_bundle_correctness_boundaries",
+        "ddia_concept_acid_as_overloaded_terminology",
+        "ddia_concept_read_committed_prevents_dirty_reads_and_writes",
+        "ddia_concept_lost_update_protection"
+      ],
+      "tags": [
+        "snapshot isolation",
+        "read skew",
+        "mvcc",
+        "chapter-7"
+      ]
+    },
+    {
+      "id": "ddia_concept_lost_update_protection",
+      "record_type": "concept",
+      "name": "Lost update protection",
+      "summary": "Use this concept to reason about preventing read-modify-write cycles from overwriting each other. It helps explain concurrent increments or edits disappear and improves decisions about which updates require compare-and-set or locking.",
+      "engineering_question_answered": "When facing preventing read-modify-write cycles from overwriting each other, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "preventing read-modify-write cycles from overwriting each other",
+      "failure_mode_addressed": "concurrent increments or edits disappear",
+      "decision_improved": "which updates require compare-and-set or locking",
+      "operating_condition": "Relevant when a system design, incident, or code path involves lost update, concurrency.",
+      "assumptions": [
+        "The workload or architecture actually involves lost update.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which updates require compare-and-set or locking, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble concurrent increments or edits disappear.",
+        "The team must decide about which updates require compare-and-set or locking.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test preventing read-modify-write cycles from overwriting each other.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "concurrent increments or edits disappear",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for preventing read-modify-write cycles from overwriting each other?",
+        "What evidence shows that concurrent increments or edits disappear is or is not occurring?",
+        "Which current component guarantee is being relied on for which updates require compare-and-set or locking?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "Weak Isolation Levels",
+        "page_or_anchor": "MOBI_TEXT_CHAR_488682",
+        "figure_table_diagram_or_example": "",
+        "support_role": "failure_mode",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about preventing read-modify-write cycles from overwriting each other.",
+          "It connects the topic to tradeoffs or failure behavior involving concurrent increments or edits disappear."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_transactions_bundle_correctness_boundaries",
+        "ddia_concept_acid_as_overloaded_terminology",
+        "ddia_concept_read_committed_prevents_dirty_reads_and_writes",
+        "ddia_concept_snapshot_isolation_prevents_read_skew"
+      ],
+      "tags": [
+        "lost update",
+        "concurrency",
+        "chapter-7"
+      ]
+    },
+    {
+      "id": "ddia_concept_write_skew_under_snapshot_isolation",
+      "record_type": "concept",
+      "name": "Write skew under snapshot isolation",
+      "summary": "Use this concept to reason about recognizing invariant violations caused by concurrent writes to different rows. It helps explain each transaction looks valid alone but jointly breaks a rule and improves decisions about whether predicate locks or serializable isolation are needed.",
+      "engineering_question_answered": "When facing recognizing invariant violations caused by concurrent writes to different rows, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "recognizing invariant violations caused by concurrent writes to different rows",
+      "failure_mode_addressed": "each transaction looks valid alone but jointly breaks a rule",
+      "decision_improved": "whether predicate locks or serializable isolation are needed",
+      "operating_condition": "Relevant when a system design, incident, or code path involves write skew, snapshot isolation.",
+      "assumptions": [
+        "The workload or architecture actually involves write skew.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether predicate locks or serializable isolation are needed, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble each transaction looks valid alone but jointly breaks a rule.",
+        "The team must decide about whether predicate locks or serializable isolation are needed.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test recognizing invariant violations caused by concurrent writes to different rows.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "each transaction looks valid alone but jointly breaks a rule",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for recognizing invariant violations caused by concurrent writes to different rows?",
+        "What evidence shows that each transaction looks valid alone but jointly breaks a rule is or is not occurring?",
+        "Which current component guarantee is being relied on for whether predicate locks or serializable isolation are needed?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "Weak Isolation Levels",
+        "page_or_anchor": "MOBI_TEXT_CHAR_488682",
+        "figure_table_diagram_or_example": "",
+        "support_role": "anomaly_explanation",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about recognizing invariant violations caused by concurrent writes to different rows.",
+          "It connects the topic to tradeoffs or failure behavior involving each transaction looks valid alone but jointly breaks a rule."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_transactions_bundle_correctness_boundaries",
+        "ddia_concept_acid_as_overloaded_terminology",
+        "ddia_concept_read_committed_prevents_dirty_reads_and_writes",
+        "ddia_concept_snapshot_isolation_prevents_read_skew"
+      ],
+      "tags": [
+        "write skew",
+        "snapshot isolation",
+        "chapter-7"
+      ]
+    },
+    {
+      "id": "ddia_concept_serializability_as_strongest_isolation_model",
+      "record_type": "concept",
+      "name": "Serializability as strongest isolation model",
+      "summary": "Use this concept to reason about making concurrent execution equivalent to some serial order. It helps explain subtle anomalies persist under weaker isolation and improves decisions about when correctness justifies stronger coordination cost.",
+      "engineering_question_answered": "When facing making concurrent execution equivalent to some serial order, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "making concurrent execution equivalent to some serial order",
+      "failure_mode_addressed": "subtle anomalies persist under weaker isolation",
+      "decision_improved": "when correctness justifies stronger coordination cost",
+      "operating_condition": "Relevant when a system design, incident, or code path involves serializability, isolation.",
+      "assumptions": [
+        "The workload or architecture actually involves serializability.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about when correctness justifies stronger coordination cost, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble subtle anomalies persist under weaker isolation.",
+        "The team must decide about when correctness justifies stronger coordination cost.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test making concurrent execution equivalent to some serial order.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "subtle anomalies persist under weaker isolation",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for making concurrent execution equivalent to some serial order?",
+        "What evidence shows that subtle anomalies persist under weaker isolation is or is not occurring?",
+        "Which current component guarantee is being relied on for when correctness justifies stronger coordination cost?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "Serializability",
+        "page_or_anchor": "MOBI_TEXT_CHAR_479711",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_definition",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about making concurrent execution equivalent to some serial order.",
+          "It connects the topic to tradeoffs or failure behavior involving subtle anomalies persist under weaker isolation."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_transactions_bundle_correctness_boundaries",
+        "ddia_concept_acid_as_overloaded_terminology",
+        "ddia_concept_read_committed_prevents_dirty_reads_and_writes",
+        "ddia_concept_snapshot_isolation_prevents_read_skew"
+      ],
+      "tags": [
+        "serializability",
+        "isolation",
+        "chapter-7"
+      ]
+    },
+    {
+      "id": "ddia_concept_serializable_snapshot_isolation_detects_conflicts",
+      "record_type": "concept",
+      "name": "Serializable snapshot isolation detects conflicts",
+      "summary": "Use this concept to reason about using optimistic checks to abort dangerous concurrent transactions. It helps explain high contention causes aborts or retry storms and improves decisions about whether optimistic serializable execution fits workload contention.",
+      "engineering_question_answered": "When facing using optimistic checks to abort dangerous concurrent transactions, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "using optimistic checks to abort dangerous concurrent transactions",
+      "failure_mode_addressed": "high contention causes aborts or retry storms",
+      "decision_improved": "whether optimistic serializable execution fits workload contention",
+      "operating_condition": "Relevant when a system design, incident, or code path involves ssi, serializability, transactions.",
+      "assumptions": [
+        "The workload or architecture actually involves ssi.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether optimistic serializable execution fits workload contention, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble high contention causes aborts or retry storms.",
+        "The team must decide about whether optimistic serializable execution fits workload contention.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test using optimistic checks to abort dangerous concurrent transactions.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "high contention causes aborts or retry storms",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for using optimistic checks to abort dangerous concurrent transactions?",
+        "What evidence shows that high contention causes aborts or retry storms is or is not occurring?",
+        "Which current component guarantee is being relied on for whether optimistic serializable execution fits workload contention?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "7",
+        "chapter_title": "Transactions",
+        "section_heading": "Serializability",
+        "page_or_anchor": "MOBI_TEXT_CHAR_479711",
+        "figure_table_diagram_or_example": "",
+        "support_role": "technical_example",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about using optimistic checks to abort dangerous concurrent transactions.",
+          "It connects the topic to tradeoffs or failure behavior involving high contention causes aborts or retry storms."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_transactions_bundle_correctness_boundaries",
+        "ddia_concept_acid_as_overloaded_terminology",
+        "ddia_concept_read_committed_prevents_dirty_reads_and_writes",
+        "ddia_concept_snapshot_isolation_prevents_read_skew"
+      ],
+      "tags": [
+        "ssi",
+        "serializability",
+        "transactions",
+        "chapter-7"
+      ]
+    }
+  ]
+}

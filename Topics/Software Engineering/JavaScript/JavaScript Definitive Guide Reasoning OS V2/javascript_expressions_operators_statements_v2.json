@@ -1,0 +1,498 @@
+{
+  "package_metadata": {
+    "package_name": "JavaScript Language, Runtime, and Code-Quality Reasoning OS V2",
+    "module_name": "expressions_operators_statements",
+    "repair_type": "focused_v2_repair_not_full_rebuild",
+    "generated_at": "2026-06-21T05:00:11.155979+00:00",
+    "primary_source": {
+      "title": "JavaScript: The Definitive Guide",
+      "edition": "Seventh Edition",
+      "author": "David Flanagan",
+      "publisher": "O'Reilly Media",
+      "release_year": 2020,
+      "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+      "source_sha256": "b511aca2b98ae4eec4966c87d5e6b6c1704cbafe7dd076b924db46cb8d20ae07"
+    },
+    "v1_package_reference": {
+      "source_zip": "Javascript Reasoning.zip",
+      "source_zip_sha256": "60242e2ad2cfcc9bdf79f2fc73b392b7f149339dc95d6234f00db683f368d98d",
+      "not_overwritten": true
+    },
+    "authority_order": [
+      "Original uploaded book source",
+      "Current generated JavaScript Reasoning OS package",
+      "User repair prompt",
+      "Current official documentation only if available",
+      "General engineering reasoning"
+    ],
+    "source_limitation_warning": "Current browser, Node, npm, bundler, tool, framework, and Google Apps Script behavior is not asserted unless explicitly verified. V2 flags such items for current documentation checks.",
+    "purpose": "V2 records for expressions, operators, property access, logical flow, strict mode, and ASI."
+  },
+  "language_semantics_records": [
+    {
+      "id": "js-sem-equality-comparison",
+      "concept_name": "equality and comparison",
+      "language_area": "expressions_operators",
+      "plain_language_meaning": "JavaScript has strict equality and loose equality, plus relational comparisons that may convert operands.",
+      "precise_behavior": "=== and !== compare without the broad coercions of == and !=. Loose equality follows conversion rules, with null and undefined equal to each other. Relational operators compare numbers or strings after conversions and may invoke object-to-primitive conversion.",
+      "syntax_or_api_shape": "a === b, a !== b, a == b, a != b, a < b, a <= b, Object.is(a,b)",
+      "why_it_matters": "Comparison bugs are often hidden because individual test inputs look reasonable while edge inputs cross type boundaries.",
+      "common_use": [
+        "Use strict equality for ordinary application code",
+        "Use == null only as deliberate null-or-undefined check",
+        "Use relational operators after normalizing input type"
+      ],
+      "common_misuse": [
+        "Comparing numeric strings to numbers without conversion",
+        "Assuming NaN equals itself",
+        "Sorting with a comparator that returns booleans instead of negative/zero/positive"
+      ],
+      "debugging_symptoms": [
+        "Filter includes/excludes unexpected rows",
+        "Sort order differs by input shape",
+        "NaN checks fail"
+      ],
+      "tests_or_checks": [
+        "Search for == and !=",
+        "Test numeric strings, empty strings, null, undefined, NaN, objects, and arrays",
+        "Verify comparator return values"
+      ],
+      "safe_refactor_notes": [
+        "When changing == to ===, add tests for the old accepted input types",
+        "Normalize at API boundaries before comparison"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 4,
+        "chapter_title": "Expressions and Operators",
+        "sections": [
+          "4.9 Relational Expressions",
+          "3.9 Type Conversions"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-object-to-primitive",
+      "concept_name": "object-to-primitive conversion",
+      "language_area": "expressions_operators",
+      "plain_language_meaning": "When an object is used where a primitive is expected, JavaScript asks the object for a primitive representation.",
+      "precise_behavior": "Conversion can use Symbol.toPrimitive, valueOf(), or toString() depending on the operation and hint. The result affects arithmetic, comparison, property keys, string output, and template literals.",
+      "syntax_or_api_shape": "obj.valueOf(), obj.toString(), obj[Symbol.toPrimitive], `${obj}`, +obj, obj < other",
+      "why_it_matters": "Custom conversion hooks make ordinary-looking operators run user code and can hide side effects or surprising values.",
+      "common_use": [
+        "Define human-readable string output",
+        "Implement domain-specific numeric objects only with care",
+        "Debug operator behavior on custom objects"
+      ],
+      "common_misuse": [
+        "Using objects in comparisons without knowing conversion result",
+        "Adding valueOf side effects",
+        "Assuming template literal output is diagnostic enough"
+      ],
+      "debugging_symptoms": [
+        "Unexpected string/number in logs",
+        "Comparison runs code",
+        "Map/object keys collapse to same string in plain objects"
+      ],
+      "tests_or_checks": [
+        "Check for Symbol.toPrimitive, valueOf, toString overrides",
+        "Probe String(obj), Number(obj), obj + \"\"",
+        "Avoid object operands in arithmetic unless designed"
+      ],
+      "safe_refactor_notes": [
+        "Preserve conversion hooks when moving methods",
+        "Prefer explicit method calls for domain values"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion",
+        "js-risk-metaprogramming-opacity"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 3,
+        "chapter_title": "Types, Values, and Variables",
+        "sections": [
+          "3.9 Type Conversions",
+          "14.4 Well-Known Symbols"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-property-access",
+      "concept_name": "property access",
+      "language_area": "expressions_operators",
+      "plain_language_meaning": "Objects expose values through property names using dot or bracket notation.",
+      "precise_behavior": "obj.name uses an identifier property name. obj[expr] evaluates expr and converts it to a property key. Accessing a property of null or undefined throws. Lookup may continue through the prototype chain.",
+      "syntax_or_api_shape": "obj.prop, obj[dynamicKey], obj?.prop, obj?.[key]",
+      "why_it_matters": "Most JavaScript objects, arrays, functions, modules, DOM objects, and API results are manipulated through property access.",
+      "common_use": [
+        "Read and write object properties",
+        "Use computed keys",
+        "Access array elements"
+      ],
+      "common_misuse": [
+        "Reading nested properties before nullish guard",
+        "Using dot notation when the key is dynamic",
+        "Confusing missing own property with inherited property"
+      ],
+      "debugging_symptoms": [
+        "Cannot read properties error",
+        "undefined value from misspelled key",
+        "Prototype value appears unexpectedly"
+      ],
+      "tests_or_checks": [
+        "Check nullish source before access",
+        "Check own versus inherited property",
+        "Test dynamic keys with unusual strings"
+      ],
+      "safe_refactor_notes": [
+        "When moving properties, preserve accessor/getter semantics and prototype lookup assumptions",
+        "Use destructuring only after nullish checks"
+      ],
+      "related_risk_ids": [
+        "js-risk-null-undefined-access",
+        "js-risk-prototype-shadowing"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 4,
+        "chapter_title": "Expressions and Operators",
+        "sections": [
+          "4.4 Property Access Expressions",
+          "6.3 Querying and Setting Properties"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-optional-chaining",
+      "concept_name": "optional chaining",
+      "language_area": "expressions_operators",
+      "plain_language_meaning": "Optional chaining stops a property access or call when the base is nullish and returns undefined instead of throwing.",
+      "precise_behavior": "?. applies only at the guarded step. It does not validate later required values unless each access is guarded. It changes failure mode from exception to undefined.",
+      "syntax_or_api_shape": "obj?.prop, obj?.[expr], func?.(args)",
+      "why_it_matters": "Optional chaining is useful at unreliable boundaries but can hide bugs if a value should always exist.",
+      "common_use": [
+        "Read optional API fields",
+        "Handle missing DOM/API elements when absence is valid",
+        "Guard optional callbacks"
+      ],
+      "common_misuse": [
+        "Replacing a required invariant with ?. and letting undefined flow downstream",
+        "Assuming ?. catches all errors inside a called function",
+        "Combining ?. with || defaults that erase valid falsy values"
+      ],
+      "debugging_symptoms": [
+        "Later NaN or undefined output instead of early TypeError",
+        "Missing UI/data silently ignored",
+        "Tests pass without asserting required structure"
+      ],
+      "tests_or_checks": [
+        "Ask whether missing base is valid",
+        "Test absent intermediate object and present falsy values",
+        "Use ?? for nullish fallback"
+      ],
+      "safe_refactor_notes": [
+        "Use explicit assertion for required values",
+        "Keep error visibility for invariants"
+      ],
+      "related_risk_ids": [
+        "js-risk-null-undefined-access"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 1,
+        "chapter_title": "Introduction to JavaScript",
+        "sections": [
+          "1.3 A Tour of JavaScript optional chaining example"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_demonstrated_by_code",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_demonstrated_by_code",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-arithmetic-plus",
+      "concept_name": "arithmetic operators and plus",
+      "language_area": "expressions_operators",
+      "plain_language_meaning": "Arithmetic operators compute numeric results, while + also concatenates strings.",
+      "precise_behavior": "Most arithmetic operators convert operands to numbers. + performs string concatenation if either operand is or becomes a string in the relevant conversion path; otherwise it performs numeric addition.",
+      "syntax_or_api_shape": "a + b, a - b, a * b, a / b, a % b, ++x, x++",
+      "why_it_matters": "The same plus token is both addition and concatenation, so mixed input types are a common bug source.",
+      "common_use": [
+        "Add validated numbers",
+        "Concatenate strings deliberately",
+        "Increment numeric counters"
+      ],
+      "common_misuse": [
+        "Adding form/query values without parsing",
+        "Using ++ across line breaks incorrectly",
+        "Assuming arrays in arithmetic are invalid before conversion"
+      ],
+      "debugging_symptoms": [
+        "\"12\" + 3 becomes \"123\"",
+        "NaN after subtraction",
+        "Counter update uses stale coerced type"
+      ],
+      "tests_or_checks": [
+        "Test numeric strings and empty strings",
+        "Use Number()/parse functions before arithmetic",
+        "Search for + near external input"
+      ],
+      "safe_refactor_notes": [
+        "Separate formatting from arithmetic",
+        "Do not change + to template literal without checking numeric intent"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 4,
+        "chapter_title": "Expressions and Operators",
+        "sections": [
+          "4.8 Arithmetic Expressions",
+          "3.9 Type Conversions"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-logical-short-circuit",
+      "concept_name": "logical short-circuiting",
+      "language_area": "expressions_operators",
+      "plain_language_meaning": "Logical operators return operand values, not necessarily booleans, and skip work when the result is already known.",
+      "precise_behavior": "&& returns the first falsy operand or the last operand. || returns the first truthy operand or the last operand. ?? returns the right side only when the left side is null or undefined. ! converts to boolean.",
+      "syntax_or_api_shape": "a && b, a || fallback, a ?? fallback, !a",
+      "why_it_matters": "Short-circuit operators are concise control flow and defaulting tools, but they can accidentally treat valid falsy values as missing.",
+      "common_use": [
+        "Guard optional calls",
+        "Choose defaults",
+        "Compose simple conditionals"
+      ],
+      "common_misuse": [
+        "Using || for numeric/string defaults where 0 or \"\" is valid",
+        "Depending on side effects in skipped operands",
+        "Assuming result type is boolean"
+      ],
+      "debugging_symptoms": [
+        "Function not called",
+        "Default overwrites value",
+        "Variable holds object/string instead of boolean"
+      ],
+      "tests_or_checks": [
+        "Test false, 0, \"\", null, undefined",
+        "Review side effects in operands",
+        "Use Boolean(expr) when boolean output is required"
+      ],
+      "safe_refactor_notes": [
+        "When refactoring to if statements, preserve returned operand value semantics",
+        "Prefer ?? for nullish-only fallback"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion",
+        "js-risk-null-undefined-access"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 4,
+        "chapter_title": "Expressions and Operators",
+        "sections": [
+          "4.10 Logical Expressions"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-automatic-semicolon-insertion",
+      "concept_name": "optional semicolons and ASI",
+      "language_area": "lexical_structure",
+      "plain_language_meaning": "JavaScript can insert semicolons at line breaks, but not at every line break.",
+      "precise_behavior": "Line terminators may be treated as statement separators when parsing otherwise fails, with important exceptions such as return/throw/yield/break/continue, postfix ++/--, and arrow functions. Lines starting with (, [, /, +, or - can be parsed as continuation of the prior statement.",
+      "syntax_or_api_shape": "return expr; return\nexpr; ;[...].forEach(...); x\n++",
+      "why_it_matters": "ASI can turn visually reasonable code into different code, especially around return statements and leading parentheses/brackets.",
+      "common_use": [
+        "Omit semicolons consistently with defensive leading semicolons",
+        "Use semicolons explicitly to reduce ambiguity",
+        "Review minified/generated code boundaries"
+      ],
+      "common_misuse": [
+        "Putting return value on the next line",
+        "Starting an IIFE or array literal after a semicolonless statement",
+        "Breaking before =>"
+      ],
+      "debugging_symptoms": [
+        "Function returns undefined",
+        "Previous expression is called as a function",
+        "SyntaxError around arrow function"
+      ],
+      "tests_or_checks": [
+        "Search for return/throw/yield/break/continue followed by newline",
+        "Check lines beginning with ( or [ after semicolonless code",
+        "Run formatter/linter"
+      ],
+      "safe_refactor_notes": [
+        "Do not move expressions across line breaks near restricted productions without tests",
+        "Prefer explicit semicolons in generated/concatenated snippets"
+      ],
+      "related_risk_ids": [
+        "js-risk-tooling-version-drift"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 2,
+        "chapter_title": "Lexical Structure",
+        "sections": [
+          "2.6 Optional Semicolons"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-strict-mode",
+      "concept_name": "strict mode",
+      "language_area": "statements",
+      "plain_language_meaning": "Strict mode disables or changes selected legacy JavaScript behaviors.",
+      "precise_behavior": "Strict mode is enabled by a \"use strict\" directive or implicitly in ES modules and classes. It makes some silent errors throw, changes this in function calls, restricts eval/arguments behavior, and removes certain legacy features.",
+      "syntax_or_api_shape": "\"use strict\"; ES modules; class bodies",
+      "why_it_matters": "Strictness affects refactors from scripts to modules/classes and changes behavior of legacy code.",
+      "common_use": [
+        "Make errors visible",
+        "Write modern modules/classes",
+        "Avoid accidental globals"
+      ],
+      "common_misuse": [
+        "Moving legacy script into module without checking this and globals",
+        "Depending on non-strict function-call this",
+        "Using restricted identifiers"
+      ],
+      "debugging_symptoms": [
+        "ReferenceError for undeclared assignment",
+        "this is undefined in function call",
+        "SyntaxError in migrated code"
+      ],
+      "tests_or_checks": [
+        "Check strict directive/module/class boundaries",
+        "Search undeclared assignments",
+        "Test function invocation this"
+      ],
+      "safe_refactor_notes": [
+        "Treat script-to-module conversion as behavior change",
+        "Preserve intentional global writes explicitly"
+      ],
+      "related_risk_ids": [
+        "js-risk-this-binding",
+        "js-risk-module-system-mismatch"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 1,
+        "chapter_title": "Introduction to JavaScript",
+        "sections": [
+          "JavaScript Names Versions and Modes",
+          "5.6 Miscellaneous Statements"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    }
+  ]
+}

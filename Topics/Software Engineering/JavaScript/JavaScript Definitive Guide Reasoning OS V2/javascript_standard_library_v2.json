@@ -1,0 +1,333 @@
+{
+  "package_metadata": {
+    "package_name": "JavaScript Language, Runtime, and Code-Quality Reasoning OS V2",
+    "module_name": "standard_library",
+    "repair_type": "focused_v2_repair_not_full_rebuild",
+    "generated_at": "2026-06-21T05:00:11.155979+00:00",
+    "primary_source": {
+      "title": "JavaScript: The Definitive Guide",
+      "edition": "Seventh Edition",
+      "author": "David Flanagan",
+      "publisher": "O'Reilly Media",
+      "release_year": 2020,
+      "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+      "source_sha256": "b511aca2b98ae4eec4966c87d5e6b6c1704cbafe7dd076b924db46cb8d20ae07"
+    },
+    "v1_package_reference": {
+      "source_zip": "Javascript Reasoning.zip",
+      "source_zip_sha256": "60242e2ad2cfcc9bdf79f2fc73b392b7f149339dc95d6234f00db683f368d98d",
+      "not_overwritten": true
+    },
+    "authority_order": [
+      "Original uploaded book source",
+      "Current generated JavaScript Reasoning OS package",
+      "User repair prompt",
+      "Current official documentation only if available",
+      "General engineering reasoning"
+    ],
+    "source_limitation_warning": "Current browser, Node, npm, bundler, tool, framework, and Google Apps Script behavior is not asserted unless explicitly verified. V2 flags such items for current documentation checks.",
+    "purpose": "V2 records for standard library data structures, JSON, Date, RegExp, errors, and related risks."
+  },
+  "language_semantics_records": [
+    {
+      "id": "js-sem-map-set",
+      "concept_name": "Map Set WeakMap and WeakSet",
+      "language_area": "standard_library",
+      "plain_language_meaning": "Map and Set are standard collection types for keys/values and unique membership.",
+      "precise_behavior": "Map stores key-value associations with keys not limited to strings. Set stores unique values. WeakMap/WeakSet have object-key/value constraints and garbage-collection-oriented behavior.",
+      "syntax_or_api_shape": "new Map(), map.set(k,v), map.get(k), new Set(), set.add(v), WeakMap",
+      "why_it_matters": "Collection choice determines key identity, iteration order expectations, serialization, and performance shape.",
+      "common_use": [
+        "Use Map for object keys or non-string keys",
+        "Use Set for membership uniqueness",
+        "Use WeakMap for private metadata tied to object lifetime"
+      ],
+      "common_misuse": [
+        "Using plain object as map with arbitrary user keys",
+        "Expecting JSON.stringify Map/Set to preserve entries",
+        "Using WeakMap when iteration is required"
+      ],
+      "debugging_symptoms": [
+        "Keys collide as strings",
+        "Serialized output is {}",
+        "Cannot inspect WeakMap contents"
+      ],
+      "tests_or_checks": [
+        "Check key types",
+        "Test JSON serialization",
+        "Verify iteration needs"
+      ],
+      "safe_refactor_notes": [
+        "Switch object to Map only after updating access/serialization code",
+        "Keep conversion helpers at boundaries"
+      ],
+      "related_risk_ids": [
+        "js-risk-json-serialization-loss"
+      ],
+      "runtime_or_environment": "ECMAScript standard library",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.1 Sets and Maps"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-json-serialization",
+      "concept_name": "JSON serialization and parsing",
+      "language_area": "standard_library",
+      "plain_language_meaning": "JSON converts compatible JavaScript values to text and parses JSON text back to data.",
+      "precise_behavior": "JSON.stringify handles objects, arrays, strings, finite numbers, booleans, and null, with special behavior for undefined, functions, symbols, Dates/toJSON, non-finite numbers, and unsupported/cyclic values. JSON.parse can use a reviver.",
+      "syntax_or_api_shape": "JSON.stringify(value, replacer, space), JSON.parse(text, reviver)",
+      "why_it_matters": "JSON is a data boundary, not a faithful snapshot of arbitrary JavaScript objects.",
+      "common_use": [
+        "Send plain data over network/storage",
+        "Persist configuration-like values",
+        "Clone limited JSON-compatible data"
+      ],
+      "common_misuse": [
+        "Serializing class instances, Maps, Sets, Errors, Dates, functions, undefined, cycles, or special numbers without custom logic",
+        "Assuming parse restores prototypes"
+      ],
+      "debugging_symptoms": [
+        "Dropped fields",
+        "Date comes back as string",
+        "TypeError for circular structure",
+        "Methods lost"
+      ],
+      "tests_or_checks": [
+        "Round-trip representative data",
+        "Check toJSON/replacer/reviver",
+        "List non-JSON value types before boundary"
+      ],
+      "safe_refactor_notes": [
+        "Use explicit schema/custom serialization for non-plain data",
+        "Keep parse validation separate from parsing"
+      ],
+      "related_risk_ids": [
+        "js-risk-json-serialization-loss",
+        "js-risk-date-timezone"
+      ],
+      "runtime_or_environment": "ECMAScript standard library",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.6 JSON Serialization and Parsing",
+          "6.8 Serializing Objects"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-date-time",
+      "concept_name": "Date and time",
+      "language_area": "standard_library",
+      "plain_language_meaning": "Date represents moments in time but many methods expose local or UTC views.",
+      "precise_behavior": "Date stores a timestamp and provides constructors/parsing/formatting/accessors. Local timezone, UTC methods, string parsing, and daylight-saving transitions affect results.",
+      "syntax_or_api_shape": "new Date(), Date.now(), Date.parse(s), date.toISOString(), date.getFullYear(), date.getUTCFullYear()",
+      "why_it_matters": "Date bugs are common at browser/server boundaries and when local dates are treated as instants.",
+      "common_use": [
+        "Timestamp events",
+        "Format dates for display",
+        "Compare instants"
+      ],
+      "common_misuse": [
+        "Parsing ambiguous date strings",
+        "Using local getter when UTC intended",
+        "Serializing date without timezone expectations"
+      ],
+      "debugging_symptoms": [
+        "Off-by-one day",
+        "Different output in CI/server/browser",
+        "DST transition failure"
+      ],
+      "tests_or_checks": [
+        "Test timezone-specific cases",
+        "Prefer ISO with timezone for instants",
+        "Check local versus UTC methods"
+      ],
+      "safe_refactor_notes": [
+        "Do not change parse/format without timezone tests",
+        "Separate date-only domain values from instants"
+      ],
+      "related_risk_ids": [
+        "js-risk-date-timezone",
+        "js-risk-json-serialization-loss"
+      ],
+      "runtime_or_environment": "ECMAScript standard library",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.4 Dates and Times"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-regexp-patterns",
+      "concept_name": "regular expressions",
+      "language_area": "standard_library",
+      "plain_language_meaning": "Regular expressions describe text patterns for search, validation, split, and replace.",
+      "precise_behavior": "RegExp objects and regex literals use pattern syntax plus flags. Capturing, greediness, anchors, global/sticky behavior, Unicode handling, and lastIndex can affect results.",
+      "syntax_or_api_shape": "/pattern/flags, new RegExp(s), re.test(str), str.match(re), str.replace(re, repl)",
+      "why_it_matters": "Regex is powerful but can overmatch, undermatch, or become unreadable when used as a parser.",
+      "common_use": [
+        "Simple token validation",
+        "Search and replace",
+        "Extract flat patterns"
+      ],
+      "common_misuse": [
+        "Using regex for nested grammar",
+        "Forgetting anchors in validation",
+        "Reusing global regex with test without considering state",
+        "Not escaping user input"
+      ],
+      "debugging_symptoms": [
+        "Validation accepts partial string",
+        "Replace removes too much",
+        "Alternating test results",
+        "Slow pathological match"
+      ],
+      "tests_or_checks": [
+        "Positive and negative cases",
+        "Multiline and Unicode tests",
+        "Check flags and anchors",
+        "Fuzz unexpected input"
+      ],
+      "safe_refactor_notes": [
+        "Prefer parser/manual logic for nested formats",
+        "Comment complex patterns",
+        "Avoid hidden global state in shared regex"
+      ],
+      "related_risk_ids": [
+        "js-risk-regex-overmatching"
+      ],
+      "runtime_or_environment": "ECMAScript standard library",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.3 Pattern Matching with Regular Expressions"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-errors",
+      "concept_name": "errors and exceptions",
+      "language_area": "standard_library",
+      "plain_language_meaning": "JavaScript reports exceptional failures through thrown values, commonly Error objects.",
+      "precise_behavior": "throw transfers control to nearest matching catch/finally. Error classes capture messages and, in many environments, stacks. Promise rejections are async error channels, not caught by surrounding synchronous try/catch unless awaited.",
+      "syntax_or_api_shape": "throw new Error(msg); try { } catch (e) { } finally { }",
+      "why_it_matters": "Error handling must match sync, callback, promise, event, stream, and worker boundaries.",
+      "common_use": [
+        "Signal unrecoverable local failure",
+        "Wrap code needing cleanup",
+        "Convert failures at API boundaries"
+      ],
+      "common_misuse": [
+        "Catching too broadly and continuing with corrupt state",
+        "Throwing inside async callback expecting outer try/catch",
+        "Ignoring Error object details"
+      ],
+      "debugging_symptoms": [
+        "Swallowed exception",
+        "Unhandled rejection",
+        "finally masks original error"
+      ],
+      "tests_or_checks": [
+        "Test throw path",
+        "Check async boundaries",
+        "Preserve cause/message/stack when wrapping"
+      ],
+      "safe_refactor_notes": [
+        "Do not change throw to return error without API contract update",
+        "Use finally for cleanup, not normal result substitution"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-callback-error-path"
+      ],
+      "runtime_or_environment": "ECMAScript language core and standard library",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 11,
+        "chapter_title": "The JavaScript Standard Library",
+        "sections": [
+          "11.5 Error Classes",
+          "5.5 Jumps",
+          "13 Asynchronous JavaScript"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    }
+  ],
+  "relevant_risk_ids": [
+    "js-risk-json-serialization-loss",
+    "js-risk-date-timezone",
+    "js-risk-regex-overmatching"
+  ]
+}

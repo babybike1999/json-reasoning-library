@@ -1,0 +1,1281 @@
+{
+  "storage_and_retrieval": [
+    {
+      "id": "ddia_concept_append_only_logs_as_durable_write_path",
+      "record_type": "concept",
+      "name": "Append-only logs as durable write path",
+      "summary": "Use this concept to reason about turning writes into sequential appends for durability and throughput. It helps explain in-place updates create random I/O and complex recovery behavior and improves decisions about whether log structure fits the write and compaction pattern.",
+      "engineering_question_answered": "When facing turning writes into sequential appends for durability and throughput, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "turning writes into sequential appends for durability and throughput",
+      "failure_mode_addressed": "in-place updates create random I/O and complex recovery behavior",
+      "decision_improved": "whether log structure fits the write and compaction pattern",
+      "operating_condition": "Relevant when a system design, incident, or code path involves storage, log, durability.",
+      "assumptions": [
+        "The workload or architecture actually involves storage.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether log structure fits the write and compaction pattern, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble in-place updates create random I/O and complex recovery behavior.",
+        "The team must decide about whether log structure fits the write and compaction pattern.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test turning writes into sequential appends for durability and throughput.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "in-place updates create random I/O and complex recovery behavior",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for turning writes into sequential appends for durability and throughput?",
+        "What evidence shows that in-place updates create random I/O and complex recovery behavior is or is not occurring?",
+        "Which current component guarantee is being relied on for whether log structure fits the write and compaction pattern?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "3",
+        "chapter_title": "Storage and Retrieval",
+        "section_heading": "Data Structures That Power Your Database",
+        "page_or_anchor": "MOBI_TEXT_CHAR_159791",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about turning writes into sequential appends for durability and throughput.",
+          "It connects the topic to tradeoffs or failure behavior involving in-place updates create random I/O and complex recovery behavior."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_hash_index_for_point_lookups",
+        "ddia_concept_sstables_and_lsm_trees",
+        "ddia_concept_b_tree_storage_for_ordered_mutable_indexes",
+        "ddia_concept_secondary_indexes_change_write_costs"
+      ],
+      "tags": [
+        "storage",
+        "log",
+        "durability",
+        "chapter-3"
+      ]
+    },
+    {
+      "id": "ddia_concept_hash_index_for_point_lookups",
+      "record_type": "concept",
+      "name": "Hash index for point lookups",
+      "summary": "Use this concept to reason about accelerating key-value lookups with an in-memory map to log offsets. It helps explain memory growth and range queries limit the approach and improves decisions about when point lookup speed matters more than range scans.",
+      "engineering_question_answered": "When facing accelerating key-value lookups with an in-memory map to log offsets, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "accelerating key-value lookups with an in-memory map to log offsets",
+      "failure_mode_addressed": "memory growth and range queries limit the approach",
+      "decision_improved": "when point lookup speed matters more than range scans",
+      "operating_condition": "Relevant when a system design, incident, or code path involves index, hash, key value.",
+      "assumptions": [
+        "The workload or architecture actually involves index.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about when point lookup speed matters more than range scans, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble memory growth and range queries limit the approach.",
+        "The team must decide about when point lookup speed matters more than range scans.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test accelerating key-value lookups with an in-memory map to log offsets.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "memory growth and range queries limit the approach",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for accelerating key-value lookups with an in-memory map to log offsets?",
+        "What evidence shows that memory growth and range queries limit the approach is or is not occurring?",
+        "Which current component guarantee is being relied on for when point lookup speed matters more than range scans?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "3",
+        "chapter_title": "Storage and Retrieval",
+        "section_heading": "Data Structures That Power Your Database",
+        "page_or_anchor": "MOBI_TEXT_CHAR_159791",
+        "figure_table_diagram_or_example": "",
+        "support_role": "technical_example",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about accelerating key-value lookups with an in-memory map to log offsets.",
+          "It connects the topic to tradeoffs or failure behavior involving memory growth and range queries limit the approach."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "demonstrated_by_source_example",
+        "explanation": "The record abstracts a practical pattern illustrated by an example in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_append_only_logs_as_durable_write_path",
+        "ddia_concept_sstables_and_lsm_trees",
+        "ddia_concept_b_tree_storage_for_ordered_mutable_indexes",
+        "ddia_concept_secondary_indexes_change_write_costs"
+      ],
+      "tags": [
+        "index",
+        "hash",
+        "key value",
+        "chapter-3"
+      ]
+    },
+    {
+      "id": "ddia_concept_sstables_and_lsm_trees",
+      "record_type": "concept",
+      "name": "SSTables and LSM trees",
+      "summary": "Use this concept to reason about using sorted immutable segments plus compaction for write-heavy storage. It helps explain compaction, write amplification, or read amplification become bottlenecks and improves decisions about choosing log-structured storage for write-heavy workloads.",
+      "engineering_question_answered": "When facing using sorted immutable segments plus compaction for write-heavy storage, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "using sorted immutable segments plus compaction for write-heavy storage",
+      "failure_mode_addressed": "compaction, write amplification, or read amplification become bottlenecks",
+      "decision_improved": "choosing log-structured storage for write-heavy workloads",
+      "operating_condition": "Relevant when a system design, incident, or code path involves lsm, sstable, compaction.",
+      "assumptions": [
+        "The workload or architecture actually involves lsm.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about choosing log-structured storage for write-heavy workloads, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble compaction, write amplification, or read amplification become bottlenecks.",
+        "The team must decide about choosing log-structured storage for write-heavy workloads.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test using sorted immutable segments plus compaction for write-heavy storage.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "compaction, write amplification, or read amplification become bottlenecks",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for using sorted immutable segments plus compaction for write-heavy storage?",
+        "What evidence shows that compaction, write amplification, or read amplification become bottlenecks is or is not occurring?",
+        "Which current component guarantee is being relied on for choosing log-structured storage for write-heavy workloads?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "3",
+        "chapter_title": "Storage and Retrieval",
+        "section_heading": "Data Structures That Power Your Database",
+        "page_or_anchor": "MOBI_TEXT_CHAR_159791",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about using sorted immutable segments plus compaction for write-heavy storage.",
+          "It connects the topic to tradeoffs or failure behavior involving compaction, write amplification, or read amplification become bottlenecks."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_append_only_logs_as_durable_write_path",
+        "ddia_concept_hash_index_for_point_lookups",
+        "ddia_concept_b_tree_storage_for_ordered_mutable_indexes",
+        "ddia_concept_secondary_indexes_change_write_costs"
+      ],
+      "tags": [
+        "lsm",
+        "sstable",
+        "compaction",
+        "chapter-3"
+      ]
+    },
+    {
+      "id": "ddia_concept_b_tree_storage_for_ordered_mutable_indexes",
+      "record_type": "concept",
+      "name": "B-tree storage for ordered mutable indexes",
+      "summary": "Use this concept to reason about using page-oriented balanced trees for general-purpose indexing. It helps explain random writes and page splits trade against mature read performance and improves decisions about whether ordered range scans and transactional indexes dominate.",
+      "engineering_question_answered": "When facing using page-oriented balanced trees for general-purpose indexing, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "using page-oriented balanced trees for general-purpose indexing",
+      "failure_mode_addressed": "random writes and page splits trade against mature read performance",
+      "decision_improved": "whether ordered range scans and transactional indexes dominate",
+      "operating_condition": "Relevant when a system design, incident, or code path involves btree, index, storage.",
+      "assumptions": [
+        "The workload or architecture actually involves btree.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether ordered range scans and transactional indexes dominate, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble random writes and page splits trade against mature read performance.",
+        "The team must decide about whether ordered range scans and transactional indexes dominate.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test using page-oriented balanced trees for general-purpose indexing.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "random writes and page splits trade against mature read performance",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for using page-oriented balanced trees for general-purpose indexing?",
+        "What evidence shows that random writes and page splits trade against mature read performance is or is not occurring?",
+        "Which current component guarantee is being relied on for whether ordered range scans and transactional indexes dominate?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "3",
+        "chapter_title": "Storage and Retrieval",
+        "section_heading": "Data Structures That Power Your Database",
+        "page_or_anchor": "MOBI_TEXT_CHAR_159791",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about using page-oriented balanced trees for general-purpose indexing.",
+          "It connects the topic to tradeoffs or failure behavior involving random writes and page splits trade against mature read performance."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_append_only_logs_as_durable_write_path",
+        "ddia_concept_hash_index_for_point_lookups",
+        "ddia_concept_sstables_and_lsm_trees",
+        "ddia_concept_secondary_indexes_change_write_costs"
+      ],
+      "tags": [
+        "btree",
+        "index",
+        "storage",
+        "chapter-3"
+      ]
+    },
+    {
+      "id": "ddia_concept_secondary_indexes_change_write_costs",
+      "record_type": "concept",
+      "name": "Secondary indexes change write costs",
+      "summary": "Use this concept to reason about serving alternate lookup patterns by maintaining additional indexes. It helps explain writes slow down or become inconsistent if index maintenance fails and improves decisions about which access paths justify write amplification.",
+      "engineering_question_answered": "When facing serving alternate lookup patterns by maintaining additional indexes, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "serving alternate lookup patterns by maintaining additional indexes",
+      "failure_mode_addressed": "writes slow down or become inconsistent if index maintenance fails",
+      "decision_improved": "which access paths justify write amplification",
+      "operating_condition": "Relevant when a system design, incident, or code path involves secondary index, write amplification.",
+      "assumptions": [
+        "The workload or architecture actually involves secondary index.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which access paths justify write amplification, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble writes slow down or become inconsistent if index maintenance fails.",
+        "The team must decide about which access paths justify write amplification.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test serving alternate lookup patterns by maintaining additional indexes.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "writes slow down or become inconsistent if index maintenance fails",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for serving alternate lookup patterns by maintaining additional indexes?",
+        "What evidence shows that writes slow down or become inconsistent if index maintenance fails is or is not occurring?",
+        "Which current component guarantee is being relied on for which access paths justify write amplification?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "3",
+        "chapter_title": "Storage and Retrieval",
+        "section_heading": "Data Structures That Power Your Database",
+        "page_or_anchor": "MOBI_TEXT_CHAR_159791",
+        "figure_table_diagram_or_example": "",
+        "support_role": "tradeoff_explanation",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about serving alternate lookup patterns by maintaining additional indexes.",
+          "It connects the topic to tradeoffs or failure behavior involving writes slow down or become inconsistent if index maintenance fails."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_append_only_logs_as_durable_write_path",
+        "ddia_concept_hash_index_for_point_lookups",
+        "ddia_concept_sstables_and_lsm_trees",
+        "ddia_concept_b_tree_storage_for_ordered_mutable_indexes"
+      ],
+      "tags": [
+        "secondary index",
+        "write amplification",
+        "chapter-3"
+      ]
+    },
+    {
+      "id": "ddia_concept_oltp_and_olap_separation",
+      "record_type": "concept",
+      "name": "OLTP and OLAP separation",
+      "summary": "Use this concept to reason about separating low-latency user transactions from analytical scans. It helps explain large scans interfere with operational workload latency and improves decisions about whether a warehouse or separate analytics system is needed.",
+      "engineering_question_answered": "When facing separating low-latency user transactions from analytical scans, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "separating low-latency user transactions from analytical scans",
+      "failure_mode_addressed": "large scans interfere with operational workload latency",
+      "decision_improved": "whether a warehouse or separate analytics system is needed",
+      "operating_condition": "Relevant when a system design, incident, or code path involves oltp, olap, warehouse.",
+      "assumptions": [
+        "The workload or architecture actually involves oltp.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether a warehouse or separate analytics system is needed, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble large scans interfere with operational workload latency.",
+        "The team must decide about whether a warehouse or separate analytics system is needed.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test separating low-latency user transactions from analytical scans.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "large scans interfere with operational workload latency",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for separating low-latency user transactions from analytical scans?",
+        "What evidence shows that large scans interfere with operational workload latency is or is not occurring?",
+        "Which current component guarantee is being relied on for whether a warehouse or separate analytics system is needed?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "3",
+        "chapter_title": "Storage and Retrieval",
+        "section_heading": "Transaction Processing or Analytics?",
+        "page_or_anchor": "MOBI_TEXT_CHAR_159287",
+        "figure_table_diagram_or_example": "",
+        "support_role": "tradeoff_explanation",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about separating low-latency user transactions from analytical scans.",
+          "It connects the topic to tradeoffs or failure behavior involving large scans interfere with operational workload latency."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_append_only_logs_as_durable_write_path",
+        "ddia_concept_hash_index_for_point_lookups",
+        "ddia_concept_sstables_and_lsm_trees",
+        "ddia_concept_b_tree_storage_for_ordered_mutable_indexes"
+      ],
+      "tags": [
+        "oltp",
+        "olap",
+        "warehouse",
+        "chapter-3"
+      ]
+    },
+    {
+      "id": "ddia_concept_column_stores_for_analytical_scans",
+      "record_type": "concept",
+      "name": "Column stores for analytical scans",
+      "summary": "Use this concept to reason about reading only columns needed for aggregate queries. It helps explain row-oriented storage wastes I/O for wide analytical tables and improves decisions about whether column layout matches query shape.",
+      "engineering_question_answered": "When facing reading only columns needed for aggregate queries, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "reading only columns needed for aggregate queries",
+      "failure_mode_addressed": "row-oriented storage wastes I/O for wide analytical tables",
+      "decision_improved": "whether column layout matches query shape",
+      "operating_condition": "Relevant when a system design, incident, or code path involves column store, analytics, compression.",
+      "assumptions": [
+        "The workload or architecture actually involves column store.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether column layout matches query shape, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble row-oriented storage wastes I/O for wide analytical tables.",
+        "The team must decide about whether column layout matches query shape.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test reading only columns needed for aggregate queries.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "row-oriented storage wastes I/O for wide analytical tables",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for reading only columns needed for aggregate queries?",
+        "What evidence shows that row-oriented storage wastes I/O for wide analytical tables is or is not occurring?",
+        "Which current component guarantee is being relied on for whether column layout matches query shape?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "3",
+        "chapter_title": "Storage and Retrieval",
+        "section_heading": "Column-Oriented Storage",
+        "page_or_anchor": "MOBI_TEXT_CHAR_159335",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about reading only columns needed for aggregate queries.",
+          "It connects the topic to tradeoffs or failure behavior involving row-oriented storage wastes I/O for wide analytical tables."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_append_only_logs_as_durable_write_path",
+        "ddia_concept_hash_index_for_point_lookups",
+        "ddia_concept_sstables_and_lsm_trees",
+        "ddia_concept_b_tree_storage_for_ordered_mutable_indexes"
+      ],
+      "tags": [
+        "column store",
+        "analytics",
+        "compression",
+        "chapter-3"
+      ]
+    },
+    {
+      "id": "ddia_concept_materialized_views_shift_work_to_writes",
+      "record_type": "concept",
+      "name": "Materialized views shift work to writes",
+      "summary": "Use this concept to reason about precomputing query results to speed reads. It helps explain derived state becomes stale, costly, or incorrect to maintain and improves decisions about whether read latency justifies maintenance complexity.",
+      "engineering_question_answered": "When facing precomputing query results to speed reads, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "precomputing query results to speed reads",
+      "failure_mode_addressed": "derived state becomes stale, costly, or incorrect to maintain",
+      "decision_improved": "whether read latency justifies maintenance complexity",
+      "operating_condition": "Relevant when a system design, incident, or code path involves materialized view, derived data.",
+      "assumptions": [
+        "The workload or architecture actually involves materialized view.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about whether read latency justifies maintenance complexity, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble derived state becomes stale, costly, or incorrect to maintain.",
+        "The team must decide about whether read latency justifies maintenance complexity.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test precomputing query results to speed reads.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "derived state becomes stale, costly, or incorrect to maintain",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for precomputing query results to speed reads?",
+        "What evidence shows that derived state becomes stale, costly, or incorrect to maintain is or is not occurring?",
+        "Which current component guarantee is being relied on for whether read latency justifies maintenance complexity?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "3",
+        "chapter_title": "Storage and Retrieval",
+        "section_heading": "Column-Oriented Storage",
+        "page_or_anchor": "MOBI_TEXT_CHAR_159335",
+        "figure_table_diagram_or_example": "",
+        "support_role": "tradeoff_explanation",
+        "support_strength": "moderate",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about precomputing query results to speed reads.",
+          "It connects the topic to tradeoffs or failure behavior involving derived state becomes stale, costly, or incorrect to maintain."
+        ],
+        "inferred_claims": [
+          "Materialized views shift work to writes can guide engineering triage when the stated operating condition is present."
+        ]
+      },
+      "derivation": {
+        "classification": "strongly_implied_by_source",
+        "explanation": "The record is a near implication of the cited discussion and is useful for engineering diagnosis.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "medium",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_append_only_logs_as_durable_write_path",
+        "ddia_concept_hash_index_for_point_lookups",
+        "ddia_concept_sstables_and_lsm_trees",
+        "ddia_concept_b_tree_storage_for_ordered_mutable_indexes"
+      ],
+      "tags": [
+        "materialized view",
+        "derived data",
+        "chapter-3"
+      ]
+    }
+  ],
+  "encoding_and_schema_evolution": [
+    {
+      "id": "ddia_concept_encoding_as_compatibility_boundary",
+      "record_type": "concept",
+      "name": "Encoding as compatibility boundary",
+      "summary": "Use this concept to reason about turning in-memory structures into durable or networked bytes. It helps explain old and new components cannot read each other's data and improves decisions about where schema evolution and compatibility must be tested.",
+      "engineering_question_answered": "When facing turning in-memory structures into durable or networked bytes, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "turning in-memory structures into durable or networked bytes",
+      "failure_mode_addressed": "old and new components cannot read each other's data",
+      "decision_improved": "where schema evolution and compatibility must be tested",
+      "operating_condition": "Relevant when a system design, incident, or code path involves encoding, compatibility, schema.",
+      "assumptions": [
+        "The workload or architecture actually involves encoding.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about where schema evolution and compatibility must be tested, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble old and new components cannot read each other's data.",
+        "The team must decide about where schema evolution and compatibility must be tested.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test turning in-memory structures into durable or networked bytes.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "old and new components cannot read each other's data",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for turning in-memory structures into durable or networked bytes?",
+        "What evidence shows that old and new components cannot read each other's data is or is not occurring?",
+        "Which current component guarantee is being relied on for where schema evolution and compatibility must be tested?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "4",
+        "chapter_title": "Encoding and Evolution",
+        "section_heading": "Formats for Encoding Data",
+        "page_or_anchor": "MOBI_TEXT_CHAR_249938",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about turning in-memory structures into durable or networked bytes.",
+          "It connects the topic to tradeoffs or failure behavior involving old and new components cannot read each other's data."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_language_specific_serialization_risk",
+        "ddia_concept_backward_and_forward_compatibility",
+        "ddia_concept_schema_evolution_with_writer_and_reader_schemas",
+        "ddia_concept_database_dataflow_preserves_old_bytes"
+      ],
+      "tags": [
+        "encoding",
+        "compatibility",
+        "schema",
+        "chapter-4"
+      ]
+    },
+    {
+      "id": "ddia_concept_language_specific_serialization_risk",
+      "record_type": "concept",
+      "name": "Language-specific serialization risk",
+      "summary": "Use this concept to reason about avoiding encodings tied to one runtime or unsafe object loading. It helps explain cross-language systems and long-lived data become brittle and improves decisions about which serialization format is safe for APIs and storage.",
+      "engineering_question_answered": "When facing avoiding encodings tied to one runtime or unsafe object loading, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "avoiding encodings tied to one runtime or unsafe object loading",
+      "failure_mode_addressed": "cross-language systems and long-lived data become brittle",
+      "decision_improved": "which serialization format is safe for APIs and storage",
+      "operating_condition": "Relevant when a system design, incident, or code path involves serialization, security, interop.",
+      "assumptions": [
+        "The workload or architecture actually involves serialization.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which serialization format is safe for APIs and storage, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble cross-language systems and long-lived data become brittle.",
+        "The team must decide about which serialization format is safe for APIs and storage.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test avoiding encodings tied to one runtime or unsafe object loading.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "cross-language systems and long-lived data become brittle",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for avoiding encodings tied to one runtime or unsafe object loading?",
+        "What evidence shows that cross-language systems and long-lived data become brittle is or is not occurring?",
+        "Which current component guarantee is being relied on for which serialization format is safe for APIs and storage?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "4",
+        "chapter_title": "Encoding and Evolution",
+        "section_heading": "Formats for Encoding Data",
+        "page_or_anchor": "MOBI_TEXT_CHAR_249938",
+        "figure_table_diagram_or_example": "",
+        "support_role": "caution",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about avoiding encodings tied to one runtime or unsafe object loading.",
+          "It connects the topic to tradeoffs or failure behavior involving cross-language systems and long-lived data become brittle."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_encoding_as_compatibility_boundary",
+        "ddia_concept_backward_and_forward_compatibility",
+        "ddia_concept_schema_evolution_with_writer_and_reader_schemas",
+        "ddia_concept_database_dataflow_preserves_old_bytes"
+      ],
+      "tags": [
+        "serialization",
+        "security",
+        "interop",
+        "chapter-4"
+      ]
+    },
+    {
+      "id": "ddia_concept_backward_and_forward_compatibility",
+      "record_type": "concept",
+      "name": "Backward and forward compatibility",
+      "summary": "Use this concept to reason about allowing old readers and new writers, and vice versa, during rolling change. It helps explain deployments require lockstep upgrades or break old data and improves decisions about how to stage schema and code changes safely.",
+      "engineering_question_answered": "When facing allowing old readers and new writers, and vice versa, during rolling change, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "allowing old readers and new writers, and vice versa, during rolling change",
+      "failure_mode_addressed": "deployments require lockstep upgrades or break old data",
+      "decision_improved": "how to stage schema and code changes safely",
+      "operating_condition": "Relevant when a system design, incident, or code path involves compatibility, schema evolution, deployments.",
+      "assumptions": [
+        "The workload or architecture actually involves compatibility.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about how to stage schema and code changes safely, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble deployments require lockstep upgrades or break old data.",
+        "The team must decide about how to stage schema and code changes safely.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test allowing old readers and new writers, and vice versa, during rolling change.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "deployments require lockstep upgrades or break old data",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for allowing old readers and new writers, and vice versa, during rolling change?",
+        "What evidence shows that deployments require lockstep upgrades or break old data is or is not occurring?",
+        "Which current component guarantee is being relied on for how to stage schema and code changes safely?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "4",
+        "chapter_title": "Encoding and Evolution",
+        "section_heading": "Formats for Encoding Data",
+        "page_or_anchor": "MOBI_TEXT_CHAR_249938",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_definition",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about allowing old readers and new writers, and vice versa, during rolling change.",
+          "It connects the topic to tradeoffs or failure behavior involving deployments require lockstep upgrades or break old data."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_encoding_as_compatibility_boundary",
+        "ddia_concept_language_specific_serialization_risk",
+        "ddia_concept_schema_evolution_with_writer_and_reader_schemas",
+        "ddia_concept_database_dataflow_preserves_old_bytes"
+      ],
+      "tags": [
+        "compatibility",
+        "schema evolution",
+        "deployments",
+        "chapter-4"
+      ]
+    },
+    {
+      "id": "ddia_concept_schema_evolution_with_writer_and_reader_schemas",
+      "record_type": "concept",
+      "name": "Schema evolution with writer and reader schemas",
+      "summary": "Use this concept to reason about decoding data by reconciling what wrote it and what reads it. It helps explain schema changes silently corrupt meaning or reject valid records and improves decisions about which schema registry or versioning contract is needed.",
+      "engineering_question_answered": "When facing decoding data by reconciling what wrote it and what reads it, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "decoding data by reconciling what wrote it and what reads it",
+      "failure_mode_addressed": "schema changes silently corrupt meaning or reject valid records",
+      "decision_improved": "which schema registry or versioning contract is needed",
+      "operating_condition": "Relevant when a system design, incident, or code path involves avro, schema registry, encoding.",
+      "assumptions": [
+        "The workload or architecture actually involves avro.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which schema registry or versioning contract is needed, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble schema changes silently corrupt meaning or reject valid records.",
+        "The team must decide about which schema registry or versioning contract is needed.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test decoding data by reconciling what wrote it and what reads it.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "schema changes silently corrupt meaning or reject valid records",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for decoding data by reconciling what wrote it and what reads it?",
+        "What evidence shows that schema changes silently corrupt meaning or reject valid records is or is not occurring?",
+        "Which current component guarantee is being relied on for which schema registry or versioning contract is needed?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "4",
+        "chapter_title": "Encoding and Evolution",
+        "section_heading": "Formats for Encoding Data",
+        "page_or_anchor": "MOBI_TEXT_CHAR_249938",
+        "figure_table_diagram_or_example": "",
+        "support_role": "technical_example",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about decoding data by reconciling what wrote it and what reads it.",
+          "It connects the topic to tradeoffs or failure behavior involving schema changes silently corrupt meaning or reject valid records."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "demonstrated_by_source_example",
+        "explanation": "The record abstracts a practical pattern illustrated by an example in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_encoding_as_compatibility_boundary",
+        "ddia_concept_language_specific_serialization_risk",
+        "ddia_concept_backward_and_forward_compatibility",
+        "ddia_concept_database_dataflow_preserves_old_bytes"
+      ],
+      "tags": [
+        "avro",
+        "schema registry",
+        "encoding",
+        "chapter-4"
+      ]
+    },
+    {
+      "id": "ddia_concept_database_dataflow_preserves_old_bytes",
+      "record_type": "concept",
+      "name": "Database dataflow preserves old bytes",
+      "summary": "Use this concept to reason about recognizing that old stored records outlive application releases. It helps explain application code assumes all records have current shape and improves decisions about which migrations or tolerant readers are necessary.",
+      "engineering_question_answered": "When facing recognizing that old stored records outlive application releases, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "recognizing that old stored records outlive application releases",
+      "failure_mode_addressed": "application code assumes all records have current shape",
+      "decision_improved": "which migrations or tolerant readers are necessary",
+      "operating_condition": "Relevant when a system design, incident, or code path involves database, schema evolution, migration.",
+      "assumptions": [
+        "The workload or architecture actually involves database.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which migrations or tolerant readers are necessary, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble application code assumes all records have current shape.",
+        "The team must decide about which migrations or tolerant readers are necessary.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test recognizing that old stored records outlive application releases.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "application code assumes all records have current shape",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for recognizing that old stored records outlive application releases?",
+        "What evidence shows that application code assumes all records have current shape is or is not occurring?",
+        "Which current component guarantee is being relied on for which migrations or tolerant readers are necessary?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "4",
+        "chapter_title": "Encoding and Evolution",
+        "section_heading": "Modes of Dataflow",
+        "page_or_anchor": "MOBI_TEXT_CHAR_282167",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about recognizing that old stored records outlive application releases.",
+          "It connects the topic to tradeoffs or failure behavior involving application code assumes all records have current shape."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_encoding_as_compatibility_boundary",
+        "ddia_concept_language_specific_serialization_risk",
+        "ddia_concept_backward_and_forward_compatibility",
+        "ddia_concept_schema_evolution_with_writer_and_reader_schemas"
+      ],
+      "tags": [
+        "database",
+        "schema evolution",
+        "migration",
+        "chapter-4"
+      ]
+    },
+    {
+      "id": "ddia_concept_service_api_compatibility",
+      "record_type": "concept",
+      "name": "Service API compatibility",
+      "summary": "Use this concept to reason about treating REST/RPC APIs as independently upgraded boundaries. It helps explain client and server deployments become tightly coupled and improves decisions about how APIs handle unknown fields and version changes.",
+      "engineering_question_answered": "When facing treating REST/RPC APIs as independently upgraded boundaries, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "treating REST/RPC APIs as independently upgraded boundaries",
+      "failure_mode_addressed": "client and server deployments become tightly coupled",
+      "decision_improved": "how APIs handle unknown fields and version changes",
+      "operating_condition": "Relevant when a system design, incident, or code path involves api, rpc, compatibility.",
+      "assumptions": [
+        "The workload or architecture actually involves api.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about how APIs handle unknown fields and version changes, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble client and server deployments become tightly coupled.",
+        "The team must decide about how APIs handle unknown fields and version changes.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test treating REST/RPC APIs as independently upgraded boundaries.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "client and server deployments become tightly coupled",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for treating REST/RPC APIs as independently upgraded boundaries?",
+        "What evidence shows that client and server deployments become tightly coupled is or is not occurring?",
+        "Which current component guarantee is being relied on for how APIs handle unknown fields and version changes?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "4",
+        "chapter_title": "Encoding and Evolution",
+        "section_heading": "Modes of Dataflow",
+        "page_or_anchor": "MOBI_TEXT_CHAR_282167",
+        "figure_table_diagram_or_example": "",
+        "support_role": "tradeoff_explanation",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about treating REST/RPC APIs as independently upgraded boundaries.",
+          "It connects the topic to tradeoffs or failure behavior involving client and server deployments become tightly coupled."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_encoding_as_compatibility_boundary",
+        "ddia_concept_language_specific_serialization_risk",
+        "ddia_concept_backward_and_forward_compatibility",
+        "ddia_concept_schema_evolution_with_writer_and_reader_schemas"
+      ],
+      "tags": [
+        "api",
+        "rpc",
+        "compatibility",
+        "chapter-4"
+      ]
+    },
+    {
+      "id": "ddia_concept_message_passing_compatibility",
+      "record_type": "concept",
+      "name": "Message-passing compatibility",
+      "summary": "Use this concept to reason about supporting producers and consumers that evolve independently. It helps explain queued messages become unreadable after a deployment and improves decisions about which message formats and retention windows constrain changes.",
+      "engineering_question_answered": "When facing supporting producers and consumers that evolve independently, what assumption, tradeoff, or failure mode should be checked first?",
+      "problem_addressed": "supporting producers and consumers that evolve independently",
+      "failure_mode_addressed": "queued messages become unreadable after a deployment",
+      "decision_improved": "which message formats and retention windows constrain changes",
+      "operating_condition": "Relevant when a system design, incident, or code path involves message queue, schema evolution, events.",
+      "assumptions": [
+        "The workload or architecture actually involves message queue.",
+        "Current production behavior and vendor guarantees have been checked before applying the concept."
+      ],
+      "tradeoffs": [
+        "Improves reasoning about which message formats and retention windows constrain changes, but may add design or operational complexity.",
+        "The correct choice depends on workload, failure tolerance, and current implementation details."
+      ],
+      "use_when": [
+        "Symptoms resemble queued messages become unreadable after a deployment.",
+        "The team must decide about which message formats and retention windows constrain changes.",
+        "There is enough evidence about reads, writes, failures, or workload shape."
+      ],
+      "do_not_use_when": [
+        "The issue is local code behavior with no data-system boundary involved.",
+        "The source concept is being used only as terminology and not to test supporting producers and consumers that evolve independently.",
+        "Current vendor documentation contradicts the assumed behavior."
+      ],
+      "symptoms_this_explains": [
+        "queued messages become unreadable after a deployment",
+        "behavior that varies by timing, deployment order, workload, or failure mode"
+      ],
+      "diagnostic_questions": [
+        "Which part of the system is responsible for supporting producers and consumers that evolve independently?",
+        "What evidence shows that queued messages become unreadable after a deployment is or is not occurring?",
+        "Which current component guarantee is being relied on for which message formats and retention windows constrain changes?"
+      ],
+      "tests_or_evidence": [
+        "production logs or trace spans covering the relevant read/write path",
+        "a small reproduction or concurrency/failure test",
+        "current database, broker, framework, or cloud-service documentation when behavior is implementation-specific"
+      ],
+      "risks_or_misreadings": [
+        "Treating a conceptual model as proof of current system behavior.",
+        "Assuming all products with a similar label provide the same guarantees.",
+        "Adding distributed coordination before proving the simpler explanation insufficient."
+      ],
+      "source_traceability": {
+        "source_file": "Designing data-intensive applications _ the big ideas behind -- Martin Kleppmann -- Sebastopol, CA, 2017 -- O'Reilly Media, Incorporated -- isbn13 9781491903063 -- 3f2b871e9f54ee7300259f71d3517c17 -- AnnaΓÇÖs Archive.mobi",
+        "book_title": "Designing Data-Intensive Applications",
+        "author": "Martin Kleppmann",
+        "chapter_number": "4",
+        "chapter_title": "Encoding and Evolution",
+        "section_heading": "Modes of Dataflow",
+        "page_or_anchor": "MOBI_TEXT_CHAR_282167",
+        "figure_table_diagram_or_example": "",
+        "support_role": "author_argument",
+        "support_strength": "strong",
+        "directly_supported_claims": [
+          "The cited section supports reasoning about supporting producers and consumers that evolve independently.",
+          "It connects the topic to tradeoffs or failure behavior involving queued messages become unreadable after a deployment."
+        ],
+        "inferred_claims": []
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "The record paraphrases an explicit concept, argument, or distinction made in the cited chapter section.",
+        "confidence": "high",
+        "human_review_recommended": false
+      },
+      "date_sensitivity": "high",
+      "current_verification_required": true,
+      "related_record_ids": [
+        "ddia_concept_encoding_as_compatibility_boundary",
+        "ddia_concept_language_specific_serialization_risk",
+        "ddia_concept_backward_and_forward_compatibility",
+        "ddia_concept_schema_evolution_with_writer_and_reader_schemas"
+      ],
+      "tags": [
+        "message queue",
+        "schema evolution",
+        "events",
+        "chapter-4"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,961 @@
+{
+  "file_metadata": {
+    "file_name": "data_structures_algorithms_js_stacks_queues_v1.json",
+    "package_id": "data_structures_algorithms_js_reasoning_os_v1",
+    "package_version": "1.0",
+    "generated_at_utc": "2026-08-25T17:45:26.946739+00:00",
+    "purpose": "Stack, queue, priority, staged-work, and order reasoning.",
+    "record_count": 15,
+    "source_title": "Data Structures and Algorithms with JavaScript",
+    "source_author": "Michael McMillan",
+    "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+    "source_boundary": "Source-supported concepts are separated from low-confidence Apps Script, spreadsheet, internal-tool, and AI-agent extensions. Current platform behavior must be verified.",
+    "copyright_safety": "Concepts and implementation logic are paraphrased. No long source passages, long code listings, full algorithm implementations, or exercise solutions are reproduced."
+  },
+  "stack_queue_records": [
+    {
+      "id": "dsa-stack-lifo",
+      "record_type": "stack_queue_record",
+      "name": "Stack LIFO invariant",
+      "summary": "A stack exposes one end, called the top, so the most recently added element is the first removable element.",
+      "source_concept": "Stack LIFO invariant",
+      "programming_problem_addressed": "Models nested or reverse-order access.",
+      "data_shape_assumption": "Only the top element may be accessed directly.",
+      "algorithmic_role": "LIFO worklist.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Undo-like state",
+        "Nested parsing",
+        "Path reversal"
+      ],
+      "do_not_use_when": [
+        "Arrival order must be preserved"
+      ],
+      "common_failure_modes": [
+        "Reading below the top without popping intermediate items"
+      ],
+      "tests_or_checks": [
+        "Push A, B, C and confirm pop order C, B, A."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-ds-stack",
+        "dsa-decision-stack-versus-queue"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "4",
+        "chapter_title": "Stacks",
+        "section_heading": "Stack Operations",
+        "page_or_anchor": "OEBPS/ch04.html#idp21554816",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines a stack as accessible from one end and last-in, first-out."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_data_structure",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "stack",
+        "lifo",
+        "invariant"
+      ]
+    },
+    {
+      "id": "dsa-stack-operations",
+      "record_type": "stack_queue_record",
+      "name": "Push, pop, peek, length, and clear",
+      "summary": "The source identifies adding, removing, inspecting the top, tracking element count, and clearing as core stack operations.",
+      "source_concept": "Push, pop, peek, length, and clear",
+      "programming_problem_addressed": "Defines the public behavior of a stack.",
+      "data_shape_assumption": "A top boundary and empty state are represented consistently.",
+      "algorithmic_role": "Stack interface.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Specifying stack behavior independent of storage"
+      ],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Popping or peeking an empty stack",
+        "Count drifting from storage"
+      ],
+      "tests_or_checks": [
+        "Test empty and nonempty results for every operation."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-stack-array-backed"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "4",
+        "chapter_title": "Stacks",
+        "section_heading": "Stack Operations",
+        "page_or_anchor": "OEBPS/ch04.html#idp21554816",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source names push, pop, peek, length, and clear as stack operations."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_definition",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "stack",
+        "operations"
+      ]
+    },
+    {
+      "id": "dsa-stack-array-backed",
+      "record_type": "stack_queue_record",
+      "name": "Array-backed stack implementation",
+      "summary": "The source implements a stack with an array and a top counter, using end-oriented operations to preserve LIFO behavior.",
+      "source_concept": "Array-backed stack implementation",
+      "programming_problem_addressed": "Implements LIFO behavior with JavaScript arrays.",
+      "data_shape_assumption": "The array end corresponds to the stack top.",
+      "algorithmic_role": "Concrete stack storage.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "A native array expresses stack semantics clearly"
+      ],
+      "do_not_use_when": [
+        "Persistent or concurrent state is required without a storage design"
+      ],
+      "common_failure_modes": [
+        "Top counter and array length diverge",
+        "State lost between Apps Script executions"
+      ],
+      "tests_or_checks": [
+        "Assert top, length, and peek after each operation."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-stack-operations",
+        "dsa-gas-stacks-nested-history"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "4",
+        "chapter_title": "Stacks",
+        "section_heading": "A Stack Implementation",
+        "page_or_anchor": "OEBPS/ch04.html#idp21573248",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source builds a stack class over an array and tracks its top."
+        ],
+        "inferred_claims": [
+          "Apps Script persistence is a separate current-platform concern."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "stack",
+        "array",
+        "implementation"
+      ]
+    },
+    {
+      "id": "dsa-stack-base-conversion",
+      "record_type": "stack_queue_record",
+      "name": "Reverse remainders for base conversion",
+      "summary": "The source converts a number to another base by pushing successive remainders and popping them in reverse order.",
+      "source_concept": "Reverse remainders for base conversion",
+      "programming_problem_addressed": "Reverses the order in which intermediate values are produced.",
+      "data_shape_assumption": "Repeated division yields remainder digits that must be read last-produced-first.",
+      "algorithmic_role": "LIFO reversal.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "A process produces output in reverse order"
+      ],
+      "do_not_use_when": [
+        "The example is mistaken for a general numeric-formatting recommendation"
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Compare against known conversions and handle zero."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-stack-lifo"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "4",
+        "chapter_title": "Stacks",
+        "section_heading": "Multiple Base Conversions",
+        "page_or_anchor": "OEBPS/ch04.html#idp22358016",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source uses a stack to reverse remainders during base conversion."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_example",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "stack",
+        "example",
+        "reverse"
+      ]
+    },
+    {
+      "id": "dsa-stack-palindrome",
+      "record_type": "stack_queue_record",
+      "name": "Palindrome check by reversal",
+      "summary": "The source pushes characters and pops them to reconstruct the reverse, then compares the result with the original.",
+      "source_concept": "Palindrome check by reversal",
+      "programming_problem_addressed": "Tests whether a sequence equals its reverse.",
+      "data_shape_assumption": "Normalization rules for case, spacing, and punctuation are decided separately.",
+      "algorithmic_role": "LIFO reversal and comparison.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Teaching stack reversal"
+      ],
+      "do_not_use_when": [
+        "A simpler two-pointer check is preferable in production"
+      ],
+      "common_failure_modes": [
+        "Undefined normalization policy"
+      ],
+      "tests_or_checks": [
+        "Test empty, one-character, mixed-case, punctuation, and non-palindromes."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-stack-lifo"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "4",
+        "chapter_title": "Stacks",
+        "section_heading": "Palindromes",
+        "page_or_anchor": "OEBPS/ch04.html#idp22551792",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source demonstrates palindrome testing by reversing characters with a stack."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_example",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "stack",
+        "palindrome",
+        "example"
+      ]
+    },
+    {
+      "id": "dsa-stack-recursion-model",
+      "record_type": "stack_queue_record",
+      "name": "Stack model of recursive state",
+      "summary": "The source demonstrates recursion by using a stack to hold intermediate values, showing how deferred work can be unwound in reverse order.",
+      "source_concept": "Stack model of recursive state",
+      "programming_problem_addressed": "Makes recursive state retention and unwinding concrete.",
+      "data_shape_assumption": "Intermediate values can be pushed and later combined in reverse order.",
+      "algorithmic_role": "Explicit call-stack analogy.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Explaining recursion or converting it to iteration"
+      ],
+      "do_not_use_when": [
+        "Assuming manual stack code is automatically safer or faster"
+      ],
+      "common_failure_modes": [
+        "Missing termination",
+        "Wrong unwind order"
+      ],
+      "tests_or_checks": [
+        "Compare recursive and explicit-stack results for boundary inputs."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-alg-recursion",
+        "dsa-dp-fibonacci-recomputation"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "4",
+        "chapter_title": "Stacks",
+        "section_heading": "Demonstrating Recursion",
+        "page_or_anchor": "OEBPS/ch04.html#idp22543312",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source uses a stack to demonstrate how recursive work can be represented and unwound."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_example",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "stack",
+        "recursion",
+        "state"
+      ]
+    },
+    {
+      "id": "dsa-queue-fifo",
+      "record_type": "stack_queue_record",
+      "name": "Queue FIFO invariant",
+      "summary": "A queue accepts elements at its rear and removes them from its front so the earliest arrival is processed first.",
+      "source_concept": "Queue FIFO invariant",
+      "programming_problem_addressed": "Models ordered waiting and staged processing.",
+      "data_shape_assumption": "Arrival order is the intended processing order.",
+      "algorithmic_role": "FIFO worklist.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Arrival-order tasks",
+        "Breadth-first traversal"
+      ],
+      "do_not_use_when": [
+        "Priority or dependencies determine next work"
+      ],
+      "common_failure_modes": [
+        "Using a stack and reversing fairness",
+        "Assuming FIFO guarantees exactly once"
+      ],
+      "tests_or_checks": [
+        "Enqueue A, B, C and confirm dequeue order A, B, C."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-ds-queue",
+        "dsa-decision-stack-versus-queue"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "5",
+        "chapter_title": "Queues",
+        "section_heading": "Queue Operations",
+        "page_or_anchor": "OEBPS/ch05.html#idp23142720",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines queue operations around first-in, first-out behavior."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_data_structure",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "queue",
+        "fifo",
+        "invariant"
+      ]
+    },
+    {
+      "id": "dsa-queue-operations",
+      "record_type": "stack_queue_record",
+      "name": "Enqueue, dequeue, front, back, display, and empty checks",
+      "summary": "The source defines operations for adding at the rear, removing from the front, inspecting both ends, displaying contents, and testing emptiness.",
+      "source_concept": "Enqueue, dequeue, front, back, display, and empty checks",
+      "programming_problem_addressed": "Specifies a queue interface.",
+      "data_shape_assumption": "Front and rear are consistently maintained.",
+      "algorithmic_role": "Queue contract.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Defining queue semantics independent of storage"
+      ],
+      "do_not_use_when": [],
+      "common_failure_modes": [
+        "Dequeue on empty",
+        "Front/rear confusion"
+      ],
+      "tests_or_checks": [
+        "Test transitions among empty, one-item, and multi-item states."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-queue-array-backed"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "5",
+        "chapter_title": "Queues",
+        "section_heading": "Queue Operations",
+        "page_or_anchor": "OEBPS/ch05.html#idp23142720",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source names the principal queue operations and their front/rear roles."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_definition",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "queue",
+        "operations"
+      ]
+    },
+    {
+      "id": "dsa-queue-array-backed",
+      "record_type": "stack_queue_record",
+      "name": "Array-backed queue implementation",
+      "summary": "The source implements a queue with an array, adding at the end and removing at the beginning.",
+      "source_concept": "Array-backed queue implementation",
+      "programming_problem_addressed": "Implements FIFO order with JavaScript array operations.",
+      "data_shape_assumption": "The first array position represents the queue front.",
+      "algorithmic_role": "Concrete FIFO storage.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "The source array chapter explains that front removal can require shifting elements; this matters at scale even though the queue chapter focuses on behavior.",
+      "use_when": [
+        "Small educational queues"
+      ],
+      "do_not_use_when": [
+        "Large or persistent work queues without a design review"
+      ],
+      "common_failure_modes": [
+        "Repeated front shifts",
+        "Queue state lost between executions"
+      ],
+      "tests_or_checks": [
+        "Benchmark representative queue depth and verify persistence separately."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-array-pop-shift",
+        "dsa-gas-queues-staged-processing"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "5",
+        "chapter_title": "Queues",
+        "section_heading": "An Array-Based Queue Class Implementation",
+        "page_or_anchor": "OEBPS/ch05.html#idp23155232",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source implements dequeue by removing the first array element."
+        ],
+        "inferred_claims": [
+          "Scale and Apps Script persistence concerns require separate verification."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch02.html",
+            "chapter_number": "2",
+            "chapter_title": "Arrays",
+            "section_heading": "Removing Elements from an Array",
+            "page_or_anchor": "OEBPS/ch02.html#idp15312064"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "source_direct_code_pattern",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "queue",
+        "array",
+        "implementation"
+      ]
+    },
+    {
+      "id": "dsa-queue-square-dance",
+      "record_type": "stack_queue_record",
+      "name": "Parallel queues for partner assignment",
+      "summary": "The source separates two participant groups into queues and pairs front elements in arrival order.",
+      "source_concept": "Parallel queues for partner assignment",
+      "programming_problem_addressed": "Matches two FIFO streams while preserving order within each stream.",
+      "data_shape_assumption": "Each participant belongs to one queue and pairing consumes one from each.",
+      "algorithmic_role": "Parallel queue synchronization.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Teaching coordinated FIFO streams"
+      ],
+      "do_not_use_when": [
+        "Real matching needs preferences, constraints, or fairness beyond arrival order"
+      ],
+      "common_failure_modes": [
+        "One queue exhausts first",
+        "Invalid group classification"
+      ],
+      "tests_or_checks": [
+        "Test unequal queue lengths and invalid labels."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-queue-fifo"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "5",
+        "chapter_title": "Queues",
+        "section_heading": "Using the Queue Class: Assigning Partners at a Square Dance",
+        "page_or_anchor": "OEBPS/ch05.html#idp23809904",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source example uses separate queues to pair dancers by arrival order."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_example",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "queue",
+        "matching",
+        "example"
+      ]
+    },
+    {
+      "id": "dsa-queue-radix-sort",
+      "record_type": "stack_queue_record",
+      "name": "Queues as digit buckets in radix sort",
+      "summary": "The source distributes values into digit-specific queues and then collects the queues in order over multiple passes.",
+      "source_concept": "Queues as digit buckets in radix sort",
+      "programming_problem_addressed": "Uses FIFO buckets to preserve relative order during digit-wise sorting.",
+      "data_shape_assumption": "Values have processable digit positions and bucket labels.",
+      "algorithmic_role": "Stable distribution and collection.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Learning queue composition in an algorithm"
+      ],
+      "do_not_use_when": [
+        "Implementing general spreadsheet sorting"
+      ],
+      "common_failure_modes": [
+        "Wrong digit extraction",
+        "Incorrect collection order"
+      ],
+      "tests_or_checks": [
+        "Test repeated digits, leading zeros, and varying lengths."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-alg-radix-sort-queues"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "5",
+        "chapter_title": "Queues",
+        "section_heading": "Sorting Data with Queues",
+        "page_or_anchor": "OEBPS/ch05.html#idp23804288",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source demonstrates radix sorting by distributing values into queues and collecting them."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_example",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "queue",
+        "radix-sort",
+        "buckets"
+      ]
+    },
+    {
+      "id": "dsa-queue-priority",
+      "record_type": "stack_queue_record",
+      "name": "Priority queue selection",
+      "summary": "The source modifies queue removal so the item with the highest processing priority is selected rather than always taking the oldest item.",
+      "source_concept": "Priority queue selection",
+      "programming_problem_addressed": "Allows priority to override arrival order.",
+      "data_shape_assumption": "Each item has a comparable priority and tie behavior is defined.",
+      "algorithmic_role": "Priority-based work selection.",
+      "runtime_context": "Source-era server-side JavaScript demonstrated in a SpiderMonkey shell.",
+      "transfers_to_google_apps_script": "direct_conceptual_transfer",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Severity or urgency legitimately controls processing"
+      ],
+      "do_not_use_when": [
+        "FIFO fairness or dependency constraints are primary"
+      ],
+      "common_failure_modes": [
+        "Priority direction reversed",
+        "Starvation of low-priority items",
+        "Undefined ties"
+      ],
+      "tests_or_checks": [
+        "Test ties, highest/lowest values, and starvation policy."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-ds-priority-queue",
+        "dsa-decision-list-versus-queue"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "5",
+        "chapter_title": "Queues",
+        "section_heading": "Priority Queues",
+        "page_or_anchor": "OEBPS/ch05.html#idp25398448",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source implements a priority queue by selecting items according to a priority value."
+        ],
+        "inferred_claims": [],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "source_direct_data_structure",
+        "explanation": "Paraphrases the identified source section.",
+        "confidence": "high",
+        "current_verification_required": false,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "queue",
+        "priority",
+        "scheduling"
+      ]
+    },
+    {
+      "id": "dsa-stack-nested-history-extension",
+      "record_type": "google_apps_script_translation_extension",
+      "name": "Stacks for nested parsing or undo-history concepts",
+      "summary": "In an Apps Script or Web App extension, stack semantics can model nested parser state, backtracking, or reversible UI history, while persistent undo requires a separate storage design.",
+      "source_concept": "Stacks for nested parsing or undo-history concepts",
+      "programming_problem_addressed": "Represents last-entered state that must be exited or reversed first.",
+      "data_shape_assumption": "State entries are serializable and have a clear push/pop lifecycle.",
+      "algorithmic_role": "LIFO state management.",
+      "runtime_context": "Google Apps Script server functions or HTMLService client JavaScript; boundary must be identified.",
+      "transfers_to_google_apps_script": "direct_language_transfer_if_current_runtime_supports",
+      "apps_script_translation_note": "Verify current JavaScript array behavior and decide whether state lives client-side, server-side, or in persistent storage.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Nested validation contexts",
+        "Client-side undo history"
+      ],
+      "do_not_use_when": [
+        "FIFO processing or durable audit history is required"
+      ],
+      "common_failure_modes": [
+        "State disappears across server executions",
+        "Client/server histories diverge"
+      ],
+      "tests_or_checks": [
+        "Test reload, concurrent users, and serialization boundaries."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-stack-lifo",
+        "dsa-verify-web-app-boundary"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "4",
+        "chapter_title": "Stacks",
+        "section_heading": "Stack Operations",
+        "page_or_anchor": "OEBPS/ch04.html#idp21554816",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines LIFO stack behavior and uses stacks for reversal and recursion concepts."
+        ],
+        "inferred_claims": [
+          "Nested parsing and undo history in Apps Script are translation extensions requiring runtime and persistence verification."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "apps-script",
+        "stack",
+        "history"
+      ]
+    },
+    {
+      "id": "dsa-queue-staged-processing-extension",
+      "record_type": "google_apps_script_translation_extension",
+      "name": "Queues for staged processing under execution limits",
+      "summary": "A queue can model pending uploads, validations, exports, or notifications, but Apps Script execution limits require explicit persistence, checkpoints, retries, and idempotency.",
+      "source_concept": "Queues for staged processing under execution limits",
+      "programming_problem_addressed": "Breaks a long workflow into ordered units of work.",
+      "data_shape_assumption": "Each task has a stable ID, status, payload reference, attempt count, and next-action state.",
+      "algorithmic_role": "Durable FIFO or policy-driven worklist.",
+      "runtime_context": "Google Apps Script triggers and persistent services; current behavior must be verified.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Verify trigger behavior, execution limits, PropertiesService/CacheService/Sheets storage, and LockService before implementation.",
+      "complexity_or_scale_note": "Queue correctness is dominated by state persistence and duplicate prevention, not only in-memory dequeue cost.",
+      "use_when": [
+        "A run may not finish all work",
+        "Tasks can be safely resumed"
+      ],
+      "do_not_use_when": [
+        "The workflow is small enough for one validated atomic batch"
+      ],
+      "common_failure_modes": [
+        "Queue never drains",
+        "Same task executes twice",
+        "State lost",
+        "Poison item blocks progress"
+      ],
+      "tests_or_checks": [
+        "Simulate timeout after every processing step and confirm safe resume."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-risk-queue-retry-duplication",
+        "dsa-risk-idempotency-missing",
+        "dsa-workflow-review-queue-retry-idempotency"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "5",
+        "chapter_title": "Queues",
+        "section_heading": "Queue Operations",
+        "page_or_anchor": "OEBPS/ch05.html#idp23142720",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines FIFO queues and uses them for staged processing examples."
+        ],
+        "inferred_claims": [
+          "Durable Apps Script queue mechanics are outside the source and require current verification."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "google_apps_script_translation_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "apps-script",
+        "queue",
+        "retry",
+        "idempotency"
+      ]
+    },
+    {
+      "id": "dsa-queue-validation-worklist-extension",
+      "record_type": "internal_tool_extension",
+      "name": "Validation worklist queue",
+      "summary": "An internal-tool validation pipeline can enqueue independent records or files, process them in controlled order, and return structured per-item results.",
+      "source_concept": "Validation worklist queue",
+      "programming_problem_addressed": "Coordinates staged validation without mixing intake order with live writes.",
+      "data_shape_assumption": "Each queued item has provenance and an idempotency key.",
+      "algorithmic_role": "Validation worklist.",
+      "runtime_context": "Internal report processor; platform specifics are not supplied by the book.",
+      "transfers_to_google_apps_script": "conceptual_only",
+      "apps_script_translation_note": "Transfer the concept, not the book-era shell code. Verify current Apps Script runtime and API behavior before implementation.",
+      "complexity_or_scale_note": "",
+      "use_when": [
+        "Multiple uploaded files or report parts can be validated independently"
+      ],
+      "do_not_use_when": [
+        "Dependencies require a topological order rather than FIFO"
+      ],
+      "common_failure_modes": [
+        "Duplicate queue entries",
+        "Error item retried forever"
+      ],
+      "tests_or_checks": [
+        "Verify dequeue order, poison-item handling, and no write before aggregate validation."
+      ],
+      "diagnostic_questions": [],
+      "related_record_ids": [
+        "dsa-workflow-parse-validate-transform-export",
+        "dsa-risk-queue-retry-duplication"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "5",
+        "chapter_title": "Queues",
+        "section_heading": "Queue Operations",
+        "page_or_anchor": "OEBPS/ch05.html#idp23142720",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines queue semantics as ordered processing."
+        ],
+        "inferred_claims": [
+          "A validation worklist is an internal-tool extension."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "internal_tool_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": false,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "queue",
+        "validation",
+        "worklist"
+      ]
+    }
+  ]
+}

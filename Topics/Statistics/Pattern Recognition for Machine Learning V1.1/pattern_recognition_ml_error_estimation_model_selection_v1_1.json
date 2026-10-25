@@ -1,0 +1,1063 @@
+{
+  "package": "Pattern Recognition and Machine Learning Active Reasoning Pack V1.1",
+  "file_role": "Strongest V1.1 file: error estimation, leakage, model selection, complexity, and deployment-shift reasoning.",
+  "records": [
+    {
+      "id": "eval-true-error",
+      "evaluation_concept": "True error",
+      "what_it_estimates": "Population expected loss/error of a fixed predictor on future data.",
+      "what_it_does_not_estimate": "Training score or a score for a different model after selection.",
+      "best_fit_context": [
+        "model evaluation",
+        "code review",
+        "method comparison"
+      ],
+      "data_requirements": [
+        "fixed target",
+        "specified split",
+        "pipeline description",
+        "loss/metric"
+      ],
+      "bias_variance_or_stability_issue": "True error must be interpreted through bias, variance/stability, sample size, and whether the split matches deployment.",
+      "common_misuse": [
+        "Changing the model after test feedback."
+      ],
+      "safe_pattern": "Freeze model and population before estimating.",
+      "dangerous_pattern": "Changing the model after test feedback.",
+      "restaurant_analytics_relevance": "For restaurant data, true error is useful only if feature timing, location/platform/time structure, and the operational action are explicit.",
+      "related_algorithm_ids": [
+        "alg-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-training-error-as-generalization",
+        "ml-risk-model-selection-bias"
+      ],
+      "source_traceability": {
+        "source_file": "Fundamentals of Pattern Recognition and Machine Learning, -- Ulisses Braga-Neto -- 2, 2024 -- Springer International Publishing AG(1).pdf",
+        "book_title": "Fundamentals of Pattern Recognition and Machine Learning",
+        "author": "Ulisses Braga-Neto",
+        "edition": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Error Estimation for Classification",
+        "section_heading": "7.1-7.7 Error estimators, test-set, resubstitution, cross-validation, bootstrap, bolstered",
+        "book_page_start_detected": 155,
+        "support_role": "evaluation/model-selection",
+        "directly_supported_claims": [
+          "Population expected loss/error of a fixed predictor on future data."
+        ],
+        "inferred_claims": [],
+        "source_boundary_note": "eval-true-error: statements in directly_supported_claims are tied to the cited book section; implementation, restaurant, and software-current guidance is not treated as a book claim."
+      },
+      "derivation": {
+        "classification": "source_direct_definition",
+        "confidence": "high",
+        "confidence_rationale": "Direct definition, method, theorem meaning, or error-estimation concept in the uploaded source.",
+        "record_specific_explanation": "True error: this record distinguishes the estimate target from non-targets so agents do not give generic validation advice."
+      }
+    },
+    {
+      "id": "eval-apparent-training-error",
+      "evaluation_concept": "Apparent/training error",
+      "what_it_estimates": "Loss on the data used to fit the model.",
+      "what_it_does_not_estimate": "Future performance for flexible learned rules.",
+      "best_fit_context": [
+        "model evaluation",
+        "code review",
+        "method comparison"
+      ],
+      "data_requirements": [
+        "fixed target",
+        "specified split",
+        "pipeline description",
+        "loss/metric"
+      ],
+      "bias_variance_or_stability_issue": "Apparent/training error must be interpreted through bias, variance/stability, sample size, and whether the split matches deployment.",
+      "common_misuse": [
+        "Reporting training accuracy as deployment accuracy."
+      ],
+      "safe_pattern": "Use as fit diagnostic only.",
+      "dangerous_pattern": "Reporting training accuracy as deployment accuracy.",
+      "restaurant_analytics_relevance": "For restaurant data, apparent/training error is useful only if feature timing, location/platform/time structure, and the operational action are explicit.",
+      "related_algorithm_ids": [
+        "alg-linear-regression",
+        "alg-decision-tree"
+      ],
+      "related_risk_ids": [
+        "ml-risk-training-error-as-generalization"
+      ],
+      "source_traceability": {
+        "source_file": "Fundamentals of Pattern Recognition and Machine Learning, -- Ulisses Braga-Neto -- 2, 2024 -- Springer International Publishing AG(1).pdf",
+        "book_title": "Fundamentals of Pattern Recognition and Machine Learning",
+        "author": "Ulisses Braga-Neto",
+        "edition": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Error Estimation for Classification",
+        "section_heading": "7.1-7.7 Error estimators, test-set, resubstitution, cross-validation, bootstrap, bolstered",
+        "book_page_start_detected": 155,
+        "support_role": "evaluation/model-selection",
+        "directly_supported_claims": [
+          "Loss on the data used to fit the model."
+        ],
+        "inferred_claims": [],
+        "source_boundary_note": "eval-apparent-training-error: statements in directly_supported_claims are tied to the cited book section; implementation, restaurant, and software-current guidance is not treated as a book claim."
+      },
+      "derivation": {
+        "classification": "source_direct_method",
+        "confidence": "high",
+        "confidence_rationale": "Direct definition, method, theorem meaning, or error-estimation concept in the uploaded source.",
+        "record_specific_explanation": "Apparent/training error: this record distinguishes the estimate target from non-targets so agents do not give generic validation advice."
+      }
+    },
+    {
+      "id": "eval-independent-test-set-error",
+      "evaluation_concept": "Independent test-set error",
+      "what_it_estimates": "Error on data not used for training, tuning, preprocessing, or selection.",
+      "what_it_does_not_estimate": "Performance for changed model or changed population.",
+      "best_fit_context": [
+        "model evaluation",
+        "code review",
+        "method comparison"
+      ],
+      "data_requirements": [
+        "fixed target",
+        "specified split",
+        "pipeline description",
+        "loss/metric"
+      ],
+      "bias_variance_or_stability_issue": "Independent test-set error must be interpreted through bias, variance/stability, sample size, and whether the split matches deployment.",
+      "common_misuse": [
+        "Using the test set as a leaderboard."
+      ],
+      "safe_pattern": "Lock full pipeline before final test.",
+      "dangerous_pattern": "Using the test set as a leaderboard.",
+      "restaurant_analytics_relevance": "For restaurant data, independent test-set error is useful only if feature timing, location/platform/time structure, and the operational action are explicit.",
+      "related_algorithm_ids": [
+        "alg-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-validation-leakage",
+        "ml-risk-model-selection-bias"
+      ],
+      "source_traceability": {
+        "source_file": "Fundamentals of Pattern Recognition and Machine Learning, -- Ulisses Braga-Neto -- 2, 2024 -- Springer International Publishing AG(1).pdf",
+        "book_title": "Fundamentals of Pattern Recognition and Machine Learning",
+        "author": "Ulisses Braga-Neto",
+        "edition": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Error Estimation for Classification",
+        "section_heading": "7.1-7.7 Error estimators, test-set, resubstitution, cross-validation, bootstrap, bolstered",
+        "book_page_start_detected": 155,
+        "support_role": "evaluation/model-selection",
+        "directly_supported_claims": [
+          "Error on data not used for training, tuning, preprocessing, or selection."
+        ],
+        "inferred_claims": [],
+        "source_boundary_note": "eval-independent-test-set-error: statements in directly_supported_claims are tied to the cited book section; implementation, restaurant, and software-current guidance is not treated as a book claim."
+      },
+      "derivation": {
+        "classification": "source_direct_method",
+        "confidence": "high",
+        "confidence_rationale": "Direct definition, method, theorem meaning, or error-estimation concept in the uploaded source.",
+        "record_specific_explanation": "Independent test-set error: this record distinguishes the estimate target from non-targets so agents do not give generic validation advice."
+      }
+    },
+    {
+      "id": "eval-resubstitution-optimism",
+      "evaluation_concept": "Resubstitution optimism",
+      "what_it_estimates": "Optimism caused by evaluating on training data.",
+      "what_it_does_not_estimate": "Unbiased generalization for learned flexible rules.",
+      "best_fit_context": [
+        "model evaluation",
+        "code review",
+        "method comparison"
+      ],
+      "data_requirements": [
+        "fixed target",
+        "specified split",
+        "pipeline description",
+        "loss/metric"
+      ],
+      "bias_variance_or_stability_issue": "Resubstitution optimism must be interpreted through bias, variance/stability, sample size, and whether the split matches deployment.",
+      "common_misuse": [
+        "Trusting a perfect training score."
+      ],
+      "safe_pattern": "Pair resubstitution with independent validation.",
+      "dangerous_pattern": "Trusting a perfect training score.",
+      "restaurant_analytics_relevance": "For restaurant data, resubstitution optimism is useful only if feature timing, location/platform/time structure, and the operational action are explicit.",
+      "related_algorithm_ids": [
+        "alg-neural-network-classifier"
+      ],
+      "related_risk_ids": [
+        "ml-risk-training-error-as-generalization"
+      ],
+      "source_traceability": {
+        "source_file": "Fundamentals of Pattern Recognition and Machine Learning, -- Ulisses Braga-Neto -- 2, 2024 -- Springer International Publishing AG(1).pdf",
+        "book_title": "Fundamentals of Pattern Recognition and Machine Learning",
+        "author": "Ulisses Braga-Neto",
+        "edition": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Error Estimation for Classification",
+        "section_heading": "7.1-7.7 Error estimators, test-set, resubstitution, cross-validation, bootstrap, bolstered",
+        "book_page_start_detected": 155,
+        "support_role": "evaluation/model-selection",
+        "directly_supported_claims": [
+          "Optimism caused by evaluating on training data."
+        ],
+        "inferred_claims": [],
+        "source_boundary_note": "eval-resubstitution-optimism: statements in directly_supported_claims are tied to the cited book section; implementation, restaurant, and software-current guidance is not treated as a book claim."
+      },
+      "derivation": {
+        "classification": "source_direct_method",
+        "confidence": "high",
+        "confidence_rationale": "Direct definition, method, theorem meaning, or error-estimation concept in the uploaded source.",
+        "record_specific_explanation": "Resubstitution optimism: this record distinguishes the estimate target from non-targets so agents do not give generic validation advice."
+      }
+    },
+    {
+      "id": "eval-cross-validation",
+      "evaluation_concept": "Cross-validation",
+      "what_it_estimates": "Learning-procedure error estimated by held-out folds when the full pipeline is folded.",
+      "what_it_does_not_estimate": "A pipeline with preprocessing or selection performed outside folds.",
+      "best_fit_context": [
+        "model evaluation",
+        "code review",
+        "method comparison"
+      ],
+      "data_requirements": [
+        "fixed target",
+        "specified split",
+        "pipeline description",
+        "loss/metric"
+      ],
+      "bias_variance_or_stability_issue": "Cross-validation must be interpreted through bias, variance/stability, sample size, and whether the split matches deployment.",
+      "common_misuse": [
+        "PCA/feature-selection on all rows before CV."
+      ],
+      "safe_pattern": "Nest all learned transforms and selection inside folds.",
+      "dangerous_pattern": "PCA/feature-selection on all rows before CV.",
+      "restaurant_analytics_relevance": "For restaurant data, cross-validation is useful only if feature timing, location/platform/time structure, and the operational action are explicit.",
+      "related_algorithm_ids": [
+        "alg-cross-validation",
+        "alg-feature-selection",
+        "alg-pca"
+      ],
+      "related_risk_ids": [
+        "ml-risk-validation-leakage",
+        "ml-risk-feature-selection-leakage",
+        "ml-risk-temporal-split-mismatch"
+      ],
+      "source_traceability": {
+        "source_file": "Fundamentals of Pattern Recognition and Machine Learning, -- Ulisses Braga-Neto -- 2, 2024 -- Springer International Publishing AG(1).pdf",
+        "book_title": "Fundamentals of Pattern Recognition and Machine Learning",
+        "author": "Ulisses Braga-Neto",
+        "edition": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Error Estimation for Classification",
+        "section_heading": "7.1-7.7 Error estimators, test-set, resubstitution, cross-validation, bootstrap, bolstered",
+        "book_page_start_detected": 155,
+        "support_role": "evaluation/model-selection",
+        "directly_supported_claims": [
+          "Learning-procedure error estimated by held-out folds when the full pipeline is folded."
+        ],
+        "inferred_claims": [],
+        "source_boundary_note": "eval-cross-validation: statements in directly_supported_claims are tied to the cited book section; implementation, restaurant, and software-current guidance is not treated as a book claim."
+      },
+      "derivation": {
+        "classification": "source_direct_method",
+        "confidence": "high",
+        "confidence_rationale": "Direct definition, method, theorem meaning, or error-estimation concept in the uploaded source.",
+        "record_specific_explanation": "Cross-validation: this record distinguishes the estimate target from non-targets so agents do not give generic validation advice."
+      }
+    },
+    {
+      "id": "eval-bootstrap",
+      "evaluation_concept": "Bootstrap",
+      "what_it_estimates": "Error or variability from resampling the observed sample.",
+      "what_it_does_not_estimate": "New independent information or correction for nonrepresentative data.",
+      "best_fit_context": [
+        "model evaluation",
+        "code review",
+        "method comparison"
+      ],
+      "data_requirements": [
+        "fixed target",
+        "specified split",
+        "pipeline description",
+        "loss/metric"
+      ],
+      "bias_variance_or_stability_issue": "Bootstrap must be interpreted through bias, variance/stability, sample size, and whether the split matches deployment.",
+      "common_misuse": [
+        "Bootstrapping rows when guests/weeks are repeated."
+      ],
+      "safe_pattern": "Resample the independent operational unit.",
+      "dangerous_pattern": "Bootstrapping rows when guests/weeks are repeated.",
+      "restaurant_analytics_relevance": "For restaurant data, bootstrap is useful only if feature timing, location/platform/time structure, and the operational action are explicit.",
+      "related_algorithm_ids": [
+        "alg-bootstrap"
+      ],
+      "related_risk_ids": [
+        "ml-risk-duplicate-entity-leakage"
+      ],
+      "source_traceability": {
+        "source_file": "Fundamentals of Pattern Recognition and Machine Learning, -- Ulisses Braga-Neto -- 2, 2024 -- Springer International Publishing AG(1).pdf",
+        "book_title": "Fundamentals of Pattern Recognition and Machine Learning",
+        "author": "Ulisses Braga-Neto",
+        "edition": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Error Estimation for Classification",
+        "section_heading": "7.1-7.7 Error estimators, test-set, resubstitution, cross-validation, bootstrap, bolstered",
+        "book_page_start_detected": 155,
+        "support_role": "evaluation/model-selection",
+        "directly_supported_claims": [
+          "Error or variability from resampling the observed sample."
+        ],
+        "inferred_claims": [],
+        "source_boundary_note": "eval-bootstrap: statements in directly_supported_claims are tied to the cited book section; implementation, restaurant, and software-current guidance is not treated as a book claim."
+      },
+      "derivation": {
+        "classification": "source_direct_method",
+        "confidence": "high",
+        "confidence_rationale": "Direct definition, method, theorem meaning, or error-estimation concept in the uploaded source.",
+        "record_specific_explanation": "Bootstrap: this record distinguishes the estimate target from non-targets so agents do not give generic validation advice."
+      }
+    },
+    {
+      "id": "eval-bolstered-error-estimation",
+      "evaluation_concept": "Bolstered error estimation",
+      "what_it_estimates": "Smoothed classification error around sample points.",
+      "what_it_does_not_estimate": "A validation replacement without bolstering assumptions.",
+      "best_fit_context": [
+        "model evaluation",
+        "code review",
+        "method comparison"
+      ],
+      "data_requirements": [
+        "fixed target",
+        "specified split",
+        "pipeline description",
+        "loss/metric"
+      ],
+      "bias_variance_or_stability_issue": "Bolstered error estimation must be interpreted through bias, variance/stability, sample size, and whether the split matches deployment.",
+      "common_misuse": [
+        "Using bolstering as black-box score repair."
+      ],
+      "safe_pattern": "State bolstering distribution and sensitivity.",
+      "dangerous_pattern": "Using bolstering as black-box score repair.",
+      "restaurant_analytics_relevance": "For restaurant data, bolstered error estimation is useful only if feature timing, location/platform/time structure, and the operational action are explicit.",
+      "related_algorithm_ids": [
+        "alg-bolstered-error-estimation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-small-sample-instability"
+      ],
+      "source_traceability": {
+        "source_file": "Fundamentals of Pattern Recognition and Machine Learning, -- Ulisses Braga-Neto -- 2, 2024 -- Springer International Publishing AG(1).pdf",
+        "book_title": "Fundamentals of Pattern Recognition and Machine Learning",
+        "author": "Ulisses Braga-Neto",
+        "edition": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Error Estimation for Classification",
+        "section_heading": "7.1-7.7 Error estimators, test-set, resubstitution, cross-validation, bootstrap, bolstered",
+        "book_page_start_detected": 155,
+        "support_role": "evaluation/model-selection",
+        "directly_supported_claims": [
+          "Smoothed classification error around sample points."
+        ],
+        "inferred_claims": [],
+        "source_boundary_note": "eval-bolstered-error-estimation: statements in directly_supported_claims are tied to the cited book section; implementation, restaurant, and software-current guidance is not treated as a book claim."
+      },
+      "derivation": {
+        "classification": "source_direct_method",
+        "confidence": "high",
+        "confidence_rationale": "Direct definition, method, theorem meaning, or error-estimation concept in the uploaded source.",
+        "record_specific_explanation": "Bolstered error estimation: this record distinguishes the estimate target from non-targets so agents do not give generic validation advice."
+      }
+    },
+    {
+      "id": "eval-validation-error-minimization",
+      "evaluation_concept": "Validation error minimization",
+      "what_it_estimates": "Model choice based on validation error.",
+      "what_it_does_not_estimate": "Unbiased final error of the selected model after many choices.",
+      "best_fit_context": [
+        "model evaluation",
+        "code review",
+        "method comparison"
+      ],
+      "data_requirements": [
+        "fixed target",
+        "specified split",
+        "pipeline description",
+        "loss/metric"
+      ],
+      "bias_variance_or_stability_issue": "Validation error minimization must be interpreted through bias, variance/stability, sample size, and whether the split matches deployment.",
+      "common_misuse": [
+        "Publishing the minimum validation score as final performance."
+      ],
+      "safe_pattern": "Use validation for selection and separate final evidence.",
+      "dangerous_pattern": "Publishing the minimum validation score as final performance.",
+      "restaurant_analytics_relevance": "For restaurant data, validation error minimization is useful only if feature timing, location/platform/time structure, and the operational action are explicit.",
+      "related_algorithm_ids": [
+        "alg-nested-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-model-selection-bias"
+      ],
+      "source_traceability": {
+        "source_file": "Fundamentals of Pattern Recognition and Machine Learning, -- Ulisses Braga-Neto -- 2, 2024 -- Springer International Publishing AG(1).pdf",
+        "book_title": "Fundamentals of Pattern Recognition and Machine Learning",
+        "author": "Ulisses Braga-Neto",
+        "edition": "Second Edition",
+        "chapter_number": "8",
+        "chapter_title": "Model Selection for Classification",
+        "section_heading": "8.1-8.3 Complexity, VC theory, validation error, training error, SRM",
+        "book_page_start_detected": 189,
+        "support_role": "evaluation/model-selection",
+        "directly_supported_claims": [
+          "Model choice based on validation error."
+        ],
+        "inferred_claims": [],
+        "source_boundary_note": "eval-validation-error-minimization: statements in directly_supported_claims are tied to the cited book section; implementation, restaurant, and software-current guidance is not treated as a book claim."
+      },
+      "derivation": {
+        "classification": "source_direct_method",
+        "confidence": "high",
+        "confidence_rationale": "Direct definition, method, theorem meaning, or error-estimation concept in the uploaded source.",
+        "record_specific_explanation": "Validation error minimization: this record distinguishes the estimate target from non-targets so agents do not give generic validation advice."
+      }
+    },
+    {
+      "id": "eval-training-error-minimization",
+      "evaluation_concept": "Training error minimization",
+      "what_it_estimates": "Empirical risk minimization on training data.",
+      "what_it_does_not_estimate": "Protection against overfit in high-complexity classes.",
+      "best_fit_context": [
+        "model evaluation",
+        "code review",
+        "method comparison"
+      ],
+      "data_requirements": [
+        "fixed target",
+        "specified split",
+        "pipeline description",
+        "loss/metric"
+      ],
+      "bias_variance_or_stability_issue": "Training error minimization must be interpreted through bias, variance/stability, sample size, and whether the split matches deployment.",
+      "common_misuse": [
+        "Choosing the deepest tree by training loss."
+      ],
+      "safe_pattern": "Use only with complexity control and validation.",
+      "dangerous_pattern": "Choosing the deepest tree by training loss.",
+      "restaurant_analytics_relevance": "For restaurant data, training error minimization is useful only if feature timing, location/platform/time structure, and the operational action are explicit.",
+      "related_algorithm_ids": [
+        "alg-decision-tree",
+        "alg-linear-regression"
+      ],
+      "related_risk_ids": [
+        "ml-risk-high-dimensional-overfitting"
+      ],
+      "source_traceability": {
+        "source_file": "Fundamentals of Pattern Recognition and Machine Learning, -- Ulisses Braga-Neto -- 2, 2024 -- Springer International Publishing AG(1).pdf",
+        "book_title": "Fundamentals of Pattern Recognition and Machine Learning",
+        "author": "Ulisses Braga-Neto",
+        "edition": "Second Edition",
+        "chapter_number": "8",
+        "chapter_title": "Model Selection for Classification",
+        "section_heading": "8.1-8.3 Complexity, VC theory, validation error, training error, SRM",
+        "book_page_start_detected": 189,
+        "support_role": "evaluation/model-selection",
+        "directly_supported_claims": [
+          "Empirical risk minimization on training data."
+        ],
+        "inferred_claims": [],
+        "source_boundary_note": "eval-training-error-minimization: statements in directly_supported_claims are tied to the cited book section; implementation, restaurant, and software-current guidance is not treated as a book claim."
+      },
+      "derivation": {
+        "classification": "source_direct_method",
+        "confidence": "high",
+        "confidence_rationale": "Direct definition, method, theorem meaning, or error-estimation concept in the uploaded source.",
+        "record_specific_explanation": "Training error minimization: this record distinguishes the estimate target from non-targets so agents do not give generic validation advice."
+      }
+    },
+    {
+      "id": "eval-nested-validation",
+      "evaluation_concept": "Nested validation",
+      "what_it_estimates": "Outer estimate of a modeling process whose inner loop selects features/models/parameters.",
+      "what_it_does_not_estimate": "A cure for bad split design or nonrepresentative data.",
+      "best_fit_context": [
+        "model evaluation",
+        "code review",
+        "method comparison"
+      ],
+      "data_requirements": [
+        "fixed target",
+        "specified split",
+        "pipeline description",
+        "loss/metric"
+      ],
+      "bias_variance_or_stability_issue": "Nested validation must be interpreted through bias, variance/stability, sample size, and whether the split matches deployment.",
+      "common_misuse": [
+        "Letting outer fold feedback revise the search."
+      ],
+      "safe_pattern": "Put every selection decision inside inner loop.",
+      "dangerous_pattern": "Letting outer fold feedback revise the search.",
+      "restaurant_analytics_relevance": "For restaurant data, nested validation is useful only if feature timing, location/platform/time structure, and the operational action are explicit.",
+      "related_algorithm_ids": [
+        "alg-nested-validation",
+        "alg-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-model-selection-bias",
+        "ml-risk-validation-leakage"
+      ],
+      "source_traceability": {
+        "source_file": "Fundamentals of Pattern Recognition and Machine Learning, -- Ulisses Braga-Neto -- 2, 2024 -- Springer International Publishing AG(1).pdf",
+        "book_title": "Fundamentals of Pattern Recognition and Machine Learning",
+        "author": "Ulisses Braga-Neto",
+        "edition": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Error Estimation for Classification",
+        "section_heading": "7.1-7.7 Error estimators, test-set, resubstitution, cross-validation, bootstrap, bolstered",
+        "book_page_start_detected": 155,
+        "support_role": "evaluation/model-selection",
+        "directly_supported_claims": [],
+        "inferred_claims": [
+          "Put every selection decision inside inner loop."
+        ],
+        "source_boundary_note": "eval-nested-validation: the book motivates the ML principle, while this record translates it into project-review guidance rather than a direct source assertion."
+      },
+      "derivation": {
+        "classification": "applied_ml_extension",
+        "confidence": "medium",
+        "confidence_rationale": "Cross-section synthesis or applied ML guidance grounded in the source but context dependent.",
+        "record_specific_explanation": "Nested validation: this record distinguishes the estimate target from non-targets so agents do not give generic validation advice."
+      }
+    },
+    {
+      "id": "eval-model-selection-bias",
+      "evaluation_concept": "Model-selection bias",
+      "what_it_estimates": "Optimism caused by choosing the best observed result after search.",
+      "what_it_does_not_estimate": "A property of one algorithm independent of reporting procedure.",
+      "best_fit_context": [
+        "model evaluation",
+        "code review",
+        "method comparison"
+      ],
+      "data_requirements": [
+        "fixed target",
+        "specified split",
+        "pipeline description",
+        "loss/metric"
+      ],
+      "bias_variance_or_stability_issue": "Model-selection bias must be interpreted through bias, variance/stability, sample size, and whether the split matches deployment.",
+      "common_misuse": [
+        "Reporting only the winner."
+      ],
+      "safe_pattern": "Log search and use nested/final evaluation.",
+      "dangerous_pattern": "Reporting only the winner.",
+      "restaurant_analytics_relevance": "For restaurant data, model-selection bias is useful only if feature timing, location/platform/time structure, and the operational action are explicit.",
+      "related_algorithm_ids": [
+        "alg-structural-risk-minimization"
+      ],
+      "related_risk_ids": [
+        "ml-risk-model-selection-bias"
+      ],
+      "source_traceability": {
+        "source_file": "Fundamentals of Pattern Recognition and Machine Learning, -- Ulisses Braga-Neto -- 2, 2024 -- Springer International Publishing AG(1).pdf",
+        "book_title": "Fundamentals of Pattern Recognition and Machine Learning",
+        "author": "Ulisses Braga-Neto",
+        "edition": "Second Edition",
+        "chapter_number": "8",
+        "chapter_title": "Model Selection for Classification",
+        "section_heading": "8.1-8.3 Complexity, VC theory, validation error, training error, SRM",
+        "book_page_start_detected": 189,
+        "support_role": "evaluation/model-selection",
+        "directly_supported_claims": [],
+        "inferred_claims": [
+          "Log search and use nested/final evaluation."
+        ],
+        "source_boundary_note": "eval-model-selection-bias: source support comes from combining or interpreting cited sections; practical decisions must still verify sample design, assumptions, and validation evidence."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "confidence": "medium",
+        "confidence_rationale": "Cross-section synthesis or applied ML guidance grounded in the source but context dependent.",
+        "record_specific_explanation": "Model-selection bias: this record distinguishes the estimate target from non-targets so agents do not give generic validation advice."
+      }
+    },
+    {
+      "id": "eval-feature-selection-leakage",
+      "evaluation_concept": "Feature-selection leakage",
+      "what_it_estimates": "Artificial performance from selecting features with all labels before error estimation.",
+      "what_it_does_not_estimate": "Real performance of a pipeline selecting features from training data only.",
+      "best_fit_context": [
+        "model evaluation",
+        "code review",
+        "method comparison"
+      ],
+      "data_requirements": [
+        "fixed target",
+        "specified split",
+        "pipeline description",
+        "loss/metric"
+      ],
+      "bias_variance_or_stability_issue": "Feature-selection leakage must be interpreted through bias, variance/stability, sample size, and whether the split matches deployment.",
+      "common_misuse": [
+        "Ranking all review terms using all labels before CV."
+      ],
+      "safe_pattern": "Fit feature selection inside each fold.",
+      "dangerous_pattern": "Ranking all review terms using all labels before CV.",
+      "restaurant_analytics_relevance": "For restaurant data, feature-selection leakage is useful only if feature timing, location/platform/time structure, and the operational action are explicit.",
+      "related_algorithm_ids": [
+        "alg-feature-selection"
+      ],
+      "related_risk_ids": [
+        "ml-risk-feature-selection-leakage"
+      ],
+      "source_traceability": {
+        "source_file": "Fundamentals of Pattern Recognition and Machine Learning, -- Ulisses Braga-Neto -- 2, 2024 -- Springer International Publishing AG(1).pdf",
+        "book_title": "Fundamentals of Pattern Recognition and Machine Learning",
+        "author": "Ulisses Braga-Neto",
+        "edition": "Second Edition",
+        "chapter_number": "9",
+        "chapter_title": "Dimensionality Reduction",
+        "section_heading": "9.1-9.5 Feature extraction, feature selection, PCA, MDS, factor analysis",
+        "book_page_start_detected": 209,
+        "support_role": "evaluation/model-selection",
+        "directly_supported_claims": [],
+        "inferred_claims": [
+          "Fit feature selection inside each fold."
+        ],
+        "source_boundary_note": "eval-feature-selection-leakage: source support comes from combining or interpreting cited sections; practical decisions must still verify sample design, assumptions, and validation evidence."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "confidence": "medium",
+        "confidence_rationale": "Cross-section synthesis or applied ML guidance grounded in the source but context dependent.",
+        "record_specific_explanation": "Feature-selection leakage: this record distinguishes the estimate target from non-targets so agents do not give generic validation advice."
+      }
+    },
+    {
+      "id": "eval-dimensionality-reduction-leakage",
+      "evaluation_concept": "Dimensionality-reduction leakage",
+      "what_it_estimates": "Overoptimism from fitting PCA/scaling/embedding transforms across train/test boundaries.",
+      "what_it_does_not_estimate": "Future-only representation learned from historical data.",
+      "best_fit_context": [
+        "model evaluation",
+        "code review",
+        "method comparison"
+      ],
+      "data_requirements": [
+        "fixed target",
+        "specified split",
+        "pipeline description",
+        "loss/metric"
+      ],
+      "bias_variance_or_stability_issue": "Dimensionality-reduction leakage must be interpreted through bias, variance/stability, sample size, and whether the split matches deployment.",
+      "common_misuse": [
+        "Normalizing future and past sales together."
+      ],
+      "safe_pattern": "Fit transforms inside training folds or historical windows.",
+      "dangerous_pattern": "Normalizing future and past sales together.",
+      "restaurant_analytics_relevance": "For restaurant data, dimensionality-reduction leakage is useful only if feature timing, location/platform/time structure, and the operational action are explicit.",
+      "related_algorithm_ids": [
+        "alg-pca"
+      ],
+      "related_risk_ids": [
+        "ml-risk-pca-before-split-leakage",
+        "ml-risk-validation-leakage"
+      ],
+      "source_traceability": {
+        "source_file": "Fundamentals of Pattern Recognition and Machine Learning, -- Ulisses Braga-Neto -- 2, 2024 -- Springer International Publishing AG(1).pdf",
+        "book_title": "Fundamentals of Pattern Recognition and Machine Learning",
+        "author": "Ulisses Braga-Neto",
+        "edition": "Second Edition",
+        "chapter_number": "9",
+        "chapter_title": "Dimensionality Reduction",
+        "section_heading": "9.1-9.5 Feature extraction, feature selection, PCA, MDS, factor analysis",
+        "book_page_start_detected": 209,
+        "support_role": "evaluation/model-selection",
+        "directly_supported_claims": [],
+        "inferred_claims": [
+          "Fit transforms inside training folds or historical windows."
+        ],
+        "source_boundary_note": "eval-dimensionality-reduction-leakage: the book motivates the ML principle, while this record translates it into project-review guidance rather than a direct source assertion."
+      },
+      "derivation": {
+        "classification": "applied_ml_extension",
+        "confidence": "medium",
+        "confidence_rationale": "Cross-section synthesis or applied ML guidance grounded in the source but context dependent.",
+        "record_specific_explanation": "Dimensionality-reduction leakage: this record distinguishes the estimate target from non-targets so agents do not give generic validation advice."
+      }
+    },
+    {
+      "id": "eval-high-dimensional-small-sample-instability",
+      "evaluation_concept": "High-dimensional small-sample instability",
+      "what_it_estimates": "Variance and instability when p/complexity is high relative to n.",
+      "what_it_does_not_estimate": "A blanket ban on high-dimensional learning.",
+      "best_fit_context": [
+        "model evaluation",
+        "code review",
+        "method comparison"
+      ],
+      "data_requirements": [
+        "fixed target",
+        "specified split",
+        "pipeline description",
+        "loss/metric"
+      ],
+      "bias_variance_or_stability_issue": "High-dimensional small-sample instability must be interpreted through bias, variance/stability, sample size, and whether the split matches deployment.",
+      "common_misuse": [
+        "One random split with hundreds of features and few labels."
+      ],
+      "safe_pattern": "Prefer simpler/regularized models and report uncertainty.",
+      "dangerous_pattern": "One random split with hundreds of features and few labels.",
+      "restaurant_analytics_relevance": "For restaurant data, high-dimensional small-sample instability is useful only if feature timing, location/platform/time structure, and the operational action are explicit.",
+      "related_algorithm_ids": [
+        "alg-qda",
+        "alg-penalized-regression"
+      ],
+      "related_risk_ids": [
+        "ml-risk-small-sample-instability",
+        "ml-risk-high-dimensional-overfitting"
+      ],
+      "source_traceability": {
+        "source_file": "Fundamentals of Pattern Recognition and Machine Learning, -- Ulisses Braga-Neto -- 2, 2024 -- Springer International Publishing AG(1).pdf",
+        "book_title": "Fundamentals of Pattern Recognition and Machine Learning",
+        "author": "Ulisses Braga-Neto",
+        "edition": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Introduction",
+        "section_heading": "1.6 Complexity Trade-Offs",
+        "book_page_start_detected": 5,
+        "support_role": "evaluation/model-selection",
+        "directly_supported_claims": [],
+        "inferred_claims": [
+          "Prefer simpler/regularized models and report uncertainty."
+        ],
+        "source_boundary_note": "eval-high-dimensional-small-sample-instability: source support comes from combining or interpreting cited sections; practical decisions must still verify sample design, assumptions, and validation evidence."
+      },
+      "derivation": {
+        "classification": "source_synthesis",
+        "confidence": "medium",
+        "confidence_rationale": "Cross-section synthesis or applied ML guidance grounded in the source but context dependent.",
+        "record_specific_explanation": "High-dimensional small-sample instability: this record distinguishes the estimate target from non-targets so agents do not give generic validation advice."
+      }
+    },
+    {
+      "id": "eval-classification-complexity",
+      "evaluation_concept": "Classification complexity",
+      "what_it_estimates": "Complexity of classifier class relative to sample size.",
+      "what_it_does_not_estimate": "A universal algorithm ranking without context.",
+      "best_fit_context": [
+        "model evaluation",
+        "code review",
+        "method comparison"
+      ],
+      "data_requirements": [
+        "fixed target",
+        "specified split",
+        "pipeline description",
+        "loss/metric"
+      ],
+      "bias_variance_or_stability_issue": "Classification complexity must be interpreted through bias, variance/stability, sample size, and whether the split matches deployment.",
+      "common_misuse": [
+        "Choosing the most complex model by default."
+      ],
+      "safe_pattern": "Match complexity to sample size and validation evidence.",
+      "dangerous_pattern": "Choosing the most complex model by default.",
+      "restaurant_analytics_relevance": "For restaurant data, classification complexity is useful only if feature timing, location/platform/time structure, and the operational action are explicit.",
+      "related_algorithm_ids": [
+        "alg-structural-risk-minimization"
+      ],
+      "related_risk_ids": [
+        "ml-risk-high-dimensional-overfitting"
+      ],
+      "source_traceability": {
+        "source_file": "Fundamentals of Pattern Recognition and Machine Learning, -- Ulisses Braga-Neto -- 2, 2024 -- Springer International Publishing AG(1).pdf",
+        "book_title": "Fundamentals of Pattern Recognition and Machine Learning",
+        "author": "Ulisses Braga-Neto",
+        "edition": "Second Edition",
+        "chapter_number": "8",
+        "chapter_title": "Model Selection for Classification",
+        "section_heading": "8.1-8.3 Complexity, VC theory, validation error, training error, SRM",
+        "book_page_start_detected": 189,
+        "support_role": "evaluation/model-selection",
+        "directly_supported_claims": [
+          "Complexity of classifier class relative to sample size."
+        ],
+        "inferred_claims": [],
+        "source_boundary_note": "eval-classification-complexity: statements in directly_supported_claims are tied to the cited book section; implementation, restaurant, and software-current guidance is not treated as a book claim."
+      },
+      "derivation": {
+        "classification": "source_direct_definition",
+        "confidence": "high",
+        "confidence_rationale": "Direct definition, method, theorem meaning, or error-estimation concept in the uploaded source.",
+        "record_specific_explanation": "Classification complexity: this record distinguishes the estimate target from non-targets so agents do not give generic validation advice."
+      }
+    },
+    {
+      "id": "eval-vc-reasoning",
+      "evaluation_concept": "VC reasoning",
+      "what_it_estimates": "Distribution-free sample-size/complexity reasoning.",
+      "what_it_does_not_estimate": "A tight practical error estimate in every project.",
+      "best_fit_context": [
+        "model evaluation",
+        "code review",
+        "method comparison"
+      ],
+      "data_requirements": [
+        "fixed target",
+        "specified split",
+        "pipeline description",
+        "loss/metric"
+      ],
+      "bias_variance_or_stability_issue": "VC reasoning must be interpreted through bias, variance/stability, sample size, and whether the split matches deployment.",
+      "common_misuse": [
+        "Quoting VC theory without checking search and n."
+      ],
+      "safe_pattern": "Use as cautionary complexity lens with validation.",
+      "dangerous_pattern": "Quoting VC theory without checking search and n.",
+      "restaurant_analytics_relevance": "For restaurant data, vc reasoning is useful only if feature timing, location/platform/time structure, and the operational action are explicit.",
+      "related_algorithm_ids": [
+        "alg-structural-risk-minimization"
+      ],
+      "related_risk_ids": [
+        "ml-risk-high-dimensional-overfitting"
+      ],
+      "source_traceability": {
+        "source_file": "Fundamentals of Pattern Recognition and Machine Learning, -- Ulisses Braga-Neto -- 2, 2024 -- Springer International Publishing AG(1).pdf",
+        "book_title": "Fundamentals of Pattern Recognition and Machine Learning",
+        "author": "Ulisses Braga-Neto",
+        "edition": "Second Edition",
+        "chapter_number": "8",
+        "chapter_title": "Model Selection for Classification",
+        "section_heading": "8.1-8.3 Complexity, VC theory, validation error, training error, SRM",
+        "book_page_start_detected": 189,
+        "support_role": "evaluation/model-selection",
+        "directly_supported_claims": [
+          "Distribution-free sample-size/complexity reasoning."
+        ],
+        "inferred_claims": [],
+        "source_boundary_note": "eval-vc-reasoning: statements in directly_supported_claims are tied to the cited book section; implementation, restaurant, and software-current guidance is not treated as a book claim."
+      },
+      "derivation": {
+        "classification": "source_direct_theorem",
+        "confidence": "high",
+        "confidence_rationale": "Direct definition, method, theorem meaning, or error-estimation concept in the uploaded source.",
+        "record_specific_explanation": "VC reasoning: this record distinguishes the estimate target from non-targets so agents do not give generic validation advice."
+      }
+    },
+    {
+      "id": "eval-structural-risk-minimization",
+      "evaluation_concept": "Structural risk minimization",
+      "what_it_estimates": "Selection by balancing empirical error with complexity.",
+      "what_it_does_not_estimate": "Protection from leakage or distribution shift.",
+      "best_fit_context": [
+        "model evaluation",
+        "code review",
+        "method comparison"
+      ],
+      "data_requirements": [
+        "fixed target",
+        "specified split",
+        "pipeline description",
+        "loss/metric"
+      ],
+      "bias_variance_or_stability_issue": "Structural risk minimization must be interpreted through bias, variance/stability, sample size, and whether the split matches deployment.",
+      "common_misuse": [
+        "Using SRM language while reusing validation repeatedly."
+      ],
+      "safe_pattern": "Use disciplined complexity control plus validation.",
+      "dangerous_pattern": "Using SRM language while reusing validation repeatedly.",
+      "restaurant_analytics_relevance": "For restaurant data, structural risk minimization is useful only if feature timing, location/platform/time structure, and the operational action are explicit.",
+      "related_algorithm_ids": [
+        "alg-structural-risk-minimization"
+      ],
+      "related_risk_ids": [
+        "ml-risk-model-selection-bias"
+      ],
+      "source_traceability": {
+        "source_file": "Fundamentals of Pattern Recognition and Machine Learning, -- Ulisses Braga-Neto -- 2, 2024 -- Springer International Publishing AG(1).pdf",
+        "book_title": "Fundamentals of Pattern Recognition and Machine Learning",
+        "author": "Ulisses Braga-Neto",
+        "edition": "Second Edition",
+        "chapter_number": "8",
+        "chapter_title": "Model Selection for Classification",
+        "section_heading": "8.1-8.3 Complexity, VC theory, validation error, training error, SRM",
+        "book_page_start_detected": 189,
+        "support_role": "evaluation/model-selection",
+        "directly_supported_claims": [
+          "Selection by balancing empirical error with complexity."
+        ],
+        "inferred_claims": [],
+        "source_boundary_note": "eval-structural-risk-minimization: statements in directly_supported_claims are tied to the cited book section; implementation, restaurant, and software-current guidance is not treated as a book claim."
+      },
+      "derivation": {
+        "classification": "source_direct_method",
+        "confidence": "high",
+        "confidence_rationale": "Direct definition, method, theorem meaning, or error-estimation concept in the uploaded source.",
+        "record_specific_explanation": "Structural risk minimization: this record distinguishes the estimate target from non-targets so agents do not give generic validation advice."
+      }
+    },
+    {
+      "id": "eval-test-set-representativeness",
+      "evaluation_concept": "Test-set representativeness",
+      "what_it_estimates": "Whether test cases reflect future population by class, time, platform, and location.",
+      "what_it_does_not_estimate": "Performance for populations missing from the test set.",
+      "best_fit_context": [
+        "model evaluation",
+        "code review",
+        "method comparison"
+      ],
+      "data_requirements": [
+        "fixed target",
+        "specified split",
+        "pipeline description",
+        "loss/metric"
+      ],
+      "bias_variance_or_stability_issue": "Test-set representativeness must be interpreted through bias, variance/stability, sample size, and whether the split matches deployment.",
+      "common_misuse": [
+        "Testing one location and claiming all locations."
+      ],
+      "safe_pattern": "Define deployment population and test accordingly.",
+      "dangerous_pattern": "Testing one location and claiming all locations.",
+      "restaurant_analytics_relevance": "For restaurant data, test-set representativeness is useful only if feature timing, location/platform/time structure, and the operational action are explicit.",
+      "related_algorithm_ids": [
+        "alg-cross-validation"
+      ],
+      "related_risk_ids": [
+        "ml-risk-location-confounding",
+        "ml-risk-platform-selection-bias"
+      ],
+      "source_traceability": {
+        "source_file": "Fundamentals of Pattern Recognition and Machine Learning, -- Ulisses Braga-Neto -- 2, 2024 -- Springer International Publishing AG(1).pdf",
+        "book_title": "Fundamentals of Pattern Recognition and Machine Learning",
+        "author": "Ulisses Braga-Neto",
+        "edition": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Introduction",
+        "section_heading": "1.7 The Design Cycle",
+        "book_page_start_detected": 7,
+        "support_role": "evaluation/model-selection",
+        "directly_supported_claims": [],
+        "inferred_claims": [
+          "Define deployment population and test accordingly."
+        ],
+        "source_boundary_note": "eval-test-set-representativeness: the book motivates the ML principle, while this record translates it into project-review guidance rather than a direct source assertion."
+      },
+      "derivation": {
+        "classification": "applied_ml_extension",
+        "confidence": "medium",
+        "confidence_rationale": "Cross-section synthesis or applied ML guidance grounded in the source but context dependent.",
+        "record_specific_explanation": "Test-set representativeness: this record distinguishes the estimate target from non-targets so agents do not give generic validation advice."
+      }
+    },
+    {
+      "id": "eval-distribution-shift-between-training-and-deployment",
+      "evaluation_concept": "Distribution shift between training and deployment",
+      "what_it_estimates": "Change between train/evaluation distribution and deployment distribution.",
+      "what_it_does_not_estimate": "Model quality under new regimes not represented by validation.",
+      "best_fit_context": [
+        "model evaluation",
+        "code review",
+        "method comparison"
+      ],
+      "data_requirements": [
+        "fixed target",
+        "specified split",
+        "pipeline description",
+        "loss/metric"
+      ],
+      "bias_variance_or_stability_issue": "Distribution shift between training and deployment must be interpreted through bias, variance/stability, sample size, and whether the split matches deployment.",
+      "common_misuse": [
+        "Random splits across menu/promo/platform changes."
+      ],
+      "safe_pattern": "Use time/external validation and monitor drift.",
+      "dangerous_pattern": "Random splits across menu/promo/platform changes.",
+      "restaurant_analytics_relevance": "For restaurant data, distribution shift between training and deployment is useful only if feature timing, location/platform/time structure, and the operational action are explicit.",
+      "related_algorithm_ids": [
+        "alg-linear-regression"
+      ],
+      "related_risk_ids": [
+        "ml-risk-temporal-split-mismatch",
+        "ml-risk-seasonality-event-confounding"
+      ],
+      "source_traceability": {
+        "source_file": "Fundamentals of Pattern Recognition and Machine Learning, -- Ulisses Braga-Neto -- 2, 2024 -- Springer International Publishing AG(1).pdf",
+        "book_title": "Fundamentals of Pattern Recognition and Machine Learning",
+        "author": "Ulisses Braga-Neto",
+        "edition": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Introduction",
+        "section_heading": "1.7 The Design Cycle",
+        "book_page_start_detected": 7,
+        "support_role": "evaluation/model-selection",
+        "directly_supported_claims": [],
+        "inferred_claims": [
+          "Use time/external validation and monitor drift."
+        ],
+        "source_boundary_note": "eval-distribution-shift-between-training-and-deployment: the book motivates the ML principle, while this record translates it into project-review guidance rather than a direct source assertion."
+      },
+      "derivation": {
+        "classification": "applied_ml_extension",
+        "confidence": "medium",
+        "confidence_rationale": "Cross-section synthesis or applied ML guidance grounded in the source but context dependent.",
+        "record_specific_explanation": "Distribution shift between training and deployment: this record distinguishes the estimate target from non-targets so agents do not give generic validation advice."
+      }
+    },
+    {
+      "id": "eval-simple-baseline-first",
+      "evaluation_concept": "Simple baseline first",
+      "what_it_estimates": "Improvement over the simplest useful baseline under the same split/metric.",
+      "what_it_does_not_estimate": "Proof that simple models always win.",
+      "best_fit_context": [
+        "model evaluation",
+        "code review",
+        "method comparison"
+      ],
+      "data_requirements": [
+        "fixed target",
+        "specified split",
+        "pipeline description",
+        "loss/metric"
+      ],
+      "bias_variance_or_stability_issue": "Simple baseline first must be interpreted through bias, variance/stability, sample size, and whether the split matches deployment.",
+      "common_misuse": [
+        "Complex model with no same-split baseline."
+      ],
+      "safe_pattern": "Report baseline before complex model.",
+      "dangerous_pattern": "Complex model with no same-split baseline.",
+      "restaurant_analytics_relevance": "For restaurant data, simple baseline first is useful only if feature timing, location/platform/time structure, and the operational action are explicit.",
+      "related_algorithm_ids": [
+        "alg-linear-regression",
+        "alg-lda"
+      ],
+      "related_risk_ids": [
+        "ml-risk-neural-network-superiority-assumption",
+        "ml-risk-operational-actionability-gap"
+      ],
+      "source_traceability": {
+        "source_file": "Fundamentals of Pattern Recognition and Machine Learning, -- Ulisses Braga-Neto -- 2, 2024 -- Springer International Publishing AG(1).pdf",
+        "book_title": "Fundamentals of Pattern Recognition and Machine Learning",
+        "author": "Ulisses Braga-Neto",
+        "edition": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Introduction",
+        "section_heading": "1.6 Complexity Trade-Offs",
+        "book_page_start_detected": 5,
+        "support_role": "evaluation/model-selection",
+        "directly_supported_claims": [],
+        "inferred_claims": [
+          "Report baseline before complex model."
+        ],
+        "source_boundary_note": "eval-simple-baseline-first: the book motivates the ML principle, while this record translates it into project-review guidance rather than a direct source assertion."
+      },
+      "derivation": {
+        "classification": "applied_ml_extension",
+        "confidence": "medium",
+        "confidence_rationale": "Cross-section synthesis or applied ML guidance grounded in the source but context dependent.",
+        "record_specific_explanation": "Simple baseline first: this record distinguishes the estimate target from non-targets so agents do not give generic validation advice."
+      }
+    }
+  ]
+}

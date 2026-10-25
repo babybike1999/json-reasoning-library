@@ -1,0 +1,3369 @@
+{
+  "source_domain": "general_operational_extension",
+  "title": "Compact Python Coding Assistant Context from Robust Python and Architecture Patterns with Python",
+  "generated_at": "2026-06-16T06:13:43+00:00",
+  "operating_instructions": [
+    "Inspect current code before recommending architecture; cite exact filenames and symbols.",
+    "Preserve working behavior; add or identify tests before material refactoring.",
+    "Distinguish observed code from proposals and state assumptions/unverified items.",
+    "Prefer incremental patches and rollback instructions over rewrites.",
+    "Avoid speculative abstractions, microservices by default, and pattern cargo culting.",
+    "Apply book patterns only when they solve a demonstrated problem.",
+    "Never claim code was executed when it was not.",
+    "Keep secrets out of output and generated artifacts.",
+    "Use current external documentation for time-sensitive library behavior."
+  ],
+  "core_engineering_principles": [
+    {
+      "id": "rule-001",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "A value has a limited valid set.",
+      "recommended_response": "Use an Enum for a shared named concept, Literal for a tiny local set, or a validated domain type for richer behavior.",
+      "reason": "Free-form strings and numbers allow unsupported states and typos.",
+      "exceptions": [
+        "The value is open-ended user content.",
+        "The set is externally versioned and must remain tolerant at the edge."
+      ],
+      "misuse_warning": "Do not create enums for every boolean or one-off branch.",
+      "source_basis": {
+        "source_domains": [
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-014",
+          "rp-028",
+          "rp-113",
+          "cb-030"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Closed sets require boundary conversion and migration handling."
+    },
+    {
+      "id": "rule-002",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "Two implementations share required behavior but not ancestry.",
+      "recommended_response": "Use a small Protocol or callable type rather than forcing inheritance.",
+      "reason": "Structural ports communicate the behavior consumers need and make fakes easy.",
+      "exceptions": [
+        "Nominal registration, shared base lifecycle, or runtime subclass checks are required."
+      ],
+      "misuse_warning": "Do not copy an entire concrete class into a protocol.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-041",
+          "rp-073",
+          "ap-012",
+          "cb-013"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Protocols have limited runtime semantic enforcement."
+    },
+    {
+      "id": "rule-003",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "External I/O is mixed with core decisions.",
+      "recommended_response": "Isolate I/O behind an adapter/port and keep the decision in a domain function, entity, aggregate, or service.",
+      "reason": "Pure decisions are easier to test and change.",
+      "exceptions": [
+        "The program is a small single-purpose script whose value is the side effect."
+      ],
+      "misuse_warning": "Do not introduce a port for every harmless helper import.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "ap-002",
+          "ap-017",
+          "rp-048",
+          "cb-018"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Explicit boundaries add files and wiring."
+    },
+    {
+      "id": "rule-004",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "Refactoring behavior is risky or poorly understood.",
+      "recommended_response": "Add characterization tests around observed behavior before material structural changes.",
+      "reason": "Tests separate behavior preservation from design improvement.",
+      "exceptions": [
+        "The code is dead, unused, or can be safely deleted."
+      ],
+      "misuse_warning": "Do not freeze known bugs forever; mark them explicitly if characterized.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "ap-051",
+          "ap-105",
+          "rp-122",
+          "cb-023"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Characterization tests may temporarily preserve undesirable behavior."
+    },
+    {
+      "id": "rule-005",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "A pattern introduces more concepts than the current problem needs.",
+      "recommended_response": "Prefer the simpler design and record what evidence would justify escalation.",
+      "reason": "Patterns have costs and should solve demonstrated forces.",
+      "exceptions": [
+        "The requirement already includes multiple implementations, consistency boundaries, or independent reactions."
+      ],
+      "misuse_warning": "Do not reject patterns dogmatically when evidence exists.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "ap-053",
+          "ap-091",
+          "ap-092",
+          "ap-093",
+          "ap-094",
+          "ap-095",
+          "rp-125",
+          "cb-015"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Simple designs may require later extraction."
+    },
+    {
+      "id": "rule-006",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "An error is expected and recoverable.",
+      "recommended_response": "Represent it distinctly from programming defects: explicit result, Optional absence, or named domain exception.",
+      "reason": "Callers need a contract for recovery and reporting.",
+      "exceptions": [
+        "The error indicates a violated invariant or impossible condition."
+      ],
+      "misuse_warning": "Do not return None for many unrelated failures.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-010",
+          "rp-011",
+          "ap-039",
+          "cb-014",
+          "cb-031"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Result/exception hierarchies require consistent handling."
+    },
+    {
+      "id": "rule-007",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "An object’s validity depends on multiple fields.",
+      "recommended_response": "Enforce the invariant at construction or transition method, not by scattered caller checks.",
+      "reason": "Invalid states should be hard or impossible to represent.",
+      "exceptions": [
+        "The object is a transient DTO validated elsewhere and never used as domain state."
+      ],
+      "misuse_warning": "Do not use dataclass field annotations as a substitute for multi-field validation.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-033",
+          "rp-035",
+          "ap-027",
+          "cb-037"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Constructors/factories gain validation code."
+    },
+    {
+      "id": "rule-008",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "Multiple operations must succeed or fail together.",
+      "recommended_response": "Define an explicit transaction boundary, commonly a Unit of Work context around the use case.",
+      "reason": "Atomicity and rollback policy must be visible and testable.",
+      "exceptions": [
+        "The operation is read-only or idempotent with no shared consistency requirement."
+      ],
+      "misuse_warning": "Do not commit inside domain methods or repositories without an explicit policy.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis"
+        ],
+        "record_ids": [
+          "ap-023",
+          "ap-024",
+          "ap-076",
+          "cb-005"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "UoW adds lifecycle discipline and adapter work."
+    },
+    {
+      "id": "rule-009",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "A framework owns object creation or entrypoints.",
+      "recommended_response": "Keep dependency injection explicit at a bootstrap/composition root and keep entrypoints thin.",
+      "reason": "Tests and alternate entrypoints need controlled wiring.",
+      "exceptions": [
+        "The dependency is pure, stable, and harmless to construct locally."
+      ],
+      "misuse_warning": "Do not replace clear manual wiring with a heavy DI container by default.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis"
+        ],
+        "record_ids": [
+          "ap-047",
+          "ap-048",
+          "ap-085",
+          "ap-096",
+          "cb-021"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Manual wiring can feel verbose."
+    },
+    {
+      "id": "rule-010",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "The domain is primarily CRUD with little business logic.",
+      "recommended_response": "Do not manufacture aggregates, repositories, UoW, events, or CQRS; use the framework simply and add seams later if behavior grows.",
+      "reason": "Architecture patterns should pay for themselves through invariants, testability, or change pressure.",
+      "exceptions": [
+        "Even a CRUD app has critical consistency rules or difficult external integrations."
+      ],
+      "misuse_warning": "Do not call code “domain-driven” when it only wraps simple table operations.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis"
+        ],
+        "record_ids": [
+          "ap-091",
+          "ap-092",
+          "ap-093",
+          "ap-095",
+          "cb-025"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Later extraction may be required if rules grow."
+    },
+    {
+      "id": "rule-011",
+      "source_domain": "robust_python",
+      "trigger": "A type annotation does not communicate a meaningful constraint.",
+      "recommended_response": "Omit or simplify it rather than adding ceremonial typing.",
+      "reason": "Typing should improve correctness, communication, or tooling feedback.",
+      "exceptions": [
+        "A project-wide consistency rule requires explicit annotations for tooling."
+      ],
+      "misuse_warning": "Do not use Any or redundant annotations to create fake coverage.",
+      "source_basis": {
+        "source_domains": [
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-009",
+          "rp-125"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Fewer annotations leave some dynamic errors to tests/runtime."
+    },
+    {
+      "id": "rule-012",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "Code has hidden side effects.",
+      "recommended_response": "Make side effects visible in the function name, return contract, object boundary, or command handler.",
+      "reason": "Callers and tests need to know what can change.",
+      "exceptions": [
+        "The side effect is the sole obvious purpose, such as send_email."
+      ],
+      "misuse_warning": "Do not hide writes behind getters, properties, or dunder methods.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-098",
+          "ap-073",
+          "cb-008"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Explicit naming can be more verbose."
+    }
+  ],
+  "architecture_selection_rules": [
+    {
+      "id": "rule-002",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "Two implementations share required behavior but not ancestry.",
+      "recommended_response": "Use a small Protocol or callable type rather than forcing inheritance.",
+      "reason": "Structural ports communicate the behavior consumers need and make fakes easy.",
+      "exceptions": [
+        "Nominal registration, shared base lifecycle, or runtime subclass checks are required."
+      ],
+      "misuse_warning": "Do not copy an entire concrete class into a protocol.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-041",
+          "rp-073",
+          "ap-012",
+          "cb-013"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Protocols have limited runtime semantic enforcement."
+    },
+    {
+      "id": "rule-003",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "External I/O is mixed with core decisions.",
+      "recommended_response": "Isolate I/O behind an adapter/port and keep the decision in a domain function, entity, aggregate, or service.",
+      "reason": "Pure decisions are easier to test and change.",
+      "exceptions": [
+        "The program is a small single-purpose script whose value is the side effect."
+      ],
+      "misuse_warning": "Do not introduce a port for every harmless helper import.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "ap-002",
+          "ap-017",
+          "rp-048",
+          "cb-018"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Explicit boundaries add files and wiring."
+    },
+    {
+      "id": "rule-004",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "Refactoring behavior is risky or poorly understood.",
+      "recommended_response": "Add characterization tests around observed behavior before material structural changes.",
+      "reason": "Tests separate behavior preservation from design improvement.",
+      "exceptions": [
+        "The code is dead, unused, or can be safely deleted."
+      ],
+      "misuse_warning": "Do not freeze known bugs forever; mark them explicitly if characterized.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "ap-051",
+          "ap-105",
+          "rp-122",
+          "cb-023"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Characterization tests may temporarily preserve undesirable behavior."
+    },
+    {
+      "id": "rule-005",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "A pattern introduces more concepts than the current problem needs.",
+      "recommended_response": "Prefer the simpler design and record what evidence would justify escalation.",
+      "reason": "Patterns have costs and should solve demonstrated forces.",
+      "exceptions": [
+        "The requirement already includes multiple implementations, consistency boundaries, or independent reactions."
+      ],
+      "misuse_warning": "Do not reject patterns dogmatically when evidence exists.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "ap-053",
+          "ap-091",
+          "ap-092",
+          "ap-093",
+          "ap-094",
+          "ap-095",
+          "rp-125",
+          "cb-015"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Simple designs may require later extraction."
+    },
+    {
+      "id": "rule-006",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "An error is expected and recoverable.",
+      "recommended_response": "Represent it distinctly from programming defects: explicit result, Optional absence, or named domain exception.",
+      "reason": "Callers need a contract for recovery and reporting.",
+      "exceptions": [
+        "The error indicates a violated invariant or impossible condition."
+      ],
+      "misuse_warning": "Do not return None for many unrelated failures.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-010",
+          "rp-011",
+          "ap-039",
+          "cb-014",
+          "cb-031"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Result/exception hierarchies require consistent handling."
+    },
+    {
+      "id": "rule-007",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "An object’s validity depends on multiple fields.",
+      "recommended_response": "Enforce the invariant at construction or transition method, not by scattered caller checks.",
+      "reason": "Invalid states should be hard or impossible to represent.",
+      "exceptions": [
+        "The object is a transient DTO validated elsewhere and never used as domain state."
+      ],
+      "misuse_warning": "Do not use dataclass field annotations as a substitute for multi-field validation.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-033",
+          "rp-035",
+          "ap-027",
+          "cb-037"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Constructors/factories gain validation code."
+    },
+    {
+      "id": "rule-008",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "Multiple operations must succeed or fail together.",
+      "recommended_response": "Define an explicit transaction boundary, commonly a Unit of Work context around the use case.",
+      "reason": "Atomicity and rollback policy must be visible and testable.",
+      "exceptions": [
+        "The operation is read-only or idempotent with no shared consistency requirement."
+      ],
+      "misuse_warning": "Do not commit inside domain methods or repositories without an explicit policy.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis"
+        ],
+        "record_ids": [
+          "ap-023",
+          "ap-024",
+          "ap-076",
+          "cb-005"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "UoW adds lifecycle discipline and adapter work."
+    },
+    {
+      "id": "rule-009",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "A framework owns object creation or entrypoints.",
+      "recommended_response": "Keep dependency injection explicit at a bootstrap/composition root and keep entrypoints thin.",
+      "reason": "Tests and alternate entrypoints need controlled wiring.",
+      "exceptions": [
+        "The dependency is pure, stable, and harmless to construct locally."
+      ],
+      "misuse_warning": "Do not replace clear manual wiring with a heavy DI container by default.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis"
+        ],
+        "record_ids": [
+          "ap-047",
+          "ap-048",
+          "ap-085",
+          "ap-096",
+          "cb-021"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Manual wiring can feel verbose."
+    },
+    {
+      "id": "rule-010",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "The domain is primarily CRUD with little business logic.",
+      "recommended_response": "Do not manufacture aggregates, repositories, UoW, events, or CQRS; use the framework simply and add seams later if behavior grows.",
+      "reason": "Architecture patterns should pay for themselves through invariants, testability, or change pressure.",
+      "exceptions": [
+        "Even a CRUD app has critical consistency rules or difficult external integrations."
+      ],
+      "misuse_warning": "Do not call code “domain-driven” when it only wraps simple table operations.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis"
+        ],
+        "record_ids": [
+          "ap-091",
+          "ap-092",
+          "ap-093",
+          "ap-095",
+          "cb-025"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Later extraction may be required if rules grow."
+    },
+    {
+      "id": "rule-012",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "Code has hidden side effects.",
+      "recommended_response": "Make side effects visible in the function name, return contract, object boundary, or command handler.",
+      "reason": "Callers and tests need to know what can change.",
+      "exceptions": [
+        "The side effect is the sole obvious purpose, such as send_email."
+      ],
+      "misuse_warning": "Do not hide writes behind getters, properties, or dunder methods.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-098",
+          "ap-073",
+          "cb-008"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Explicit naming can be more verbose."
+    },
+    {
+      "id": "rule-013",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "A repository is proposed.",
+      "recommended_response": "Ask what aggregate/use case it serves, what persistence detail it hides, and how fake/real behavior will be aligned.",
+      "reason": "Repositories are ports with cost, not default folders.",
+      "exceptions": [
+        "Framework CRUD already gives a better simple interface."
+      ],
+      "misuse_warning": "Do not create one repository per table by default.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis"
+        ],
+        "record_ids": [
+          "ap-008",
+          "ap-030",
+          "ap-091",
+          "cb-001"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Repository abstraction can hide query/performance behavior."
+    },
+    {
+      "id": "rule-014",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "A service layer is proposed.",
+      "recommended_response": "Use it for use-case orchestration, transaction/failure handling, and dependency coordination; keep domain rules in the domain model where they belong.",
+      "reason": "Application services coordinate, domain objects decide.",
+      "exceptions": [
+        "The behavior is a pure domain operation with one direct caller."
+      ],
+      "misuse_warning": "Do not turn service layer into a god module.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis"
+        ],
+        "record_ids": [
+          "ap-017",
+          "ap-072",
+          "ap-092",
+          "cb-008"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Adds an application layer that can become pass-through ceremony."
+    }
+  ],
+  "type_design_guidance": [
+    {
+      "id": "rp-010",
+      "source_domain": "robust_python",
+      "pattern_name": "Optional return contracts",
+      "problem_addressed": "A function that sometimes returns None but does not declare it creates latent None dereferences.",
+      "context": "Absence is a normal expected outcome.",
+      "recommended_approach": [
+        "Declare Optional at the boundary where absence is legitimate.",
+        "Narrow with an explicit None check before dereferencing."
+      ],
+      "python_features_involved": [
+        "Optional",
+        "None narrowing"
+      ],
+      "invalid_states_prevented": [
+        "Absent values masquerade as present values."
+      ],
+      "runtime_failures_prevented": [
+        "NoneType AttributeError from unchecked absence."
+      ],
+      "type_checker_implications": [
+        "Makes at least part of the contract visible to static analysis when the chosen type checker supports the feature.",
+        "Does not replace runtime validation at I/O, user, network, database, or configuration boundaries."
+      ],
+      "testability_implications": [
+        "Creates a narrower surface for unit tests by making valid and invalid cases explicit.",
+        "Boundary tests should still exercise malformed runtime data and tool gaps."
+      ],
+      "maintenance_implications": [
+        "Documents intent in executable signatures and data shapes instead of relying only on comments.",
+        "May require migration work where existing callers rely on looser or ambiguous values."
+      ],
+      "tradeoffs": [
+        "Optional can spread if absence is not resolved near the source."
+      ],
+      "use_when": [
+        "Absence is a normal expected outcome."
+      ],
+      "do_not_use_when": [
+        "The absence is actually an exceptional violation of the contract."
+      ],
+      "common_misuses": [
+        "Returning None for many unrelated failure reasons."
+      ],
+      "minimal_code_shape": "def load_value(key: str) -> Optional[Value]: ...\nvalue = load_value(key)\nif value is None: handle_absence()\nelse: use(value)",
+      "review_questions": [
+        "Can a caller construct or pass an invalid value despite this design?",
+        "Is the runtime validation boundary separate from static typing assumptions?",
+        "Does the added type or abstraction communicate a real constraint rather than ceremony?"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "ch04.html",
+        "book_title": "Robust Python",
+        "chapter_number": "4",
+        "chapter_title": "Constraining Types",
+        "section_heading": "Optional Type",
+        "page_or_anchor": "ch04.html#idm45644755854968",
+        "code_listing_or_figure": "",
+        "location_note": "EPUB HTML anchor; no PDF page number was present in the uploaded source.",
+        "support_role": "language_feature_explanation",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "A function that sometimes returns None but does not declare it creates latent None dereferences.",
+          "Declare Optional at the boundary where absence is legitimate."
+        ],
+        "inferred_claims": [
+          "Optional can spread if absence is not resolved near the source."
+        ]
+      },
+      "derivation": {
+        "classification": "directly_stated_in_source",
+        "explanation": "This record operationalizes the discussion of Optional Type in Robust Python for reusable Python engineering decisions.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "rp-012",
+      "source_domain": "robust_python",
+      "pattern_name": "Union for deliberate alternatives",
+      "problem_addressed": "A variable that may hold several unrelated shapes is unsafe unless each alternative is visible and handled.",
+      "context": "The alternatives are few, explicit, and semantically meaningful.",
+      "recommended_approach": [
+        "Model deliberate alternatives with a union rather than a vague object or stringly convention.",
+        "Force callers to narrow before using alternative-specific behavior."
+      ],
+      "python_features_involved": [
+        "Union",
+        "sum types",
+        "pattern matching"
+      ],
+      "invalid_states_prevented": [
+        "Unrecognized alternative treated as a valid object."
+      ],
+      "runtime_failures_prevented": [
+        "AttributeError or wrong branch execution for a mixed-shape value."
+      ],
+      "type_checker_implications": [
+        "Makes at least part of the contract visible to static analysis when the chosen type checker supports the feature.",
+        "Does not replace runtime validation at I/O, user, network, database, or configuration boundaries."
+      ],
+      "testability_implications": [
+        "Creates a narrower surface for unit tests by making valid and invalid cases explicit.",
+        "Boundary tests should still exercise malformed runtime data and tool gaps."
+      ],
+      "maintenance_implications": [
+        "Documents intent in executable signatures and data shapes instead of relying only on comments.",
+        "May require migration work where existing callers rely on looser or ambiguous values."
+      ],
+      "tradeoffs": [
+        "Large unions can be hard to understand and evolve."
+      ],
+      "use_when": [
+        "The alternatives are few, explicit, and semantically meaningful."
+      ],
+      "do_not_use_when": [
+        "A common interface would express the behavior more simply."
+      ],
+      "common_misuses": [
+        "Using Union as a dumping ground for unrelated cases."
+      ],
+      "minimal_code_shape": "Result = Success | RecoverableFailure\ndef parse(raw: str) -> Result: ...\nmatch result: case Success(value=v): ...; case RecoverableFailure(reason=r): ...",
+      "review_questions": [
+        "Can a caller construct or pass an invalid value despite this design?",
+        "Is the runtime validation boundary separate from static typing assumptions?",
+        "Does the added type or abstraction communicate a real constraint rather than ceremony?"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "ch04.html",
+        "book_title": "Robust Python",
+        "chapter_number": "4",
+        "chapter_title": "Constraining Types",
+        "section_heading": "Union Types",
+        "page_or_anchor": "ch04.html#idm45644755825864",
+        "code_listing_or_figure": "",
+        "location_note": "EPUB HTML anchor; no PDF page number was present in the uploaded source.",
+        "support_role": "author_argument",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "A variable that may hold several unrelated shapes is unsafe unless each alternative is visible and handled.",
+          "Model deliberate alternatives with a union rather than a vague object or stringly convention."
+        ],
+        "inferred_claims": [
+          "Large unions can be hard to understand and evolve."
+        ]
+      },
+      "derivation": {
+        "classification": "strongly_implied_by_source",
+        "explanation": "This record operationalizes the discussion of Union Types in Robust Python for reusable Python engineering decisions.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "rp-014",
+      "source_domain": "robust_python",
+      "pattern_name": "Literal for small closed sets",
+      "problem_addressed": "A free-form primitive allows values outside a known finite set.",
+      "context": "The valid set is tiny and local to an API.",
+      "recommended_approach": [
+        "Use Literal when a function accepts only a small stable set of primitive values.",
+        "Prefer an enum when the values need behavior or wider reuse."
+      ],
+      "python_features_involved": [
+        "Literal"
+      ],
+      "invalid_states_prevented": [
+        "Misspelled modes, status codes, or flags enter the system."
+      ],
+      "runtime_failures_prevented": [
+        "Unreachable branch or unhandled case due to unexpected string/int."
+      ],
+      "type_checker_implications": [
+        "Makes at least part of the contract visible to static analysis when the chosen type checker supports the feature.",
+        "Does not replace runtime validation at I/O, user, network, database, or configuration boundaries."
+      ],
+      "testability_implications": [
+        "Creates a narrower surface for unit tests by making valid and invalid cases explicit.",
+        "Boundary tests should still exercise malformed runtime data and tool gaps."
+      ],
+      "maintenance_implications": [
+        "Documents intent in executable signatures and data shapes instead of relying only on comments.",
+        "May require migration work where existing callers rely on looser or ambiguous values."
+      ],
+      "tradeoffs": [
+        "Large or changing Literal sets are cumbersome."
+      ],
+      "use_when": [
+        "The valid set is tiny and local to an API."
+      ],
+      "do_not_use_when": [
+        "The set is reused, needs behavior, or is externally versioned."
+      ],
+      "common_misuses": [
+        "Using Literal for broad business concepts that deserve a named type."
+      ],
+      "minimal_code_shape": "class Status(Enum): PENDING = \"pending\"; SHIPPED = \"shipped\"\ndef transition(status: Status) -> Status: ...",
+      "review_questions": [
+        "Can a caller construct or pass an invalid value despite this design?",
+        "Is the runtime validation boundary separate from static typing assumptions?",
+        "Does the added type or abstraction communicate a real constraint rather than ceremony?"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "ch04.html",
+        "book_title": "Robust Python",
+        "chapter_number": "4",
+        "chapter_title": "Constraining Types",
+        "section_heading": "Literal Types",
+        "page_or_anchor": "ch04.html#idm45644755825400",
+        "code_listing_or_figure": "",
+        "location_note": "EPUB HTML anchor; no PDF page number was present in the uploaded source.",
+        "support_role": "author_argument",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "A free-form primitive allows values outside a known finite set.",
+          "Use Literal when a function accepts only a small stable set of primitive values."
+        ],
+        "inferred_claims": [
+          "Large or changing Literal sets are cumbersome."
+        ]
+      },
+      "derivation": {
+        "classification": "strongly_implied_by_source",
+        "explanation": "This record operationalizes the discussion of Literal Types in Robust Python for reusable Python engineering decisions.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "rp-016",
+      "source_domain": "robust_python",
+      "pattern_name": "NewType for semantic primitives",
+      "problem_addressed": "Two values share the same representation but are not interchangeable in the domain.",
+      "context": "The same primitive represents multiple incompatible meanings.",
+      "recommended_approach": [
+        "Create NewType wrappers for semantic roles that are easy to confuse.",
+        "Provide narrow constructors or conversion points near trusted boundaries."
+      ],
+      "python_features_involved": [
+        "NewType"
+      ],
+      "invalid_states_prevented": [
+        "Passing a user ID to an API expecting an order ID."
+      ],
+      "runtime_failures_prevented": [
+        "Silent cross-wiring of identifiers and domain quantities."
+      ],
+      "type_checker_implications": [
+        "Makes at least part of the contract visible to static analysis when the chosen type checker supports the feature.",
+        "Does not replace runtime validation at I/O, user, network, database, or configuration boundaries."
+      ],
+      "testability_implications": [
+        "Creates a narrower surface for unit tests by making valid and invalid cases explicit.",
+        "Boundary tests should still exercise malformed runtime data and tool gaps."
+      ],
+      "maintenance_implications": [
+        "Documents intent in executable signatures and data shapes instead of relying only on comments.",
+        "May require migration work where existing callers rely on looser or ambiguous values."
+      ],
+      "tradeoffs": [
+        "NewType is mostly static and has little runtime behavior."
+      ],
+      "use_when": [
+        "The same primitive represents multiple incompatible meanings."
+      ],
+      "do_not_use_when": [
+        "The wrapper would add no meaningful distinction."
+      ],
+      "common_misuses": [
+        "Using NewType as a runtime validation mechanism."
+      ],
+      "minimal_code_shape": "UserId = NewType(\"UserId\", int)\ndef find_user(user_id: UserId) -> User: ...",
+      "review_questions": [
+        "Can a caller construct or pass an invalid value despite this design?",
+        "Is the runtime validation boundary separate from static typing assumptions?",
+        "Does the added type or abstraction communicate a real constraint rather than ceremony?"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "ch04.html",
+        "book_title": "Robust Python",
+        "chapter_number": "4",
+        "chapter_title": "Constraining Types",
+        "section_heading": "NewType",
+        "page_or_anchor": "ch04.html#idm45644754558840",
+        "code_listing_or_figure": "",
+        "location_note": "EPUB HTML anchor; no PDF page number was present in the uploaded source.",
+        "support_role": "author_argument",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Two values share the same representation but are not interchangeable in the domain.",
+          "Create NewType wrappers for semantic roles that are easy to confuse."
+        ],
+        "inferred_claims": [
+          "NewType is mostly static and has little runtime behavior."
+        ]
+      },
+      "derivation": {
+        "classification": "strongly_implied_by_source",
+        "explanation": "This record operationalizes the discussion of NewType in Robust Python for reusable Python engineering decisions.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "rp-028",
+      "source_domain": "robust_python",
+      "pattern_name": "Enum for named finite concepts",
+      "problem_addressed": "Free-form strings and numbers cannot distinguish valid states from typos or unsupported options.",
+      "context": "The set of values is small, named, and reused.",
+      "recommended_approach": [
+        "Use Enum when values form a named closed set shared across code.",
+        "Put behavior that belongs to the concept near the enum only when it remains simple."
+      ],
+      "python_features_involved": [
+        "Enum",
+        "auto"
+      ],
+      "invalid_states_prevented": [
+        "Invalid status, mode, or category values."
+      ],
+      "runtime_failures_prevented": [
+        "Typos silently travel through branches and persistence."
+      ],
+      "type_checker_implications": [
+        "Makes at least part of the contract visible to static analysis when the chosen type checker supports the feature.",
+        "Does not replace runtime validation at I/O, user, network, database, or configuration boundaries."
+      ],
+      "testability_implications": [
+        "Creates a narrower surface for unit tests by making valid and invalid cases explicit.",
+        "Boundary tests should still exercise malformed runtime data and tool gaps."
+      ],
+      "maintenance_implications": [
+        "Documents intent in executable signatures and data shapes instead of relying only on comments.",
+        "May require migration work where existing callers rely on looser or ambiguous values."
+      ],
+      "tradeoffs": [
+        "Enums must be migrated carefully when external data stores use string values."
+      ],
+      "use_when": [
+        "The set of values is small, named, and reused."
+      ],
+      "do_not_use_when": [
+        "The set is user-defined or open-ended."
+      ],
+      "common_misuses": [
+        "Using enum members as a replacement for rich polymorphism."
+      ],
+      "minimal_code_shape": "class Status(Enum): PENDING = \"pending\"; SHIPPED = \"shipped\"\ndef transition(status: Status) -> Status: ...",
+      "review_questions": [
+        "Can a caller construct or pass an invalid value despite this design?",
+        "Is the runtime validation boundary separate from static typing assumptions?",
+        "Does the added type or abstraction communicate a real constraint rather than ceremony?"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "ch08.html",
+        "book_title": "Robust Python",
+        "chapter_number": "8",
+        "chapter_title": "User-Defined Types: Enums",
+        "section_heading": "Enumerations",
+        "page_or_anchor": "ch08.html#idm45644744544136",
+        "code_listing_or_figure": "",
+        "location_note": "EPUB HTML anchor; no PDF page number was present in the uploaded source.",
+        "support_role": "language_feature_explanation",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Free-form strings and numbers cannot distinguish valid states from typos or unsupported options.",
+          "Use Enum when values form a named closed set shared across code."
+        ],
+        "inferred_claims": [
+          "Enums must be migrated carefully when external data stores use string values."
+        ]
+      },
+      "derivation": {
+        "classification": "strongly_implied_by_source",
+        "explanation": "This record operationalizes the discussion of Enumerations in Robust Python for reusable Python engineering decisions.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "rp-031",
+      "source_domain": "robust_python",
+      "pattern_name": "Dataclass for structured records",
+      "problem_addressed": "Groups of related fields are error-prone when passed as parallel primitives.",
+      "context": "The object primarily carries data with light behavior.",
+      "recommended_approach": [
+        "Use dataclasses for named structured data with clear fields.",
+        "Add validation or richer classes when construction invariants matter."
+      ],
+      "python_features_involved": [
+        "dataclass",
+        "type annotations"
+      ],
+      "invalid_states_prevented": [
+        "Misordered or omitted field groups."
+      ],
+      "runtime_failures_prevented": [
+        "Functions receive inconsistent primitive bundles."
+      ],
+      "type_checker_implications": [
+        "Makes at least part of the contract visible to static analysis when the chosen type checker supports the feature.",
+        "Does not replace runtime validation at I/O, user, network, database, or configuration boundaries."
+      ],
+      "testability_implications": [
+        "Creates a narrower surface for unit tests by making valid and invalid cases explicit.",
+        "Boundary tests should still exercise malformed runtime data and tool gaps."
+      ],
+      "maintenance_implications": [
+        "Documents intent in executable signatures and data shapes instead of relying only on comments.",
+        "May require migration work where existing callers rely on looser or ambiguous values."
+      ],
+      "tradeoffs": [
+        "Dataclasses can become anemic bags if invariants are ignored."
+      ],
+      "use_when": [
+        "The object primarily carries data with light behavior."
+      ],
+      "do_not_use_when": [
+        "Identity, lifecycle, or complex invariants dominate."
+      ],
+      "common_misuses": [
+        "Using dataclasses without enforcing multi-field validity."
+      ],
+      "minimal_code_shape": "@dataclass(frozen=True)\nclass Money:\n    amount: Decimal\n    currency: Currency\n    def __post_init__(self): validate_invariant(self)",
+      "review_questions": [
+        "Can a caller construct or pass an invalid value despite this design?",
+        "Is the runtime validation boundary separate from static typing assumptions?",
+        "Does the added type or abstraction communicate a real constraint rather than ceremony?"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "ch09.html",
+        "book_title": "Robust Python",
+        "chapter_number": "9",
+        "chapter_title": "User-Defined Types: Data Classes",
+        "section_heading": "Data Classes in Action",
+        "page_or_anchor": "ch09.html#idm45644743036728",
+        "code_listing_or_figure": "",
+        "location_note": "EPUB HTML anchor; no PDF page number was present in the uploaded source.",
+        "support_role": "author_argument",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Groups of related fields are error-prone when passed as parallel primitives.",
+          "Use dataclasses for named structured data with clear fields."
+        ],
+        "inferred_claims": [
+          "Dataclasses can become anemic bags if invariants are ignored."
+        ]
+      },
+      "derivation": {
+        "classification": "strongly_implied_by_source",
+        "explanation": "This record operationalizes the discussion of Data Classes in Action in Robust Python for reusable Python engineering decisions.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "rp-033",
+      "source_domain": "robust_python",
+      "pattern_name": "Post-init invariant guard",
+      "problem_addressed": "Dataclass field types alone cannot enforce relationships between fields.",
+      "context": "Validity depends on multiple fields or computed relationships.",
+      "recommended_approach": [
+        "Use __post_init__ or a factory to enforce multi-field invariants at construction.",
+        "Raise a clear error before invalid objects enter normal code."
+      ],
+      "python_features_involved": [
+        "dataclass",
+        "__post_init__"
+      ],
+      "invalid_states_prevented": [
+        "Negative quantities, inverted date ranges, mismatched currency/amount pairs."
+      ],
+      "runtime_failures_prevented": [
+        "Later branches must defensively re-check impossible states."
+      ],
+      "type_checker_implications": [
+        "Makes at least part of the contract visible to static analysis when the chosen type checker supports the feature.",
+        "Does not replace runtime validation at I/O, user, network, database, or configuration boundaries."
+      ],
+      "testability_implications": [
+        "Creates a narrower surface for unit tests by making valid and invalid cases explicit.",
+        "Boundary tests should still exercise malformed runtime data and tool gaps."
+      ],
+      "maintenance_implications": [
+        "Documents intent in executable signatures and data shapes instead of relying only on comments.",
+        "May require migration work where existing callers rely on looser or ambiguous values."
+      ],
+      "tradeoffs": [
+        "Validation code can clutter simple data structures."
+      ],
+      "use_when": [
+        "Validity depends on multiple fields or computed relationships."
+      ],
+      "do_not_use_when": [
+        "The dataclass is a transient DTO validated elsewhere."
+      ],
+      "common_misuses": [
+        "Letting every method revalidate the same invariant."
+      ],
+      "minimal_code_shape": "def public_operation(input: TypedInput) -> TypedOutput:\n    validate_boundary(input)\n    return core_decision(input)",
+      "review_questions": [
+        "Can a caller construct or pass an invalid value despite this design?",
+        "Is the runtime validation boundary separate from static typing assumptions?",
+        "Does the added type or abstraction communicate a real constraint rather than ceremony?"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "ch09.html",
+        "book_title": "Robust Python",
+        "chapter_number": "9",
+        "chapter_title": "User-Defined Types: Data Classes",
+        "section_heading": "Usage",
+        "page_or_anchor": "ch09.html#idm45644742273240",
+        "code_listing_or_figure": "",
+        "location_note": "EPUB HTML anchor; no PDF page number was present in the uploaded source.",
+        "support_role": "author_argument",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Dataclass field types alone cannot enforce relationships between fields.",
+          "Use __post_init__ or a factory to enforce multi-field invariants at construction."
+        ],
+        "inferred_claims": [
+          "Validation code can clutter simple data structures."
+        ]
+      },
+      "derivation": {
+        "classification": "strongly_implied_by_source",
+        "explanation": "This record operationalizes the discussion of Usage in Robust Python for reusable Python engineering decisions.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "rp-041",
+      "source_domain": "robust_python",
+      "pattern_name": "Protocol for structural interface",
+      "problem_addressed": "An interface can be useful without forcing implementations into an inheritance tree.",
+      "context": "Several unrelated classes satisfy the same behavioral need.",
+      "recommended_approach": [
+        "Define a Protocol for required behavior when callers need structural compatibility.",
+        "Keep protocols small and behavior-oriented."
+      ],
+      "python_features_involved": [
+        "Protocol",
+        "structural subtyping"
+      ],
+      "invalid_states_prevented": [
+        "Objects lacking required operations are passed to consumers."
+      ],
+      "runtime_failures_prevented": [
+        "Nominal hierarchy grows only to satisfy static typing."
+      ],
+      "type_checker_implications": [
+        "Makes at least part of the contract visible to static analysis when the chosen type checker supports the feature.",
+        "Does not replace runtime validation at I/O, user, network, database, or configuration boundaries."
+      ],
+      "testability_implications": [
+        "Creates a narrower surface for unit tests by making valid and invalid cases explicit.",
+        "Boundary tests should still exercise malformed runtime data and tool gaps."
+      ],
+      "maintenance_implications": [
+        "Documents intent in executable signatures and data shapes instead of relying only on comments.",
+        "May require migration work where existing callers rely on looser or ambiguous values."
+      ],
+      "tradeoffs": [
+        "Protocols can be too implicit if names and docs are weak."
+      ],
+      "use_when": [
+        "Several unrelated classes satisfy the same behavioral need."
+      ],
+      "do_not_use_when": [
+        "A concrete type is the only valid collaborator."
+      ],
+      "common_misuses": [
+        "Designing huge protocols that recreate a whole object."
+      ],
+      "minimal_code_shape": "class Sender(Protocol):\n    def send(self, message: Message) -> None: ...\ndef notify(sender: Sender, message: Message) -> None: sender.send(message)",
+      "review_questions": [
+        "Can a caller construct or pass an invalid value despite this design?",
+        "Is the runtime validation boundary separate from static typing assumptions?",
+        "Does the added type or abstraction communicate a real constraint rather than ceremony?"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "ch13.html",
+        "book_title": "Robust Python",
+        "chapter_number": "13",
+        "chapter_title": "Protocols",
+        "section_heading": "Protocols",
+        "page_or_anchor": "ch13.html#idm45644736328984",
+        "code_listing_or_figure": "",
+        "location_note": "EPUB HTML anchor; no PDF page number was present in the uploaded source.",
+        "support_role": "language_feature_explanation",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "An interface can be useful without forcing implementations into an inheritance tree.",
+          "Define a Protocol for required behavior when callers need structural compatibility."
+        ],
+        "inferred_claims": [
+          "Protocols can be too implicit if names and docs are weak."
+        ]
+      },
+      "derivation": {
+        "classification": "strongly_implied_by_source",
+        "explanation": "This record operationalizes the discussion of Protocols in Robust Python for reusable Python engineering decisions.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "rp-073",
+      "source_domain": "robust_python",
+      "pattern_name": "Small protocols over broad object requirements",
+      "problem_addressed": "A consumer depending on a whole concrete class is harder to reuse and test.",
+      "context": "A function uses only one or two behaviors of a collaborator.",
+      "recommended_approach": [
+        "Define the minimal methods the consumer uses.",
+        "Avoid protocols that include unrelated capabilities."
+      ],
+      "python_features_involved": [
+        "Protocol"
+      ],
+      "invalid_states_prevented": [
+        "Tests must construct heavyweight concrete objects."
+      ],
+      "runtime_failures_prevented": [
+        "Adapter reuse blocked by excessive interface."
+      ],
+      "type_checker_implications": [
+        "Makes at least part of the contract visible to static analysis when the chosen type checker supports the feature.",
+        "Does not replace runtime validation at I/O, user, network, database, or configuration boundaries."
+      ],
+      "testability_implications": [
+        "Creates a narrower surface for unit tests by making valid and invalid cases explicit.",
+        "Boundary tests should still exercise malformed runtime data and tool gaps."
+      ],
+      "maintenance_implications": [
+        "Documents intent in executable signatures and data shapes instead of relying only on comments.",
+        "May require migration work where existing callers rely on looser or ambiguous values."
+      ],
+      "tradeoffs": [
+        "Many tiny protocols can fragment vocabulary."
+      ],
+      "use_when": [
+        "A function uses only one or two behaviors of a collaborator."
+      ],
+      "do_not_use_when": [
+        "The full object semantics are necessary."
+      ],
+      "common_misuses": [
+        "Copying every method of a class into a protocol."
+      ],
+      "minimal_code_shape": "class Sender(Protocol):\n    def send(self, message: Message) -> None: ...\ndef notify(sender: Sender, message: Message) -> None: sender.send(message)",
+      "review_questions": [
+        "Can a caller construct or pass an invalid value despite this design?",
+        "Is the runtime validation boundary separate from static typing assumptions?",
+        "Does the added type or abstraction communicate a real constraint rather than ceremony?"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "ch13.html",
+        "book_title": "Robust Python",
+        "chapter_number": "13",
+        "chapter_title": "Protocols",
+        "section_heading": "Protocols",
+        "page_or_anchor": "ch13.html#idm45644736328984",
+        "code_listing_or_figure": "",
+        "location_note": "EPUB HTML anchor; no PDF page number was present in the uploaded source.",
+        "support_role": "author_argument",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "A consumer depending on a whole concrete class is harder to reuse and test.",
+          "Define the minimal methods the consumer uses."
+        ],
+        "inferred_claims": [
+          "Many tiny protocols can fragment vocabulary."
+        ]
+      },
+      "derivation": {
+        "classification": "strongly_implied_by_source",
+        "explanation": "This record operationalizes the discussion of Protocols in Robust Python for reusable Python engineering decisions.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      }
+    }
+  ],
+  "error_design_guidance": [
+    {
+      "id": "rule-006",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "An error is expected and recoverable.",
+      "recommended_response": "Represent it distinctly from programming defects: explicit result, Optional absence, or named domain exception.",
+      "reason": "Callers need a contract for recovery and reporting.",
+      "exceptions": [
+        "The error indicates a violated invariant or impossible condition."
+      ],
+      "misuse_warning": "Do not return None for many unrelated failures.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-010",
+          "rp-011",
+          "ap-039",
+          "cb-014",
+          "cb-031"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Result/exception hierarchies require consistent handling."
+    },
+    {
+      "id": "rule-012",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "Code has hidden side effects.",
+      "recommended_response": "Make side effects visible in the function name, return contract, object boundary, or command handler.",
+      "reason": "Callers and tests need to know what can change.",
+      "exceptions": [
+        "The side effect is the sole obvious purpose, such as send_email."
+      ],
+      "misuse_warning": "Do not hide writes behind getters, properties, or dunder methods.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-098",
+          "ap-073",
+          "cb-008"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Explicit naming can be more verbose."
+    },
+    {
+      "id": "rule-017",
+      "source_domain": "cross_book_synthesis",
+      "trigger": "A bug is reported.",
+      "recommended_response": "Reproduce it, convert the reproduction into a failing test, then patch the smallest boundary that explains the failure.",
+      "reason": "A failing test protects the fix and clarifies the contract.",
+      "exceptions": [
+        "Security incident mitigation may require immediate containment before full reproduction."
+      ],
+      "misuse_warning": "Do not patch symptoms without finding the failing path.",
+      "source_basis": {
+        "source_domains": [
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-115",
+          "rp-117",
+          "rp-122",
+          "cb-023"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      },
+      "tradeoff": "Reproduction can take longer than a quick patch but reduces regressions."
+    },
+    {
+      "id": "cb-014",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-007",
+        "ap-018",
+        "ap-039",
+        "ap-040"
+      ],
+      "robust_python_record_ids": [
+        "rp-011",
+        "rp-077",
+        "rp-098"
+      ],
+      "integration_name": "Domain error hierarchy with explicit caller contract",
+      "combined_problem_addressed": "Failures need different handling depending on domain meaning and command/event semantics.",
+      "combined_guidance": [
+        "Use named domain exceptions or result objects for expected business failures.",
+        "Do not mix infrastructure exceptions with domain vocabulary."
+      ],
+      "failure_modes_prevented": [
+        "Generic errors leaking to callers.",
+        "Command success reported despite domain failure."
+      ],
+      "tradeoffs": [
+        "Too many custom exceptions can add noise.",
+        "Result objects require disciplined checking."
+      ],
+      "use_when": [
+        "Callers need to distinguish recoverable business failure."
+      ],
+      "do_not_use_when": [
+        "The failure is a programming defect that should crash early."
+      ],
+      "small_project_version": "Use one named exception or Result variant.",
+      "larger_project_version": "Use a hierarchy by layer: validation, domain, infrastructure, retryable.",
+      "code_review_questions": [
+        "Can callers distinguish absence, invalid command, and infrastructure failure?",
+        "Where is error translated?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Domain error hierarchy with explicit caller contract",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-007, ap-018, ap-039, ap-040",
+          "Robust Python sources: rp-011, rp-077, rp-098"
+        ],
+        "inferred_claims": [
+          "Failures need different handling depending on domain meaning and command/event semantics."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-027",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-073",
+        "ap-018",
+        "ap-039"
+      ],
+      "robust_python_record_ids": [
+        "rp-011",
+        "rp-098"
+      ],
+      "integration_name": "Boundary-specific exception translation",
+      "combined_problem_addressed": "Layer-internal failures should be translated to the caller’s language at boundaries.",
+      "combined_guidance": [
+        "Let domain raise domain errors.",
+        "Translate to HTTP/CLI/message results at the adapter."
+      ],
+      "failure_modes_prevented": [
+        "HTTP exceptions in domain model.",
+        "Leaked database errors to API clients."
+      ],
+      "tradeoffs": [
+        "Translation code can be repetitive."
+      ],
+      "use_when": [
+        "Different callers need different error formats."
+      ],
+      "do_not_use_when": [
+        "Single internal script handles all errors locally."
+      ],
+      "small_project_version": "Map one domain error to response.",
+      "larger_project_version": "Central error mapping per entrypoint/message type.",
+      "code_review_questions": [
+        "Where is this error translated?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Boundary-specific exception translation",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-073, ap-018, ap-039",
+          "Robust Python sources: rp-011, rp-098"
+        ],
+        "inferred_claims": [
+          "Layer-internal failures should be translated to the caller’s language at boundaries."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-043",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-023",
+        "ap-024",
+        "ap-040"
+      ],
+      "robust_python_record_ids": [
+        "rp-011",
+        "rp-119"
+      ],
+      "integration_name": "Failure boundary around resource and transaction",
+      "combined_problem_addressed": "Failure policy must decide what is rolled back, retried, reported, or suppressed.",
+      "combined_guidance": [
+        "At each boundary, specify exception propagation/suppression.",
+        "Do not let context managers or handlers swallow failures unintentionally."
+      ],
+      "failure_modes_prevented": [
+        "Ambiguous partial success.",
+        "Lost exceptions."
+      ],
+      "tradeoffs": [
+        "Explicit policies take design effort."
+      ],
+      "use_when": [
+        "Transactions, handlers, or resources are involved."
+      ],
+      "do_not_use_when": [
+        "Pure computation without side effects."
+      ],
+      "small_project_version": "Document and test one failure branch.",
+      "larger_project_version": "Layered error policy across commands/events/adapters.",
+      "code_review_questions": [
+        "What happens on exception here?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Failure boundary around resource and transaction",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-023, ap-024, ap-040",
+          "Robust Python sources: rp-011, rp-119"
+        ],
+        "inferred_claims": [
+          "Failure policy must decide what is rolled back, retried, reported, or suppressed."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    }
+  ],
+  "testing_guidance": [
+    {
+      "id": "rp-057",
+      "source_domain": "robust_python",
+      "pattern_name": "Test strategy by cost and confidence",
+      "problem_addressed": "A test suite can be slow yet fail to cover the risks that matter.",
+      "context": "Behavior spans logic, integration, and user-visible outcomes.",
+      "recommended_approach": [
+        "Choose test levels based on the confidence they provide relative to cost.",
+        "Keep fast focused tests for logic and fewer broad tests for integration paths."
+      ],
+      "python_features_involved": [
+        "unit tests",
+        "integration tests",
+        "acceptance tests"
+      ],
+      "invalid_states_prevented": [
+        "Critical behavior is only covered through fragile end-to-end tests."
+      ],
+      "runtime_failures_prevented": [
+        "Slow feedback causes developers to skip tests."
+      ],
+      "type_checker_implications": [
+        "Makes at least part of the contract visible to static analysis when the chosen type checker supports the feature.",
+        "Does not replace runtime validation at I/O, user, network, database, or configuration boundaries."
+      ],
+      "testability_implications": [
+        "Creates a narrower surface for unit tests by making valid and invalid cases explicit.",
+        "Boundary tests should still exercise malformed runtime data and tool gaps."
+      ],
+      "maintenance_implications": [
+        "Documents intent in executable signatures and data shapes instead of relying only on comments.",
+        "May require migration work where existing callers rely on looser or ambiguous values."
+      ],
+      "tradeoffs": [
+        "Lower-level tests can miss wiring and deployment issues."
+      ],
+      "use_when": [
+        "Behavior spans logic, integration, and user-visible outcomes."
+      ],
+      "do_not_use_when": [
+        "A trivial script has no long-term maintenance need."
+      ],
+      "common_misuses": [
+        "Maximizing test count instead of useful confidence."
+      ],
+      "minimal_code_shape": "def use_case(policy: Policy, mechanism: Mechanism) -> Outcome:\n    return policy.decide(mechanism.read())",
+      "review_questions": [
+        "Can a caller construct or pass an invalid value despite this design?",
+        "Is the runtime validation boundary separate from static typing assumptions?",
+        "Does the added type or abstraction communicate a real constraint rather than ceremony?"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "ch21.html",
+        "book_title": "Robust Python",
+        "chapter_number": "21",
+        "chapter_title": "Testing Strategy",
+        "section_heading": "Defining Your Test Strategy",
+        "page_or_anchor": "ch21.html#idm45644727468456",
+        "code_listing_or_figure": "",
+        "location_note": "EPUB HTML anchor; no PDF page number was present in the uploaded source.",
+        "support_role": "testing_example",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "A test suite can be slow yet fail to cover the risks that matter.",
+          "Choose test levels based on the confidence they provide relative to cost."
+        ],
+        "inferred_claims": [
+          "Lower-level tests can miss wiring and deployment issues."
+        ]
+      },
+      "derivation": {
+        "classification": "strongly_implied_by_source",
+        "explanation": "This record operationalizes the discussion of Defining Your Test Strategy in Robust Python for reusable Python engineering decisions.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "rp-058",
+      "source_domain": "robust_python",
+      "pattern_name": "Reduce test cost through boundaries",
+      "problem_addressed": "Tests become expensive when pure decisions are inseparable from slow mechanisms.",
+      "context": "A behavior can be decided without external state.",
+      "recommended_approach": [
+        "Isolate pure logic from I/O to make most tests fast and deterministic.",
+        "Reserve real infrastructure tests for contracts and integration seams."
+      ],
+      "python_features_involved": [
+        "dependency injection",
+        "fakes",
+        "pure functions"
+      ],
+      "invalid_states_prevented": [
+        "Business rule tests require production infrastructure."
+      ],
+      "runtime_failures_prevented": [
+        "Flaky tests from network, time, filesystem, or database coupling."
+      ],
+      "type_checker_implications": [
+        "Makes at least part of the contract visible to static analysis when the chosen type checker supports the feature.",
+        "Does not replace runtime validation at I/O, user, network, database, or configuration boundaries."
+      ],
+      "testability_implications": [
+        "Creates a narrower surface for unit tests by making valid and invalid cases explicit.",
+        "Boundary tests should still exercise malformed runtime data and tool gaps."
+      ],
+      "maintenance_implications": [
+        "Documents intent in executable signatures and data shapes instead of relying only on comments.",
+        "May require migration work where existing callers rely on looser or ambiguous values."
+      ],
+      "tradeoffs": [
+        "Fakes can drift from real collaborators."
+      ],
+      "use_when": [
+        "A behavior can be decided without external state."
+      ],
+      "do_not_use_when": [
+        "The purpose of the test is the actual integration."
+      ],
+      "common_misuses": [
+        "Mocking so deeply that tests no longer exercise meaningful behavior."
+      ],
+      "minimal_code_shape": "def public_operation(input: TypedInput) -> TypedOutput:\n    validate_boundary(input)\n    return core_decision(input)",
+      "review_questions": [
+        "Can a caller construct or pass an invalid value despite this design?",
+        "Is the runtime validation boundary separate from static typing assumptions?",
+        "Does the added type or abstraction communicate a real constraint rather than ceremony?"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "ch21.html",
+        "book_title": "Robust Python",
+        "chapter_number": "21",
+        "chapter_title": "Testing Strategy",
+        "section_heading": "Reducing Test Cost",
+        "page_or_anchor": "ch21.html#idm45644727460520",
+        "code_listing_or_figure": "",
+        "location_note": "EPUB HTML anchor; no PDF page number was present in the uploaded source.",
+        "support_role": "author_argument",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Tests become expensive when pure decisions are inseparable from slow mechanisms.",
+          "Isolate pure logic from I/O to make most tests fast and deterministic."
+        ],
+        "inferred_claims": [
+          "Fakes can drift from real collaborators."
+        ]
+      },
+      "derivation": {
+        "classification": "strongly_implied_by_source",
+        "explanation": "This record operationalizes the discussion of Reducing Test Cost in Robust Python for reusable Python engineering decisions.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "rp-060",
+      "source_domain": "robust_python",
+      "pattern_name": "Hypothesis for input-space exploration",
+      "problem_addressed": "Example tests miss edge cases in large input spaces.",
+      "context": "The behavior has invariants across many input values.",
+      "recommended_approach": [
+        "Define general properties and let generated inputs explore many cases.",
+        "Shrink failures into reproducible examples and add focused tests when useful."
+      ],
+      "python_features_involved": [
+        "Hypothesis",
+        "property-based testing"
+      ],
+      "invalid_states_prevented": [
+        "Edge-case values never appear in handwritten examples."
+      ],
+      "runtime_failures_prevented": [
+        "Parsing, sorting, validation, or transformation bugs from unusual inputs."
+      ],
+      "type_checker_implications": [
+        "Makes at least part of the contract visible to static analysis when the chosen type checker supports the feature.",
+        "Does not replace runtime validation at I/O, user, network, database, or configuration boundaries."
+      ],
+      "testability_implications": [
+        "Creates a narrower surface for unit tests by making valid and invalid cases explicit.",
+        "Boundary tests should still exercise malformed runtime data and tool gaps."
+      ],
+      "maintenance_implications": [
+        "Documents intent in executable signatures and data shapes instead of relying only on comments.",
+        "May require migration work where existing callers rely on looser or ambiguous values."
+      ],
+      "tradeoffs": [
+        "Properties require careful thought and can be too broad."
+      ],
+      "use_when": [
+        "The behavior has invariants across many input values."
+      ],
+      "do_not_use_when": [
+        "Expected behavior is a single handpicked scenario."
+      ],
+      "common_misuses": [
+        "Using random tests without deterministic reproduction."
+      ],
+      "minimal_code_shape": "@given(valid_inputs())\ndef test_property(x): assert invariant(operation(x))",
+      "review_questions": [
+        "Can a caller construct or pass an invalid value despite this design?",
+        "Is the runtime validation boundary separate from static typing assumptions?",
+        "Does the added type or abstraction communicate a real constraint rather than ceremony?"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "ch23.html",
+        "book_title": "Robust Python",
+        "chapter_number": "23",
+        "chapter_title": "Property-Based Testing",
+        "section_heading": "Property-Based Testing with Hypothesis",
+        "page_or_anchor": "ch23.html#idm45644725332760",
+        "code_listing_or_figure": "",
+        "location_note": "EPUB HTML anchor; no PDF page number was present in the uploaded source.",
+        "support_role": "testing_example",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Example tests miss edge cases in large input spaces.",
+          "Define general properties and let generated inputs explore many cases."
+        ],
+        "inferred_claims": [
+          "Properties require careful thought and can be too broad."
+        ]
+      },
+      "derivation": {
+        "classification": "strongly_implied_by_source",
+        "explanation": "This record operationalizes the discussion of Property-Based Testing with Hypothesis in Robust Python for reusable Python engineering decisions.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "rp-061",
+      "source_domain": "robust_python",
+      "pattern_name": "Mutation testing for assertion strength",
+      "problem_addressed": "A test can execute code without actually detecting wrong behavior.",
+      "context": "Critical logic has high coverage but uncertain assertion quality.",
+      "recommended_approach": [
+        "Run mutation testing selectively to find tests that do not assert meaningful outcomes.",
+        "Use surviving mutants to improve assertions or remove dead code."
+      ],
+      "python_features_involved": [
+        "mutation testing",
+        "mutmut"
+      ],
+      "invalid_states_prevented": [
+        "Code changes do not fail tests even when semantics change."
+      ],
+      "runtime_failures_prevented": [
+        "False confidence from line coverage alone."
+      ],
+      "type_checker_implications": [
+        "Makes at least part of the contract visible to static analysis when the chosen type checker supports the feature.",
+        "Does not replace runtime validation at I/O, user, network, database, or configuration boundaries."
+      ],
+      "testability_implications": [
+        "Creates a narrower surface for unit tests by making valid and invalid cases explicit.",
+        "Boundary tests should still exercise malformed runtime data and tool gaps."
+      ],
+      "maintenance_implications": [
+        "Documents intent in executable signatures and data shapes instead of relying only on comments.",
+        "May require migration work where existing callers rely on looser or ambiguous values."
+      ],
+      "tradeoffs": [
+        "Mutation testing can be slow and source-tool behavior changes over time."
+      ],
+      "use_when": [
+        "Critical logic has high coverage but uncertain assertion quality."
+      ],
+      "do_not_use_when": [
+        "The code is changing rapidly and tool cost outweighs benefit."
+      ],
+      "common_misuses": [
+        "Chasing every equivalent mutant without judgment."
+      ],
+      "minimal_code_shape": "run tests normally -> run mutation tool -> inspect surviving mutants -> add missing behavioral assertions",
+      "review_questions": [
+        "Can a caller construct or pass an invalid value despite this design?",
+        "Is the runtime validation boundary separate from static typing assumptions?",
+        "Does the added type or abstraction communicate a real constraint rather than ceremony?"
+      ],
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "ch24.html",
+        "book_title": "Robust Python",
+        "chapter_number": "24",
+        "chapter_title": "Mutation Testing",
+        "section_heading": "Mutation Testing with mutmut",
+        "page_or_anchor": "ch24.html#idm45644723129224",
+        "code_listing_or_figure": "",
+        "location_note": "EPUB HTML anchor; no PDF page number was present in the uploaded source.",
+        "support_role": "testing_example",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "A test can execute code without actually detecting wrong behavior.",
+          "Run mutation testing selectively to find tests that do not assert meaningful outcomes."
+        ],
+        "inferred_claims": [
+          "Mutation testing can be slow and source-tool behavior changes over time."
+        ]
+      },
+      "derivation": {
+        "classification": "strongly_implied_by_source",
+        "explanation": "This record operationalizes the discussion of Mutation Testing with mutmut in Robust Python for reusable Python engineering decisions.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ap-020",
+      "source_domain": "architecture_patterns_with_python",
+      "pattern_name": "High-gear and low-gear TDD",
+      "problem_addressed": "One test level cannot efficiently guide both design and integration confidence.",
+      "forces_and_constraints": [
+        "One test level cannot efficiently guide both design and integration confidence.",
+        "The abstraction should be introduced only when change pressure, testability, or consistency risk justifies it."
+      ],
+      "participants": [
+        "unit tests",
+        "service tests",
+        "e2e tests"
+      ],
+      "responsibilities": [
+        "Use low gear for detailed domain design.",
+        "Use high gear for broader workflows once seams exist."
+      ],
+      "control_flow": [
+        "Entrypoint delegates to the High-gear and low-gear TDD boundary rather than embedding the whole workflow.",
+        "Domain decisions remain explicit and testable."
+      ],
+      "data_flow": [
+        "Raw external data is translated into application/domain messages before core logic.",
+        "Infrastructure representations stay at the adapter edge unless deliberately mapped."
+      ],
+      "transaction_boundary": "No transaction boundary unless state is written; when writes occur, commit at the application-service or Unit-of-Work boundary.",
+      "failure_boundary": "Domain failures are raised or returned before irreversible infrastructure side effects where possible.",
+      "consistency_implications": [
+        "Consistency rules should live at the smallest boundary that can enforce them.",
+        "Avoid widening consistency scope without a demonstrated invariant."
+      ],
+      "testing_strategy": [
+        "Unit test domain/application behavior with fakes where possible.",
+        "Use integration or contract tests for real adapters and persistence."
+      ],
+      "benefits": [
+        "Makes one test level cannot efficiently guide both design and integration confidence. visible as a named design concern.",
+        "Creates a seam for focused tests or incremental replacement."
+      ],
+      "costs": [
+        "Adds concepts, files, and indirection that readers must learn.",
+        "May be overkill when the behavior is simple CRUD or a one-off script."
+      ],
+      "failure_modes": [
+        "The abstraction mirrors implementation details instead of business needs.",
+        "The pattern is introduced everywhere rather than where the force exists."
+      ],
+      "use_when": [
+        "A feature needs both fast feedback and integration confidence."
+      ],
+      "do_not_use_when": [
+        "The behavior is a tiny pure function."
+      ],
+      "signs_the_pattern_is_needed": [
+        "All tests are slow E2E tests."
+      ],
+      "signs_the_pattern_is_overengineering": [
+        "Every implementation detail gets its own unit test."
+      ],
+      "migration_path": [
+        "Add service-level tests around one workflow before broader refactor."
+      ],
+      "minimal_code_shape": "entrypoint -> application service -> domain model -> port/repository -> adapter/infrastructure",
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "text/part0012_split_004.html",
+        "book_title": "Architecture Patterns with Python",
+        "chapter_number": "5",
+        "chapter_title": "TDD in High Gear and Low Gear",
+        "section_heading": "High and Low Gear",
+        "page_or_anchor": "text/part0012_split_004.html",
+        "code_listing_or_figure": "",
+        "location_note": "EPUB HTML anchor; no PDF page number was present in the uploaded source.",
+        "support_role": "architecture_pattern",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "One test level cannot efficiently guide both design and integration confidence.",
+          "Makes one test level cannot efficiently guide both design and integration confidence. visible as a named design concern."
+        ],
+        "inferred_claims": [
+          "Adds concepts, files, and indirection that readers must learn."
+        ]
+      },
+      "derivation": {
+        "classification": "strongly_implied_by_source",
+        "explanation": "This record operationalizes the discussion of High and Low Gear in Architecture Patterns with Python for reusable architecture decisions.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "ap-021",
+      "source_domain": "architecture_patterns_with_python",
+      "pattern_name": "Test pyramid architecture feedback",
+      "problem_addressed": "A skewed test pyramid exposes architecture coupling.",
+      "forces_and_constraints": [
+        "A skewed test pyramid exposes architecture coupling.",
+        "The abstraction should be introduced only when change pressure, testability, or consistency risk justifies it."
+      ],
+      "participants": [
+        "test pyramid",
+        "service layer"
+      ],
+      "responsibilities": [
+        "Use test distribution as a signal of coupling and seam quality.",
+        "Move logic to cheaper layers when appropriate."
+      ],
+      "control_flow": [
+        "Entrypoint delegates to the Test pyramid architecture feedback boundary rather than embedding the whole workflow.",
+        "Domain decisions remain explicit and testable."
+      ],
+      "data_flow": [
+        "Raw external data is translated into application/domain messages before core logic.",
+        "Infrastructure representations stay at the adapter edge unless deliberately mapped."
+      ],
+      "transaction_boundary": "No transaction boundary unless state is written; when writes occur, commit at the application-service or Unit-of-Work boundary.",
+      "failure_boundary": "Domain failures are raised or returned before irreversible infrastructure side effects where possible.",
+      "consistency_implications": [
+        "Consistency rules should live at the smallest boundary that can enforce them.",
+        "Avoid widening consistency scope without a demonstrated invariant."
+      ],
+      "testing_strategy": [
+        "Unit test domain/application behavior with fakes where possible.",
+        "Use integration or contract tests for real adapters and persistence."
+      ],
+      "benefits": [
+        "Makes a skewed test pyramid exposes architecture coupling. visible as a named design concern.",
+        "Creates a seam for focused tests or incremental replacement."
+      ],
+      "costs": [
+        "Adds concepts, files, and indirection that readers must learn.",
+        "May be overkill when the behavior is simple CRUD or a one-off script."
+      ],
+      "failure_modes": [
+        "The abstraction mirrors implementation details instead of business needs.",
+        "The pattern is introduced everywhere rather than where the force exists."
+      ],
+      "use_when": [
+        "Most behavior can only be tested end-to-end."
+      ],
+      "do_not_use_when": [
+        "The application is mostly integration glue."
+      ],
+      "signs_the_pattern_is_needed": [
+        "Tests are slow and duplicated."
+      ],
+      "signs_the_pattern_is_overengineering": [
+        "Deleting all high-level tests after adding unit tests."
+      ],
+      "migration_path": [
+        "Refactor one repeated E2E scenario into service/domain tests."
+      ],
+      "minimal_code_shape": "entrypoint -> application service -> domain model -> port/repository -> adapter/infrastructure",
+      "related_record_ids": [],
+      "source_traceability": {
+        "source_file": "text/part0012_split_001.html",
+        "book_title": "Architecture Patterns with Python",
+        "chapter_number": "5",
+        "chapter_title": "TDD in High Gear and Low Gear",
+        "section_heading": "How Is Our Test Pyramid Looking?",
+        "page_or_anchor": "text/part0012_split_001.html",
+        "code_listing_or_figure": "",
+        "location_note": "EPUB HTML anchor; no PDF page number was present in the uploaded source.",
+        "support_role": "architecture_pattern",
+        "support_strength": "medium",
+        "directly_supported_claims": [
+          "A skewed test pyramid exposes architecture coupling.",
+          "Makes a skewed test pyramid exposes architecture coupling. visible as a named design concern."
+        ],
+        "inferred_claims": [
+          "Adds concepts, files, and indirection that readers must learn."
+        ]
+      },
+      "derivation": {
+        "classification": "strongly_implied_by_source",
+        "explanation": "This record operationalizes the discussion of How Is Our Test Pyramid Looking? in Architecture Patterns with Python for reusable architecture decisions.",
+        "confidence": "medium",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-012",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-011",
+        "ap-013",
+        "ap-070"
+      ],
+      "robust_python_record_ids": [
+        "rp-057",
+        "rp-058",
+        "rp-108"
+      ],
+      "integration_name": "Fake adapter plus contract tests",
+      "combined_problem_addressed": "Fast tests need fakes, but fakes must not lie about adapter behavior.",
+      "combined_guidance": [
+        "Use fakes for service/domain tests.",
+        "Add contract/integration tests for real adapter behavior that matters."
+      ],
+      "failure_modes_prevented": [
+        "Slow tests for pure rules.",
+        "Fake/real behavior drift."
+      ],
+      "tradeoffs": [
+        "Contract tests add maintenance cost.",
+        "Some vendor behavior is hard to reproduce."
+      ],
+      "use_when": [
+        "A port/fake is used across tests."
+      ],
+      "do_not_use_when": [
+        "The dependency is pure and deterministic."
+      ],
+      "small_project_version": "Use an in-memory fake and a few adapter tests.",
+      "larger_project_version": "Use shared contract suites across fake, in-memory, and production adapters.",
+      "code_review_questions": [
+        "What behavior must fake and real share?",
+        "Which tests require real infrastructure?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Fake adapter plus contract tests",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-011, ap-013, ap-070",
+          "Robust Python sources: rp-057, rp-058, rp-108"
+        ],
+        "inferred_claims": [
+          "Fast tests need fakes, but fakes must not lie about adapter behavior."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    },
+    {
+      "id": "cb-038",
+      "source_domain": "cross_book_synthesis",
+      "architecture_record_ids": [
+        "ap-020",
+        "ap-021",
+        "ap-074"
+      ],
+      "robust_python_record_ids": [
+        "rp-057",
+        "rp-058",
+        "rp-080"
+      ],
+      "integration_name": "Testing split by boundary cost",
+      "combined_problem_addressed": "A maintainable suite places tests where they give confidence cheaply.",
+      "combined_guidance": [
+        "Unit test pure domain rules.",
+        "Service-test orchestration with fakes.",
+        "Integration-test adapters and E2E-test critical flows."
+      ],
+      "failure_modes_prevented": [
+        "Slow brittle suite.",
+        "Untested wiring seams."
+      ],
+      "tradeoffs": [
+        "Lower-level tests can miss protocol issues."
+      ],
+      "use_when": [
+        "Tests are slow or duplicated."
+      ],
+      "do_not_use_when": [
+        "A single unit test covers a pure helper."
+      ],
+      "small_project_version": "Unit + one integration test.",
+      "larger_project_version": "Pyramid with contract tests per port and selected E2E scenarios.",
+      "code_review_questions": [
+        "Which layer owns this behavior?"
+      ],
+      "source_traceability": {
+        "source_file": "multiple EPUB HTML anchors; see referenced record IDs",
+        "book_title": "Robust Python + Architecture Patterns with Python",
+        "chapter_number": "multiple",
+        "chapter_title": "Cross-book synthesis",
+        "section_heading": "Testing split by boundary cost",
+        "page_or_anchor": "record-id references rather than page numbers; source upload had no PDF pagination",
+        "code_listing_or_figure": "",
+        "location_note": "Synthesizes separate book concepts without claiming shared terminology.",
+        "support_role": "editorial_synthesis",
+        "support_strength": "high",
+        "directly_supported_claims": [
+          "Architecture sources: ap-020, ap-021, ap-074",
+          "Robust Python sources: rp-057, rp-058, rp-080"
+        ],
+        "inferred_claims": [
+          "A maintainable suite places tests where they give confidence cheaply."
+        ]
+      },
+      "derivation": {
+        "classification": "synthesized_across_books",
+        "explanation": "The mapping connects a design pattern from Architecture Patterns with a Python reliability/type-system mechanism from Robust Python while preserving source separation.",
+        "confidence": "high",
+        "human_review_recommended": false
+      }
+    }
+  ],
+  "refactoring_guidance": [
+    {
+      "id": "wf-001",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Understanding an unfamiliar codebase",
+      "preconditions": [
+        "Code is available and behavior must be preserved."
+      ],
+      "steps": [
+        "Inventory entrypoints, tests, and package layout.",
+        "Identify domain-like modules, adapters, configuration, and side-effect boundaries.",
+        "Trace one representative request/use case from edge to persistence.",
+        "Record observed facts separately from proposals."
+      ],
+      "evidence_required": [
+        "Exact filenames/symbols inspected.",
+        "Test commands found or missing.",
+        "Dependency and configuration entrypoints."
+      ],
+      "failure_signs": [
+        "Recommendations mention files not inspected.",
+        "Patterns are proposed before tracing behavior."
+      ],
+      "stop_conditions": [
+        "Stop when you can explain one critical workflow and its side effects."
+      ],
+      "rollback_guidance": [
+        "Revert exploratory edits; keep only notes/tests."
+      ],
+      "applicable_book_records": [
+        "rp-046",
+        "rp-047",
+        "ap-001",
+        "ap-105"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-046",
+          "rp-047",
+          "ap-001",
+          "ap-105"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-002",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Identifying current behavior",
+      "preconditions": [
+        "Existing behavior is unclear but must not break."
+      ],
+      "steps": [
+        "Find tests, logs, docs, and entrypoints.",
+        "Run or read tests if execution is not available.",
+        "Create characterization examples around observable input/output.",
+        "Label surprising behavior as observed, not desired."
+      ],
+      "evidence_required": [
+        "Observed inputs/outputs, state changes, and failures."
+      ],
+      "failure_signs": [
+        "Assumptions replace evidence.",
+        "Characterization tests assert implementation internals only."
+      ],
+      "stop_conditions": [
+        "Stop when current behavior is captured enough for planned change."
+      ],
+      "rollback_guidance": [
+        "Remove characterization tests only after desired behavior replaces them deliberately."
+      ],
+      "applicable_book_records": [
+        "rp-122",
+        "ap-051",
+        "cb-023"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-122",
+          "ap-051",
+          "cb-023"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-003",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Reproducing a bug",
+      "preconditions": [
+        "Bug report has symptom, stack trace, or user scenario."
+      ],
+      "steps": [
+        "Minimize inputs and environment required.",
+        "Identify where invalid state first appears.",
+        "Reproduce with the narrowest test level that exercises the failure.",
+        "Record whether failure is expected absence, domain rejection, infrastructure failure, or defect."
+      ],
+      "evidence_required": [
+        "Failing command, test, or script; stack trace; input data."
+      ],
+      "failure_signs": [
+        "Patch is proposed before reproduction.",
+        "Failure only reproduces through broad brittle setup when a smaller seam exists."
+      ],
+      "stop_conditions": [
+        "Stop when one deterministic failing test or exact manual reproduction exists."
+      ],
+      "rollback_guidance": [
+        "Back out speculative fixes and keep reproduction case."
+      ],
+      "applicable_book_records": [
+        "rp-115",
+        "rp-117",
+        "rule-017"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-115",
+          "rp-117"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-004",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Creating a failing test",
+      "preconditions": [
+        "A bug or missing behavior is understood enough to express."
+      ],
+      "steps": [
+        "Choose unit/domain/service/integration/E2E level based on failure boundary.",
+        "Write the test to fail for the observed reason.",
+        "Assert behavior, not incidental implementation.",
+        "Then patch the smallest code path."
+      ],
+      "evidence_required": [
+        "Test fails before fix and passes after fix."
+      ],
+      "failure_signs": [
+        "Test passes before fix.",
+        "Test relies on sleeps, network, or unrelated data."
+      ],
+      "stop_conditions": [
+        "Stop when failure is locked by a focused test."
+      ],
+      "rollback_guidance": [
+        "If test level is too broad, keep it temporarily and add narrower test after seam extraction."
+      ],
+      "applicable_book_records": [
+        "rp-057",
+        "rp-080",
+        "ap-020",
+        "cb-038"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-057",
+          "rp-080",
+          "ap-020",
+          "cb-038"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-005",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Adding characterization tests",
+      "preconditions": [
+        "Refactor will preserve behavior, not change it."
+      ],
+      "steps": [
+        "Select high-value current behaviors.",
+        "Capture observable outputs and side effects.",
+        "Mark known bugs explicitly if tests preserve them temporarily.",
+        "Avoid asserting private implementation."
+      ],
+      "evidence_required": [
+        "Representative inputs, outputs, persistence effects, errors."
+      ],
+      "failure_signs": [
+        "Tests only mirror code structure.",
+        "No rollback plan if behavior changes."
+      ],
+      "stop_conditions": [
+        "Stop when refactor risk is covered enough for first slice."
+      ],
+      "rollback_guidance": [
+        "Delete or update characterization tests when behavior is intentionally changed."
+      ],
+      "applicable_book_records": [
+        "rp-122",
+        "ap-051",
+        "cb-023"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-122",
+          "ap-051",
+          "cb-023"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-006",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Isolating pure logic",
+      "preconditions": [
+        "A function mixes decisions with I/O, time, randomness, or persistence."
+      ],
+      "steps": [
+        "Identify pure decision inputs and outputs.",
+        "Extract pure calculation or domain method.",
+        "Inject or pass mechanisms around it.",
+        "Unit test pure logic and keep seam/integration test."
+      ],
+      "evidence_required": [
+        "Before/after tests; dependency list; extracted function signature."
+      ],
+      "failure_signs": [
+        "Extraction changes behavior.",
+        "Pure function still reads globals or performs I/O."
+      ],
+      "stop_conditions": [
+        "Stop when core decision can run in memory."
+      ],
+      "rollback_guidance": [
+        "Inline extraction if it creates no clarity or tests."
+      ],
+      "applicable_book_records": [
+        "rp-048",
+        "rp-104",
+        "ap-002",
+        "cb-018"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-048",
+          "rp-104",
+          "ap-002",
+          "cb-018"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-007",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Introducing a boundary",
+      "preconditions": [
+        "Tests or changes are blocked by a concrete dependency."
+      ],
+      "steps": [
+        "Name the pain: speed, volatility, side effect, or domain leakage.",
+        "Define the smallest port/protocol needed by the caller.",
+        "Write fake and contract/integration tests.",
+        "Move concrete implementation to adapter."
+      ],
+      "evidence_required": [
+        "Call sites, fake, real adapter, contract expectations."
+      ],
+      "failure_signs": [
+        "Interface mirrors entire vendor/library.",
+        "Boundary introduced without a test or change need."
+      ],
+      "stop_conditions": [
+        "Stop after one use case uses the new seam safely."
+      ],
+      "rollback_guidance": [
+        "Remove port if it becomes unused pass-through."
+      ],
+      "applicable_book_records": [
+        "rp-041",
+        "rp-073",
+        "ap-012",
+        "cb-013"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-041",
+          "rp-073",
+          "ap-012",
+          "cb-013"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-008",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Replacing duplication with configuration",
+      "preconditions": [
+        "Repeated code differs only by stable parameters or policy."
+      ],
+      "steps": [
+        "Check whether duplication hides domain differences.",
+        "Extract data/config only for true variation.",
+        "Validate configuration at startup or boundary.",
+        "Keep policy code typed and tested."
+      ],
+      "evidence_required": [
+        "Examples of duplicated branches and intended variation."
+      ],
+      "failure_signs": [
+        "Config grows into an untyped rule engine.",
+        "Secrets or environment reads scatter."
+      ],
+      "stop_conditions": [
+        "Stop when duplication is removed without hiding behavior."
+      ],
+      "rollback_guidance": [
+        "Restore explicit branches if config obscures domain rules."
+      ],
+      "applicable_book_records": [
+        "rp-044",
+        "rp-076",
+        "ap-055",
+        "cb-021"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-044",
+          "rp-076",
+          "ap-055",
+          "cb-021"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-009",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Migrating from scripts to modules",
+      "preconditions": [
+        "A script is reused, tested, or growing side effects."
+      ],
+      "steps": [
+        "Separate argument parsing from core function.",
+        "Move reusable logic into module with typed boundary.",
+        "Inject filesystem/network/config dependencies.",
+        "Add tests around core behavior and one CLI/integration path."
+      ],
+      "evidence_required": [
+        "Script entrypoint, extracted function, tests."
+      ],
+      "failure_signs": [
+        "Script imports execute work at import time.",
+        "Migration creates package ceremony without reuse/tests."
+      ],
+      "stop_conditions": [
+        "Stop when core logic is importable without side effects."
+      ],
+      "rollback_guidance": [
+        "Keep script wrapper thin and reversible."
+      ],
+      "applicable_book_records": [
+        "rp-046",
+        "rp-098",
+        "ap-065"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-046",
+          "rp-098",
+          "ap-065"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-010",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Adding types incrementally",
+      "preconditions": [
+        "Existing code is partially or untyped."
+      ],
+      "steps": [
+        "Prioritize new, high-churn, high-value, complex, and leaf modules.",
+        "Annotate public boundaries first where useful.",
+        "Run checker with a staged config.",
+        "Track Any and ignores."
+      ],
+      "evidence_required": [
+        "Type checker config/report; annotated files; ignored errors list."
+      ],
+      "failure_signs": [
+        "Strict mode blocks progress with no plan.",
+        "Annotations are broad Any or ceremonial."
+      ],
+      "stop_conditions": [
+        "Stop each slice when checker passes and tests still protect behavior."
+      ],
+      "rollback_guidance": [
+        "Revert or narrow annotations that misrepresent runtime behavior."
+      ],
+      "applicable_book_records": [
+        "rp-008",
+        "rp-026",
+        "rp-091",
+        "cb-039"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-008",
+          "rp-026",
+          "rp-091",
+          "cb-039"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-011",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Strengthening error contracts",
+      "preconditions": [
+        "Callers cannot distinguish failure modes."
+      ],
+      "steps": [
+        "List observed failures: absence, invalid input, domain rejection, infrastructure, programming defect.",
+        "Choose Optional/result/exception per caller recovery needs.",
+        "Update public signatures/docs/tests.",
+        "Translate errors at adapters."
+      ],
+      "evidence_required": [
+        "Failure examples and caller handling expectations."
+      ],
+      "failure_signs": [
+        "All failures become None or RuntimeError.",
+        "Infrastructure errors leak to external callers."
+      ],
+      "stop_conditions": [
+        "Stop when tests cover each public failure mode."
+      ],
+      "rollback_guidance": [
+        "Roll back broad hierarchy if it adds no caller value."
+      ],
+      "applicable_book_records": [
+        "rp-010",
+        "rp-011",
+        "ap-039",
+        "cb-014"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-010",
+          "rp-011",
+          "ap-039",
+          "cb-014"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-012",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Introducing repositories safely",
+      "preconditions": [
+        "Persistence details make domain/application tests slow or coupled."
+      ],
+      "steps": [
+        "Choose one aggregate/use case.",
+        "Define smallest repository port.",
+        "Add fake for service tests and real adapter integration/contract test.",
+        "Do not move commit policy into repository."
+      ],
+      "evidence_required": [
+        "Existing persistence coupling; fake/real tests; service using port."
+      ],
+      "failure_signs": [
+        "Repository duplicates ORM without reducing pain.",
+        "One repository per table appears by default."
+      ],
+      "stop_conditions": [
+        "Stop after one workflow uses repository and tests are clearer."
+      ],
+      "rollback_guidance": [
+        "Inline repository if it remains unused pass-through."
+      ],
+      "applicable_book_records": [
+        "ap-008",
+        "ap-091",
+        "cb-001",
+        "cb-012"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis"
+        ],
+        "record_ids": [
+          "ap-008",
+          "ap-091",
+          "cb-001",
+          "cb-012"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-013",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Introducing a service layer safely",
+      "preconditions": [
+        "Entrypoint mixes protocol, persistence, and domain decisions."
+      ],
+      "steps": [
+        "Pick one endpoint/use case.",
+        "Create typed command/input object if helpful.",
+        "Move orchestration to service; keep domain rules in model/functions.",
+        "Test service with fake dependencies and keep entrypoint test thin."
+      ],
+      "evidence_required": [
+        "Before/after entrypoint; service tests; error mapping."
+      ],
+      "failure_signs": [
+        "Service only forwards calls.",
+        "Domain rules migrate into orchestration without reason."
+      ],
+      "stop_conditions": [
+        "Stop when one entrypoint is thinner and behavior preserved."
+      ],
+      "rollback_guidance": [
+        "Move logic back if service adds no responsibility."
+      ],
+      "applicable_book_records": [
+        "ap-017",
+        "ap-092",
+        "cb-008"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis"
+        ],
+        "record_ids": [
+          "ap-017",
+          "ap-092",
+          "cb-008"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-014",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Refactoring without breaking behavior",
+      "preconditions": [
+        "A structural improvement is needed."
+      ],
+      "steps": [
+        "State intended behavior change: none or specific.",
+        "Add tests before moving code.",
+        "Make one small change at a time.",
+        "Run relevant checks after each slice.",
+        "Record rollback."
+      ],
+      "evidence_required": [
+        "Passing tests before/after; diff scoped to one responsibility."
+      ],
+      "failure_signs": [
+        "Big-bang rename and behavior edits in one patch.",
+        "No rollback path."
+      ],
+      "stop_conditions": [
+        "Stop when the demonstrated problem is solved; do not continue pattern migration for aesthetics."
+      ],
+      "rollback_guidance": [
+        "Revert last slice; keep tests if valid."
+      ],
+      "applicable_book_records": [
+        "rp-122",
+        "ap-105",
+        "cb-039"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-122",
+          "ap-105",
+          "cb-039"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "wf-015",
+      "source_domain": "general_operational_extension",
+      "workflow_name": "Deciding when not to refactor",
+      "preconditions": [
+        "Code is ugly but stable or refactor value is unclear."
+      ],
+      "steps": [
+        "Identify concrete pain: bugs, test cost, change cost, performance, security, or comprehension risk.",
+        "Estimate smallest safe improvement.",
+        "If no evidence exists, document non-action and monitor."
+      ],
+      "evidence_required": [
+        "Bug frequency, change history, test pain, team feedback."
+      ],
+      "failure_signs": [
+        "Refactor justified only by taste or pattern preference.",
+        "Leaving known high-risk code untouched without mitigation."
+      ],
+      "stop_conditions": [
+        "Stop when decision is evidence-based."
+      ],
+      "rollback_guidance": [
+        "Create a revisit condition rather than speculative patch."
+      ],
+      "applicable_book_records": [
+        "rp-009",
+        "rp-114",
+        "ap-053",
+        "cb-015"
+      ],
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-009",
+          "rp-114",
+          "ap-053",
+          "cb-015"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    }
+  ],
+  "anti_overengineering_rules": [
+    {
+      "id": "ao-001",
+      "source_domain": "cross_book_synthesis",
+      "rule": "Do not introduce a repository unless persistence coupling, testing cost, or aggregate protection justifies it.",
+      "simpler_default": "Use the framework/ORM directly for simple CRUD.",
+      "escalate_when": "Business rules or tests suffer from persistence details.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis"
+        ],
+        "record_ids": [
+          "ap-091",
+          "cb-001"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "ao-002",
+      "source_domain": "cross_book_synthesis",
+      "rule": "Do not introduce a service layer that only forwards arguments.",
+      "simpler_default": "Call the domain function/object directly.",
+      "escalate_when": "A use case coordinates validation, persistence, transaction, and domain behavior.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis"
+        ],
+        "record_ids": [
+          "ap-092",
+          "cb-008"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "ao-003",
+      "source_domain": "cross_book_synthesis",
+      "rule": "Do not introduce UoW for read-only or single trivial operations.",
+      "simpler_default": "Use a direct query or framework transaction policy.",
+      "escalate_when": "Multiple writes must commit or rollback together.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis"
+        ],
+        "record_ids": [
+          "ap-093",
+          "cb-005"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "ao-004",
+      "source_domain": "cross_book_synthesis",
+      "rule": "Do not introduce events for one direct synchronous reaction.",
+      "simpler_default": "Use a direct function call.",
+      "escalate_when": "Multiple independent handlers or temporal decoupling are needed.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis"
+        ],
+        "record_ids": [
+          "ap-094",
+          "cb-024"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "ao-005",
+      "source_domain": "cross_book_synthesis",
+      "rule": "Do not introduce CQRS for simple views.",
+      "simpler_default": "Use a typed query function or ORM query.",
+      "escalate_when": "Read model shape or performance conflicts with write invariants.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis"
+        ],
+        "record_ids": [
+          "ap-095",
+          "cb-011"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "ao-006",
+      "source_domain": "cross_book_synthesis",
+      "rule": "Do not default to microservices for modularity problems.",
+      "simpler_default": "Improve in-process boundaries first.",
+      "escalate_when": "Independent deployment, team ownership, or scaling requires distribution.",
+      "source_basis": {
+        "source_domains": [
+          "architecture_patterns_with_python",
+          "cross_book_synthesis"
+        ],
+        "record_ids": [
+          "ap-090",
+          "cb-045"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "ao-007",
+      "source_domain": "robust_python",
+      "rule": "Do not maximize annotations when they do not express constraints.",
+      "simpler_default": "Annotate public/high-risk boundaries and meaningful domain distinctions.",
+      "escalate_when": "Static contracts catch real bugs or clarify APIs.",
+      "source_basis": {
+        "source_domains": [
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-009",
+          "rp-125"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "ao-008",
+      "source_domain": "cross_book_synthesis",
+      "rule": "Do not use inheritance solely for code reuse.",
+      "simpler_default": "Use composition or a plain helper function.",
+      "escalate_when": "Substitutability and a stable base contract are required.",
+      "source_basis": {
+        "source_domains": [
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-039",
+          "rp-099",
+          "cb-041"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "ao-009",
+      "source_domain": "cross_book_synthesis",
+      "rule": "Do not create a plugin architecture before independent extension is required.",
+      "simpler_default": "Use explicit registration or strategy injection.",
+      "escalate_when": "Third-party or separately deployed implementations are required.",
+      "source_basis": {
+        "source_domains": [
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-054",
+          "rp-078",
+          "cb-040"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    },
+    {
+      "id": "ao-010",
+      "source_domain": "cross_book_synthesis",
+      "rule": "Do not wrap every primitive in a custom type.",
+      "simpler_default": "Use primitives where meaning is local and unambiguous.",
+      "escalate_when": "Several incompatible semantic roles share one representation.",
+      "source_basis": {
+        "source_domains": [
+          "cross_book_synthesis",
+          "robust_python"
+        ],
+        "record_ids": [
+          "rp-004",
+          "rp-016",
+          "cb-016"
+        ],
+        "note": "Use referenced records for source traceability; rule text is operationalized for future coding conversations."
+      }
+    }
+  ],
+  "technical_verification_rules": [
+    {
+      "verification_id": "verify-001",
+      "claim": "Supported Python versions and syntax for generated code.",
+      "source_era": "Robust Python 2021 / Architecture Patterns 2020",
+      "why_time_sensitive": "Python syntax, typing syntax, and supported versions evolve.",
+      "recommended_current_sources": [
+        "Official Python documentation",
+        "Project pyproject.toml / runtime image",
+        "Type checker release notes"
+      ],
+      "do_not_assume_current_accuracy": true,
+      "source_domain": "general_operational_extension"
+    },
+    {
+      "verification_id": "verify-002",
+      "claim": "Current typing union syntax and generic syntax.",
+      "source_era": "Robust Python 2021",
+      "why_time_sensitive": "PEP support and minimum Python versions differ by project.",
+      "recommended_current_sources": [
+        "Official Python typing docs",
+        "typing_extensions docs",
+        "mypy and pyright docs"
+      ],
+      "do_not_assume_current_accuracy": true,
+      "source_domain": "general_operational_extension"
+    },
+    {
+      "verification_id": "verify-003",
+      "claim": "Current mypy configuration flags and defaults.",
+      "source_era": "Robust Python 2021",
+      "why_time_sensitive": "Mypy flags, default behavior, and error codes change.",
+      "recommended_current_sources": [
+        "Official mypy documentation",
+        "Project mypy.ini/pyproject.toml"
+      ],
+      "do_not_assume_current_accuracy": true,
+      "source_domain": "general_operational_extension"
+    },
+    {
+      "verification_id": "verify-004",
+      "claim": "Current pyright behavior and configuration.",
+      "source_era": "Robust Python 2021",
+      "why_time_sensitive": "Pyright releases frequently and type-narrowing behavior changes.",
+      "recommended_current_sources": [
+        "Official pyright documentation",
+        "Project pyrightconfig.json"
+      ],
+      "do_not_assume_current_accuracy": true,
+      "source_domain": "general_operational_extension"
+    },
+    {
+      "verification_id": "verify-005",
+      "claim": "Current dataclass behavior, slots, frozen behavior, kw_only, default rules.",
+      "source_era": "Robust Python 2021",
+      "why_time_sensitive": "Dataclass options and typing interactions evolve with Python versions.",
+      "recommended_current_sources": [
+        "Official dataclasses documentation",
+        "Project Python version docs"
+      ],
+      "do_not_assume_current_accuracy": true,
+      "source_domain": "general_operational_extension"
+    },
+    {
+      "verification_id": "verify-006",
+      "claim": "Current pydantic BaseModel APIs and settings behavior.",
+      "source_era": "Robust Python 2021",
+      "why_time_sensitive": "Pydantic v2 changed APIs and behavior relative to v1-era examples.",
+      "recommended_current_sources": [
+        "Official Pydantic documentation",
+        "Project lockfile"
+      ],
+      "do_not_assume_current_accuracy": true,
+      "source_domain": "general_operational_extension"
+    },
+    {
+      "verification_id": "verify-007",
+      "claim": "Current dependency-management and packaging recommendations.",
+      "source_era": "Both books 2020-2021",
+      "why_time_sensitive": "Packaging standards and tools change.",
+      "recommended_current_sources": [
+        "Python Packaging User Guide",
+        "Project pyproject.toml",
+        "Tool docs for uv/poetry/pip/setuptools as applicable"
+      ],
+      "do_not_assume_current_accuracy": true,
+      "source_domain": "general_operational_extension"
+    },
+    {
+      "verification_id": "verify-008",
+      "claim": "Current Flask, Django, SQLAlchemy, Redis, and framework APIs.",
+      "source_era": "Architecture Patterns 2020",
+      "why_time_sensitive": "Framework APIs and best practices change across major versions.",
+      "recommended_current_sources": [
+        "Official framework documentation",
+        "Project lockfile",
+        "Migration guides"
+      ],
+      "do_not_assume_current_accuracy": true,
+      "source_domain": "general_operational_extension"
+    },
+    {
+      "verification_id": "verify-009",
+      "claim": "Current async behavior, task groups, cancellation, and context propagation.",
+      "source_era": "General operational extension beyond book specifics",
+      "why_time_sensitive": "Asyncio features and framework conventions evolve.",
+      "recommended_current_sources": [
+        "Official asyncio documentation",
+        "Framework async docs"
+      ],
+      "do_not_assume_current_accuracy": true,
+      "source_domain": "general_operational_extension"
+    },
+    {
+      "verification_id": "verify-010",
+      "claim": "Current security recommendations for secrets, dependency scanning, plugin loading, and API clients.",
+      "source_era": "General operational extension beyond book specifics",
+      "why_time_sensitive": "Security guidance and vulnerability landscape change continuously.",
+      "recommended_current_sources": [
+        "OWASP guidance",
+        "Official framework security docs",
+        "Project security policy"
+      ],
+      "do_not_assume_current_accuracy": true,
+      "source_domain": "general_operational_extension"
+    },
+    {
+      "verification_id": "verify-011",
+      "claim": "Current behavior of typing.Protocol runtime checking.",
+      "source_era": "Robust Python 2021",
+      "why_time_sensitive": "Runtime-checkable protocol limitations and checker behavior may change.",
+      "recommended_current_sources": [
+        "Official typing docs",
+        "mypy docs",
+        "pyright docs"
+      ],
+      "do_not_assume_current_accuracy": true,
+      "source_domain": "general_operational_extension"
+    },
+    {
+      "verification_id": "verify-012",
+      "claim": "Current Hypothesis and mutation-testing tool APIs.",
+      "source_era": "Robust Python 2021",
+      "why_time_sensitive": "Testing tool APIs and recommended configuration evolve.",
+      "recommended_current_sources": [
+        "Official Hypothesis docs",
+        "mutmut or mutation tool docs",
+        "Project test config"
+      ],
+      "do_not_assume_current_accuracy": true,
+      "source_domain": "general_operational_extension"
+    }
+  ],
+  "code_review_questions": {
+    "New module review": [
+      "Does the module have one clear responsibility?",
+      "Do imports point inward toward stable policy rather than outward to infrastructure?",
+      "Can core logic be imported without starting network, database, or framework state?",
+      "Are public symbols typed enough to communicate valid use?",
+      "Is any new abstraction solving observed pain?"
+    ],
+    "Public function review": [
+      "Are inputs, outputs, failures, and side effects visible in the signature/name/docs?",
+      "Can a caller pass None or an invalid primitive accidentally?",
+      "Does the function mix business decision with I/O?",
+      "Is absence represented distinctly from failure?",
+      "Can behavior be unit-tested without production infrastructure?"
+    ],
+    "Class design review": [
+      "Can an invalid object be constructed?",
+      "Which invariant does each mutating method preserve?",
+      "Should this be a dataclass, frozen value object, entity, protocol, ABC, or plain function?",
+      "Does equality mean value equality or identity?",
+      "Are mutable internals exposed directly?"
+    ],
+    "Type-safety review": [
+      "Do annotations express meaningful constraints rather than ceremony?",
+      "Are Optional values narrowed before use?",
+      "Are free-form strings used where Enum/Literal would prevent invalid values?",
+      "Does Any leak from external boundaries into trusted code?",
+      "Do type ignores have narrow scope and reasons?"
+    ],
+    "Error-handling review": [
+      "Can callers distinguish success, expected absence, domain rejection, and infrastructure failure?",
+      "Are exceptions translated at adapter boundaries?",
+      "Does any context manager suppress exceptions unexpectedly?",
+      "Is partial failure observable and recoverable?",
+      "Are event-handler failures retried, isolated, or reported deliberately?"
+    ],
+    "Configuration review": [
+      "Are env vars/config files read in one place?",
+      "Is configuration validated before serving work?",
+      "Are secrets excluded from logs, tests, and generated output?",
+      "Is config passed explicitly into adapters/bootstrap?",
+      "Are current library/config APIs verified for the project version?"
+    ],
+    "API client review": [
+      "Does core code depend on vendor SDK types?",
+      "Is there a small port/protocol for the operations the app needs?",
+      "Are timeouts, retries, and failure translation explicit?",
+      "Are contract tests or fakes aligned with real behavior?",
+      "Is sensitive data redacted from errors and logs?"
+    ],
+    "Data-model review": [
+      "Are repeated primitive bundles replaced by named structures where useful?",
+      "Do dataclass defaults avoid shared mutable state?",
+      "Are multi-field invariants enforced at construction?",
+      "Is transport DTO data separated from domain behavior?",
+      "Can external malformed data cross into trusted code?"
+    ],
+    "Domain-model review": [
+      "What business rule or language does this model express?",
+      "Which objects are value objects and which are entities?",
+      "What invariant does the aggregate protect?",
+      "Are domain rules testable without infrastructure?",
+      "Is the domain primarily CRUD, making a rich model unnecessary?"
+    ],
+    "Repository review": [
+      "What aggregate or use case requires this repository?",
+      "Does the interface expose domain operations rather than ORM details?",
+      "Is there one repository per aggregate root rather than per child entity?",
+      "Can fake and real implementations satisfy the same contract?",
+      "Does the repository avoid owning transaction commit policy?"
+    ],
+    "Service-layer review": [
+      "Does the service orchestrate a use case rather than absorb domain rules?",
+      "Are dependencies explicit and replaceable in tests?",
+      "Is transaction commit/rollback boundary clear?",
+      "Are protocol-specific concerns kept in entrypoints?",
+      "Would a direct domain call be simpler?"
+    ],
+    "Refactoring review": [
+      "What behavior is protected by tests before the change?",
+      "Can the change be split into smaller reversible steps?",
+      "Does the patch preserve public contracts?",
+      "Are rollback instructions clear?",
+      "Did the refactor introduce speculative abstractions?"
+    ],
+    "Test-suite review": [
+      "Which risks are covered by unit, service, integration, contract, and E2E tests?",
+      "Are slow tests reserved for seams that need real infrastructure?",
+      "Do fakes have contract coverage against real adapters?",
+      "Would mutation/property testing reveal weak assertions for critical logic?",
+      "Can a new bug be reproduced by a focused failing test?"
+    ],
+    "Dependency review": [
+      "Which dependencies are pure helpers, mechanisms, or policy collaborators?",
+      "Can stateful/volatile dependencies be injected?",
+      "Are import cycles or framework imports leaking into core logic?",
+      "Is object creation centralized in bootstrap where appropriate?",
+      "Are dependency-management/tooling recommendations current for this project?"
+    ],
+    "Security-sensitive code review": [
+      "Are secrets redacted and never emitted into generated files?",
+      "Are untrusted inputs validated at the edge?",
+      "Are dependency and framework security behaviors verified against current sources?",
+      "Are plugin/dynamic loading boundaries explicit and restricted?",
+      "Are error messages safe for external callers?"
+    ],
+    "Pre-release review": [
+      "Are source-era technical assumptions flagged or verified?",
+      "Do all public failure modes have tests?",
+      "Are configuration and migration paths tested?",
+      "Can rollback be performed if the release fails?",
+      "Are observability points present for event/transaction failures?"
+    ]
+  },
+  "source_traceability_note": "For source-level evidence, use the full JSON files and referenced record IDs. This compact context is intentionally operational and project-independent."
+}

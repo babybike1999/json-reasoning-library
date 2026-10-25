@@ -1,0 +1,2944 @@
+{
+  "package_id": "sql-cookbook-reasoning-os-v1",
+  "section_key": "insert_update_delete_records",
+  "record_count": 17,
+  "unique_record_count": 17,
+  "source_boundary": "Uploaded second edition only. Derivation and source anchors are carried on every substantive record.",
+  "usage_note": "These are canonical records reused across topical modules. Count distinct IDs across the package, not module totals.",
+  "records": [
+    {
+      "id": "sql-recipe-04-01",
+      "record_type": "recipe_pattern",
+      "name": "4.1 Inserting a New Record",
+      "summary": "Provide an explicit target column list and compatible VALUES expressions.",
+      "source_recipe_or_concept": "4.1 Inserting a New Record; supporting source units: 4.1",
+      "sql_problem_addressed": "Insert a new row with a clear column-to-value mapping.",
+      "query_intent": "Insert a new row with a clear column-to-value mapping.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One new target row per supplied values tuple.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "DEPT",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One new target row per supplied values tuple.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Insert a new row with a clear column-to-value mapping."
+      ],
+      "aggregation_or_windowing": "Provide an explicit target column list and compatible VALUES expressions.",
+      "result_shape": "Changed target table, not a reporting rowset.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "The recipe’s multirow VALUES availability is source-era and must be rechecked.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Omitted columns and explicit NULLs may have different outcomes.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Insert a new row with a clear column-to-value mapping."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one new target row per supplied values tuple."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "tests_or_checks": [
+        "Preview each value against its target type and required constraints; verify affected-row count."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.1 Inserting a New Record",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-1",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-1.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-1.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-1.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Insert a new row with a clear column-to-value mapping.",
+          "Provide an explicit target column list and compatible VALUES expressions.",
+          "Omitting target columns makes correctness depend on the table’s implicit order and defaults."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.1 Inserting a New Record",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-1",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch04"
+      ],
+      "recipe_name": "4.1 Inserting a New Record",
+      "problem_paraphrase": "Insert a new row with a clear column-to-value mapping.",
+      "solution_pattern": "Provide an explicit target column list and compatible VALUES expressions.",
+      "discussion_reasoning": "Omitting target columns makes correctness depend on the table’s implicit order and defaults.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One new target row per supplied values tuple.",
+      "output_shape": "Changed target table, not a reporting rowset.",
+      "assumptions": [
+        "One new target row per supplied values tuple.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The recipe’s multirow VALUES availability is source-era and must be rechecked."
+      ],
+      "test_query_or_validation_shape": "Preview each value against its target type and required constraints; verify affected-row count.",
+      "when_to_use": [
+        "Insert a new row with a clear column-to-value mapping."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one new target row per supplied values tuple."
+      ],
+      "related_records": [
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "DEPT",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-1",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-generated-sql",
+        "sql-verify-merge",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-04-02",
+      "record_type": "recipe_pattern",
+      "name": "4.2 Inserting Default Values",
+      "summary": "Omit defaulted columns or use the source-supported DEFAULT form for the dialect.",
+      "source_recipe_or_concept": "4.2 Inserting Default Values; supporting source units: 4.2",
+      "sql_problem_addressed": "Create rows using column defaults.",
+      "query_intent": "Create rows using column defaults.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One inserted row per insertion operation or tuple.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        }
+      ],
+      "required_grain": "One inserted row per insertion operation or tuple.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Create rows using column defaults."
+      ],
+      "aggregation_or_windowing": "Omit defaulted columns or use the source-supported DEFAULT form for the dialect.",
+      "result_shape": "Target row populated according to defined defaults.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source distinguishes MySQL empty VALUES from PostgreSQL/SQL Server DEFAULT VALUES.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Default and NULL are distinct choices.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Create rows using column defaults."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one inserted row per insertion operation or tuple."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "tests_or_checks": [
+        "Inspect actual default expressions and test mixed defaulted/nondefaulted columns."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-01",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.2 Inserting Default Values",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-2",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-2.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-2.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-2.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Create rows using column defaults.",
+          "Omit defaulted columns or use the source-supported DEFAULT form for the dialect.",
+          "A stored default is invoked by the insertion method, not by assuming an omitted field is NULL."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.2 Inserting Default Values",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-2",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch04"
+      ],
+      "recipe_name": "4.2 Inserting Default Values",
+      "problem_paraphrase": "Create rows using column defaults.",
+      "solution_pattern": "Omit defaulted columns or use the source-supported DEFAULT form for the dialect.",
+      "discussion_reasoning": "A stored default is invoked by the insertion method, not by assuming an omitted field is NULL.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One inserted row per insertion operation or tuple.",
+      "output_shape": "Target row populated according to defined defaults.",
+      "assumptions": [
+        "One inserted row per insertion operation or tuple.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Source distinguishes MySQL empty VALUES from PostgreSQL/SQL Server DEFAULT VALUES."
+      ],
+      "test_query_or_validation_shape": "Inspect actual default expressions and test mixed defaulted/nondefaulted columns.",
+      "when_to_use": [
+        "Create rows using column defaults."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one inserted row per insertion operation or tuple."
+      ],
+      "related_records": [
+        "sql-recipe-04-01",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-generated-sql",
+        "sql-verify-merge",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-04-03",
+      "record_type": "recipe_pattern",
+      "name": "4.3 Overriding a Default Value with NULL",
+      "summary": "Include the nullable target column and supply NULL explicitly.",
+      "source_recipe_or_concept": "4.3 Overriding a Default Value with NULL; supporting source units: 4.3",
+      "sql_problem_addressed": "Store NULL instead of accepting a default.",
+      "query_intent": "Store NULL instead of accepting a default.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One target row per insert tuple.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        }
+      ],
+      "required_grain": "One target row per insert tuple.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Store NULL instead of accepting a default."
+      ],
+      "aggregation_or_windowing": "Include the nullable target column and supply NULL explicitly.",
+      "result_shape": "An inserted row with a deliberate missing value.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "A NOT NULL constraint prevents the explicit-NULL insertion.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Store NULL instead of accepting a default."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one target row per insert tuple."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "tests_or_checks": [
+        "Check that the column permits NULL and compare omitted-column versus explicit-NULL inserts in a safe test."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.3 Overriding a Default Value with NULL",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-3",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-3.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-3.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-3.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Store NULL instead of accepting a default.",
+          "Include the nullable target column and supply NULL explicitly.",
+          "Leaving the column out may trigger its default instead."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.3 Overriding a Default Value with NULL",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-3",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch04"
+      ],
+      "recipe_name": "4.3 Overriding a Default Value with NULL",
+      "problem_paraphrase": "Store NULL instead of accepting a default.",
+      "solution_pattern": "Include the nullable target column and supply NULL explicitly.",
+      "discussion_reasoning": "Leaving the column out may trigger its default instead.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One target row per insert tuple.",
+      "output_shape": "An inserted row with a deliberate missing value.",
+      "assumptions": [
+        "One target row per insert tuple.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Check that the column permits NULL and compare omitted-column versus explicit-NULL inserts in a safe test.",
+      "when_to_use": [
+        "Store NULL instead of accepting a default."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one target row per insert tuple."
+      ],
+      "related_records": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-generated-sql",
+        "sql-verify-merge",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-04-04",
+      "record_type": "recipe_pattern",
+      "name": "4.4 Copying Rows from One Table into Another",
+      "summary": "Use INSERT with a SELECT whose projected columns align with the target column list.",
+      "source_recipe_or_concept": "4.4 Copying Rows from One Table into Another; supporting source units: 4.4",
+      "sql_problem_addressed": "Copy qualifying rows into another table.",
+      "query_intent": "Copy qualifying rows into another table.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One target row per selected input row unless constraints reject the operation.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "DEPT",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One target row per selected input row unless constraints reject the operation.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Copy qualifying rows into another table."
+      ],
+      "aggregation_or_windowing": "Use INSERT with a SELECT whose projected columns align with the target column list.",
+      "result_shape": "Copied rows in the target.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Selected NULLs are copied subject to target constraints.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Copy qualifying rows into another table."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one target row per selected input row unless constraints reject the operation."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "tests_or_checks": [
+        "Run the SELECT first; compare types, row count, duplicate keys, and restart behavior."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.4 Copying Rows from One Table into Another",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-4",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-4.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-4.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-4.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Copy qualifying rows into another table.",
+          "Use INSERT with a SELECT whose projected columns align with the target column list.",
+          "The SELECT defines the population and values; target constraints still apply."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.4 Copying Rows from One Table into Another",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-4",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch04"
+      ],
+      "recipe_name": "4.4 Copying Rows from One Table into Another",
+      "problem_paraphrase": "Copy qualifying rows into another table.",
+      "solution_pattern": "Use INSERT with a SELECT whose projected columns align with the target column list.",
+      "discussion_reasoning": "The SELECT defines the population and values; target constraints still apply.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One target row per selected input row unless constraints reject the operation.",
+      "output_shape": "Copied rows in the target.",
+      "assumptions": [
+        "One target row per selected input row unless constraints reject the operation.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Run the SELECT first; compare types, row count, duplicate keys, and restart behavior.",
+      "when_to_use": [
+        "Copy qualifying rows into another table."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one target row per selected input row unless constraints reject the operation."
+      ],
+      "related_records": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "DEPT",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-4",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-generated-sql",
+        "sql-verify-merge",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-04-05",
+      "record_type": "recipe_pattern",
+      "name": "4.5 Copying a Table Definition",
+      "summary": "Use the source dialect’s LIKE, CTAS with a false predicate, or SELECT INTO form.",
+      "source_recipe_or_concept": "4.5 Copying a Table Definition; supporting source units: 4.5",
+      "sql_problem_addressed": "Create an empty table patterned on another row shape.",
+      "query_intent": "Create an empty table patterned on another row shape.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "Schema operation; no source rows should be copied.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "DEPT",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "Schema operation; no source rows should be copied.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Create an empty table patterned on another row shape."
+      ],
+      "aggregation_or_windowing": "Use the source dialect’s LIKE, CTAS with a false predicate, or SELECT INTO form.",
+      "result_shape": "An empty table with selected structural attributes.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "The book demonstrates DB2 LIKE, Oracle/MySQL/PostgreSQL CTAS, and SQL Server INTO; it does not establish identical metadata-copy behavior.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "This recipe does not establish a special NULL policy; test relevant NULL inputs when adapting its expressions.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Create an empty table patterned on another row shape."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from schema operation; no source rows should be copied."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "tests_or_checks": [
+        "Verify zero rows and inspect resulting types, defaults, indexes, and constraints instead of assuming a complete clone."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.5 Copying a Table Definition",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-5",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-5.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-5.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-5.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Create an empty table patterned on another row shape.",
+          "Use the source dialect’s LIKE, CTAS with a false predicate, or SELECT INTO form.",
+          "A false predicate prevents data copying while allowing the selected column shape to drive creation."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.5 Copying a Table Definition",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-5",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch04"
+      ],
+      "recipe_name": "4.5 Copying a Table Definition",
+      "problem_paraphrase": "Create an empty table patterned on another row shape.",
+      "solution_pattern": "Use the source dialect’s LIKE, CTAS with a false predicate, or SELECT INTO form.",
+      "discussion_reasoning": "A false predicate prevents data copying while allowing the selected column shape to drive creation.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2",
+          "dialects": [
+            "DB2"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-5.2.1",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle, MySQL, and PostgreSQL",
+          "dialects": [
+            "Oracle",
+            "PostgreSQL",
+            "MySQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-5.2.2",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "SQL Server",
+          "dialects": [
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-5.2.3",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2",
+          "dialects": [
+            "DB2"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-5.3.1",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle, MySQL, and PostgreSQL",
+          "dialects": [
+            "Oracle",
+            "PostgreSQL",
+            "MySQL"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-5.3.2",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "SQL Server",
+          "dialects": [
+            "SQL Server"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-5.3.3",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "Schema operation; no source rows should be copied.",
+      "output_shape": "An empty table with selected structural attributes.",
+      "assumptions": [
+        "Schema operation; no source rows should be copied.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The book demonstrates DB2 LIKE, Oracle/MySQL/PostgreSQL CTAS, and SQL Server INTO; it does not establish identical metadata-copy behavior."
+      ],
+      "test_query_or_validation_shape": "Verify zero rows and inspect resulting types, defaults, indexes, and constraints instead of assuming a complete clone.",
+      "when_to_use": [
+        "Create an empty table patterned on another row shape."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from schema operation; no source rows should be copied."
+      ],
+      "related_records": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "DEPT",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-5",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-generated-sql",
+        "sql-verify-merge",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-04-06",
+      "record_type": "recipe_pattern",
+      "name": "4.6 Inserting into Multiple Tables at Once",
+      "summary": "Use the source’s Oracle multitable insert or constrained DB2 union-view approach.",
+      "source_recipe_or_concept": "4.6 Inserting into Multiple Tables at Once; supporting source units: 4.6",
+      "sql_problem_addressed": "Route selected rows into multiple targets.",
+      "query_intent": "Route selected rows into multiple targets.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One selected row may map to one or multiple target rows according to routing semantics.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "DEPT",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One selected row may map to one or multiple target rows according to routing semantics.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Route selected rows into multiple targets."
+      ],
+      "aggregation_or_windowing": "Use the source’s Oracle multitable insert or constrained DB2 union-view approach.",
+      "result_shape": "Changes distributed among target tables.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "No multitable-insert solution is supplied for the other three platforms in this recipe; do not modernize that statement without verification.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Test NULL routing conditions explicitly.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Route selected rows into multiple targets."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one selected row may map to one or multiple target rows according to routing semantics."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "tests_or_checks": [
+        "Test overlapping routes, unmatched routes, and DB2 constraint exclusivity."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.6 Inserting into Multiple Tables at Once",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-6",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-6.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-6.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-6.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Route selected rows into multiple targets.",
+          "Use the source’s Oracle multitable insert or constrained DB2 union-view approach.",
+          "Oracle ALL evaluates all eligible routes, whereas FIRST stops after the first qualifying route."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.6 Inserting into Multiple Tables at Once",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-6",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch04"
+      ],
+      "recipe_name": "4.6 Inserting into Multiple Tables at Once",
+      "problem_paraphrase": "Route selected rows into multiple targets.",
+      "solution_pattern": "Use the source’s Oracle multitable insert or constrained DB2 union-view approach.",
+      "discussion_reasoning": "Oracle ALL evaluates all eligible routes, whereas FIRST stops after the first qualifying route.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-6.2.1",
+          "function_tokens_detected": [
+            "DEPT_EAST",
+            "DEPT_MID",
+            "DEPT_WEST"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2",
+          "dialects": [
+            "DB2"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-6.2.2",
+          "function_tokens_detected": [
+            "CHECK",
+            "DEPT_EAST",
+            "DEPT_MID",
+            "DEPT_WEST",
+            "VARCHAR"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL, PostgreSQL, and SQL Server",
+          "dialects": [
+            "PostgreSQL",
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-6.2.3",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-6.3.1",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2",
+          "dialects": [
+            "DB2"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-6.3.2",
+          "function_tokens_detected": [
+            "INSERT"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL, PostgreSQL, and SQL Server",
+          "dialects": [
+            "PostgreSQL",
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-6.3.3",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "One selected row may map to one or multiple target rows according to routing semantics.",
+      "output_shape": "Changes distributed among target tables.",
+      "assumptions": [
+        "One selected row may map to one or multiple target rows according to routing semantics.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "No multitable-insert solution is supplied for the other three platforms in this recipe; do not modernize that statement without verification."
+      ],
+      "test_query_or_validation_shape": "Test overlapping routes, unmatched routes, and DB2 constraint exclusivity.",
+      "when_to_use": [
+        "Route selected rows into multiple targets."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one selected row may map to one or multiple target rows according to routing semantics."
+      ],
+      "related_records": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "DEPT",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-6",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-generated-sql",
+        "sql-verify-merge",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-04-07",
+      "record_type": "recipe_pattern",
+      "name": "4.7 Blocking Inserts to Certain Columns",
+      "summary": "Expose permitted columns through an insertable view and restrict direct base-table insertion permissions.",
+      "source_recipe_or_concept": "4.7 Blocking Inserts to Certain Columns; supporting source units: 4.7",
+      "sql_problem_addressed": "Limit which columns an insert interface exposes.",
+      "query_intent": "Limit which columns an insert interface exposes.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One insertion through the approved view interface.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One insertion through the approved view interface.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Limit which columns an insert interface exposes."
+      ],
+      "aggregation_or_windowing": "Expose permitted columns through an insertable view and restrict direct base-table insertion permissions.",
+      "result_shape": "Base-table rows populated through a restricted projection.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "View-update and privilege rules must be verified for the live database.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Unexposed fields rely on compatible defaults or nullability.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Limit which columns an insert interface exposes."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one insertion through the approved view interface."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "tests_or_checks": [
+        "Review privileges and view insertability; test omitted mandatory columns."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.7 Blocking Inserts to Certain Columns",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-7",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-7.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-7.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-7.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Limit which columns an insert interface exposes.",
+          "Expose permitted columns through an insertable view and restrict direct base-table insertion permissions.",
+          "The view alone does not prevent bypass if the same user can insert into the base table."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.7 Blocking Inserts to Certain Columns",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-7",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch04"
+      ],
+      "recipe_name": "4.7 Blocking Inserts to Certain Columns",
+      "problem_paraphrase": "Limit which columns an insert interface exposes.",
+      "solution_pattern": "Expose permitted columns through an insertable view and restrict direct base-table insertion permissions.",
+      "discussion_reasoning": "The view alone does not prevent bypass if the same user can insert into the base table.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One insertion through the approved view interface.",
+      "output_shape": "Base-table rows populated through a restricted projection.",
+      "assumptions": [
+        "One insertion through the approved view interface.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "View-update and privilege rules must be verified for the live database."
+      ],
+      "test_query_or_validation_shape": "Review privileges and view insertability; test omitted mandatory columns.",
+      "when_to_use": [
+        "Limit which columns an insert interface exposes."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one insertion through the approved view interface."
+      ],
+      "related_records": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-7",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-generated-sql",
+        "sql-verify-merge",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-04-08",
+      "record_type": "recipe_pattern",
+      "name": "4.8 Modifying Records in a Table",
+      "summary": "Put the replacement expression in SET and the intended target population in the outer WHERE.",
+      "source_recipe_or_concept": "4.8 Modifying Records in a Table; supporting source units: 4.8",
+      "sql_problem_addressed": "Update a defined population using an expression.",
+      "query_intent": "Update a defined population using an expression.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One modification per qualifying target row.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "NEW_SAL",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One modification per qualifying target row.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Update a defined population using an expression."
+      ],
+      "aggregation_or_windowing": "Put the replacement expression in SET and the intended target population in the outer WHERE.",
+      "result_shape": "Updated target values.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Test NULL arithmetic before applying the update.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Update a defined population using an expression."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one modification per qualifying target row."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "tests_or_checks": [
+        "Preview old and proposed values with SELECT and verify the intended affected keys."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.8 Modifying Records in a Table",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-8",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-8.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-8.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-8.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Update a defined population using an expression.",
+          "Put the replacement expression in SET and the intended target population in the outer WHERE.",
+          "An UPDATE without a population filter affects the entire table."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.8 Modifying Records in a Table",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-8",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch04"
+      ],
+      "recipe_name": "4.8 Modifying Records in a Table",
+      "problem_paraphrase": "Update a defined population using an expression.",
+      "solution_pattern": "Put the replacement expression in SET and the intended target population in the outer WHERE.",
+      "discussion_reasoning": "An UPDATE without a population filter affects the entire table.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One modification per qualifying target row.",
+      "output_shape": "Updated target values.",
+      "assumptions": [
+        "One modification per qualifying target row.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Preview old and proposed values with SELECT and verify the intended affected keys.",
+      "when_to_use": [
+        "Update a defined population using an expression."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one modification per qualifying target row."
+      ],
+      "related_records": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-8",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "NEW_SAL",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-8",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-generated-sql",
+        "sql-verify-merge",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-04-09",
+      "record_type": "recipe_pattern",
+      "name": "4.9 Updating When Corresponding Rows Exist",
+      "summary": "Use a matching subquery with IN or EXISTS to constrain the target population.",
+      "source_recipe_or_concept": "4.9 Updating When Corresponding Rows Exist; supporting source units: 4.9",
+      "sql_problem_addressed": "Update only rows that have a qualifying related record.",
+      "query_intent": "Update only rows that have a qualifying related record.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One qualifying target row, independent of the number of existence matches.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP_BONUS",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One qualifying target row, independent of the number of existence matches.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Update only rows that have a qualifying related record."
+      ],
+      "aggregation_or_windowing": "Use a matching subquery with IN or EXISTS to constrain the target population.",
+      "result_shape": "Updated target subset.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "A NULL in the EXISTS projection does not make row existence disappear.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Update only rows that have a qualifying related record."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one qualifying target row, independent of the number of existence matches."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "tests_or_checks": [
+        "Test no match, one match, and multiple matches; ensure nonmatching rows remain unchanged."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.9 Updating When Corresponding Rows Exist",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-9",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-9.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-9.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-9.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Update only rows that have a qualifying related record.",
+          "Use a matching subquery with IN or EXISTS to constrain the target population.",
+          "Existence is driven by matched rows, not the selected expression in an EXISTS subquery."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.9 Updating When Corresponding Rows Exist",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-9",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch04"
+      ],
+      "recipe_name": "4.9 Updating When Corresponding Rows Exist",
+      "problem_paraphrase": "Update only rows that have a qualifying related record.",
+      "solution_pattern": "Use a matching subquery with IN or EXISTS to constrain the target population.",
+      "discussion_reasoning": "Existence is driven by matched rows, not the selected expression in an EXISTS subquery.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One qualifying target row, independent of the number of existence matches.",
+      "output_shape": "Updated target subset.",
+      "assumptions": [
+        "One qualifying target row, independent of the number of existence matches.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Test no match, one match, and multiple matches; ensure nonmatching rows remain unchanged.",
+      "when_to_use": [
+        "Update only rows that have a qualifying related record."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one qualifying target row, independent of the number of existence matches."
+      ],
+      "related_records": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-9",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "EMP_BONUS",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-9",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-generated-sql",
+        "sql-verify-merge",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-04-10",
+      "record_type": "recipe_pattern",
+      "name": "4.10 Updating with Values from Another Table",
+      "summary": "Join to a unique source value or use a correlated value subquery plus an outer target-existence filter.",
+      "source_recipe_or_concept": "4.10 Updating with Values from Another Table; supporting source units: 4.10",
+      "sql_problem_addressed": "Update values from a related source without overwriting unrelated targets.",
+      "query_intent": "Update values from a related source without overwriting unrelated targets.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One source value per intended target row.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "NEW_SAL",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One source value per intended target row.",
+      "key_columns_or_join_conditions": [
+        "The update relationship must identify at most one source value per target assignment."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Update values from a related source without overwriting unrelated targets."
+      ],
+      "aggregation_or_windowing": "Join to a unique source value or use a correlated value subquery plus an outer target-existence filter.",
+      "result_shape": "Matched target rows updated from source attributes.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "Correlated, joined-update, and updatable-view forms differ by dialect.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Unmatched scalar subqueries can yield NULL replacement values.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Update values from a related source without overwriting unrelated targets."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one source value per intended target row."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "tests_or_checks": [
+        "Test an unmatched target and duplicate source matches; preview new values and affected keys."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.10 Updating with Values from Another Table",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-10",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-10.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-10.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-10.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Update values from a related source without overwriting unrelated targets.",
+          "Join to a unique source value or use a correlated value subquery plus an outer target-existence filter.",
+          "A condition inside the value subquery is not a filter on the target table; unmatched values can otherwise become NULL."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.10 Updating with Values from Another Table",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-10",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch04"
+      ],
+      "recipe_name": "4.10 Updating with Values from Another Table",
+      "problem_paraphrase": "Update values from a related source without overwriting unrelated targets.",
+      "solution_pattern": "Join to a unique source value or use a correlated value subquery plus an outer target-existence filter.",
+      "discussion_reasoning": "A condition inside the value subquery is not a filter on the target table; unmatched values can otherwise become NULL.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2",
+          "dialects": [
+            "DB2"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-10.2.1",
+          "function_tokens_detected": [
+            "SET"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL",
+          "dialects": [
+            "MySQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#idm45247231994824",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-10.2.2",
+          "function_tokens_detected": [
+            "UPDATE"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "PostgreSQL",
+          "dialects": [
+            "PostgreSQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-10.2.3",
+          "function_tokens_detected": [
+            "ALSO"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "SQL Server",
+          "dialects": [
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-10.2.4",
+          "function_tokens_detected": [
+            "CAN"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2",
+          "dialects": [
+            "DB2"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-10.3.1",
+          "function_tokens_detected": [
+            "JOIN"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-10.3.2",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "PostgreSQL, SQL Server, and MySQL",
+          "dialects": [
+            "PostgreSQL",
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-10.3.3",
+          "function_tokens_detected": [
+            "UPDATE"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "One source value per intended target row.",
+      "output_shape": "Matched target rows updated from source attributes.",
+      "assumptions": [
+        "One source value per intended target row.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Correlated, joined-update, and updatable-view forms differ by dialect."
+      ],
+      "test_query_or_validation_shape": "Test an unmatched target and duplicate source matches; preview new values and affected keys.",
+      "when_to_use": [
+        "Update values from a related source without overwriting unrelated targets."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one source value per intended target row."
+      ],
+      "related_records": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-10",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "NEW_SAL",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-10",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-generated-sql",
+        "sql-verify-merge",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-04-11",
+      "record_type": "recipe_pattern",
+      "name": "4.11 Merging Records",
+      "summary": "Express matching, update/insert, and any deletion eligibility as separate branches of the intended merge operation.",
+      "source_recipe_or_concept": "4.11 Merging Records; supporting source units: 4.11",
+      "sql_problem_addressed": "Apply different changes to matched and unmatched target records.",
+      "query_intent": "Apply different changes to matched and unmatched target records.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One intended source-to-target match decision per entity.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP_COMMISSION",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One intended source-to-target match decision per entity.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Apply different changes to matched and unmatched target records."
+      ],
+      "aggregation_or_windowing": "Express matching, update/insert, and any deletion eligibility as separate branches of the intended merge operation.",
+      "result_shape": "Inserted, changed, or deleted target rows.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "The book’s broad MERGE portability claim and illustrated deletion branch need verification; no current cross-dialect runnable claim is made.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Define whether nullable keys can participate in matching.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Apply different changes to matched and unmatched target records."
+      ],
+      "do_not_use_when": [
+        "The required grain or output shape differs from inserted, changed, or deleted target rows.",
+        "An unresolved source issue would be treated as production-ready SQL."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "tests_or_checks": [
+        "Test each action branch, multiple source matches, and idempotent reruns before any live write."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.11 Merging Records",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-11",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-11.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-11.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-11.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Apply different changes to matched and unmatched target records.",
+          "Express matching, update/insert, and any deletion eligibility as separate branches of the intended merge operation.",
+          "Match identity and branch predicates determine distinct actions; they must not be conflated."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.11 Merging Records",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-11",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "recipe",
+        "ch04"
+      ],
+      "recipe_name": "4.11 Merging Records",
+      "problem_paraphrase": "Apply different changes to matched and unmatched target records.",
+      "solution_pattern": "Express matching, update/insert, and any deletion eligibility as separate branches of the intended merge operation.",
+      "discussion_reasoning": "Match identity and branch predicates determine distinct actions; they must not be conflated.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One intended source-to-target match decision per entity.",
+      "output_shape": "Inserted, changed, or deleted target rows.",
+      "assumptions": [
+        "One intended source-to-target match decision per entity.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The book’s broad MERGE portability claim and illustrated deletion branch need verification; no current cross-dialect runnable claim is made.",
+        "The broad MERGE applicability statement does not establish a verified per-version syntax and branch contract."
+      ],
+      "test_query_or_validation_shape": "Test each action branch, multiple source matches, and idempotent reruns before any live write.",
+      "when_to_use": [
+        "Apply different changes to matched and unmatched target records."
+      ],
+      "when_not_to_use": [
+        "The required grain or output shape differs from inserted, changed, or deleted target rows.",
+        "An unresolved source issue would be treated as production-ready SQL."
+      ],
+      "related_records": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_issue_ids": [
+        "source-issue-merge-breadth"
+      ],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-11",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "EMP_COMMISSION",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-11",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-generated-sql",
+        "sql-verify-merge",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-04-12",
+      "record_type": "recipe_pattern",
+      "name": "4.12 Deleting All Records from a Table",
+      "summary": "Use an unfiltered DELETE only for an explicitly approved all-row removal.",
+      "source_recipe_or_concept": "4.12 Deleting All Records from a Table; supporting source units: 4.12",
+      "sql_problem_addressed": "Remove every row from a table deliberately.",
+      "query_intent": "Remove every row from a table deliberately.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "All rows of the chosen table.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "All rows of the chosen table.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Remove every row from a table deliberately."
+      ],
+      "aggregation_or_windowing": "Use an unfiltered DELETE only for an explicitly approved all-row removal.",
+      "result_shape": "An empty target table if the operation succeeds.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "The source explicitly directs readers to vendor documentation for DELETE/TRUNCATE differences.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "This recipe does not establish a special NULL policy; test relevant NULL inputs when adapting its expressions.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Remove every row from a table deliberately."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from all rows of the chosen table."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "tests_or_checks": [
+        "Confirm table identity, affected-row expectation, dependencies, and rollback capability before execution."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.12 Deleting All Records from a Table",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-12",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-12.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-12.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-12.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Remove every row from a table deliberately.",
+          "Use an unfiltered DELETE only for an explicitly approved all-row removal.",
+          "Leaving out WHERE defines the whole-table scope; TRUNCATE has separate transactional and implementation rules."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.12 Deleting All Records from a Table",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-12",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch04"
+      ],
+      "recipe_name": "4.12 Deleting All Records from a Table",
+      "problem_paraphrase": "Remove every row from a table deliberately.",
+      "solution_pattern": "Use an unfiltered DELETE only for an explicitly approved all-row removal.",
+      "discussion_reasoning": "Leaving out WHERE defines the whole-table scope; TRUNCATE has separate transactional and implementation rules.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "All rows of the chosen table.",
+      "output_shape": "An empty target table if the operation succeeds.",
+      "assumptions": [
+        "All rows of the chosen table.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The source explicitly directs readers to vendor documentation for DELETE/TRUNCATE differences."
+      ],
+      "test_query_or_validation_shape": "Confirm table identity, affected-row expectation, dependencies, and rollback capability before execution.",
+      "when_to_use": [
+        "Remove every row from a table deliberately."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from all rows of the chosen table."
+      ],
+      "related_records": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-12",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-generated-sql",
+        "sql-verify-merge",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-04-13",
+      "record_type": "recipe_pattern",
+      "name": "4.13 Deleting Specific Records",
+      "summary": "Use DELETE with the exact population predicate already reviewed as a SELECT.",
+      "source_recipe_or_concept": "4.13 Deleting Specific Records; supporting source units: 4.13",
+      "sql_problem_addressed": "Delete a selected subset of records.",
+      "query_intent": "Delete a selected subset of records.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One deletion per qualifying target row.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One deletion per qualifying target row.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Delete a selected subset of records."
+      ],
+      "aggregation_or_windowing": "Use DELETE with the exact population predicate already reviewed as a SELECT.",
+      "result_shape": "The target minus the approved selected population.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "NULL-sensitive predicates need their own examples.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Delete a selected subset of records."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one deletion per qualifying target row."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "tests_or_checks": [
+        "Review selected identifiers and counts before the write; include near-miss rows in the test."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.13 Deleting Specific Records",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-13",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-13.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-13.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-13.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Delete a selected subset of records.",
+          "Use DELETE with the exact population predicate already reviewed as a SELECT.",
+          "A syntactically valid predicate can still identify the wrong business population."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.13 Deleting Specific Records",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-13",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch04"
+      ],
+      "recipe_name": "4.13 Deleting Specific Records",
+      "problem_paraphrase": "Delete a selected subset of records.",
+      "solution_pattern": "Use DELETE with the exact population predicate already reviewed as a SELECT.",
+      "discussion_reasoning": "A syntactically valid predicate can still identify the wrong business population.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One deletion per qualifying target row.",
+      "output_shape": "The target minus the approved selected population.",
+      "assumptions": [
+        "One deletion per qualifying target row.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Review selected identifiers and counts before the write; include near-miss rows in the test.",
+      "when_to_use": [
+        "Delete a selected subset of records."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one deletion per qualifying target row."
+      ],
+      "related_records": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-13",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-generated-sql",
+        "sql-verify-merge",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-04-14",
+      "record_type": "recipe_pattern",
+      "name": "4.14 Deleting a Single Record",
+      "summary": "Filter by an inspected primary or unique key rather than an ambiguous attribute.",
+      "source_recipe_or_concept": "4.14 Deleting a Single Record; supporting source units: 4.14",
+      "sql_problem_addressed": "Delete a single known record.",
+      "query_intent": "Delete a single known record.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One specifically identified target entity.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One specifically identified target entity.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Delete a single known record."
+      ],
+      "aggregation_or_windowing": "Filter by an inspected primary or unique key rather than an ambiguous attribute.",
+      "result_shape": "At most one row removed.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Verify nullable unique-key behavior rather than assuming every named key is a non-NULL primary key.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Delete a single known record."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one specifically identified target entity."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-not-in-null-trap",
+        "sql-risk-destructive-write"
+      ],
+      "tests_or_checks": [
+        "Confirm exactly one previewed record and distinguish missing-key from multiple-match errors."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-not-in-null-trap",
+        "sql-risk-destructive-write"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.14 Deleting a Single Record",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-14",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-14.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-14.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-14.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Delete a single known record.",
+          "Filter by an inspected primary or unique key rather than an ambiguous attribute.",
+          "Unique identity bounds the intended deletion to at most one record."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.14 Deleting a Single Record",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-14",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch04"
+      ],
+      "recipe_name": "4.14 Deleting a Single Record",
+      "problem_paraphrase": "Delete a single known record.",
+      "solution_pattern": "Filter by an inspected primary or unique key rather than an ambiguous attribute.",
+      "discussion_reasoning": "Unique identity bounds the intended deletion to at most one record.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One specifically identified target entity.",
+      "output_shape": "At most one row removed.",
+      "assumptions": [
+        "One specifically identified target entity.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Confirm exactly one previewed record and distinguish missing-key from multiple-match errors.",
+      "when_to_use": [
+        "Delete a single known record."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one specifically identified target entity."
+      ],
+      "related_records": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-not-in-null-trap",
+        "sql-risk-destructive-write"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "One specifically identified target entity.",
+      "join_key_assumptions": [
+        "Match the target to related data by the complete key, then preview exact target identifiers."
+      ],
+      "expected_cardinality": "One deletion candidate per target row regardless of how many related matches are found.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Confirm exactly one previewed record and distinguish missing-key from multiple-match errors.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-14",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-generated-sql",
+        "sql-verify-merge",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-04-15",
+      "record_type": "recipe_pattern",
+      "name": "4.15 Deleting Referential Integrity Violations",
+      "summary": "Find child rows whose parent cannot be found using a correlated absence predicate.",
+      "source_recipe_or_concept": "4.15 Deleting Referential Integrity Violations; supporting source units: 4.15",
+      "sql_problem_addressed": "Identify and remove orphaned child records after explicit review.",
+      "query_intent": "Identify and remove orphaned child records after explicit review.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One candidate orphan child row.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "DEPT",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One candidate orphan child row.",
+      "key_columns_or_join_conditions": [
+        "Example child department reference to DEPT.DEPTNO; live foreign-key definition controls."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Identify and remove orphaned child records after explicit review."
+      ],
+      "aggregation_or_windowing": "Find child rows whose parent cannot be found using a correlated absence predicate.",
+      "result_shape": "Target with approved orphan candidates removed.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "The source also presents NOT IN; the NULL trap from Recipe 3.4 must be considered.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Identify and remove orphaned child records after explicit review."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one candidate orphan child row."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "tests_or_checks": [
+        "Validate parent completeness and NULL-key policy before deleting; do not equate a late parent export with an invalid child."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.15 Deleting Referential Integrity Violations",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-15",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-15.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-15.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-15.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Identify and remove orphaned child records after explicit review.",
+          "Find child rows whose parent cannot be found using a correlated absence predicate.",
+          "Deletion logic depends first on a correct definition of a valid parent relationship."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.15 Deleting Referential Integrity Violations",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-15",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch04"
+      ],
+      "recipe_name": "4.15 Deleting Referential Integrity Violations",
+      "problem_paraphrase": "Identify and remove orphaned child records after explicit review.",
+      "solution_pattern": "Find child rows whose parent cannot be found using a correlated absence predicate.",
+      "discussion_reasoning": "Deletion logic depends first on a correct definition of a valid parent relationship.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One candidate orphan child row.",
+      "output_shape": "Target with approved orphan candidates removed.",
+      "assumptions": [
+        "One candidate orphan child row.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Validate parent completeness and NULL-key policy before deleting; do not equate a late parent export with an invalid child.",
+      "when_to_use": [
+        "Identify and remove orphaned child records after explicit review."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one candidate orphan child row."
+      ],
+      "related_records": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-15",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "DEPT",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-15",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-generated-sql",
+        "sql-verify-merge",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-04-16",
+      "record_type": "recipe_pattern",
+      "name": "4.16 Deleting Duplicate Records",
+      "summary": "Group by the duplicate-defining fields, choose one retained unique identifier, and delete only the other identifiers.",
+      "source_recipe_or_concept": "4.16 Deleting Duplicate Records; supporting source units: 4.16",
+      "sql_problem_addressed": "Remove redundant rows under a defined duplicate rule.",
+      "query_intent": "Remove redundant rows under a defined duplicate rule.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One survivor per defined duplicate group.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        }
+      ],
+      "required_grain": "One survivor per defined duplicate group.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Remove redundant rows under a defined duplicate rule."
+      ],
+      "aggregation_or_windowing": "Group by the duplicate-defining fields, choose one retained unique identifier, and delete only the other identifiers.",
+      "result_shape": "Deduplicated target preserving the approved survivor.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "The MySQL self-reference workaround is source-era; recheck target-table restrictions before execution.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Decide whether NULL grouping values count as duplicates.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Remove redundant rows under a defined duplicate rule."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one survivor per defined duplicate group."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "tests_or_checks": [
+        "Preview groups and retained IDs, confirm tie-breaking policy, and reconcile kept plus deleted counts."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.16 Deleting Duplicate Records",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-16",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-16.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-16.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-16.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Remove redundant rows under a defined duplicate rule.",
+          "Group by the duplicate-defining fields, choose one retained unique identifier, and delete only the other identifiers.",
+          "Duplicate identity and survivor identity serve different purposes."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.16 Deleting Duplicate Records",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-16",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch04"
+      ],
+      "recipe_name": "4.16 Deleting Duplicate Records",
+      "problem_paraphrase": "Remove redundant rows under a defined duplicate rule.",
+      "solution_pattern": "Group by the duplicate-defining fields, choose one retained unique identifier, and delete only the other identifiers.",
+      "discussion_reasoning": "Duplicate identity and survivor identity serve different purposes.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "One survivor per defined duplicate group.",
+      "output_shape": "Deduplicated target preserving the approved survivor.",
+      "assumptions": [
+        "One survivor per defined duplicate group.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The MySQL self-reference workaround is source-era; recheck target-table restrictions before execution."
+      ],
+      "test_query_or_validation_shape": "Preview groups and retained IDs, confirm tie-breaking policy, and reconcile kept plus deleted counts.",
+      "when_to_use": [
+        "Remove redundant rows under a defined duplicate rule."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one survivor per defined duplicate group."
+      ],
+      "related_records": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-generated-sql",
+        "sql-verify-merge",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-04-17",
+      "record_type": "recipe_pattern",
+      "name": "4.17 Deleting Records Referenced from Another Table",
+      "summary": "Aggregate related events, filter qualifying groups with HAVING, then constrain deletion to those group keys.",
+      "source_recipe_or_concept": "4.17 Deleting Records Referenced from Another Table; supporting source units: 4.17",
+      "sql_problem_addressed": "Delete rows based on grouped evidence in another source.",
+      "query_intent": "Delete rows based on grouped evidence in another source.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "Event grain inside the subquery; target-record grain for deletion.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "Event grain inside the subquery; target-record grain for deletion.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Delete rows based on grouped evidence in another source."
+      ],
+      "aggregation_or_windowing": "Aggregate related events, filter qualifying groups with HAVING, then constrain deletion to those group keys.",
+      "result_shape": "Target rows removed for approved qualifying groups.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Review NULL group keys and count semantics before changing data.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Delete rows based on grouped evidence in another source."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from event grain inside the subquery; target-record grain for deletion."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "tests_or_checks": [
+        "Check threshold boundaries and duplicate events before previewing target deletions."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "4",
+        "chapter_title": "Chapter 4. Inserting, Updating, and Deleting",
+        "section_heading": "4.17 Deleting Records Referenced from Another Table",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-17",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-17.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-17.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-17.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Delete rows based on grouped evidence in another source.",
+          "Aggregate related events, filter qualifying groups with HAVING, then constrain deletion to those group keys.",
+          "The inner query identifies qualifying groups; the outer deletion acts on records related to those groups."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "4.17 Deleting Records Referenced from Another Table",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-17",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch04"
+      ],
+      "recipe_name": "4.17 Deleting Records Referenced from Another Table",
+      "problem_paraphrase": "Delete rows based on grouped evidence in another source.",
+      "solution_pattern": "Aggregate related events, filter qualifying groups with HAVING, then constrain deletion to those group keys.",
+      "discussion_reasoning": "The inner query identifies qualifying groups; the outer deletion acts on records related to those groups.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "Event grain inside the subquery; target-record grain for deletion.",
+      "output_shape": "Target rows removed for approved qualifying groups.",
+      "assumptions": [
+        "Event grain inside the subquery; target-record grain for deletion.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [],
+      "test_query_or_validation_shape": "Check threshold boundaries and duplicate events before previewing target deletions.",
+      "when_to_use": [
+        "Delete rows based on grouped evidence in another source."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from event grain inside the subquery; target-record grain for deletion."
+      ],
+      "related_records": [
+        "sql-recipe-04-01",
+        "sql-recipe-04-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-destructive-write"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch04.html#sqlckbk-CHP-4-SECT-17",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-generated-sql",
+        "sql-verify-merge",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    }
+  ]
+}

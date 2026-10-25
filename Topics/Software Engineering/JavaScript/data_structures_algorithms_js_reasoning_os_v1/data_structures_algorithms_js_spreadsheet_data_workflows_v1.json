@@ -1,0 +1,1890 @@
+{
+  "file_metadata": {
+    "file_name": "data_structures_algorithms_js_spreadsheet_data_workflows_v1.json",
+    "package_id": "data_structures_algorithms_js_reasoning_os_v1",
+    "package_version": "1.0",
+    "generated_at_utc": "2026-08-25T17:45:26.946739+00:00",
+    "purpose": "Twenty parse, shape, header, record, deduplication, grouping, join, validation, sorting, preview, write, recovery, audit, and failure workflows.",
+    "record_count": 20,
+    "source_title": "Data Structures and Algorithms with JavaScript",
+    "source_author": "Michael McMillan",
+    "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+    "source_boundary": "Source-supported concepts are separated from low-confidence Apps Script, spreadsheet, internal-tool, and AI-agent extensions. Current platform behavior must be verified.",
+    "copyright_safety": "Concepts and implementation logic are paraphrased. No long source passages, long code listings, full algorithm implementations, or exercise solutions are reproduced."
+  },
+  "spreadsheet_data_workflow_records": [
+    {
+      "id": "dsa-sheet-read-once",
+      "record_type": "spreadsheet_data_workflow_record",
+      "name": "Read sheet once into an array",
+      "summary": "Load only the required rectangular range into memory once, then perform row-level logic over the array rather than crossing the spreadsheet service boundary repeatedly.",
+      "source_concept": "Read sheet once into an array",
+      "programming_problem_addressed": "Read sheet once into an array",
+      "data_shape_assumption": "A bounded rectangular range with an identified header row and data-row interval.",
+      "algorithmic_role": "One batch read followed by in-memory passes with explicit stage boundaries.",
+      "runtime_context": "Spreadsheet data processed through Google Apps Script or another current runtime; APIs and limits require verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Apply the in-memory representation and validation logic only after inspecting current sheet structure and verifying current platform behavior.",
+      "complexity_or_scale_note": "Minimize service-call count; instrument read time separately from in-memory work; avoid loading entire unused columns or sheets.",
+      "use_when": [
+        "Processing tabular rows with a known or discoverable schema"
+      ],
+      "do_not_use_when": [
+        "The current sheet or file structure has not been inspected"
+      ],
+      "common_failure_modes": [
+        "Full-sheet read includes huge blank/formula region",
+        "Header row offset wrong",
+        "Service call remains inside loop",
+        "Range changes between validation and write"
+      ],
+      "tests_or_checks": [
+        "Small sheet",
+        "Trailing blanks/formulas",
+        "No data rows",
+        "Maximum expected rows",
+        "Header at configured offset"
+      ],
+      "diagnostic_questions": [
+        "What is the row grain?",
+        "What key identifies each record?",
+        "Which checks must pass before any write?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-batch-operations",
+        "dsa-risk-repeated-sheet-service-call",
+        "dsa-perf-growth-versus-service-cost"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Processing Two-Dimensional Array Elements",
+        "page_or_anchor": "OEBPS/ch02.html#idp18183376",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source demonstrates processing multidimensional arrays in memory; sheet batching is a platform extension."
+        ],
+        "inferred_claims": [
+          "The spreadsheet workflow is an applied extension, not direct source content."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "spreadsheet",
+        "workflow",
+        "apps-script"
+      ],
+      "spreadsheet_workflow": "Read sheet once into an array",
+      "data_shape": "A bounded rectangular range with an identified header row and data-row interval.",
+      "recommended_structure": "Two-dimensional array plus range metadata: sheet ID/name, start row/column, row count, column count, and header location.",
+      "algorithmic_strategy": "One batch read followed by in-memory passes with explicit stage boundaries.",
+      "validation_strategy": "Confirm range bounds, nonempty header, rectangular row width, and expected maximum size before transformation.",
+      "performance_strategy": "Minimize service-call count; instrument read time separately from in-memory work; avoid loading entire unused columns or sheets.",
+      "failure_modes": [
+        "Full-sheet read includes huge blank/formula region",
+        "Header row offset wrong",
+        "Service call remains inside loop",
+        "Range changes between validation and write"
+      ],
+      "apps_script_boundary": "Current Apps Script runtime, Spreadsheet service behavior, quotas, and project sheet structure must be verified."
+    },
+    {
+      "id": "dsa-sheet-header-index-map",
+      "record_type": "spreadsheet_data_workflow_record",
+      "name": "Build a header row to column-index map",
+      "summary": "Resolve columns by validated normalized header name rather than hard-coded position so reorderings are safe and duplicate names are visible.",
+      "source_concept": "Build a header row to column-index map",
+      "programming_problem_addressed": "Build a header row to column-index map",
+      "data_shape_assumption": "One header row containing raw cell values and a configuration of required, optional, and aliased names.",
+      "algorithmic_role": "Single pass over headers; normalize each name; reject duplicate canonical keys; compare sets; construct index only after validation.",
+      "runtime_context": "Spreadsheet data processed through Google Apps Script or another current runtime; APIs and limits require verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Apply the in-memory representation and validation logic only after inspecting current sheet structure and verifying current platform behavior.",
+      "complexity_or_scale_note": "Build once and reuse for all rows; do not call indexOf repeatedly for every record.",
+      "use_when": [
+        "Processing tabular rows with a known or discoverable schema"
+      ],
+      "do_not_use_when": [
+        "The current sheet or file structure has not been inspected"
+      ],
+      "common_failure_modes": [
+        "Duplicate header silently overwrites index",
+        "Case/whitespace mismatch",
+        "Hard-coded position survives under misleading name",
+        "Wrong header row selected"
+      ],
+      "tests_or_checks": [
+        "Reordered columns",
+        "Missing header",
+        "Duplicate header",
+        "Alias",
+        "Unknown extra header",
+        "Blank header cell"
+      ],
+      "diagnostic_questions": [
+        "What is the row grain?",
+        "What key identifies each record?",
+        "Which checks must pass before any write?"
+      ],
+      "related_record_ids": [
+        "dsa-tool-expected-actual-headers",
+        "dsa-sheet-required-header-validation",
+        "dsa-risk-header-index-drift"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "7",
+        "chapter_title": "Dictionaries",
+        "section_heading": "The Dictionary Class",
+        "page_or_anchor": "OEBPS/ch07.html#idp29229184",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines dictionaries as key-value structures; header indexing is a spreadsheet application."
+        ],
+        "inferred_claims": [
+          "The spreadsheet workflow is an applied extension, not direct source content."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch09.html",
+            "chapter_number": "9",
+            "chapter_title": "Sets",
+            "section_heading": "Set Operations",
+            "page_or_anchor": "OEBPS/ch09.html#idp34347536"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "spreadsheet",
+        "workflow",
+        "apps-script"
+      ],
+      "spreadsheet_workflow": "Build a header row to column-index map",
+      "data_shape": "One header row containing raw cell values and a configuration of required, optional, and aliased names.",
+      "recommended_structure": "Dictionary from canonical header ID to zero-based array index, plus raw-name, duplicate, missing, unexpected, and alias-resolution evidence.",
+      "algorithmic_strategy": "Single pass over headers; normalize each name; reject duplicate canonical keys; compare sets; construct index only after validation.",
+      "validation_strategy": "Require every mandatory header, reject duplicate normalized names, make aliases explicit, and preserve raw names and positions.",
+      "performance_strategy": "Build once and reuse for all rows; do not call indexOf repeatedly for every record.",
+      "failure_modes": [
+        "Duplicate header silently overwrites index",
+        "Case/whitespace mismatch",
+        "Hard-coded position survives under misleading name",
+        "Wrong header row selected"
+      ],
+      "apps_script_boundary": "Current Apps Script runtime, Spreadsheet service behavior, quotas, and project sheet structure must be verified."
+    },
+    {
+      "id": "dsa-sheet-row-array-to-object",
+      "record_type": "spreadsheet_data_workflow_record",
+      "name": "Convert a row array to an object record",
+      "summary": "Translate positional cells into named fields while attaching original sheet/row provenance and leaving raw values available for error explanation.",
+      "source_concept": "Convert a row array to an object record",
+      "programming_problem_addressed": "Convert a row array to an object record",
+      "data_shape_assumption": "A validated header map and a row array of known width.",
+      "algorithmic_role": "Project each configured field through the header index; perform parsing in named functions; avoid mutating the original row.",
+      "runtime_context": "Spreadsheet data processed through Google Apps Script or another current runtime; APIs and limits require verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Apply the in-memory representation and validation logic only after inspecting current sheet structure and verifying current platform behavior.",
+      "complexity_or_scale_note": "Convert in one pass after header validation; retain only raw fields required for traceability if memory is material.",
+      "use_when": [
+        "Processing tabular rows with a known or discoverable schema"
+      ],
+      "do_not_use_when": [
+        "The current sheet or file structure has not been inspected"
+      ],
+      "common_failure_modes": [
+        "Column index drift",
+        "Blank and zero conflated",
+        "Source row lost",
+        "Raw Date/string ambiguity hidden",
+        "Record key overwritten"
+      ],
+      "tests_or_checks": [
+        "Reordered columns",
+        "Blank/zero/false",
+        "Extra cells",
+        "Short row",
+        "Malformed date/number",
+        "Duplicate key"
+      ],
+      "diagnostic_questions": [
+        "What is the row grain?",
+        "What key identifies each record?",
+        "Which checks must pass before any write?"
+      ],
+      "related_record_ids": [
+        "dsa-array-of-objects",
+        "dsa-sheet-preserve-original-row-index",
+        "dsa-risk-row-shape-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Arrays of Objects",
+        "page_or_anchor": "OEBPS/ch02.html#idp18891520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source demonstrates arrays of objects and object properties as structured representations."
+        ],
+        "inferred_claims": [
+          "The spreadsheet workflow is an applied extension, not direct source content."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "spreadsheet",
+        "workflow",
+        "apps-script"
+      ],
+      "spreadsheet_workflow": "Convert a row array to an object record",
+      "data_shape": "A validated header map and a row array of known width.",
+      "recommended_structure": "Record object with canonical fields, `_sourceRow`, optional `_raw`, normalized key, and validation state.",
+      "algorithmic_strategy": "Project each configured field through the header index; perform parsing in named functions; avoid mutating the original row.",
+      "validation_strategy": "Check row width, required indexes, missing versus blank values, type-conversion outcomes, and unique-key components.",
+      "performance_strategy": "Convert in one pass after header validation; retain only raw fields required for traceability if memory is material.",
+      "failure_modes": [
+        "Column index drift",
+        "Blank and zero conflated",
+        "Source row lost",
+        "Raw Date/string ambiguity hidden",
+        "Record key overwritten"
+      ],
+      "apps_script_boundary": "Current Apps Script runtime, Spreadsheet service behavior, quotas, and project sheet structure must be verified."
+    },
+    {
+      "id": "dsa-sheet-object-to-export-row",
+      "record_type": "spreadsheet_data_workflow_record",
+      "name": "Convert an object record to an export row",
+      "summary": "Project a validated named record into a destination column order defined by an explicit output schema rather than by incidental object property order.",
+      "source_concept": "Convert an object record to an export row",
+      "programming_problem_addressed": "Convert an object record to an export row",
+      "data_shape_assumption": "Validated record object and a versioned ordered list of destination field IDs.",
+      "algorithmic_role": "Iterate output schema, retrieve/derive each field explicitly, normalize destination types, and assert final width.",
+      "runtime_context": "Spreadsheet data processed through Google Apps Script or another current runtime; APIs and limits require verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Apply the in-memory representation and validation logic only after inspecting current sheet structure and verifying current platform behavior.",
+      "complexity_or_scale_note": "Precompile or reuse schema lookups; build all output rows in memory before the batch write.",
+      "use_when": [
+        "Processing tabular rows with a known or discoverable schema"
+      ],
+      "do_not_use_when": [
+        "The current sheet or file structure has not been inspected"
+      ],
+      "common_failure_modes": [
+        "Object iteration order treated as schema",
+        "Missing field shifts later columns",
+        "Row widths differ",
+        "Derived value uses unvalidated source"
+      ],
+      "tests_or_checks": [
+        "All fields",
+        "Optional/default field",
+        "Missing required destination field",
+        "Special characters",
+        "Date/number formatting",
+        "Multiple rows equal width"
+      ],
+      "diagnostic_questions": [
+        "What is the row grain?",
+        "What key identifies each record?",
+        "Which checks must pass before any write?"
+      ],
+      "related_record_ids": [
+        "dsa-sheet-row-array-to-object",
+        "dsa-sheet-batch-write-after-validation",
+        "dsa-tool-r365-report-processor"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Arrays of Objects",
+        "page_or_anchor": "OEBPS/ch02.html#idp18891520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source presents arrays of objects and arrays as ordered collections; ordered export projection is a spreadsheet extension."
+        ],
+        "inferred_claims": [
+          "The spreadsheet workflow is an applied extension, not direct source content."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "spreadsheet",
+        "workflow",
+        "apps-script"
+      ],
+      "spreadsheet_workflow": "Convert an object record to an export row",
+      "data_shape": "Validated record object and a versioned ordered list of destination field IDs.",
+      "recommended_structure": "Output schema array plus projector functions; resulting rectangular row array with associated logical export key.",
+      "algorithmic_strategy": "Iterate output schema, retrieve/derive each field explicitly, normalize destination types, and assert final width.",
+      "validation_strategy": "Require every destination field or defined default, verify type/format rules, and compare row width to schema width.",
+      "performance_strategy": "Precompile or reuse schema lookups; build all output rows in memory before the batch write.",
+      "failure_modes": [
+        "Object iteration order treated as schema",
+        "Missing field shifts later columns",
+        "Row widths differ",
+        "Derived value uses unvalidated source"
+      ],
+      "apps_script_boundary": "Current Apps Script runtime, Spreadsheet service behavior, quotas, and project sheet structure must be verified."
+    },
+    {
+      "id": "dsa-sheet-required-header-validation",
+      "record_type": "spreadsheet_data_workflow_record",
+      "name": "Validate required headers before row processing",
+      "summary": "Compare normalized required headers with actual headers and stop structural parsing when mandatory columns are missing or ambiguous.",
+      "source_concept": "Validate required headers before row processing",
+      "programming_problem_addressed": "Validate required headers before row processing",
+      "data_shape_assumption": "Expected required/optional header sets and one candidate actual header row.",
+      "algorithmic_role": "Normalize once, compute set difference, reject duplicates, resolve only approved aliases, and gate downstream stages.",
+      "runtime_context": "Spreadsheet data processed through Google Apps Script or another current runtime; APIs and limits require verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Apply the in-memory representation and validation logic only after inspecting current sheet structure and verifying current platform behavior.",
+      "complexity_or_scale_note": "One header pass and set/dictionary operations; avoid discovering columns inside each row iteration.",
+      "use_when": [
+        "Processing tabular rows with a known or discoverable schema"
+      ],
+      "do_not_use_when": [
+        "The current sheet or file structure has not been inspected"
+      ],
+      "common_failure_modes": [
+        "Processing continues with missing header",
+        "Duplicate name maps unpredictably",
+        "Fuzzy matching hides schema change",
+        "Header row guessed incorrectly"
+      ],
+      "tests_or_checks": [
+        "Exact schema",
+        "Reordered schema",
+        "Missing required",
+        "Duplicate",
+        "Approved alias",
+        "Unknown added header"
+      ],
+      "diagnostic_questions": [
+        "What is the row grain?",
+        "What key identifies each record?",
+        "Which checks must pass before any write?"
+      ],
+      "related_record_ids": [
+        "dsa-sheet-header-index-map",
+        "dsa-sheet-expected-vs-actual-headers",
+        "dsa-risk-header-index-drift"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "9",
+        "chapter_title": "Sets",
+        "section_heading": "Set Operations",
+        "page_or_anchor": "OEBPS/ch09.html#idp34347536",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines set difference and dictionary lookup; header validation is an application of those concepts."
+        ],
+        "inferred_claims": [
+          "The spreadsheet workflow is an applied extension, not direct source content."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "spreadsheet",
+        "workflow",
+        "apps-script"
+      ],
+      "spreadsheet_workflow": "Validate required headers before row processing",
+      "data_shape": "Expected required/optional header sets and one candidate actual header row.",
+      "recommended_structure": "Expected and actual sets, duplicate map, missing/unexpected lists, and canonical header index map.",
+      "algorithmic_strategy": "Normalize once, compute set difference, reject duplicates, resolve only approved aliases, and gate downstream stages.",
+      "validation_strategy": "Structural errors are fatal before row-level validation; unexpected headers may be warnings or fatal by version policy.",
+      "performance_strategy": "One header pass and set/dictionary operations; avoid discovering columns inside each row iteration.",
+      "failure_modes": [
+        "Processing continues with missing header",
+        "Duplicate name maps unpredictably",
+        "Fuzzy matching hides schema change",
+        "Header row guessed incorrectly"
+      ],
+      "apps_script_boundary": "Current Apps Script runtime, Spreadsheet service behavior, quotas, and project sheet structure must be verified."
+    },
+    {
+      "id": "dsa-sheet-expected-vs-actual-headers",
+      "record_type": "spreadsheet_data_workflow_record",
+      "name": "Compare expected and actual header coverage",
+      "summary": "Return named missing, unexpected, duplicate, and aliased headers with positions so schema drift is reviewable rather than reduced to a Boolean pass/fail.",
+      "source_concept": "Compare expected and actual header coverage",
+      "programming_problem_addressed": "Compare expected and actual header coverage",
+      "data_shape_assumption": "Expected schema with required/optional/allowed names and actual raw header cells.",
+      "algorithmic_role": "Perform set operations for coverage and a dictionary pass for index construction while preserving original order for diagnostics.",
+      "runtime_context": "Spreadsheet data processed through Google Apps Script or another current runtime; APIs and limits require verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Apply the in-memory representation and validation logic only after inspecting current sheet structure and verifying current platform behavior.",
+      "complexity_or_scale_note": "Compute once per file/sheet and reuse the result.",
+      "use_when": [
+        "Processing tabular rows with a known or discoverable schema"
+      ],
+      "do_not_use_when": [
+        "The current sheet or file structure has not been inspected"
+      ],
+      "common_failure_modes": [
+        "Only a generic “headers invalid” message",
+        "Unexpected headers ignored",
+        "Duplicate evidence lost",
+        "Alias applied silently"
+      ],
+      "tests_or_checks": [
+        "Missing/extra combination",
+        "Duplicate after normalization",
+        "Blank header",
+        "Alias conflict",
+        "Different order only"
+      ],
+      "diagnostic_questions": [
+        "What is the row grain?",
+        "What key identifies each record?",
+        "Which checks must pass before any write?"
+      ],
+      "related_record_ids": [
+        "dsa-tool-expected-actual-headers",
+        "dsa-sheet-header-index-map",
+        "dsa-set-difference"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "9",
+        "chapter_title": "Sets",
+        "section_heading": "Set Operations",
+        "page_or_anchor": "OEBPS/ch09.html#idp34347536",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines set union/intersection/difference and key lookup; detailed schema diagnostics are an extension."
+        ],
+        "inferred_claims": [
+          "The spreadsheet workflow is an applied extension, not direct source content."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "spreadsheet",
+        "workflow",
+        "apps-script"
+      ],
+      "spreadsheet_workflow": "Compare expected and actual header coverage",
+      "data_shape": "Expected schema with required/optional/allowed names and actual raw header cells.",
+      "recommended_structure": "Header comparison record containing sets, ordered raw cells, alias map, duplicate groups, and exact differences.",
+      "algorithmic_strategy": "Perform set operations for coverage and a dictionary pass for index construction while preserving original order for diagnostics.",
+      "validation_strategy": "Distinguish missing required, unknown unexpected, duplicate normalized, blank, and approved alias cases.",
+      "performance_strategy": "Compute once per file/sheet and reuse the result.",
+      "failure_modes": [
+        "Only a generic “headers invalid” message",
+        "Unexpected headers ignored",
+        "Duplicate evidence lost",
+        "Alias applied silently"
+      ],
+      "apps_script_boundary": "Current Apps Script runtime, Spreadsheet service behavior, quotas, and project sheet structure must be verified."
+    },
+    {
+      "id": "dsa-sheet-duplicate-id-detection",
+      "record_type": "spreadsheet_data_workflow_record",
+      "name": "Detect duplicate record IDs",
+      "summary": "Build a seen-key set for membership speed and a key-to-source-rows map for explanation, then apply an explicit fail, skip, group, or merge policy.",
+      "source_concept": "Detect duplicate record IDs",
+      "programming_problem_addressed": "Detect duplicate record IDs",
+      "data_shape_assumption": "Records with all components needed to derive a normalized logical identity.",
+      "algorithmic_role": "Single pass: derive key, validate key, test/set membership, and append occurrence provenance.",
+      "runtime_context": "Spreadsheet data processed through Google Apps Script or another current runtime; APIs and limits require verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Apply the in-memory representation and validation logic only after inspecting current sheet structure and verifying current platform behavior.",
+      "complexity_or_scale_note": "One pass with direct membership rather than pairwise duplicate comparison.",
+      "use_when": [
+        "Processing tabular rows with a known or discoverable schema"
+      ],
+      "do_not_use_when": [
+        "The current sheet or file structure has not been inspected"
+      ],
+      "common_failure_modes": [
+        "Wrong key",
+        "Set drops duplicate provenance",
+        "Normalization mismatch",
+        "Composite key collision",
+        "Historical duplicates ignored"
+      ],
+      "tests_or_checks": [
+        "Exact duplicate",
+        "Normalized duplicate",
+        "Distinct true records with similar fields",
+        "Missing key",
+        "Three-way duplicate",
+        "Historical duplicate"
+      ],
+      "diagnostic_questions": [
+        "What is the row grain?",
+        "What key identifies each record?",
+        "Which checks must pass before any write?"
+      ],
+      "related_record_ids": [
+        "dsa-tool-duplicate-detection",
+        "dsa-risk-duplicate-not-detected",
+        "dsa-sheet-idempotent-export-keys"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "9",
+        "chapter_title": "Sets",
+        "section_heading": "Fundamental Set Definitions, Operations, and Properties",
+        "page_or_anchor": "OEBPS/ch09.html#idp34336432",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines sets as nonduplicate collections and provides membership operations."
+        ],
+        "inferred_claims": [
+          "The spreadsheet workflow is an applied extension, not direct source content."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "spreadsheet",
+        "workflow",
+        "apps-script"
+      ],
+      "spreadsheet_workflow": "Detect duplicate record IDs",
+      "data_shape": "Records with all components needed to derive a normalized logical identity.",
+      "recommended_structure": "Set of seen keys plus dictionary from key to one or more record references and a duplicate issue list.",
+      "algorithmic_strategy": "Single pass: derive key, validate key, test/set membership, and append occurrence provenance.",
+      "validation_strategy": "Reject missing key components and ambiguous normalization; compare against historical committed keys when idempotency matters.",
+      "performance_strategy": "One pass with direct membership rather than pairwise duplicate comparison.",
+      "failure_modes": [
+        "Wrong key",
+        "Set drops duplicate provenance",
+        "Normalization mismatch",
+        "Composite key collision",
+        "Historical duplicates ignored"
+      ],
+      "apps_script_boundary": "Current Apps Script runtime, Spreadsheet service behavior, quotas, and project sheet structure must be verified."
+    },
+    {
+      "id": "dsa-sheet-group-rows",
+      "record_type": "spreadsheet_data_workflow_record",
+      "name": "Group rows by location, date, or category",
+      "summary": "Accumulate records into groups keyed by an explicit canonical dimension tuple while retaining source counts and the source rows contributing to each aggregate.",
+      "source_concept": "Group rows by location, date, or category",
+      "programming_problem_addressed": "Group rows by location, date, or category",
+      "data_shape_assumption": "Validated row records with canonical grouping fields and numeric/typed values for aggregation.",
+      "algorithmic_role": "One pass over records: derive unambiguous key, initialize group, update aggregates, then project and sort groups.",
+      "runtime_context": "Spreadsheet data processed through Google Apps Script or another current runtime; APIs and limits require verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Apply the in-memory representation and validation logic only after inspecting current sheet structure and verifying current platform behavior.",
+      "complexity_or_scale_note": "Single-pass grouping avoids repeated filters for each dimension combination.",
+      "use_when": [
+        "Processing tabular rows with a known or discoverable schema"
+      ],
+      "do_not_use_when": [
+        "The current sheet or file structure has not been inspected"
+      ],
+      "common_failure_modes": [
+        "Composite key delimiter collision",
+        "Wrong grain double-counts rows",
+        "Blank dimension folded into valid group",
+        "Numeric text concatenated"
+      ],
+      "tests_or_checks": [
+        "One group",
+        "Multiple dimensions",
+        "Blank/unknown dimension",
+        "Duplicate fact key",
+        "Zero/blank denominator",
+        "Delimiter-like values"
+      ],
+      "diagnostic_questions": [
+        "What is the row grain?",
+        "What key identifies each record?",
+        "Which checks must pass before any write?"
+      ],
+      "related_record_ids": [
+        "dsa-tool-dashboard-preparation",
+        "dsa-dict-grouping-pattern",
+        "dsa-risk-row-shape-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "7",
+        "chapter_title": "Dictionaries",
+        "section_heading": "The Dictionary Class",
+        "page_or_anchor": "OEBPS/ch07.html#idp29229184",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines dictionary key-value storage and demonstrates counting operations; multi-dimension spreadsheet grouping is an extension."
+        ],
+        "inferred_claims": [
+          "The spreadsheet workflow is an applied extension, not direct source content."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch10.html",
+            "chapter_number": "10",
+            "chapter_title": "Binary Trees and Binary Search Trees",
+            "section_heading": "Counting Occurrences",
+            "page_or_anchor": "OEBPS/ch10.html#idp37650848"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "spreadsheet",
+        "workflow",
+        "apps-script"
+      ],
+      "spreadsheet_workflow": "Group rows by location, date, or category",
+      "data_shape": "Validated row records with canonical grouping fields and numeric/typed values for aggregation.",
+      "recommended_structure": "Dictionary from encoded composite key to group object containing dimensions, accumulators, record count, and optional provenance list.",
+      "algorithmic_strategy": "One pass over records: derive unambiguous key, initialize group, update aggregates, then project and sort groups.",
+      "validation_strategy": "Validate every grouping component, duplicate/grain rules, numeric inputs, denominator definitions, and key encoding.",
+      "performance_strategy": "Single-pass grouping avoids repeated filters for each dimension combination.",
+      "failure_modes": [
+        "Composite key delimiter collision",
+        "Wrong grain double-counts rows",
+        "Blank dimension folded into valid group",
+        "Numeric text concatenated"
+      ],
+      "apps_script_boundary": "Current Apps Script runtime, Spreadsheet service behavior, quotas, and project sheet structure must be verified."
+    },
+    {
+      "id": "dsa-sheet-join-by-key",
+      "record_type": "spreadsheet_data_workflow_record",
+      "name": "Join two sheets by key",
+      "summary": "Build a validated index from the reference sheet once, then enrich each primary record with one lookup while reporting missing, duplicate, or one-to-many reference matches explicitly.",
+      "source_concept": "Join two sheets by key",
+      "programming_problem_addressed": "Join two sheets by key",
+      "data_shape_assumption": "Primary records with a join key and reference records whose key cardinality is defined as one-to-one, many-to-one, or one-to-many.",
+      "algorithmic_role": "Validate reference cardinality; build index in one pass; scan primary records once; perform direct lookup; preserve unmatched records.",
+      "runtime_context": "Spreadsheet data processed through Google Apps Script or another current runtime; APIs and limits require verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Apply the in-memory representation and validation logic only after inspecting current sheet structure and verifying current platform behavior.",
+      "complexity_or_scale_note": "Replaces repeated nested scanning with index build plus one lookup per primary row.",
+      "use_when": [
+        "Processing tabular rows with a known or discoverable schema"
+      ],
+      "do_not_use_when": [
+        "The current sheet or file structure has not been inspected"
+      ],
+      "common_failure_modes": [
+        "Duplicate reference key silently overwrites",
+        "Many-to-many join explodes rows",
+        "Missing key drops record",
+        "Different normalization on each side"
+      ],
+      "tests_or_checks": [
+        "All matched",
+        "One missing reference",
+        "Duplicate reference key",
+        "One-to-many expected",
+        "Blank key",
+        "Case/spacing variation"
+      ],
+      "diagnostic_questions": [
+        "What is the row grain?",
+        "What key identifies each record?",
+        "Which checks must pass before any write?"
+      ],
+      "related_record_ids": [
+        "dsa-perf-nested-loop-growth",
+        "dsa-decision-array-scan-versus-lookup",
+        "dsa-sheet-validate-mappings-before-export"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "7",
+        "chapter_title": "Dictionaries",
+        "section_heading": "The Dictionary Class",
+        "page_or_anchor": "OEBPS/ch07.html#idp29229184",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines dictionary and hash-like key lookup; tabular joins are an applied extension."
+        ],
+        "inferred_claims": [
+          "The spreadsheet workflow is an applied extension, not direct source content."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch08.html",
+            "chapter_number": "8",
+            "chapter_title": "Hashing",
+            "section_heading": "An Overview of Hashing",
+            "page_or_anchor": "OEBPS/ch08.html#idp30907488"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "spreadsheet",
+        "workflow",
+        "apps-script"
+      ],
+      "spreadsheet_workflow": "Join two sheets by key",
+      "data_shape": "Primary records with a join key and reference records whose key cardinality is defined as one-to-one, many-to-one, or one-to-many.",
+      "recommended_structure": "Reference dictionary from normalized key to record or list of records, plus duplicate/missing-key evidence.",
+      "algorithmic_strategy": "Validate reference cardinality; build index in one pass; scan primary records once; perform direct lookup; preserve unmatched records.",
+      "validation_strategy": "Define key normalization and cardinality, reject or group duplicate reference keys according to contract, and require mappings before export if fatal.",
+      "performance_strategy": "Replaces repeated nested scanning with index build plus one lookup per primary row.",
+      "failure_modes": [
+        "Duplicate reference key silently overwrites",
+        "Many-to-many join explodes rows",
+        "Missing key drops record",
+        "Different normalization on each side"
+      ],
+      "apps_script_boundary": "Current Apps Script runtime, Spreadsheet service behavior, quotas, and project sheet structure must be verified."
+    },
+    {
+      "id": "dsa-sheet-validate-mappings-before-export",
+      "record_type": "spreadsheet_data_workflow_record",
+      "name": "Validate mappings before export",
+      "summary": "Resolve every required external-to-internal mapping before creating live output and return one complete unmapped/ambiguous report rather than failing after partial writes.",
+      "source_concept": "Validate mappings before export",
+      "programming_problem_addressed": "Validate mappings before export",
+      "data_shape_assumption": "Validated input records and one or more authoritative mapping dictionaries with version and active-state metadata.",
+      "algorithmic_role": "Build/validate mappings once, scan all records, attach canonical IDs or collect issues, and block export on fatal coverage gaps.",
+      "runtime_context": "Spreadsheet data processed through Google Apps Script or another current runtime; APIs and limits require verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Apply the in-memory representation and validation logic only after inspecting current sheet structure and verifying current platform behavior.",
+      "complexity_or_scale_note": "One mapping lookup per field per row; group repeated missing values for concise reporting without losing row evidence.",
+      "use_when": [
+        "Processing tabular rows with a known or discoverable schema"
+      ],
+      "do_not_use_when": [
+        "The current sheet or file structure has not been inspected"
+      ],
+      "common_failure_modes": [
+        "Default mapping masks error",
+        "Fuzzy match chooses wrong target",
+        "First missing value aborts and hides others",
+        "Export begins before coverage known"
+      ],
+      "tests_or_checks": [
+        "All mappings",
+        "One missing repeated many times",
+        "Ambiguous alias",
+        "Inactive target",
+        "Blank optional/fatal mapping",
+        "Mapping version change"
+      ],
+      "diagnostic_questions": [
+        "What is the row grain?",
+        "What key identifies each record?",
+        "Which checks must pass before any write?"
+      ],
+      "related_record_ids": [
+        "dsa-tool-location-mapping",
+        "dsa-risk-live-write-before-validation",
+        "dsa-sheet-accumulate-validation-errors"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "7",
+        "chapter_title": "Dictionaries",
+        "section_heading": "The Dictionary Class",
+        "page_or_anchor": "OEBPS/ch07.html#idp29229184",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines dictionary lookup and set membership; mapping governance is an applied extension."
+        ],
+        "inferred_claims": [
+          "The spreadsheet workflow is an applied extension, not direct source content."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch09.html",
+            "chapter_number": "9",
+            "chapter_title": "Sets",
+            "section_heading": "Fundamental Set Definitions, Operations, and Properties",
+            "page_or_anchor": "OEBPS/ch09.html#idp34336432"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "spreadsheet",
+        "workflow",
+        "apps-script"
+      ],
+      "spreadsheet_workflow": "Validate mappings before export",
+      "data_shape": "Validated input records and one or more authoritative mapping dictionaries with version and active-state metadata.",
+      "recommended_structure": "Lookup dictionaries plus set/dictionary of unmapped source values and affected row references.",
+      "algorithmic_strategy": "Build/validate mappings once, scan all records, attach canonical IDs or collect issues, and block export on fatal coverage gaps.",
+      "validation_strategy": "Detect duplicate aliases, inactive targets, missing values, and ambiguous normalized keys; preserve every affected source row.",
+      "performance_strategy": "One mapping lookup per field per row; group repeated missing values for concise reporting without losing row evidence.",
+      "failure_modes": [
+        "Default mapping masks error",
+        "Fuzzy match chooses wrong target",
+        "First missing value aborts and hides others",
+        "Export begins before coverage known"
+      ],
+      "apps_script_boundary": "Current Apps Script runtime, Spreadsheet service behavior, quotas, and project sheet structure must be verified."
+    },
+    {
+      "id": "dsa-sheet-sort-output-rows",
+      "record_type": "spreadsheet_data_workflow_record",
+      "name": "Sort output rows by typed keys",
+      "summary": "Sort only after defining typed primary and tie-breaker keys, null behavior, stable-order requirements, and whether the destination actually requires ordering.",
+      "source_concept": "Sort output rows by typed keys",
+      "programming_problem_addressed": "Sort output rows by typed keys",
+      "data_shape_assumption": "Output records or rows with explicit typed sort keys and preserved original order index.",
+      "algorithmic_role": "Use a verified current built-in comparator unless custom sorting is justified; compare primary key, tie-breakers, then original order if required.",
+      "runtime_context": "Spreadsheet data processed through Google Apps Script or another current runtime; APIs and limits require verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Apply the in-memory representation and validation logic only after inspecting current sheet structure and verifying current platform behavior.",
+      "complexity_or_scale_note": "Avoid sorting when grouping/indexing or destination behavior does not require it; benchmark material sorts at realistic size.",
+      "use_when": [
+        "Processing tabular rows with a known or discoverable schema"
+      ],
+      "do_not_use_when": [
+        "The current sheet or file structure has not been inspected"
+      ],
+      "common_failure_modes": [
+        "Numeric values sorted as strings",
+        "Comparator inconsistent",
+        "Equal-key rows reorder",
+        "Source order lost",
+        "Sorting hides duplicate grain"
+      ],
+      "tests_or_checks": [
+        "Dates/numbers/text",
+        "Null/blank",
+        "Ties",
+        "Already sorted",
+        "Reverse order",
+        "Duplicate-heavy rows"
+      ],
+      "diagnostic_questions": [
+        "What is the row grain?",
+        "What key identifies each record?",
+        "Which checks must pass before any write?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-sorting-built-in-boundary",
+        "dsa-risk-unstable-sort-assumption",
+        "dsa-decision-built-in-versus-custom-sort"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "12",
+        "chapter_title": "Sorting Algorithms",
+        "section_heading": "Basic Sorting Algorithms",
+        "page_or_anchor": "OEBPS/ch12.html#idp42067616",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source compares simple and advanced sorting algorithms and demonstrates ordering arrays."
+        ],
+        "inferred_claims": [
+          "The spreadsheet workflow is an applied extension, not direct source content."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch02.html",
+            "chapter_number": "2",
+            "chapter_title": "Arrays",
+            "section_heading": "Putting Array Elements in Order",
+            "page_or_anchor": "OEBPS/ch02.html#idp16088928"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "spreadsheet",
+        "workflow",
+        "apps-script"
+      ],
+      "spreadsheet_workflow": "Sort output rows by typed keys",
+      "data_shape": "Output records or rows with explicit typed sort keys and preserved original order index.",
+      "recommended_structure": "Array of output records containing sort fields and `_originalOrder`, followed by projection to rows.",
+      "algorithmic_strategy": "Use a verified current built-in comparator unless custom sorting is justified; compare primary key, tie-breakers, then original order if required.",
+      "validation_strategy": "Validate key types, comparator consistency, null policy, date normalization, and stable-order requirement.",
+      "performance_strategy": "Avoid sorting when grouping/indexing or destination behavior does not require it; benchmark material sorts at realistic size.",
+      "failure_modes": [
+        "Numeric values sorted as strings",
+        "Comparator inconsistent",
+        "Equal-key rows reorder",
+        "Source order lost",
+        "Sorting hides duplicate grain"
+      ],
+      "apps_script_boundary": "Current Apps Script runtime, Spreadsheet service behavior, quotas, and project sheet structure must be verified."
+    },
+    {
+      "id": "dsa-sheet-preserve-original-row-index",
+      "record_type": "spreadsheet_data_workflow_record",
+      "name": "Preserve original row index for error reporting",
+      "summary": "Attach source sheet and row coordinates before filtering, sorting, grouping, or joining so every error and output can be traced back to the user-visible input.",
+      "source_concept": "Preserve original row index for error reporting",
+      "programming_problem_addressed": "Preserve original row index for error reporting",
+      "data_shape_assumption": "Rows read from a known range with a calculable sheet coordinate.",
+      "algorithmic_role": "Annotate at parse time; carry provenance through copies and transformations; never derive the original row from current array position after reordering.",
+      "runtime_context": "Spreadsheet data processed through Google Apps Script or another current runtime; APIs and limits require verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Apply the in-memory representation and validation logic only after inspecting current sheet structure and verifying current platform behavior.",
+      "complexity_or_scale_note": "Store compact coordinates/keys; avoid copying full raw rows when not necessary for diagnosis.",
+      "use_when": [
+        "Processing tabular rows with a known or discoverable schema"
+      ],
+      "do_not_use_when": [
+        "The current sheet or file structure has not been inspected"
+      ],
+      "common_failure_modes": [
+        "Error reports transformed array index",
+        "Sort/filter makes row number wrong",
+        "Joined output loses which source caused issue",
+        "One-based/zero-based confusion"
+      ],
+      "tests_or_checks": [
+        "Filter then error",
+        "Sort then error",
+        "Group multiple rows",
+        "Join missing mapping",
+        "Header offset",
+        "Multiple sheets"
+      ],
+      "diagnostic_questions": [
+        "What is the row grain?",
+        "What key identifies each record?",
+        "Which checks must pass before any write?"
+      ],
+      "related_record_ids": [
+        "dsa-sheet-row-array-to-object",
+        "dsa-risk-header-index-drift",
+        "dsa-sheet-partial-failure-report"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Accessing and Writing Array Elements",
+        "page_or_anchor": "OEBPS/ch02.html#idp13336880",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source demonstrates indexed array access; preserving spreadsheet coordinates across transformations is an applied extension."
+        ],
+        "inferred_claims": [
+          "The spreadsheet workflow is an applied extension, not direct source content."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "spreadsheet",
+        "workflow",
+        "apps-script"
+      ],
+      "spreadsheet_workflow": "Preserve original row index for error reporting",
+      "data_shape": "Rows read from a known range with a calculable sheet coordinate.",
+      "recommended_structure": "Record metadata fields such as source sheet ID/name, absolute row number, optional source column coordinates, and stable input key.",
+      "algorithmic_strategy": "Annotate at parse time; carry provenance through copies and transformations; never derive the original row from current array position after reordering.",
+      "validation_strategy": "Ensure every accepted/rejected record has provenance and that grouped/joined outputs retain contributing source references where needed.",
+      "performance_strategy": "Store compact coordinates/keys; avoid copying full raw rows when not necessary for diagnosis.",
+      "failure_modes": [
+        "Error reports transformed array index",
+        "Sort/filter makes row number wrong",
+        "Joined output loses which source caused issue",
+        "One-based/zero-based confusion"
+      ],
+      "apps_script_boundary": "Current Apps Script runtime, Spreadsheet service behavior, quotas, and project sheet structure must be verified."
+    },
+    {
+      "id": "dsa-sheet-accumulate-validation-errors",
+      "record_type": "spreadsheet_data_workflow_record",
+      "name": "Accumulate validation errors before writing",
+      "summary": "Collect all independently detectable structural and row-level issues into ordered records so users can repair the file in one cycle, while still stopping when continued parsing would be unsafe.",
+      "source_concept": "Accumulate validation errors before writing",
+      "programming_problem_addressed": "Accumulate validation errors before writing",
+      "data_shape_assumption": "Parsed records with provenance and a validation rule registry with severity and dependency information.",
+      "algorithmic_role": "Run schema gates first, then independent row validations; append issues rather than throw immediately unless state is structurally uninterpretable.",
+      "runtime_context": "Spreadsheet data processed through Google Apps Script or another current runtime; APIs and limits require verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Apply the in-memory representation and validation logic only after inspecting current sheet structure and verifying current platform behavior.",
+      "complexity_or_scale_note": "Group repeated issues for display but retain all affected rows; avoid revalidating unchanged data without a reason.",
+      "use_when": [
+        "Processing tabular rows with a known or discoverable schema"
+      ],
+      "do_not_use_when": [
+        "The current sheet or file structure has not been inspected"
+      ],
+      "common_failure_modes": [
+        "Only first error reported",
+        "Exceptions lack row/field evidence",
+        "Fatal schema error causes misleading row errors",
+        "Warnings treated as success without visibility"
+      ],
+      "tests_or_checks": [
+        "Multiple errors same row",
+        "Same issue many rows",
+        "Fatal missing header",
+        "Warning-only file",
+        "Independent type and mapping errors"
+      ],
+      "diagnostic_questions": [
+        "What is the row grain?",
+        "What key identifies each record?",
+        "Which checks must pass before any write?"
+      ],
+      "related_record_ids": [
+        "dsa-decision-structured-errors-versus-throw",
+        "dsa-risk-partial-failure-unstructured",
+        "dsa-tool-required-field-coverage"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "A List ADT",
+        "page_or_anchor": "OEBPS/ch03.html#idp19348032",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines lists as ordered collections; structured validation accumulation is an applied extension."
+        ],
+        "inferred_claims": [
+          "The spreadsheet workflow is an applied extension, not direct source content."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "spreadsheet",
+        "workflow",
+        "apps-script"
+      ],
+      "spreadsheet_workflow": "Accumulate validation errors before writing",
+      "data_shape": "Parsed records with provenance and a validation rule registry with severity and dependency information.",
+      "recommended_structure": "Ordered issue list plus per-record issue arrays and severity counts; optionally sets for deduplicated issue summaries.",
+      "algorithmic_strategy": "Run schema gates first, then independent row validations; append issues rather than throw immediately unless state is structurally uninterpretable.",
+      "validation_strategy": "Every issue has code, severity, message, field, source coordinate, evidence, and suggested correction; fatal gates prevent unsafe downstream assumptions.",
+      "performance_strategy": "Group repeated issues for display but retain all affected rows; avoid revalidating unchanged data without a reason.",
+      "failure_modes": [
+        "Only first error reported",
+        "Exceptions lack row/field evidence",
+        "Fatal schema error causes misleading row errors",
+        "Warnings treated as success without visibility"
+      ],
+      "apps_script_boundary": "Current Apps Script runtime, Spreadsheet service behavior, quotas, and project sheet structure must be verified."
+    },
+    {
+      "id": "dsa-sheet-structured-processing-results",
+      "record_type": "spreadsheet_data_workflow_record",
+      "name": "Return structured processing results",
+      "summary": "Return a machine-readable run object that accounts for every input record, proposed action, committed side effect, warning, failure, and next step.",
+      "source_concept": "Return structured processing results",
+      "programming_problem_addressed": "Return structured processing results",
+      "data_shape_assumption": "One processing run containing input metadata, stage summaries, per-item outcomes, and side-effect evidence.",
+      "algorithmic_role": "Partition items by explicit status, derive aggregate counts from item records, and assert conservation between input and outcome totals.",
+      "runtime_context": "Spreadsheet data processed through Google Apps Script or another current runtime; APIs and limits require verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Apply the in-memory representation and validation logic only after inspecting current sheet structure and verifying current platform behavior.",
+      "complexity_or_scale_note": "Keep display summaries separate from detailed result data; persist/reference large details according to verified limits.",
+      "use_when": [
+        "Processing tabular rows with a known or discoverable schema"
+      ],
+      "do_not_use_when": [
+        "The current sheet or file structure has not been inspected"
+      ],
+      "common_failure_modes": [
+        "Boolean success hides partial result",
+        "Counts do not reconcile",
+        "Skipped versus failed conflated",
+        "No side-effect evidence",
+        "Raw exception is only output"
+      ],
+      "tests_or_checks": [
+        "All success",
+        "Validation failure",
+        "Mixed result",
+        "No-op",
+        "Timeout/unknown tail",
+        "Retry linked to prior run"
+      ],
+      "diagnostic_questions": [
+        "What is the row grain?",
+        "What key identifies each record?",
+        "Which checks must pass before any write?"
+      ],
+      "related_record_ids": [
+        "dsa-tool-partial-failure-reporting",
+        "dsa-sheet-partial-failure-report",
+        "dsa-workflow-review-partial-failure"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "1",
+        "chapter_title": "The JavaScript Programming Environment and Model",
+        "section_heading": "Objects and Object-Oriented Programming",
+        "page_or_anchor": "OEBPS/ch01.html#idp12945408",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source covers object-based representations and ordered collections; run-result contracts are an applied extension."
+        ],
+        "inferred_claims": [
+          "The spreadsheet workflow is an applied extension, not direct source content."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "spreadsheet",
+        "workflow",
+        "apps-script"
+      ],
+      "spreadsheet_workflow": "Return structured processing results",
+      "data_shape": "One processing run containing input metadata, stage summaries, per-item outcomes, and side-effect evidence.",
+      "recommended_structure": "Run object with status, mode, counts, timings, config/input identity, `items[]`, `issues[]`, `actions[]`, and audit references.",
+      "algorithmic_strategy": "Partition items by explicit status, derive aggregate counts from item records, and assert conservation between input and outcome totals.",
+      "validation_strategy": "Every input key appears exactly once in terminal accounting or is explicitly unprocessed; live actions include outcome evidence.",
+      "performance_strategy": "Keep display summaries separate from detailed result data; persist/reference large details according to verified limits.",
+      "failure_modes": [
+        "Boolean success hides partial result",
+        "Counts do not reconcile",
+        "Skipped versus failed conflated",
+        "No side-effect evidence",
+        "Raw exception is only output"
+      ],
+      "apps_script_boundary": "Current Apps Script runtime, Spreadsheet service behavior, quotas, and project sheet structure must be verified."
+    },
+    {
+      "id": "dsa-sheet-dry-run-preview",
+      "record_type": "spreadsheet_data_workflow_record",
+      "name": "Create a dry-run preview before writing",
+      "summary": "Materialize the exact output rows and proposed destination actions without performing side effects, and use the same deterministic transformation for live mode.",
+      "source_concept": "Create a dry-run preview before writing",
+      "programming_problem_addressed": "Create a dry-run preview before writing",
+      "data_shape_assumption": "Validated source records, current destination state, and a list of proposed action objects.",
+      "algorithmic_role": "Compute side-effect-free actions; present counts/samples/diffs; live mode commits the same action list after critical preconditions are rechecked.",
+      "runtime_context": "Spreadsheet data processed through Google Apps Script or another current runtime; APIs and limits require verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Apply the in-memory representation and validation logic only after inspecting current sheet structure and verifying current platform behavior.",
+      "complexity_or_scale_note": "Avoid recomputing expensive transforms between preview and commit when safe, but revalidate mutable destination preconditions.",
+      "use_when": [
+        "Processing tabular rows with a known or discoverable schema"
+      ],
+      "do_not_use_when": [
+        "The current sheet or file structure has not been inspected"
+      ],
+      "common_failure_modes": [
+        "Preview and live paths diverge",
+        "Preview omits deletes/emails",
+        "Input changes after preview",
+        "Mode default is live"
+      ],
+      "tests_or_checks": [
+        "Dry/live equivalence",
+        "No-op",
+        "One create/update/delete",
+        "Fatal validation",
+        "Destination changed after preview"
+      ],
+      "diagnostic_questions": [
+        "What is the row grain?",
+        "What key identifies each record?",
+        "Which checks must pass before any write?"
+      ],
+      "related_record_ids": [
+        "dsa-tool-dry-run-live",
+        "dsa-risk-live-write-before-validation",
+        "dsa-sheet-batch-write-after-validation"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "Preface",
+        "chapter_title": "Preface",
+        "section_heading": "Why Study Data Structures and Algorithms",
+        "page_or_anchor": "OEBPS/preface01.html#idp7339520",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source emphasizes selecting and testing transformations; dry-run staging is a safety extension."
+        ],
+        "inferred_claims": [
+          "The spreadsheet workflow is an applied extension, not direct source content."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "spreadsheet",
+        "workflow",
+        "apps-script"
+      ],
+      "spreadsheet_workflow": "Create a dry-run preview before writing",
+      "data_shape": "Validated source records, current destination state, and a list of proposed action objects.",
+      "recommended_structure": "Proposed-action array with stable key, target, operation, before/after values, provenance, and preconditions.",
+      "algorithmic_strategy": "Compute side-effect-free actions; present counts/samples/diffs; live mode commits the same action list after critical preconditions are rechecked.",
+      "validation_strategy": "Dry-run blocks on fatal errors, displays warnings, verifies action-key uniqueness, and identifies create/update/delete/no-op explicitly.",
+      "performance_strategy": "Avoid recomputing expensive transforms between preview and commit when safe, but revalidate mutable destination preconditions.",
+      "failure_modes": [
+        "Preview and live paths diverge",
+        "Preview omits deletes/emails",
+        "Input changes after preview",
+        "Mode default is live"
+      ],
+      "apps_script_boundary": "Current Apps Script runtime, Spreadsheet service behavior, quotas, and project sheet structure must be verified."
+    },
+    {
+      "id": "dsa-sheet-batch-write-after-validation",
+      "record_type": "spreadsheet_data_workflow_record",
+      "name": "Batch write only after validation passes",
+      "summary": "Commit a bounded rectangular output only after structural, semantic, mapping, duplicate, and destination checks have passed and the proposed action set is known.",
+      "source_concept": "Batch write only after validation passes",
+      "programming_problem_addressed": "Batch write only after validation passes",
+      "data_shape_assumption": "Rectangular output array plus destination range/action plan whose dimensions and preconditions are explicit.",
+      "algorithmic_role": "Separate computation from side effects; validate complete matrix and destination; perform minimum bounded writes; record exact outcome.",
+      "runtime_context": "Spreadsheet data processed through Google Apps Script or another current runtime; APIs and limits require verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Apply the in-memory representation and validation logic only after inspecting current sheet structure and verifying current platform behavior.",
+      "complexity_or_scale_note": "Prefer bounded batch writes over cell-by-cell updates, while verifying current API constraints and avoiding oversized unbounded batches.",
+      "use_when": [
+        "Processing tabular rows with a known or discoverable schema"
+      ],
+      "do_not_use_when": [
+        "The current sheet or file structure has not been inspected"
+      ],
+      "common_failure_modes": [
+        "Partial live write",
+        "Output width mismatch",
+        "Wrong destination range",
+        "Formula/protection overwritten",
+        "Retry duplicates rows"
+      ],
+      "tests_or_checks": [
+        "Exact dimensions",
+        "Empty output",
+        "Maximum expected rows",
+        "Protected/formula destination copy",
+        "Interrupted/failed write",
+        "Idempotent rerun"
+      ],
+      "diagnostic_questions": [
+        "What is the row grain?",
+        "What key identifies each record?",
+        "Which checks must pass before any write?"
+      ],
+      "related_record_ids": [
+        "dsa-sheet-read-once",
+        "dsa-risk-live-write-before-validation",
+        "dsa-perf-timeout-partial-write"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "2",
+        "chapter_title": "Arrays",
+        "section_heading": "Processing Two-Dimensional Array Elements",
+        "page_or_anchor": "OEBPS/ch02.html#idp18183376",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source supports constructing and iterating multidimensional arrays; spreadsheet batch writes are a platform extension."
+        ],
+        "inferred_claims": [
+          "The spreadsheet workflow is an applied extension, not direct source content."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "spreadsheet",
+        "workflow",
+        "apps-script"
+      ],
+      "spreadsheet_workflow": "Batch write only after validation passes",
+      "data_shape": "Rectangular output array plus destination range/action plan whose dimensions and preconditions are explicit.",
+      "recommended_structure": "Validated output matrix and commit plan with destination coordinates, expected dimensions, mode, and run/action IDs.",
+      "algorithmic_strategy": "Separate computation from side effects; validate complete matrix and destination; perform minimum bounded writes; record exact outcome.",
+      "validation_strategy": "Assert row/column dimensions, types/formulas policy, duplicate/idempotency keys, destination safety, and no fatal issues.",
+      "performance_strategy": "Prefer bounded batch writes over cell-by-cell updates, while verifying current API constraints and avoiding oversized unbounded batches.",
+      "failure_modes": [
+        "Partial live write",
+        "Output width mismatch",
+        "Wrong destination range",
+        "Formula/protection overwritten",
+        "Retry duplicates rows"
+      ],
+      "apps_script_boundary": "Current Apps Script runtime, Spreadsheet service behavior, quotas, and project sheet structure must be verified."
+    },
+    {
+      "id": "dsa-sheet-rollback-recovery",
+      "record_type": "spreadsheet_data_workflow_record",
+      "name": "Plan rollback or recovery before live writes",
+      "summary": "Define how to restore, resume, or safely rerun each side effect before execution, using snapshots, before-values, append-only outputs, idempotent keys, or compensating actions as appropriate.",
+      "source_concept": "Plan rollback or recovery before live writes",
+      "programming_problem_addressed": "Plan rollback or recovery before live writes",
+      "data_shape_assumption": "Proposed actions with target identity, before/after state, reversibility, stable key, and commit outcome.",
+      "algorithmic_role": "Classify each action as atomic/reversible/idempotent/compensatable/nonreversible; capture needed evidence before commit; reconcile after interruption.",
+      "runtime_context": "Spreadsheet data processed through Google Apps Script or another current runtime; APIs and limits require verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Apply the in-memory representation and validation logic only after inspecting current sheet structure and verifying current platform behavior.",
+      "complexity_or_scale_note": "Capture minimal sufficient before-state; avoid expensive whole-workbook backups unless risk justifies them and current limits allow.",
+      "use_when": [
+        "Processing tabular rows with a known or discoverable schema"
+      ],
+      "do_not_use_when": [
+        "The current sheet or file structure has not been inspected"
+      ],
+      "common_failure_modes": [
+        "Undo assumed but side effect is irreversible",
+        "Snapshot taken after write",
+        "Recovery overwrites later legitimate changes",
+        "No mapping from run to affected rows"
+      ],
+      "tests_or_checks": [
+        "Restore copied range",
+        "Resume after first batch",
+        "Rerun append with same keys",
+        "External email/API nonreversible action",
+        "Concurrent later change"
+      ],
+      "diagnostic_questions": [
+        "What is the row grain?",
+        "What key identifies each record?",
+        "Which checks must pass before any write?"
+      ],
+      "related_record_ids": [
+        "dsa-stack-lifo",
+        "dsa-gas-idempotency",
+        "dsa-risk-idempotency-missing"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "4",
+        "chapter_title": "Stacks",
+        "section_heading": "Stack Operations",
+        "page_or_anchor": "OEBPS/ch04.html#idp21554816",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines LIFO stacks and mutation operations; transactional recovery is an applied system-design extension."
+        ],
+        "inferred_claims": [
+          "The spreadsheet workflow is an applied extension, not direct source content."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "spreadsheet",
+        "workflow",
+        "apps-script"
+      ],
+      "spreadsheet_workflow": "Plan rollback or recovery before live writes",
+      "data_shape": "Proposed actions with target identity, before/after state, reversibility, stable key, and commit outcome.",
+      "recommended_structure": "Action log plus recovery metadata; optional stack only for truly reversible recent actions, otherwise idempotent/reconciliation records.",
+      "algorithmic_strategy": "Classify each action as atomic/reversible/idempotent/compensatable/nonreversible; capture needed evidence before commit; reconcile after interruption.",
+      "validation_strategy": "Recovery data exists for every live action type; nonreversible actions require stronger preview/approval and idempotency controls.",
+      "performance_strategy": "Capture minimal sufficient before-state; avoid expensive whole-workbook backups unless risk justifies them and current limits allow.",
+      "failure_modes": [
+        "Undo assumed but side effect is irreversible",
+        "Snapshot taken after write",
+        "Recovery overwrites later legitimate changes",
+        "No mapping from run to affected rows"
+      ],
+      "apps_script_boundary": "Current Apps Script runtime, Spreadsheet service behavior, quotas, and project sheet structure must be verified."
+    },
+    {
+      "id": "dsa-sheet-audit-run-history",
+      "record_type": "spreadsheet_data_workflow_record",
+      "name": "Maintain an audit log and run history",
+      "summary": "Record structured run metadata and item/action outcomes so a user can identify the input, configuration, code/mode, proposed changes, committed changes, failures, and retry lineage.",
+      "source_concept": "Maintain an audit log and run history",
+      "programming_problem_addressed": "Maintain an audit log and run history",
+      "data_shape_assumption": "Run-level record plus ordered item/action event records linked by stable IDs.",
+      "algorithmic_role": "Create run record before processing; append stage outcomes; finalize by reconciling key sets and counts; link retries to parent run.",
+      "runtime_context": "Spreadsheet data processed through Google Apps Script or another current runtime; APIs and limits require verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Apply the in-memory representation and validation logic only after inspecting current sheet structure and verifying current platform behavior.",
+      "complexity_or_scale_note": "Store summaries with references to detailed records when volume is large; verify storage limits and retention.",
+      "use_when": [
+        "Processing tabular rows with a known or discoverable schema"
+      ],
+      "do_not_use_when": [
+        "The current sheet or file structure has not been inspected"
+      ],
+      "common_failure_modes": [
+        "History overwritten",
+        "No input/config identity",
+        "Counts not derived from details",
+        "Sensitive data logged",
+        "Retry has no parent link"
+      ],
+      "tests_or_checks": [
+        "Validation-only run",
+        "All success",
+        "Partial result",
+        "No-op rerun",
+        "Retry lineage",
+        "Retention/redaction"
+      ],
+      "diagnostic_questions": [
+        "What is the row grain?",
+        "What key identifies each record?",
+        "Which checks must pass before any write?"
+      ],
+      "related_record_ids": [
+        "dsa-tool-audit-run-history",
+        "dsa-sheet-structured-processing-results",
+        "dsa-risk-partial-failure-unstructured"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "A List ADT",
+        "page_or_anchor": "OEBPS/ch03.html#idp19348032",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source supplies ordered list, dictionary, and set concepts; audit history is an applied extension."
+        ],
+        "inferred_claims": [
+          "The spreadsheet workflow is an applied extension, not direct source content."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch07.html",
+            "chapter_number": "7",
+            "chapter_title": "Dictionaries",
+            "section_heading": "The Dictionary Class",
+            "page_or_anchor": "OEBPS/ch07.html#idp29229184"
+          },
+          {
+            "source_file": "ch09.html",
+            "chapter_number": "9",
+            "chapter_title": "Sets",
+            "section_heading": "Fundamental Set Definitions, Operations, and Properties",
+            "page_or_anchor": "OEBPS/ch09.html#idp34336432"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "spreadsheet",
+        "workflow",
+        "apps-script"
+      ],
+      "spreadsheet_workflow": "Maintain an audit log and run history",
+      "data_shape": "Run-level record plus ordered item/action event records linked by stable IDs.",
+      "recommended_structure": "Run dictionary keyed by run ID, append-oriented event list, and sets/dictionaries of input and committed keys.",
+      "algorithmic_strategy": "Create run record before processing; append stage outcomes; finalize by reconciling key sets and counts; link retries to parent run.",
+      "validation_strategy": "Unique IDs, explicit timestamps/timezone, config/input identity, action-outcome completeness, privacy redaction, and terminal-state consistency.",
+      "performance_strategy": "Store summaries with references to detailed records when volume is large; verify storage limits and retention.",
+      "failure_modes": [
+        "History overwritten",
+        "No input/config identity",
+        "Counts not derived from details",
+        "Sensitive data logged",
+        "Retry has no parent link"
+      ],
+      "apps_script_boundary": "Current Apps Script runtime, Spreadsheet service behavior, quotas, and project sheet structure must be verified."
+    },
+    {
+      "id": "dsa-sheet-idempotent-export-keys",
+      "record_type": "spreadsheet_data_workflow_record",
+      "name": "Use idempotent export keys",
+      "summary": "Derive a deterministic logical output key from stable normalized business identity and use it to prevent duplicate exports across reruns and retries.",
+      "source_concept": "Use idempotent export keys",
+      "programming_problem_addressed": "Use idempotent export keys",
+      "data_shape_assumption": "Validated records with stable identity fields and a durable or destination-readable set of committed keys.",
+      "algorithmic_role": "Derive key before side effect; validate uniqueness; check/claim key through a verified concurrency boundary; commit; record outcome; make retry reconcile uncertain results.",
+      "runtime_context": "Spreadsheet data processed through Google Apps Script or another current runtime; APIs and limits require verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Apply the in-memory representation and validation logic only after inspecting current sheet structure and verifying current platform behavior.",
+      "complexity_or_scale_note": "Build committed-key index once per run where feasible; avoid per-row destination scans.",
+      "use_when": [
+        "Processing tabular rows with a known or discoverable schema"
+      ],
+      "do_not_use_when": [
+        "The current sheet or file structure has not been inspected"
+      ],
+      "common_failure_modes": [
+        "Timestamp-based random key changes on retry",
+        "Check/write race",
+        "Key collision",
+        "Destination succeeds but local key record fails",
+        "Key version change duplicates history"
+      ],
+      "tests_or_checks": [
+        "Same input rerun",
+        "Same logical record with formatting differences",
+        "Two concurrent runs",
+        "Lost response after destination success",
+        "Key schema migration"
+      ],
+      "diagnostic_questions": [
+        "What is the row grain?",
+        "What key identifies each record?",
+        "Which checks must pass before any write?"
+      ],
+      "related_record_ids": [
+        "dsa-gas-idempotency",
+        "dsa-tool-retry-idempotency",
+        "dsa-decision-idempotency-key-versus-after-detection"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "9",
+        "chapter_title": "Sets",
+        "section_heading": "Fundamental Set Definitions, Operations, and Properties",
+        "page_or_anchor": "OEBPS/ch09.html#idp34336432",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines set uniqueness and membership; durable export idempotency is an applied extension."
+        ],
+        "inferred_claims": [
+          "The spreadsheet workflow is an applied extension, not direct source content."
+        ],
+        "additional_source_anchors": []
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "spreadsheet",
+        "workflow",
+        "apps-script"
+      ],
+      "spreadsheet_workflow": "Use idempotent export keys",
+      "data_shape": "Validated records with stable identity fields and a durable or destination-readable set of committed keys.",
+      "recommended_structure": "Deterministic key function, set/dictionary of committed keys with run/outcome metadata, and current-run duplicate groups.",
+      "algorithmic_strategy": "Derive key before side effect; validate uniqueness; check/claim key through a verified concurrency boundary; commit; record outcome; make retry reconcile uncertain results.",
+      "validation_strategy": "Key components required and normalized; schema/version changes cannot silently alter identity; duplicates and uncertain commits are reviewed.",
+      "performance_strategy": "Build committed-key index once per run where feasible; avoid per-row destination scans.",
+      "failure_modes": [
+        "Timestamp-based random key changes on retry",
+        "Check/write race",
+        "Key collision",
+        "Destination succeeds but local key record fails",
+        "Key version change duplicates history"
+      ],
+      "apps_script_boundary": "Current Apps Script runtime, Spreadsheet service behavior, quotas, and project sheet structure must be verified."
+    },
+    {
+      "id": "dsa-sheet-partial-failure-report",
+      "record_type": "spreadsheet_data_workflow_record",
+      "name": "Produce a partial failure report",
+      "summary": "Report exactly which rows/actions succeeded, failed validation, failed during side effects, were skipped, remain unprocessed, or require retry, with source and destination identities.",
+      "source_concept": "Produce a partial failure report",
+      "programming_problem_addressed": "Produce a partial failure report",
+      "data_shape_assumption": "Input record keys, proposed actions, per-stage results, and side-effect evidence.",
+      "algorithmic_role": "Capture status transitions per key; on interruption, mark untouched tail as unprocessed/unknown rather than failed; reconcile committed keys where possible.",
+      "runtime_context": "Spreadsheet data processed through Google Apps Script or another current runtime; APIs and limits require verification.",
+      "transfers_to_google_apps_script": "partial_transfer_requires_apps_script_api",
+      "apps_script_translation_note": "Apply the in-memory representation and validation logic only after inspecting current sheet structure and verifying current platform behavior.",
+      "complexity_or_scale_note": "Keep compact summaries while preserving detailed provenance; batch reconciliation queries where current destination allows.",
+      "use_when": [
+        "Processing tabular rows with a known or discoverable schema"
+      ],
+      "do_not_use_when": [
+        "The current sheet or file structure has not been inspected"
+      ],
+      "common_failure_modes": [
+        "“Some rows failed” without identities",
+        "Unprocessed called failed",
+        "Success lacks proof",
+        "Retry duplicates successes",
+        "Original row unavailable"
+      ],
+      "tests_or_checks": [
+        "One row validation error",
+        "One side-effect error",
+        "Timeout halfway",
+        "Lost destination response",
+        "Retry then success",
+        "Mixed warnings"
+      ],
+      "diagnostic_questions": [
+        "What is the row grain?",
+        "What key identifies each record?",
+        "Which checks must pass before any write?"
+      ],
+      "related_record_ids": [
+        "dsa-tool-partial-failure-reporting",
+        "dsa-risk-partial-failure-unstructured",
+        "dsa-sheet-preserve-original-row-index"
+      ],
+      "source_traceability": {
+        "source_file": "McMillan, Michael - Data Structures and Algorithms with JavaScript (2015, O'Reilly Media) - libgen.li.epub",
+        "book_title": "Data Structures and Algorithms with JavaScript",
+        "author": "Michael McMillan",
+        "edition_or_version": "Title page states Second Edition; copyright page states March 2014 First Edition with a Second Release dated 2015-10-21; EPUB metadata is dated 2015-10-28. The source is internally inconsistent about edition versus release.",
+        "chapter_number": "3",
+        "chapter_title": "Lists",
+        "section_heading": "A List ADT",
+        "page_or_anchor": "OEBPS/ch03.html#idp19348032",
+        "example_or_algorithm_reference": "",
+        "support_role": "primary conceptual support",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "The source defines ordered lists and queues; itemized failure reporting is an applied extension."
+        ],
+        "inferred_claims": [
+          "The spreadsheet workflow is an applied extension, not direct source content."
+        ],
+        "additional_source_anchors": [
+          {
+            "source_file": "ch05.html",
+            "chapter_number": "5",
+            "chapter_title": "Queues",
+            "section_heading": "Queue Operations",
+            "page_or_anchor": "OEBPS/ch05.html#idp23142720"
+          }
+        ]
+      },
+      "derivation": {
+        "classification": "spreadsheet_workflow_extension",
+        "explanation": "Synthesizes or applies the source-supported concept within the stated boundary.",
+        "confidence": "low",
+        "current_verification_required": true,
+        "human_review_recommended": true,
+        "source_boundary_note": "This record applies source-supported data-structure or algorithm reasoning beyond the book. It is not a direct claim about current Google Apps Script or a specific project."
+      },
+      "tags": [
+        "spreadsheet",
+        "workflow",
+        "apps-script"
+      ],
+      "spreadsheet_workflow": "Produce a partial failure report",
+      "data_shape": "Input record keys, proposed actions, per-stage results, and side-effect evidence.",
+      "recommended_structure": "Ordered item-result list partitioned by status plus run summary, retry subset, and unknown-outcome subset.",
+      "algorithmic_strategy": "Capture status transitions per key; on interruption, mark untouched tail as unprocessed/unknown rather than failed; reconcile committed keys where possible.",
+      "validation_strategy": "Input count equals sum of terminal and explicitly unprocessed states; success requires commit evidence; retry list excludes success and terminal failures.",
+      "performance_strategy": "Keep compact summaries while preserving detailed provenance; batch reconciliation queries where current destination allows.",
+      "failure_modes": [
+        "“Some rows failed” without identities",
+        "Unprocessed called failed",
+        "Success lacks proof",
+        "Retry duplicates successes",
+        "Original row unavailable"
+      ],
+      "apps_script_boundary": "Current Apps Script runtime, Spreadsheet service behavior, quotas, and project sheet structure must be verified."
+    }
+  ]
+}

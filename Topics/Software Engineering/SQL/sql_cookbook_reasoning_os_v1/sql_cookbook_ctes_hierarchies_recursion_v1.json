@@ -1,0 +1,2656 @@
+{
+  "package_id": "sql-cookbook-reasoning-os-v1",
+  "section_key": "cte_hierarchy_recursion_records",
+  "record_count": 13,
+  "unique_record_count": 13,
+  "source_boundary": "Uploaded second edition only. Derivation and source anchors are carried on every substantive record.",
+  "usage_note": "These are canonical records reused across topical modules. Count distinct IDs across the package, not module totals.",
+  "records": [
+    {
+      "id": "sql-recipe-13-01",
+      "record_type": "recipe_pattern",
+      "name": "13.1 Expressing a Parent-Child Relationship",
+      "summary": "Self-join the child’s parent-reference column to the parent row’s identity column.",
+      "source_recipe_or_concept": "13.1 Expressing a Parent-Child Relationship; supporting source units: 13.1",
+      "sql_problem_addressed": "Attach the immediate parent’s information to each child.",
+      "query_intent": "Attach the immediate parent’s information to each child.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One child-to-parent relationship.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One child-to-parent relationship.",
+      "key_columns_or_join_conditions": [
+        "Child EMP.MGR = parent EMP.EMPNO; use separate aliases."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Attach the immediate parent’s information to each child."
+      ],
+      "aggregation_or_windowing": "Self-join the child’s parent-reference column to the parent row’s identity column.",
+      "result_shape": "Children with their immediate parent’s attributes.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "Concatenation differences affect only the example’s display expression.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "A NULL parent reference represents a root in the source’s EMP example; an inner join does not preserve that root.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Attach the immediate parent’s information to each child."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one child-to-parent relationship."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-recursive-query-no-termination"
+      ],
+      "tests_or_checks": [
+        "Test a root, an orphan reference, duplicate parent identifiers, and a normal child."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-13-04",
+        "sql-recipe-13-05",
+        "sql-risk-current-version-assumption",
+        "sql-risk-recursive-query-no-termination"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "13",
+        "chapter_title": "Chapter 13. Hierarchical Queries",
+        "section_heading": "13.1 Expressing a Parent-Child Relationship",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-1",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-1.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-1.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-1.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Attach the immediate parent’s information to each child.",
+          "Self-join the child’s parent-reference column to the parent row’s identity column.",
+          "The two aliases represent different relationship roles even though they read the same table."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "13.1 Expressing a Parent-Child Relationship",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-1",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch13"
+      ],
+      "recipe_name": "13.1 Expressing a Parent-Child Relationship",
+      "problem_paraphrase": "Attach the immediate parent’s information to each child.",
+      "solution_pattern": "Self-join the child’s parent-reference column to the parent row’s identity column.",
+      "discussion_reasoning": "The two aliases represent different relationship roles even though they read the same table.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2, Oracle, and PostgreSQL",
+          "dialects": [
+            "DB2",
+            "Oracle",
+            "PostgreSQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-1.2.1",
+          "function_tokens_detected": [
+            "BAR"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL",
+          "dialects": [
+            "MySQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-1.2.2",
+          "function_tokens_detected": [
+            "CONCAT"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "SQL Server",
+          "dialects": [
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-1.2.3",
+          "function_tokens_detected": [
+            "SIGN"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "One child-to-parent relationship.",
+      "output_shape": "Children with their immediate parent’s attributes.",
+      "assumptions": [
+        "One child-to-parent relationship.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Concatenation differences affect only the example’s display expression."
+      ],
+      "test_query_or_validation_shape": "Test a root, an orphan reference, duplicate parent identifiers, and a normal child.",
+      "when_to_use": [
+        "Attach the immediate parent’s information to each child."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one child-to-parent relationship."
+      ],
+      "related_records": [
+        "sql-recipe-13-04",
+        "sql-recipe-13-05",
+        "sql-risk-current-version-assumption",
+        "sql-risk-recursive-query-no-termination"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "table_grain": "One child-to-parent relationship.",
+      "join_key_assumptions": [
+        "Employee MGR references the manager-role EMPNO; aliases distinguish relationship roles."
+      ],
+      "expected_cardinality": "At most one manager per employee only under the example’s unique employee identifier assumption.",
+      "duplicate_row_risk": "Inspect repeated complete keys on each side; determine whether repetition represents legitimate events or duplicate entities.",
+      "missing_row_risk": "Check unmatched keys and whether optional-side predicates remove required rows.",
+      "aggregation_risk": "Reconcile measures at their original grain before and after any row multiplication.",
+      "join_correctness_checks": [
+        "Test a root, an orphan reference, duplicate parent identifiers, and a normal child.",
+        "Compare row identities and unmatched populations before and after the relationship step."
+      ],
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-1",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-13-02",
+      "record_type": "recipe_pattern",
+      "name": "13.2 Expressing a Child-Parent-Grandparent Relationship",
+      "summary": "Anchor on the chosen child and repeatedly follow its parent reference using the source’s recursive or CONNECT BY form.",
+      "source_recipe_or_concept": "13.2 Expressing a Child-Parent-Grandparent Relationship; supporting source units: 13.2",
+      "sql_problem_addressed": "Traverse from a child toward its ancestors.",
+      "query_intent": "Traverse from a child toward its ancestors.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One visited ancestor step per starting child and path.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One visited ancestor step per starting child and path.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Traverse from a child toward its ancestors."
+      ],
+      "aggregation_or_windowing": "Anchor on the chosen child and repeatedly follow its parent reference using the source’s recursive or CONNECT BY form.",
+      "result_shape": "An ancestry path or ordered ancestor rowset.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "The source groups recursive variants broadly; keywords, path casts, and string growth require current verification.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "The source’s NULL-parent root supplies a stopping condition.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Traverse from a child toward its ancestors."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one visited ancestor step per starting child and path."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-recursive-query-no-termination"
+      ],
+      "tests_or_checks": [
+        "Test a two-level tree, a deeper tree, a missing parent, and a cycle; verify the displayed path direction."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-13-01",
+        "sql-recipe-13-04",
+        "sql-recipe-13-05",
+        "sql-risk-current-version-assumption",
+        "sql-risk-recursive-query-no-termination"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "13",
+        "chapter_title": "Chapter 13. Hierarchical Queries",
+        "section_heading": "13.2 Expressing a Child-Parent-Grandparent Relationship",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-2",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-2.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-2.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-2.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Traverse from a child toward its ancestors.",
+          "Anchor on the chosen child and repeatedly follow its parent reference using the source’s recursive or CONNECT BY form.",
+          "Upward traversal reverses the relationship direction used to discover descendants."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "13.2 Expressing a Child-Parent-Grandparent Relationship",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-2",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch13"
+      ],
+      "recipe_name": "13.2 Expressing a Child-Parent-Grandparent Relationship",
+      "problem_paraphrase": "Traverse from a child toward its ancestors.",
+      "solution_pattern": "Anchor on the chosen child and repeatedly follow its parent reference using the source’s recursive or CONNECT BY form.",
+      "discussion_reasoning": "Upward traversal reverses the relationship direction used to discover descendants.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2, PostgreSQL, and SQL Server",
+          "dialects": [
+            "DB2",
+            "PostgreSQL",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-2.2.1",
+          "function_tokens_detected": [
+            "CAST",
+            "VARCHAR"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL",
+          "dialects": [
+            "MySQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-2.2.2",
+          "function_tokens_detected": [
+            "CAST",
+            "CHAR",
+            "CONCAT",
+            "VARCHAR"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-2.2.3",
+          "function_tokens_detected": [
+            "LTRIM",
+            "SYS_CONNECT_BY_PATH"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2, SQL Server, PostgreSQL, and MySQL",
+          "dialects": [
+            "DB2",
+            "PostgreSQL",
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-2.3.1",
+          "function_tokens_detected": [
+            "CAST",
+            "MANAGER",
+            "MILLER",
+            "REACHED",
+            "ROOT",
+            "VARCHAR"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-2.3.2",
+          "function_tokens_detected": [
+            "LEVEL",
+            "SYS_CONNECT_BY_PATH"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "One visited ancestor step per starting child and path.",
+      "output_shape": "An ancestry path or ordered ancestor rowset.",
+      "assumptions": [
+        "One visited ancestor step per starting child and path.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The source groups recursive variants broadly; keywords, path casts, and string growth require current verification."
+      ],
+      "test_query_or_validation_shape": "Test a two-level tree, a deeper tree, a missing parent, and a cycle; verify the displayed path direction.",
+      "when_to_use": [
+        "Traverse from a child toward its ancestors."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one visited ancestor step per starting child and path."
+      ],
+      "related_records": [
+        "sql-recipe-13-01",
+        "sql-recipe-13-04",
+        "sql-recipe-13-05",
+        "sql-risk-current-version-assumption",
+        "sql-risk-recursive-query-no-termination"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-2",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-13-03",
+      "record_type": "recipe_pattern",
+      "name": "13.3 Creating a Hierarchical View of a Table",
+      "summary": "Anchor on the root and recursively match child parent-references to the current node’s identity, accumulating a path if required.",
+      "source_recipe_or_concept": "13.3 Creating a Hierarchical View of a Table; supporting source units: 13.3",
+      "sql_problem_addressed": "Build a hierarchy from its root downward.",
+      "query_intent": "Build a hierarchy from its root downward.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One visited node per traversal path.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One visited node per traversal path.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Build a hierarchy from its root downward."
+      ],
+      "aggregation_or_windowing": "Anchor on the root and recursively match child parent-references to the current node’s identity, accumulating a path if required.",
+      "result_shape": "A rooted hierarchy and optional path display.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "Oracle uses CONNECT BY/SYS_CONNECT_BY_PATH in the source; recursive WITH syntax and path types differ elsewhere.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Root identification uses the source’s NULL parent-reference convention.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Build a hierarchy from its root downward."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one visited node per traversal path."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-recursive-query-no-termination"
+      ],
+      "tests_or_checks": [
+        "Test multiple roots, disconnected rows, repeated paths, deep chains, and cycles."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-13-01",
+        "sql-recipe-13-04",
+        "sql-recipe-13-05",
+        "sql-risk-current-version-assumption",
+        "sql-risk-recursive-query-no-termination"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "13",
+        "chapter_title": "Chapter 13. Hierarchical Queries",
+        "section_heading": "13.3 Creating a Hierarchical View of a Table",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-3",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-3.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-3.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-3.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Build a hierarchy from its root downward.",
+          "Anchor on the root and recursively match child parent-references to the current node’s identity, accumulating a path if required.",
+          "Each recursive step expands one level from already discovered parents."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "13.3 Creating a Hierarchical View of a Table",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-3",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch13"
+      ],
+      "recipe_name": "13.3 Creating a Hierarchical View of a Table",
+      "problem_paraphrase": "Build a hierarchy from its root downward.",
+      "solution_pattern": "Anchor on the root and recursively match child parent-references to the current node’s identity, accumulating a path if required.",
+      "discussion_reasoning": "Each recursive step expands one level from already discovered parents.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2, PostgreSQL, and SQL Server",
+          "dialects": [
+            "DB2",
+            "PostgreSQL",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-3.2.1",
+          "function_tokens_detected": [
+            "CAST",
+            "OPERATOR",
+            "VARCHAR"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL",
+          "dialects": [
+            "MySQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#idm45247229153880",
+          "function_tokens_detected": [
+            "CAST",
+            "CONCAT",
+            "VARCHAR"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-3.2.2",
+          "function_tokens_detected": [
+            "LTRIM",
+            "SYS_CONNECT_BY_PATH",
+            "TREES"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2, MySQL, PostgreSQL, and SQL Server",
+          "dialects": [
+            "DB2",
+            "PostgreSQL",
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-3.3.1",
+          "function_tokens_detected": [
+            "CAST",
+            "CHANGE",
+            "RETURNED",
+            "ROW",
+            "VARCHAR"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-3.3.2",
+          "function_tokens_detected": [
+            "LPAD",
+            "RETURNED"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "One visited node per traversal path.",
+      "output_shape": "A rooted hierarchy and optional path display.",
+      "assumptions": [
+        "One visited node per traversal path.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Oracle uses CONNECT BY/SYS_CONNECT_BY_PATH in the source; recursive WITH syntax and path types differ elsewhere."
+      ],
+      "test_query_or_validation_shape": "Test multiple roots, disconnected rows, repeated paths, deep chains, and cycles.",
+      "when_to_use": [
+        "Build a hierarchy from its root downward."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one visited node per traversal path."
+      ],
+      "related_records": [
+        "sql-recipe-13-01",
+        "sql-recipe-13-04",
+        "sql-recipe-13-05",
+        "sql-risk-current-version-assumption",
+        "sql-risk-recursive-query-no-termination"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-3",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-13-04",
+      "record_type": "recipe_pattern",
+      "name": "13.4 Finding All Child Rows for a Given Parent Row",
+      "summary": "Start at the chosen parent and repeatedly expand matching children, retaining the anchor only when the requested result includes it.",
+      "source_recipe_or_concept": "13.4 Finding All Child Rows for a Given Parent Row; supporting source units: 13.4",
+      "sql_problem_addressed": "Find all descendants of a selected parent.",
+      "query_intent": "Find all descendants of a selected parent.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One visited descendant entity or path.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One visited descendant entity or path.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Find all descendants of a selected parent."
+      ],
+      "aggregation_or_windowing": "Start at the chosen parent and repeatedly expand matching children, retaining the anchor only when the requested result includes it.",
+      "result_shape": "All descendants, with optional inclusion of the starting parent.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "The book includes the starting employee in this recipe’s result; a live task may need a different contract.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "A missing starting key should not silently produce the entire hierarchy.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Find all descendants of a selected parent."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one visited descendant entity or path."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-recursive-query-no-termination"
+      ],
+      "tests_or_checks": [
+        "Test a parent with no children, several levels, duplicate paths, and a cycle; confirm anchor inclusion."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-13-01",
+        "sql-recipe-13-05",
+        "sql-risk-current-version-assumption",
+        "sql-risk-recursive-query-no-termination"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "13",
+        "chapter_title": "Chapter 13. Hierarchical Queries",
+        "section_heading": "13.4 Finding All Child Rows for a Given Parent Row",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-4",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-4.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-4.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-4.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Find all descendants of a selected parent.",
+          "Start at the chosen parent and repeatedly expand matching children, retaining the anchor only when the requested result includes it.",
+          "Direct children and the transitive descendant set are different populations."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "13.4 Finding All Child Rows for a Given Parent Row",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-4",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch13"
+      ],
+      "recipe_name": "13.4 Finding All Child Rows for a Given Parent Row",
+      "problem_paraphrase": "Find all descendants of a selected parent.",
+      "solution_pattern": "Start at the chosen parent and repeatedly expand matching children, retaining the anchor only when the requested result includes it.",
+      "discussion_reasoning": "Direct children and the transitive descendant set are different populations.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2, PostgreSQL, and SQL Server",
+          "dialects": [
+            "DB2",
+            "PostgreSQL",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-4.2.1",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-4.2.2",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2, MySQL, PostgreSQL, and SQL Server",
+          "dialects": [
+            "DB2",
+            "PostgreSQL",
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-4.3.1",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-4.3.2",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "One visited descendant entity or path.",
+      "output_shape": "All descendants, with optional inclusion of the starting parent.",
+      "assumptions": [
+        "One visited descendant entity or path.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The book includes the starting employee in this recipe’s result; a live task may need a different contract."
+      ],
+      "test_query_or_validation_shape": "Test a parent with no children, several levels, duplicate paths, and a cycle; confirm anchor inclusion.",
+      "when_to_use": [
+        "Find all descendants of a selected parent."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one visited descendant entity or path."
+      ],
+      "related_records": [
+        "sql-recipe-13-01",
+        "sql-recipe-13-05",
+        "sql-risk-current-version-assumption",
+        "sql-risk-recursive-query-no-termination"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-4",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-13-05",
+      "record_type": "recipe_pattern",
+      "name": "13.5 Determining Which Rows Are Leaf, Branch, or Root Nodes",
+      "summary": "Combine the presence of a parent reference with evidence that other rows reference the current node.",
+      "source_recipe_or_concept": "13.5 Determining Which Rows Are Leaf, Branch, or Root Nodes; supporting source units: 13.5",
+      "sql_problem_addressed": "Classify hierarchy rows as roots, branches, or leaves.",
+      "query_intent": "Classify hierarchy rows as roots, branches, or leaves.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One classification per node under the stated tree model.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "T1",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One classification per node under the stated tree model.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Classify hierarchy rows as roots, branches, or leaves."
+      ],
+      "aggregation_or_windowing": "Combine the presence of a parent reference with evidence that other rows reference the current node.",
+      "result_shape": "Nodes labeled by structural role.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "Tree-role labels do not prove acyclicity or a valid single-parent structure.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "The source uses NULL to represent no parent; its terminology for self-referencing roots is source-specific.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Classify hierarchy rows as roots, branches, or leaves."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one classification per node under the stated tree model."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-recursive-query-no-termination"
+      ],
+      "tests_or_checks": [
+        "Test a standalone node, a root with children, an ordinary branch, an orphan, and self-reference."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-13-01",
+        "sql-recipe-13-04",
+        "sql-risk-current-version-assumption",
+        "sql-risk-recursive-query-no-termination"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "13",
+        "chapter_title": "Chapter 13. Hierarchical Queries",
+        "section_heading": "13.5 Determining Which Rows Are Leaf, Branch, or Root Nodes",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-5",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-5.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-5.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-5.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Classify hierarchy rows as roots, branches, or leaves.",
+          "Combine the presence of a parent reference with evidence that other rows reference the current node.",
+          "A leaf has no children, a branch has parent and children, and the example root has no parent reference."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "13.5 Determining Which Rows Are Leaf, Branch, or Root Nodes",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-5",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch13"
+      ],
+      "recipe_name": "13.5 Determining Which Rows Are Leaf, Branch, or Root Nodes",
+      "problem_paraphrase": "Classify hierarchy rows as roots, branches, or leaves.",
+      "solution_pattern": "Combine the presence of a parent reference with evidence that other rows reference the current node.",
+      "discussion_reasoning": "A leaf has no children, a branch has parent and children, and the example root has no parent reference.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2, PostgreSQL, MySQL, and SQL Server",
+          "dialects": [
+            "DB2",
+            "PostgreSQL",
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-5.2.1",
+          "function_tokens_detected": [
+            "COUNT",
+            "SIGN",
+            "VALUE"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-5.2.2",
+          "function_tokens_detected": [
+            "CONNECT_BY_ROOT",
+            "COUNT",
+            "DECODE",
+            "ORACLE"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2, PostgreSQL, MySQL, and SQL Server",
+          "dialects": [
+            "DB2",
+            "PostgreSQL",
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-5.3.1",
+          "function_tokens_detected": [
+            "COUNT",
+            "GET",
+            "MANAGER",
+            "SIGN"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-5.3.2",
+          "function_tokens_detected": [
+            "CONNECT_BY_ROOT",
+            "COUNT",
+            "DECODE",
+            "INSTR",
+            "LTRIM",
+            "SUBSTR",
+            "SYS_CONNECT_BY_PATH",
+            "WORK"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "One classification per node under the stated tree model.",
+      "output_shape": "Nodes labeled by structural role.",
+      "assumptions": [
+        "One classification per node under the stated tree model.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Tree-role labels do not prove acyclicity or a valid single-parent structure."
+      ],
+      "test_query_or_validation_shape": "Test a standalone node, a root with children, an ordinary branch, an orphan, and self-reference.",
+      "when_to_use": [
+        "Classify hierarchy rows as roots, branches, or leaves."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one classification per node under the stated tree model."
+      ],
+      "related_records": [
+        "sql-recipe-13-01",
+        "sql-recipe-13-04",
+        "sql-risk-current-version-assumption",
+        "sql-risk-recursive-query-no-termination"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-5",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        },
+        {
+          "name": "T1",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-5",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-01-06",
+      "record_type": "recipe_pattern",
+      "name": "1.6 Referencing an Aliased Column in the WHERE Clause",
+      "summary": "Put the expression in an inline view and filter its output alias in an outer query.",
+      "source_recipe_or_concept": "1.6 Referencing an Aliased Column in the WHERE Clause; supporting source units: 1.6",
+      "sql_problem_addressed": "Filter a computed or renamed column that is not visible to the same SELECT-level WHERE.",
+      "query_intent": "Filter a computed or renamed column that is not visible to the same SELECT-level WHERE.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "Inner detail or computed row grain; outer query retains qualifying inner rows.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "Inner detail or computed row grain; outer query retains qualifying inner rows.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Filter a computed or renamed column that is not visible to the same SELECT-level WHERE."
+      ],
+      "aggregation_or_windowing": "Put the expression in an inline view and filter its output alias in an outer query.",
+      "result_shape": "Computed rows filtered by their exposed alias.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Derived-table alias requirements vary in the source; verify current syntax.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "The outer predicate still follows normal NULL semantics.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Filter a computed or renamed column that is not visible to the same SELECT-level WHERE."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from inner detail or computed row grain; outer query retains qualifying inner rows."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Compare outer-alias filtering with the intended expression and test NULL results."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "1",
+        "chapter_title": "Chapter 1. Retrieving Records",
+        "section_heading": "1.6 Referencing an Aliased Column in the WHERE Clause",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-6",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-6.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-6.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-6.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Filter a computed or renamed column that is not visible to the same SELECT-level WHERE.",
+          "Put the expression in an inline view and filter its output alias in an outer query.",
+          "The inner result becomes an input relation for the outer filter, resolving the alias visibility problem."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "1.6 Referencing an Aliased Column in the WHERE Clause",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-6",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch01"
+      ],
+      "recipe_name": "1.6 Referencing an Aliased Column in the WHERE Clause",
+      "problem_paraphrase": "Filter a computed or renamed column that is not visible to the same SELECT-level WHERE.",
+      "solution_pattern": "Put the expression in an inline view and filter its output alias in an outer query.",
+      "discussion_reasoning": "The inner result becomes an input relation for the outer filter, resolving the alias visibility problem.",
+      "dialects_supported": [],
+      "dialect_variants": [],
+      "input_shape": "Inner detail or computed row grain; outer query retains qualifying inner rows.",
+      "output_shape": "Computed rows filtered by their exposed alias.",
+      "assumptions": [
+        "Inner detail or computed row grain; outer query retains qualifying inner rows.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Derived-table alias requirements vary in the source; verify current syntax."
+      ],
+      "test_query_or_validation_shape": "Compare outer-alias filtering with the intended expression and test NULL results.",
+      "when_to_use": [
+        "Filter a computed or renamed column that is not visible to the same SELECT-level WHERE."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from inner detail or computed row grain; outer query retains qualifying inner rows."
+      ],
+      "related_records": [
+        "sql-recipe-01-01",
+        "sql-recipe-01-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-6",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-07-13",
+      "record_type": "recipe_pattern",
+      "name": "7.13 Computing Averages Without High and Low Values",
+      "summary": "Identify minimum and maximum values, then exclude them under the chosen all-ties or single-observation rule.",
+      "source_recipe_or_concept": "7.13 Computing Averages Without High and Low Values; supporting source units: 7.13",
+      "sql_problem_addressed": "Compute an average after excluding extremes.",
+      "query_intent": "Compute an average after excluding extremes.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One trimmed population per requested group.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One trimmed population per requested group.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Compute an average after excluding extremes."
+      ],
+      "aggregation_or_windowing": "Identify minimum and maximum values, then exclude them under the chosen all-ties or single-observation rule.",
+      "result_shape": "An average of the retained observations.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "The source explicitly distinguishes excluding all tied extremes from subtracting one minimum and one maximum.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Clarify whether missing values enter the trimming population.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Compute an average after excluding extremes."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one trimmed population per requested group."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption"
+      ],
+      "tests_or_checks": [
+        "Test repeated extrema, all-equal values, and fewer than three observations."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-01",
+        "sql-recipe-07-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "7",
+        "chapter_title": "Chapter 7. Working with Numbers",
+        "section_heading": "7.13 Computing Averages Without High and Low Values",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-13",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-13.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-13.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-13.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Compute an average after excluding extremes.",
+          "Identify minimum and maximum values, then exclude them under the chosen all-ties or single-observation rule.",
+          "Removing every row equal to an extreme is different from removing only one smallest and one largest observation."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "7.13 Computing Averages Without High and Low Values",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-13",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch07"
+      ],
+      "recipe_name": "7.13 Computing Averages Without High and Low Values",
+      "problem_paraphrase": "Compute an average after excluding extremes.",
+      "solution_pattern": "Identify minimum and maximum values, then exclude them under the chosen all-ties or single-observation rule.",
+      "discussion_reasoning": "Removing every row equal to an extreme is different from removing only one smallest and one largest observation.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "MySQL and PostgreSQL",
+          "dialects": [
+            "PostgreSQL",
+            "MySQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-13.2.1",
+          "function_tokens_detected": [
+            "AVG",
+            "MAX",
+            "MIN"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2, Oracle, and SQL Server",
+          "dialects": [
+            "DB2",
+            "Oracle",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-13.2.2",
+          "function_tokens_detected": [
+            "AVG",
+            "MAX",
+            "MIN"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL and PostgreSQL",
+          "dialects": [
+            "PostgreSQL",
+            "MySQL"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-13.3.1",
+          "function_tokens_detected": [
+            "COUNT",
+            "DUPLICATES",
+            "MAX",
+            "MIN",
+            "SUM"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2, Oracle, and SQL Server",
+          "dialects": [
+            "DB2",
+            "Oracle",
+            "SQL Server"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-13.3.2",
+          "function_tokens_detected": [
+            "MAX",
+            "MIN"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "One trimmed population per requested group.",
+      "output_shape": "An average of the retained observations.",
+      "assumptions": [
+        "One trimmed population per requested group.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The source explicitly distinguishes excluding all tied extremes from subtracting one minimum and one maximum."
+      ],
+      "test_query_or_validation_shape": "Test repeated extrema, all-equal values, and fewer than three observations.",
+      "when_to_use": [
+        "Compute an average after excluding extremes."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one trimmed population per requested group."
+      ],
+      "related_records": [
+        "sql-recipe-07-01",
+        "sql-recipe-07-02",
+        "sql-risk-current-version-assumption"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-13",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-09-07",
+      "record_type": "recipe_pattern",
+      "name": "9.7 Creating a Calendar",
+      "summary": "Generate dates, derive week and weekday positions, and pivot day numbers into weekday columns.",
+      "source_recipe_or_concept": "9.7 Creating a Calendar; supporting source units: 9.7",
+      "sql_problem_addressed": "Display a calendar-shaped result from dates.",
+      "query_intent": "Display a calendar-shaped result from dates.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "Calendar dates transformed into one output row per displayed week.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "T1",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "Calendar dates transformed into one output row per displayed week.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Display a calendar-shaped result from dates."
+      ],
+      "aggregation_or_windowing": "Generate dates, derive week and weekday positions, and pivot day numbers into weekday columns.",
+      "result_shape": "A week-by-week calendar matrix.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "The source discusses ISO-week formatting; display-week definitions must be verified explicitly.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "Empty display positions must not be mistaken for missing source facts.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Display a calendar-shaped result from dates."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from calendar dates transformed into one output row per displayed week."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-date-boundary"
+      ],
+      "tests_or_checks": [
+        "Test a month spanning year-end, a month starting midweek, and blank cells outside the month."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-08-01",
+        "sql-recipe-09-10",
+        "sql-recipe-09-13",
+        "sql-risk-current-version-assumption",
+        "sql-risk-date-boundary"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "9",
+        "chapter_title": "Chapter 9. Date Manipulation",
+        "section_heading": "9.7 Creating a Calendar",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Display a calendar-shaped result from dates.",
+          "Generate dates, derive week and weekday positions, and pivot day numbers into weekday columns.",
+          "Date generation defines completeness while week/weekday keys define the display grid."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "9.7 Creating a Calendar",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch09"
+      ],
+      "recipe_name": "9.7 Creating a Calendar",
+      "problem_paraphrase": "Display a calendar-shaped result from dates.",
+      "solution_pattern": "Generate dates, derive week and weekday positions, and pivot day numbers into weekday columns.",
+      "discussion_reasoning": "Date generation defines completeness while week/weekday keys define the display grid.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2",
+          "dialects": [
+            "DB2"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7.2.1",
+          "function_tokens_detected": [
+            "DAY",
+            "DAYOFWEEK",
+            "MAX",
+            "MONTH",
+            "WEEK_ISO"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7.2.2",
+          "function_tokens_detected": [
+            "MAX",
+            "TO_CHAR",
+            "TO_NUMBER",
+            "TRUNC"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "PostgreSQL",
+          "dialects": [
+            "PostgreSQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7.2.3",
+          "function_tokens_detected": [
+            "CAST",
+            "DATE_TRUNC",
+            "GENERATE_SERIES",
+            "MAX",
+            "TO_CHAR"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL",
+          "dialects": [
+            "MySQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7.2.4",
+          "function_tokens_detected": [
+            "DATEADD",
+            "DATEPART",
+            "DATE_ADD",
+            "DAY",
+            "GETDATE",
+            "MAX"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "SQL Server",
+          "dialects": [
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7.2.5",
+          "function_tokens_detected": [
+            "DATEADD",
+            "DATEPART",
+            "DAY",
+            "GETDATE",
+            "MAX"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2",
+          "dialects": [
+            "DB2"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7.3.1",
+          "function_tokens_detected": [
+            "DAY",
+            "DAYOFWEEK",
+            "DM",
+            "MAX",
+            "MONTH",
+            "PLACE",
+            "WEEK",
+            "WEEK_ISO",
+            "WK"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7.3.2",
+          "function_tokens_detected": [
+            "DM",
+            "HERE",
+            "MAX",
+            "MONTH",
+            "TO_CHAR",
+            "TO_NUMBER",
+            "TRUNC",
+            "WEEK",
+            "WK"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL, PostgreSQL, and SQL Server",
+          "dialects": [
+            "PostgreSQL",
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7.3.5",
+          "function_tokens_detected": [
+            "DATEADD",
+            "DATEPART",
+            "DAY",
+            "DM",
+            "GETDATE",
+            "MAX",
+            "MONTH",
+            "PLACE",
+            "WEEK",
+            "WK"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "Calendar dates transformed into one output row per displayed week.",
+      "output_shape": "A week-by-week calendar matrix.",
+      "assumptions": [
+        "Calendar dates transformed into one output row per displayed week.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "The source discusses ISO-week formatting; display-week definitions must be verified explicitly."
+      ],
+      "test_query_or_validation_shape": "Test a month spanning year-end, a month starting midweek, and blank cells outside the month.",
+      "when_to_use": [
+        "Display a calendar-shaped result from dates."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from calendar dates transformed into one output row per displayed week."
+      ],
+      "related_records": [
+        "sql-recipe-08-01",
+        "sql-recipe-09-10",
+        "sql-recipe-09-13",
+        "sql-risk-current-version-assumption",
+        "sql-risk-date-boundary"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "T1",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch09.html#sqlckbk-CHP-9-SECT-7",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-10-05",
+      "record_type": "recipe_pattern",
+      "name": "10.5 Generating Consecutive Numeric Values",
+      "summary": "Use a bounded recursive query, the source’s Oracle MODEL construction, or PostgreSQL GENERATE_SERIES as documented.",
+      "source_recipe_or_concept": "10.5 Generating Consecutive Numeric Values; supporting source units: 10.5",
+      "sql_problem_addressed": "Generate an integer rowset for controlled expansion.",
+      "query_intent": "Generate an integer rowset for controlled expansion.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One row per integer in the defined sequence.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "EMP",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One row per integer in the defined sequence.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Generate an integer rowset for controlled expansion."
+      ],
+      "aggregation_or_windowing": "Use a bounded recursive query, the source’s Oracle MODEL construction, or PostgreSQL GENERATE_SERIES as documented.",
+      "result_shape": "A contiguous sequence with known start, end, and step.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "Recursion limits and generator syntax require current dialect verification; the book’s helper-table patterns also have finite capacity.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "This recipe does not establish a special NULL policy; test relevant NULL inputs when adapting its expressions.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Generate an integer rowset for controlled expansion."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one row per integer in the defined sequence."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-date-boundary"
+      ],
+      "tests_or_checks": [
+        "Verify row count, uniqueness, endpoints, termination, and the empty-range case."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-10-01",
+        "sql-recipe-10-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-date-boundary"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "10",
+        "chapter_title": "Chapter 10. Working with Ranges",
+        "section_heading": "10.5 Generating Consecutive Numeric Values",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch10.html#sqlckbk-CHP-10-SECT-5",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch10.html#sqlckbk-CHP-10-SECT-5.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch10.html#sqlckbk-CHP-10-SECT-5.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch10.html#sqlckbk-CHP-10-SECT-5.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Generate an integer rowset for controlled expansion.",
+          "Use a bounded recursive query, the source’s Oracle MODEL construction, or PostgreSQL GENERATE_SERIES as documented.",
+          "The generated position values can support character walking, calendar expansion, or report reshaping."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "10.5 Generating Consecutive Numeric Values",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch10.html#sqlckbk-CHP-10-SECT-5",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch10"
+      ],
+      "recipe_name": "10.5 Generating Consecutive Numeric Values",
+      "problem_paraphrase": "Generate an integer rowset for controlled expansion.",
+      "solution_pattern": "Use a bounded recursive query, the source’s Oracle MODEL construction, or PostgreSQL GENERATE_SERIES as documented.",
+      "discussion_reasoning": "The generated position values can support character walking, calendar expansion, or report reshaping.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2 and SQL Server",
+          "dialects": [
+            "DB2",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch10.html#sqlckbk-CHP-10-SECT-5.2.1",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch10.html#sqlckbk-CHP-10-SECT-5.2.2",
+          "function_tokens_detected": [
+            "BY",
+            "ITERATE",
+            "MEASURES"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "PostgreSQL",
+          "dialects": [
+            "PostgreSQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch10.html#sqlckbk-CHP-10-SECT-5.2.3",
+          "function_tokens_detected": [
+            "GENERATE_SERIES"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2 and SQL Server",
+          "dialects": [
+            "DB2",
+            "SQL Server"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch10.html#sqlckbk-CHP-10-SECT-5.3.1",
+          "function_tokens_detected": [
+            "ID"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch10.html#sqlckbk-CHP-10-SECT-5.3.2",
+          "function_tokens_detected": [
+            "ARRAY",
+            "BY",
+            "INDEX",
+            "ITERATE",
+            "MEASURES",
+            "RULES"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "PostgreSQL",
+          "dialects": [
+            "PostgreSQL"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch10.html#sqlckbk-CHP-10-SECT-5.3.3",
+          "function_tokens_detected": [
+            "GENERATE_SERIES",
+            "MAX",
+            "MIN",
+            "VALUE"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "One row per integer in the defined sequence.",
+      "output_shape": "A contiguous sequence with known start, end, and step.",
+      "assumptions": [
+        "One row per integer in the defined sequence.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Recursion limits and generator syntax require current dialect verification; the book’s helper-table patterns also have finite capacity."
+      ],
+      "test_query_or_validation_shape": "Verify row count, uniqueness, endpoints, termination, and the empty-range case.",
+      "when_to_use": [
+        "Generate an integer rowset for controlled expansion."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one row per integer in the defined sequence."
+      ],
+      "related_records": [
+        "sql-recipe-10-01",
+        "sql-recipe-10-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-date-boundary"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "EMP",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch10.html#sqlckbk-CHP-10-SECT-5",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-recipe-11-12",
+      "record_type": "recipe_pattern",
+      "name": "11.12 Generating Simple Forecasts",
+      "summary": "Cross join each order to a bounded stage-number rowset and derive action labels and dates with CASE.",
+      "source_recipe_or_concept": "11.12 Generating Simple Forecasts; supporting source units: 11.12",
+      "sql_problem_addressed": "Expand an order into a small schedule of predefined future actions.",
+      "query_intent": "Expand an order into a small schedule of predefined future actions.",
+      "input_tables_or_rowsets": [
+        {
+          "role": "source_example_rowsets",
+          "description": "One order-stage pair.",
+          "schema_status": "Source-local examples only; map to a verified live schema."
+        },
+        {
+          "role": "source-local object reference",
+          "name": "T1",
+          "schema_status": "Do not assume identical names in separate recipes contain the same fixtures."
+        }
+      ],
+      "required_grain": "One order-stage pair.",
+      "key_columns_or_join_conditions": [
+        "Identify source-row identity and any matching/grouping columns before adapting this pattern."
+      ],
+      "filters_or_predicates": [
+        "The predicate must implement this intent: Expand an order into a small schedule of predefined future actions."
+      ],
+      "aggregation_or_windowing": "Cross join each order to a bounded stage-number rowset and derive action labels and dates with CASE.",
+      "result_shape": "Several scheduled action rows per original order.",
+      "dialects_covered": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_specific_notes": [
+        "Current-date functions and recursive/generator forms vary across source dialects.",
+        "Book platform versions: DB2 11.5, Oracle 19c, PostgreSQL 12, MySQL 8.0, SQL Server 2017. A missing variant is not proof of lack of support."
+      ],
+      "null_behavior": "A missing order date or stage rule should remain unresolved.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Expand an order into a small schedule of predefined future actions."
+      ],
+      "do_not_use_when": [
+        "The desired grain differs from one order-stage pair."
+      ],
+      "common_failure_modes": [
+        "sql-risk-current-version-assumption",
+        "sql-risk-unstable-order-by"
+      ],
+      "tests_or_checks": [
+        "Verify the stage multiplier, action order, date offsets, and exactly one row per order-stage key."
+      ],
+      "diagnostic_questions": [
+        "What does one output row represent for this recipe, and does the actual result match that shape?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-11-01",
+        "sql-recipe-11-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-unstable-order-by"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "11",
+        "chapter_title": "Chapter 11. Advanced Searching",
+        "section_heading": "11.12 Generating Simple Forecasts",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-12",
+        "problem_solution_discussion_reference": {
+          "Problem": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-12.1",
+          "Solution": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-12.2",
+          "Discussion": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-12.3"
+        },
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "Expand an order into a small schedule of predefined future actions.",
+          "Cross join each order to a bounded stage-number rowset and derive action labels and dates with CASE.",
+          "The expansion is a deterministic schedule from stated assumptions, not a statistical demand forecast."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database.",
+          "Grain, key requirements, counterexample tests, and live-use gates are analytical annotations; they are not source schema guarantees."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "11.12 Generating Simple Forecasts",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-12",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_recipe",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "recipe",
+        "ch11"
+      ],
+      "recipe_name": "11.12 Generating Simple Forecasts",
+      "problem_paraphrase": "Expand an order into a small schedule of predefined future actions.",
+      "solution_pattern": "Cross join each order to a bounded stage-number rowset and derive action labels and dates with CASE.",
+      "discussion_reasoning": "The expansion is a deterministic schedule from stated assumptions, not a statistical demand forecast.",
+      "dialects_supported": [
+        "DB2",
+        "Oracle",
+        "PostgreSQL",
+        "MySQL",
+        "SQL Server"
+      ],
+      "dialect_variants": [
+        {
+          "source_heading": "DB2, MySQL, and SQL Server",
+          "dialects": [
+            "DB2",
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-12.2.1",
+          "function_tokens_detected": [
+            "GETDATE",
+            "NROWS"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-12.2.2",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "PostgreSQL",
+          "dialects": [
+            "PostgreSQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-12.2.3",
+          "function_tokens_detected": [
+            "GENERATE_SERIES",
+            "GS"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "MySQL",
+          "dialects": [
+            "MySQL"
+          ],
+          "part": "Solution",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-12.2.4",
+          "function_tokens_detected": [],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "DB2, MySQL, and SQL Server",
+          "dialects": [
+            "DB2",
+            "MySQL",
+            "SQL Server"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-12.3.1",
+          "function_tokens_detected": [
+            "CURDATE",
+            "GETDATE",
+            "NROWS",
+            "ORDER_DATE"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "Oracle",
+          "dialects": [
+            "Oracle"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-12.3.2",
+          "function_tokens_detected": [
+            "ORDER_DATE"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        },
+        {
+          "source_heading": "PostgreSQL",
+          "dialects": [
+            "PostgreSQL"
+          ],
+          "part": "Discussion",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-12.3.3",
+          "function_tokens_detected": [
+            "GENERATE_SERIES",
+            "GS",
+            "ORDER_DATE"
+          ],
+          "interpretation": "Lexical evidence in this source subsection, not a verified function catalog or executable translation."
+        }
+      ],
+      "input_shape": "One order-stage pair.",
+      "output_shape": "Several scheduled action rows per original order.",
+      "assumptions": [
+        "One order-stage pair.",
+        "Source example objects must be replaced only by verified schema mappings."
+      ],
+      "gotchas": [
+        "Current-date functions and recursive/generator forms vary across source dialects."
+      ],
+      "test_query_or_validation_shape": "Verify the stage multiplier, action order, date offsets, and exactly one row per order-stage key.",
+      "when_to_use": [
+        "Expand an order into a small schedule of predefined future actions."
+      ],
+      "when_not_to_use": [
+        "The desired grain differs from one order-stage pair."
+      ],
+      "related_records": [
+        "sql-recipe-11-01",
+        "sql-recipe-11-02",
+        "sql-risk-current-version-assumption",
+        "sql-risk-unstable-order-by"
+      ],
+      "source_issue_ids": [],
+      "dialect_coverage_interpretation": "Explicitly labeled source variants or title-specific scope. Empty means no separate platform labels were supplied, not an assertion of portability.",
+      "source_structure": {
+        "problem_present": true,
+        "solution_present": true,
+        "discussion_present": true,
+        "note": ""
+      },
+      "source_object_references": [
+        {
+          "name": "T1",
+          "source_anchor": "SQL Cookbook.epub/OEBPS/ch11.html#sqlckbk-CHP-11-SECT-12",
+          "status": "Literal reference in a source example, not a verified live schema object."
+        }
+      ],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-concept-inline-view",
+      "record_type": "core_sql_pattern",
+      "name": "Inline views expose intermediate results",
+      "summary": "A query used as a FROM input gives a later query access to computed expressions or grouped results.",
+      "source_recipe_or_concept": "Subqueries; supporting source units: app02#sqlckbk-APP-B-SECT-1, 1.6",
+      "sql_problem_addressed": "A query used as a FROM input gives a later query access to computed expressions or grouped results.",
+      "query_intent": "Inline views expose intermediate results",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "Inner and outer stages can have different grains.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "An outer result built from a named intermediate rowset.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Inline views expose intermediate results is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Check the inner result independently, then the outer filter or aggregate."
+      ],
+      "diagnostic_questions": [
+        "Which concrete output row would demonstrate that this design answers the intended question?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-01-06"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "B",
+        "chapter_title": "Appendix B. Common Table Expressions",
+        "section_heading": "Subqueries",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/app02.html#sqlckbk-APP-B-SECT-1",
+        "problem_solution_discussion_reference": {},
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "A query used as a FROM input gives a later query access to computed expressions or grouped results."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "Subqueries",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/app02.html#sqlckbk-APP-B-SECT-1",
+            "support_role": "direct source pattern"
+          },
+          {
+            "section_heading": "1.6 Referencing an Aliased Column in the WHERE Clause",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch01.html#sqlckbk-CHP-1-SECT-6",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_sql_pattern",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": false
+      },
+      "tags": [
+        "core_sql_pattern"
+      ],
+      "source_issue_ids": [],
+      "verification_flag_ids": [
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-concept-cte",
+      "record_type": "core_sql_pattern",
+      "name": "CTEs name stages of a query",
+      "summary": "WITH introduces named query results that can make multi-stage logic easier to inspect without implying an automatic execution-speed benefit.",
+      "source_recipe_or_concept": "Common Table Expressions; supporting source units: app02#sqlckbk-APP-B-SECT-2, 7.13",
+      "sql_problem_addressed": "WITH introduces named query results that can make multi-stage logic easier to inspect without implying an automatic execution-speed benefit.",
+      "query_intent": "CTEs name stages of a query",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "One explicit grain per named stage.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Final query output from named intermediate rowsets.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "CTEs name stages of a query is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Check each stage’s names, output columns, grain, and downstream dependencies."
+      ],
+      "diagnostic_questions": [
+        "Which concrete output row would demonstrate that this design answers the intended question?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-07-13"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "B",
+        "chapter_title": "Appendix B. Common Table Expressions",
+        "section_heading": "Common Table Expressions",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/app02.html#sqlckbk-APP-B-SECT-2",
+        "problem_solution_discussion_reference": {},
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "WITH introduces named query results that can make multi-stage logic easier to inspect without implying an automatic execution-speed benefit."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "Common Table Expressions",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/app02.html#sqlckbk-APP-B-SECT-2",
+            "support_role": "direct source pattern"
+          },
+          {
+            "section_heading": "7.13 Computing Averages Without High and Low Values",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch07.html#sqlckbk-CHP-7-SECT-13",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_sql_pattern",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "core_sql_pattern"
+      ],
+      "source_issue_ids": [
+        "source-issue-recursive-symbol",
+        "source-issue-recursive-keyword"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-cte",
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    },
+    {
+      "id": "sql-concept-recursion",
+      "record_type": "core_sql_pattern",
+      "name": "Recursion combines a starting set with a repeated expansion",
+      "summary": "A recursive query starts from an anchor set and repeatedly derives subsequent rows under a terminating condition.",
+      "source_recipe_or_concept": "Common Table Expressions; supporting source units: app02#sqlckbk-APP-B-SECT-2, 13.4",
+      "sql_problem_addressed": "A recursive query starts from an anchor set and repeatedly derives subsequent rows under a terminating condition.",
+      "query_intent": "Recursion combines a starting set with a repeated expansion",
+      "input_tables_or_rowsets": [
+        "The rowsets established by the linked recipe; live table names and relationships are not supplied."
+      ],
+      "required_grain": "One hierarchy path or generated sequence state per recursive row.",
+      "key_columns_or_join_conditions": [
+        "Use verified source identifiers; a source example is not a live key declaration."
+      ],
+      "filters_or_predicates": [
+        "Apply the approved population predicate; this record does not supply a business population."
+      ],
+      "aggregation_or_windowing": "Choose the linked aggregate, window, or detail pattern only after fixing the result grain.",
+      "result_shape": "Finite reachable rows or generated sequence values.",
+      "dialects_covered": [],
+      "dialect_specific_notes": [
+        "Source-era examples only; verify syntax against the actual database version."
+      ],
+      "null_behavior": "Inspect nullable keys, predicates, and measure inputs relevant to the linked pattern.",
+      "performance_or_readability_note": "No optimizer or runtime result has been measured. Readability guidance is not a performance guarantee.",
+      "use_when": [
+        "Recursion combines a starting set with a repeated expansion is the task under review."
+      ],
+      "do_not_use_when": [
+        "Required schema, expected output, or business evidence is unavailable and would have to be invented."
+      ],
+      "common_failure_modes": [],
+      "tests_or_checks": [
+        "Test an empty anchor, a short chain, a cycle, and a known stopping bound; resolve the Fibonacci listing’s undefined name."
+      ],
+      "diagnostic_questions": [
+        "Which concrete output row would demonstrate that this design answers the intended question?"
+      ],
+      "related_record_ids": [
+        "sql-recipe-13-04"
+      ],
+      "source_traceability": {
+        "source_file": "SQL Cookbook.epub.zip",
+        "book_title": "SQL Cookbook",
+        "author": "Anthony Molinaro and Robert de Graaf",
+        "edition_or_version": "Second Edition",
+        "chapter_number": "B",
+        "chapter_title": "Appendix B. Common Table Expressions",
+        "section_heading": "Common Table Expressions",
+        "page_or_anchor": "SQL Cookbook.epub/OEBPS/app02.html#sqlckbk-APP-B-SECT-2",
+        "problem_solution_discussion_reference": {},
+        "support_role": "direct source pattern",
+        "support_strength": "direct",
+        "directly_supported_claims": [
+          "A recursive query starts from an anchor set and repeatedly derives subsequent rows under a terminating condition."
+        ],
+        "inferred_claims": [
+          "The tests and live-use gates in this record are package-authored validation proposals; they were not executed on a target database."
+        ],
+        "supporting_sources": [
+          {
+            "section_heading": "Common Table Expressions",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/app02.html#sqlckbk-APP-B-SECT-2",
+            "support_role": "direct source pattern"
+          },
+          {
+            "section_heading": "13.4 Finding All Child Rows for a Given Parent Row",
+            "page_or_anchor": "SQL Cookbook.epub/OEBPS/ch13.html#sqlckbk-CHP-13-SECT-4",
+            "support_role": "direct source pattern"
+          }
+        ],
+        "source_scope_note": "Only the uploaded second-edition text was consulted. Anchors identify EPUB locations, not printed pages."
+      },
+      "derivation": {
+        "classification": "source_direct_sql_pattern",
+        "explanation": "Paraphrased source concept; suggested checks are an explicitly derived validation layer.",
+        "confidence": "high",
+        "current_verification_required": true,
+        "human_review_recommended": true
+      },
+      "tags": [
+        "core_sql_pattern"
+      ],
+      "source_issue_ids": [
+        "source-issue-recursive-symbol",
+        "source-issue-recursive-keyword"
+      ],
+      "verification_flag_ids": [
+        "sql-verify-cte",
+        "sql-verify-db2-version",
+        "sql-verify-mysql-version",
+        "sql-verify-oracle-version",
+        "sql-verify-postgresql-version",
+        "sql-verify-sql-server-version"
+      ]
+    }
+  ]
+}

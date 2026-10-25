@@ -1,0 +1,1406 @@
+{
+  "package_metadata": {
+    "package_name": "JavaScript Language, Runtime, and Code-Quality Reasoning OS V2",
+    "module_name": "code_review_workflows",
+    "repair_type": "focused_v2_repair_not_full_rebuild",
+    "generated_at": "2026-06-21T05:00:11.155979+00:00",
+    "primary_source": {
+      "title": "JavaScript: The Definitive Guide",
+      "edition": "Seventh Edition",
+      "author": "David Flanagan",
+      "publisher": "O'Reilly Media",
+      "release_year": 2020,
+      "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+      "source_sha256": "b511aca2b98ae4eec4966c87d5e6b6c1704cbafe7dd076b924db46cb8d20ae07"
+    },
+    "v1_package_reference": {
+      "source_zip": "Javascript Reasoning.zip",
+      "source_zip_sha256": "60242e2ad2cfcc9bdf79f2fc73b392b7f149339dc95d6234f00db683f368d98d",
+      "not_overwritten": true
+    },
+    "authority_order": [
+      "Original uploaded book source",
+      "Current generated JavaScript Reasoning OS package",
+      "User repair prompt",
+      "Current official documentation only if available",
+      "General engineering reasoning"
+    ],
+    "source_limitation_warning": "Current browser, Node, npm, bundler, tool, framework, and Google Apps Script behavior is not asserted unless explicitly verified. V2 flags such items for current documentation checks.",
+    "purpose": "Twenty-one distinct JavaScript code review workflows with tests/checks and human-review triggers."
+  },
+  "code_review_workflows": [
+    {
+      "id": "js-workflow-inspect-unfamiliar-file",
+      "workflow_name": "Inspect unfamiliar JavaScript file",
+      "goal": "Classify a file before making claims or edits.",
+      "best_fit_context": "First pass over any JS/JSX/MJS/CJS/Apps Script/HTML script file.",
+      "preconditions": [
+        "File contents and path are available",
+        "Any package/build/test context is available or explicitly missing"
+      ],
+      "inspection_steps": [
+        "Identify runtime candidates from imports/globals/file path",
+        "Identify module system and top-level side effects",
+        "List exported/public API shape",
+        "Mark host APIs and current-verification needs",
+        "Scan for high-risk constructs: coercion, nullish access, mutation, this, async, JSON/date/regex"
+      ],
+      "source_records_to_consult": [
+        "js-boundary-ecmascript-core",
+        "js-risk-browser-node-api-confusion",
+        "js-risk-module-system-mismatch"
+      ],
+      "questions_to_ask": [
+        "js-dq-runtime-executing-file",
+        "js-dq-module-system",
+        "js-dq-tooling-executed-code"
+      ],
+      "safe_outputs": [
+        "Runtime/module map",
+        "Risk-ranked inspection notes",
+        "Explicit unknowns needing docs or human context"
+      ],
+      "dangerous_outputs": [
+        "Assuming runtime from extension alone",
+        "Rewriting before classifying host APIs"
+      ],
+      "tests_or_checks": [
+        "Run syntax/test command if known",
+        "Search imports/globals",
+        "Check package config"
+      ],
+      "human_review_triggers": [
+        "Security-sensitive code",
+        "Unknown production runtime",
+        "Generated/minified code"
+      ],
+      "completion_criteria": [
+        "Runtime and module system are named or marked verification-required",
+        "Primary risks are listed with evidence"
+      ],
+      "failure_modes": [
+        "Misses file role",
+        "Conflates browser Node and Apps Script"
+      ],
+      "related_risk_ids": [
+        "js-risk-browser-node-api-confusion",
+        "js-risk-module-system-mismatch"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-workflow-identify-runtime-module",
+      "workflow_name": "Identify runtime and module system",
+      "goal": "Separate ECMAScript, browser, Node, Apps Script, and tooling assumptions.",
+      "best_fit_context": "Any review involving imports, globals, or platform APIs.",
+      "preconditions": [
+        "Repository/package metadata is available if possible"
+      ],
+      "inspection_steps": [
+        "Map each file to runtime role",
+        "Check package.json type/exports/scripts",
+        "Check script tags or Apps Script file roles",
+        "Check bundler/test transforms",
+        "Record current docs needed for platform behavior"
+      ],
+      "source_records_to_consult": [
+        "js-boundary-browser-dom",
+        "js-boundary-node-modules",
+        "js-boundary-google-apps-script-extension",
+        "js-sem-es-modules",
+        "js-sem-commonjs-modules"
+      ],
+      "questions_to_ask": [
+        "js-dq-runtime-executing-file",
+        "js-dq-module-system",
+        "js-dq-browser-api-in-node",
+        "js-dq-node-api-in-browser"
+      ],
+      "safe_outputs": [
+        "Boundary table",
+        "Interop adapter recommendation",
+        "Verification flags"
+      ],
+      "dangerous_outputs": [
+        "Claiming Node APIs in browser",
+        "Claiming Apps Script behavior without docs"
+      ],
+      "tests_or_checks": [
+        "Module import smoke test",
+        "Runtime smoke test",
+        "Config diff"
+      ],
+      "human_review_triggers": [
+        "Mixed CJS/ESM package",
+        "Browser/Node shared module",
+        "Apps Script web app"
+      ],
+      "completion_criteria": [
+        "No host API is assigned to wrong runtime",
+        "Loader assumptions are evidence-backed"
+      ],
+      "failure_modes": [
+        "Loader mismatch not detected",
+        "Test runner mistaken for production runtime"
+      ],
+      "related_risk_ids": [
+        "js-risk-browser-node-api-confusion",
+        "js-risk-module-system-mismatch",
+        "js-risk-apps-script-runtime-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-workflow-type-conversion-risk",
+      "workflow_name": "Review type conversion risk",
+      "goal": "Find coercion paths that affect comparisons, arithmetic, string output, truthiness, and JSON.",
+      "best_fit_context": "Code handling external inputs, comparisons, filters, totals, form/query/CSV data.",
+      "preconditions": [
+        "Inputs and expected types are known or inferable"
+      ],
+      "inspection_steps": [
+        "Mark every boundary where strings/nullish values enter",
+        "Search operators == != < > <= >= + if && || ?? template literals JSON.stringify",
+        "Identify object-to-primitive hooks",
+        "Recommend parse/validate/normalize boundary"
+      ],
+      "source_records_to_consult": [
+        "js-sem-implicit-conversion",
+        "js-sem-equality-comparison",
+        "js-sem-truthiness",
+        "js-sem-object-to-primitive"
+      ],
+      "questions_to_ask": [
+        "js-dq-implicit-conversion-site"
+      ],
+      "safe_outputs": [
+        "Specific coercion findings with input examples",
+        "Minimal normalization plan"
+      ],
+      "dangerous_outputs": [
+        "Generic advice to avoid coercion without naming operators/values"
+      ],
+      "tests_or_checks": [
+        "Tests for \"\", \"0\", \"10\", 0, false, null, undefined, NaN, object operands"
+      ],
+      "human_review_triggers": [
+        "Security/validation logic",
+        "Payment/count/date inputs"
+      ],
+      "completion_criteria": [
+        "Every conversion-sensitive operator near external input is reviewed"
+      ],
+      "failure_modes": [
+        "Misses + string concatenation or relational conversion"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-workflow-null-undefined-access",
+      "workflow_name": "Review null/undefined access",
+      "goal": "Prevent TypeError and hidden missing-data bugs.",
+      "best_fit_context": "Nested property access, DOM query results, API responses, optional chaining refactors.",
+      "preconditions": [
+        "Known object shape or API contract if possible"
+      ],
+      "inspection_steps": [
+        "List nested access chains and destructuring sites",
+        "Trace possible null/undefined sources",
+        "Decide required invariant versus optional absence",
+        "Check fallback operator || versus ??",
+        "Add tests for missing parent and valid falsy child"
+      ],
+      "source_records_to_consult": [
+        "js-sem-null-vs-undefined",
+        "js-sem-property-access",
+        "js-sem-optional-chaining"
+      ],
+      "questions_to_ask": [
+        "js-dq-nullish-property-base"
+      ],
+      "safe_outputs": [
+        "Guard/assertion plan",
+        "Optional chaining only where absence is accepted"
+      ],
+      "dangerous_outputs": [
+        "Blanket optional chaining that hides required data"
+      ],
+      "tests_or_checks": [
+        "Missing parent, null child, undefined property, 0/\"\"/false values"
+      ],
+      "human_review_triggers": [
+        "Public API data shape unknown",
+        "User data loss risk"
+      ],
+      "completion_criteria": [
+        "Every crash-prone access has explicit absence policy"
+      ],
+      "failure_modes": [
+        "Optional chaining used as error suppression"
+      ],
+      "related_risk_ids": [
+        "js-risk-null-undefined-access"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-workflow-mutation-shared-reference",
+      "workflow_name": "Review mutation/shared-reference risk",
+      "goal": "Find aliasing and mutation that can break refactors or callers.",
+      "best_fit_context": "State updates, array/object helpers, reducers, config defaults, tests.",
+      "preconditions": [
+        "Input/output ownership expectations are known or marked"
+      ],
+      "inspection_steps": [
+        "Identify object/array parameters and module-level state",
+        "Search property writes and mutating methods",
+        "Distinguish shallow copies from deep ownership changes",
+        "Classify each mutating helper as intentional or bug",
+        "Add aliasing tests"
+      ],
+      "source_records_to_consult": [
+        "js-sem-object-references",
+        "js-sem-array-iteration-methods",
+        "js-sem-arrays-length-sparse"
+      ],
+      "questions_to_ask": [
+        "js-dq-shared-reference-mutation",
+        "js-dq-sparse-array"
+      ],
+      "safe_outputs": [
+        "Mutation contract or immutable rewrite plan",
+        "Aliasing risks tied to line/code pattern"
+      ],
+      "dangerous_outputs": [
+        "Replacing mutation blindly when identity is required"
+      ],
+      "tests_or_checks": [
+        "Original object unchanged or intentionally changed",
+        "Nested object alias test",
+        "sort/reverse mutation test"
+      ],
+      "human_review_triggers": [
+        "Shared app state",
+        "Spreadsheet/data migration code"
+      ],
+      "completion_criteria": [
+        "Mutation ownership is documented for each changed value"
+      ],
+      "failure_modes": [
+        "Treats const as immutability guarantee"
+      ],
+      "related_risk_ids": [
+        "js-risk-shared-object-mutation",
+        "js-risk-sparse-array-assumption"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-workflow-this-closure",
+      "workflow_name": "Review this and closure behavior",
+      "goal": "Prevent receiver and captured-state bugs.",
+      "best_fit_context": "Methods, callbacks, event handlers, classes, closures, timers.",
+      "preconditions": [
+        "Call sites and callback API context are visible"
+      ],
+      "inspection_steps": [
+        "Search this usage and classify invocation form",
+        "Find methods passed as values",
+        "List closures and captured variables",
+        "Check loop/block scoping and later mutation",
+        "Recommend bind/wrapper/parameterization only where needed"
+      ],
+      "source_records_to_consult": [
+        "js-sem-this-binding",
+        "js-sem-closures",
+        "js-sem-functions-as-values"
+      ],
+      "questions_to_ask": [
+        "js-dq-this-invocation",
+        "js-dq-closure-captured-vars"
+      ],
+      "safe_outputs": [
+        "Call-site-specific binding fixes",
+        "Closure state map"
+      ],
+      "dangerous_outputs": [
+        "Converting all functions to arrows by habit"
+      ],
+      "tests_or_checks": [
+        "Extracted method test",
+        "Repeated closure calls",
+        "Async callback after variable mutation"
+      ],
+      "human_review_triggers": [
+        "Class API public methods",
+        "Long-lived event handlers"
+      ],
+      "completion_criteria": [
+        "Every this use has known receiver and every closure has known captured state"
+      ],
+      "failure_modes": [
+        "Misses lexical this or hidden module state"
+      ],
+      "related_risk_ids": [
+        "js-risk-this-binding",
+        "js-risk-closure-state"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-workflow-class-prototype",
+      "workflow_name": "Review class/prototype behavior",
+      "goal": "Check inheritance, method placement, property ownership, and prototype lookup.",
+      "best_fit_context": "Class refactors, instance methods, subclassing, object dictionaries.",
+      "preconditions": [
+        "Class/object definitions and call sites visible"
+      ],
+      "inspection_steps": [
+        "Inspect own fields versus prototype methods",
+        "Check constructor/super order",
+        "Check method extraction this risk",
+        "Check property ownership tests",
+        "Avoid built-in prototype mutation"
+      ],
+      "source_records_to_consult": [
+        "js-sem-classes-prototypes",
+        "js-sem-subclassing-super",
+        "js-sem-property-lookup-prototype"
+      ],
+      "questions_to_ask": [
+        "js-dq-class-method-placement",
+        "js-dq-prototype-own-property"
+      ],
+      "safe_outputs": [
+        "Prototype-aware findings",
+        "Method placement recommendation",
+        "Subclass invariant tests"
+      ],
+      "dangerous_outputs": [
+        "Treating class as non-prototype classical model"
+      ],
+      "tests_or_checks": [
+        "Object.getPrototypeOf/own keys checks",
+        "new/subclass construction tests",
+        "method extraction test"
+      ],
+      "human_review_triggers": [
+        "Library APIs",
+        "Inheritance-heavy code",
+        "Prototype mutation"
+      ],
+      "completion_criteria": [
+        "Own/inherited behavior and constructor order are verified"
+      ],
+      "failure_modes": [
+        "Confuses instance fields and prototype methods"
+      ],
+      "related_risk_ids": [
+        "js-risk-prototype-shadowing",
+        "js-risk-this-binding"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-workflow-async-promise",
+      "workflow_name": "Review async Promise behavior",
+      "goal": "Ensure async work is awaited/returned, ordered, and failure-aware.",
+      "best_fit_context": "Promise chains, async functions, fetch/file/API calls, tests.",
+      "preconditions": [
+        "Async call graph is available or can be traced locally"
+      ],
+      "inspection_steps": [
+        "List every Promise-returning call",
+        "Check returned/awaited/caught status",
+        "Separate dependent sequential work from independent concurrent work",
+        "Check async function API changes",
+        "Review Promise.all/allSettled/race semantics"
+      ],
+      "source_records_to_consult": [
+        "js-sem-promises",
+        "js-sem-async-await",
+        "js-async-await-ordering",
+        "js-async-promise-rejection-handling"
+      ],
+      "questions_to_ask": [
+        "js-dq-promise-rejection-path",
+        "js-dq-async-must-finish-before-return"
+      ],
+      "safe_outputs": [
+        "Await/return/catch map",
+        "Concurrency recommendations with failure semantics"
+      ],
+      "dangerous_outputs": [
+        "Generic use async/await advice without ordering/rejection analysis"
+      ],
+      "tests_or_checks": [
+        "Rejected promise tests",
+        "Delayed/reordered promise tests",
+        "Assert function returns Promise where expected"
+      ],
+      "human_review_triggers": [
+        "Data writes after async work",
+        "Fire-and-forget code",
+        "User-visible network actions"
+      ],
+      "completion_criteria": [
+        "No floating promise unless explicitly reported",
+        "Ordering dependencies are explicit"
+      ],
+      "failure_modes": [
+        "Treats await as cancellation or automatic error policy"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-workflow-error-handling",
+      "workflow_name": "Review error handling",
+      "goal": "Align thrown, rejected, emitted, callback, stream, and worker errors with the correct boundary.",
+      "best_fit_context": "Mixed sync/async APIs, Node streams/events, browser events, worker code.",
+      "preconditions": [
+        "Known APIs and failure modes if possible"
+      ],
+      "inspection_steps": [
+        "Classify each failure channel",
+        "Check try/catch boundaries",
+        "Check callback error arguments",
+        "Check Promise rejection handling",
+        "Check EventEmitter/stream/worker error events/messages",
+        "Verify cleanup/finally"
+      ],
+      "source_records_to_consult": [
+        "js-sem-errors",
+        "js-async-error-handling",
+        "js-async-callback-error-conventions"
+      ],
+      "questions_to_ask": [
+        "js-dq-callback-error-channel",
+        "js-dq-promise-rejection-path",
+        "js-dq-stream-completion"
+      ],
+      "safe_outputs": [
+        "Failure-channel table",
+        "Specific recovery/rethrow/reporting points"
+      ],
+      "dangerous_outputs": [
+        "One broad try/catch claimed to handle all async failures"
+      ],
+      "tests_or_checks": [
+        "Sync throw test",
+        "Rejected promise test",
+        "Callback error test",
+        "Stream/worker error test"
+      ],
+      "human_review_triggers": [
+        "Data deletion/write operations",
+        "Security-sensitive operations"
+      ],
+      "completion_criteria": [
+        "Every failure path has a handling/reporting policy"
+      ],
+      "failure_modes": [
+        "Swallowed errors or double-settle wrappers"
+      ],
+      "related_risk_ids": [
+        "js-risk-callback-error-path",
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-stream-lifecycle"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-workflow-browser-dom-events",
+      "workflow_name": "Review browser DOM/event code",
+      "goal": "Check DOM availability, element nullability, event propagation/defaults, and lifecycle.",
+      "best_fit_context": "Frontend code manipulating document/window/events.",
+      "preconditions": [
+        "Target browser context identified"
+      ],
+      "inspection_steps": [
+        "Verify code is browser-side",
+        "Check DOM queries for null",
+        "Check event target/currentTarget and propagation",
+        "Check listener add/remove lifecycle",
+        "Check array-like DOM collections"
+      ],
+      "source_records_to_consult": [
+        "js-boundary-browser-dom",
+        "js-boundary-browser-events",
+        "js-async-browser-events"
+      ],
+      "questions_to_ask": [
+        "js-dq-browser-api-in-node",
+        "js-dq-nullish-property-base"
+      ],
+      "safe_outputs": [
+        "DOM/event findings tied to selectors and listener lifecycle"
+      ],
+      "dangerous_outputs": [
+        "Assuming Node test DOM equals production browser"
+      ],
+      "tests_or_checks": [
+        "Missing element test",
+        "Nested event target test",
+        "Double-mount/listener cleanup test"
+      ],
+      "human_review_triggers": [
+        "Accessibility/security-sensitive UI",
+        "Dynamic HTML insertion"
+      ],
+      "completion_criteria": [
+        "DOM calls are browser-confined and null/lifecycle-safe"
+      ],
+      "failure_modes": [
+        "Leaked listeners or unsafe target assumptions"
+      ],
+      "related_risk_ids": [
+        "js-risk-browser-node-api-confusion",
+        "js-risk-null-undefined-access",
+        "js-risk-async-ordering"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-workflow-fetch-networking",
+      "workflow_name": "Review fetch/networking code",
+      "goal": "Check network, HTTP, parse, stale-response, and environment-specific behavior.",
+      "best_fit_context": "Browser or verified fetch-compatible runtime code.",
+      "preconditions": [
+        "Target networking API and deployment context identified"
+      ],
+      "inspection_steps": [
+        "Verify environment provides API",
+        "Separate network rejection from HTTP status",
+        "Check body parse and one-shot body use",
+        "Check abort/timeout/stale response policy",
+        "Check credentials/CORS/security needs against current docs"
+      ],
+      "source_records_to_consult": [
+        "js-boundary-browser-networking",
+        "js-async-fetch-networking-promises"
+      ],
+      "questions_to_ask": [
+        "js-dq-fetch-http-parse-errors"
+      ],
+      "safe_outputs": [
+        "Layered failure handling plan",
+        "Current-doc verification flags for security/platform behavior"
+      ],
+      "dangerous_outputs": [
+        "Claiming fulfilled fetch means success",
+        "Ignoring stale response overwrites"
+      ],
+      "tests_or_checks": [
+        "Mock 200/400/500/network failure/malformed JSON/slow response/abort"
+      ],
+      "human_review_triggers": [
+        "Auth/session/payment/personal data"
+      ],
+      "completion_criteria": [
+        "Each networking failure layer has test or explicit policy"
+      ],
+      "failure_modes": [
+        "No status/parse/rejection separation"
+      ],
+      "related_risk_ids": [
+        "js-risk-unhandled-promise-rejection",
+        "js-risk-async-ordering",
+        "js-risk-browser-node-api-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-workflow-browser-storage",
+      "workflow_name": "Review browser storage code",
+      "goal": "Check client storage choice, sensitivity, quota/error handling, and current platform behavior.",
+      "best_fit_context": "Frontend code using local/session/indexed storage-like APIs.",
+      "preconditions": [
+        "Data purpose and sensitivity known"
+      ],
+      "inspection_steps": [
+        "Verify storage API is browser-side",
+        "Classify data as secret/authoritative/cache/preference",
+        "Check quota/error/lifetime/privacy assumptions",
+        "Check serialization and date handling",
+        "Flag current docs required"
+      ],
+      "source_records_to_consult": [
+        "js-boundary-browser-storage",
+        "js-sem-json-serialization"
+      ],
+      "questions_to_ask": [
+        "js-dq-json-loss",
+        "js-dq-date-timezone"
+      ],
+      "safe_outputs": [
+        "Storage threat/shape review",
+        "Recommendation to use server storage for sensitive/authoritative data"
+      ],
+      "dangerous_outputs": [
+        "Treating client storage as secure durable database"
+      ],
+      "tests_or_checks": [
+        "Quota/error path test",
+        "Private/incognito/lifetime test where relevant",
+        "JSON round-trip"
+      ],
+      "human_review_triggers": [
+        "Secrets/tokens/personal data",
+        "Regulated data"
+      ],
+      "completion_criteria": [
+        "Storage choice aligns with sensitivity and current verification"
+      ],
+      "failure_modes": [
+        "No error handling for storage writes"
+      ],
+      "related_risk_ids": [
+        "js-risk-json-serialization-loss",
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-workflow-node-filesystem-stream",
+      "workflow_name": "Review Node filesystem/stream code",
+      "goal": "Check Node-only file APIs, async error paths, streams, buffering, and deployment permissions.",
+      "best_fit_context": "Node scripts/servers processing files or streams.",
+      "preconditions": [
+        "Target Node runtime/deployment identified"
+      ],
+      "inspection_steps": [
+        "Verify code is not browser/App Script path",
+        "Choose stream vs buffered read by size",
+        "Check callback/Promise error handling",
+        "Check stream completion/error/backpressure",
+        "Check path/input trust"
+      ],
+      "source_records_to_consult": [
+        "js-boundary-node-files",
+        "js-boundary-node-streams",
+        "js-async-node-streams"
+      ],
+      "questions_to_ask": [
+        "js-dq-node-api-in-browser",
+        "js-dq-stream-completion"
+      ],
+      "safe_outputs": [
+        "Node-only boundary notes",
+        "Stream/buffer choice and tests"
+      ],
+      "dangerous_outputs": [
+        "Using fs in frontend code",
+        "Returning before stream finish"
+      ],
+      "tests_or_checks": [
+        "Missing file/permission test",
+        "Large file test",
+        "Injected stream error"
+      ],
+      "human_review_triggers": [
+        "User-uploaded files",
+        "Destructive writes"
+      ],
+      "completion_criteria": [
+        "File API is host-correct and completion/error paths tested"
+      ],
+      "failure_modes": [
+        "Truncated or unbounded memory behavior"
+      ],
+      "related_risk_ids": [
+        "js-risk-browser-node-api-confusion",
+        "js-risk-stream-lifecycle",
+        "js-risk-callback-error-path"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-workflow-node-http",
+      "workflow_name": "Review Node HTTP client/server code",
+      "goal": "Check Node HTTP API boundaries, stream lifecycle, async errors, and deployment security.",
+      "best_fit_context": "Node HTTP clients/servers or server-side request handlers.",
+      "preconditions": [
+        "Node runtime and deployment model known or flagged"
+      ],
+      "inspection_steps": [
+        "Identify request/response stream lifecycle",
+        "Check error/timeout/abort handling",
+        "Check input validation and output serialization",
+        "Check module/runtime config",
+        "Flag current Node/security docs where needed"
+      ],
+      "source_records_to_consult": [
+        "js-boundary-node-http",
+        "js-boundary-node-streams",
+        "js-sem-json-serialization"
+      ],
+      "questions_to_ask": [
+        "js-dq-stream-completion",
+        "js-dq-json-loss"
+      ],
+      "safe_outputs": [
+        "HTTP lifecycle findings",
+        "Serialization and error response policy"
+      ],
+      "dangerous_outputs": [
+        "Assuming browser fetch/server semantics in Node HTTP code"
+      ],
+      "tests_or_checks": [
+        "Client abort test",
+        "Malformed request/body test",
+        "Response finish/error test"
+      ],
+      "human_review_triggers": [
+        "Public endpoint",
+        "Auth or personal data"
+      ],
+      "completion_criteria": [
+        "Every request path completes or reports error exactly once"
+      ],
+      "failure_modes": [
+        "Unhandled stream or promise failure"
+      ],
+      "related_risk_ids": [
+        "js-risk-stream-lifecycle",
+        "js-risk-unhandled-promise-rejection"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-workflow-worker-thread-process",
+      "workflow_name": "Review worker/thread/process code",
+      "goal": "Check message schemas, lifecycle, errors, transfer/copy, and security/deployment constraints.",
+      "best_fit_context": "Browser workers, Node worker_threads, child_process usage.",
+      "preconditions": [
+        "Execution boundary and target host identified"
+      ],
+      "inspection_steps": [
+        "Choose worker/thread/process reason",
+        "Define message/input/output schema",
+        "Check clone/transfer/object identity assumptions",
+        "Check error/exit/termination/timeout",
+        "Check command injection/deployment permissions for child process"
+      ],
+      "source_records_to_consult": [
+        "js-boundary-workers",
+        "js-boundary-node-worker-threads",
+        "js-boundary-node-child-processes",
+        "js-async-worker-messaging"
+      ],
+      "questions_to_ask": [
+        "js-dq-worker-message-schema"
+      ],
+      "safe_outputs": [
+        "Boundary contract",
+        "Lifecycle/error tests",
+        "Security verification flags"
+      ],
+      "dangerous_outputs": [
+        "Using child process for untrusted shell input",
+        "Expecting shared object mutation across worker"
+      ],
+      "tests_or_checks": [
+        "Unsupported payload test",
+        "Worker error/exit test",
+        "Timeout/kill test",
+        "Large payload performance test"
+      ],
+      "human_review_triggers": [
+        "Untrusted input",
+        "CPU-heavy production path"
+      ],
+      "completion_criteria": [
+        "Message/lifecycle/security behavior verified or flagged"
+      ],
+      "failure_modes": [
+        "No error/exit/termination handling"
+      ],
+      "related_risk_ids": [
+        "js-risk-worker-message-boundary",
+        "js-risk-tooling-version-drift"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-workflow-apps-script-extension",
+      "workflow_name": "Review Apps Script code as extension",
+      "goal": "Review Apps Script without pretending it is browser or Node JavaScript.",
+      "best_fit_context": "Google Apps Script projects, web apps, spreadsheet automation, uploads/triggers.",
+      "preconditions": [
+        "Project files or snippets available",
+        "Current docs can be checked in downstream task before deployment"
+      ],
+      "inspection_steps": [
+        "Create file-role map: .gs server, HtmlService client HTML, shared/generated, local tooling",
+        "List Apps Script services, triggers, scopes, quotas, deployment behavior to verify",
+        "Check client/server data serialization",
+        "Check SpreadsheetApp read/write safety and idempotence",
+        "Flag upload/CSV/XLSX processing boundaries"
+      ],
+      "source_records_to_consult": [
+        "js-boundary-google-apps-script-extension",
+        "js-apps-script-runtime-boundary",
+        "js-apps-script-htmlservice-browser-server-split",
+        "js-apps-script-spreadsheetapp-automation-safety"
+      ],
+      "questions_to_ask": [
+        "js-dq-apps-script-current-docs",
+        "js-dq-runtime-executing-file"
+      ],
+      "safe_outputs": [
+        "Apps Script-specific review with current-doc flags",
+        "Safe operational plan and probes"
+      ],
+      "dangerous_outputs": [
+        "Inventing current Apps Script behavior",
+        "Using Node/browser fixes in server .gs"
+      ],
+      "tests_or_checks": [
+        "Small Apps Script probe where docs leave ambiguity",
+        "Spreadsheet backup/dry-run",
+        "Client/server success/failure test"
+      ],
+      "human_review_triggers": [
+        "Production spreadsheet edits",
+        "Auth scopes",
+        "External uploads"
+      ],
+      "completion_criteria": [
+        "Every Apps Script claim is marked current-verification or docs-backed by downstream work"
+      ],
+      "failure_modes": [
+        "Conflates HtmlService browser code with server .gs"
+      ],
+      "related_risk_ids": [
+        "js-risk-apps-script-runtime-confusion",
+        "js-risk-json-serialization-loss"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-workflow-json-date-regex",
+      "workflow_name": "Review JSON/date/regex behavior",
+      "goal": "Check data conversion and text/time edge cases.",
+      "best_fit_context": "Serialization, API payloads, storage, validation, parsing.",
+      "preconditions": [
+        "Expected data formats are available or inferred"
+      ],
+      "inspection_steps": [
+        "List JSON value types and round-trip requirements",
+        "Classify dates as instant/local/display",
+        "Inspect regex anchors/flags/escaping/state",
+        "Add positive and negative examples",
+        "Flag custom serialization/parser needs"
+      ],
+      "source_records_to_consult": [
+        "js-sem-json-serialization",
+        "js-sem-date-time",
+        "js-sem-regexp-patterns"
+      ],
+      "questions_to_ask": [
+        "js-dq-json-loss",
+        "js-dq-date-timezone",
+        "js-dq-regex-negative-tests"
+      ],
+      "safe_outputs": [
+        "Round-trip and edge-case test matrix",
+        "Recommendation for parser/custom serializer where needed"
+      ],
+      "dangerous_outputs": [
+        "Treating JSON/date/regex as simple string mechanics"
+      ],
+      "tests_or_checks": [
+        "JSON round-trip",
+        "Timezone/DST tests",
+        "Regex positive/negative/Unicode/long input tests"
+      ],
+      "human_review_triggers": [
+        "Security validation",
+        "Cross-timezone workflows",
+        "Data migrations"
+      ],
+      "completion_criteria": [
+        "Data boundary behavior is explicitly tested"
+      ],
+      "failure_modes": [
+        "No negative tests or timezone tests"
+      ],
+      "related_risk_ids": [
+        "js-risk-json-serialization-loss",
+        "js-risk-date-timezone",
+        "js-risk-regex-overmatching"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-workflow-tooling-test-setup",
+      "workflow_name": "Review tooling/test setup",
+      "goal": "Check that lint/format/test/build tools support the actual JS runtime target.",
+      "best_fit_context": "Projects with ESLint/Prettier/Jest/npm/Babel/bundlers/JSX/Flow/TypeScript.",
+      "preconditions": [
+        "Tool config/package metadata available or absent status noted"
+      ],
+      "inspection_steps": [
+        "Inspect package scripts and lockfile",
+        "Inspect ESLint env/parser and ignored files",
+        "Inspect Jest environment/transforms/fake timers",
+        "Inspect Babel/bundler targets/output",
+        "Compare tested code with deployed code"
+      ],
+      "source_records_to_consult": [
+        "js-tooling-eslint",
+        "js-tooling-prettier",
+        "js-tooling-jest",
+        "js-tooling-babel",
+        "js-tooling-bundling",
+        "js-tooling-npm"
+      ],
+      "questions_to_ask": [
+        "js-dq-tooling-executed-code"
+      ],
+      "safe_outputs": [
+        "Toolchain risk report",
+        "Specific config checks and current verification flags"
+      ],
+      "dangerous_outputs": [
+        "Saying tests pass without checking environment/transform"
+      ],
+      "tests_or_checks": [
+        "Run lint/test/build if possible",
+        "Smoke-test emitted bundle/runtime",
+        "Check lockfile diff"
+      ],
+      "human_review_triggers": [
+        "Dependency upgrade",
+        "CI/deployment failure",
+        "Security-sensitive packages"
+      ],
+      "completion_criteria": [
+        "Executed code path and tool versions/config are known or flagged"
+      ],
+      "failure_modes": [
+        "False confidence from wrong test environment"
+      ],
+      "related_risk_ids": [
+        "js-risk-tooling-version-drift",
+        "js-risk-module-system-mismatch"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-workflow-safe-refactor-plan",
+      "workflow_name": "Create safe refactor plan",
+      "goal": "Plan a behavior-preserving change around JavaScript-specific risks.",
+      "best_fit_context": "Any nontrivial code change requested by user or AI agent.",
+      "preconditions": [
+        "Existing behavior and tests are known or can be characterized"
+      ],
+      "inspection_steps": [
+        "Classify runtime/module/API boundaries",
+        "List semantics the refactor might change: coercion, nullish, mutation, this, closure, prototype, async, JSON/date/regex",
+        "Create before/after characterization tests",
+        "Make smallest change",
+        "Run/describe verification"
+      ],
+      "source_records_to_consult": [
+        "js-sem-implicit-conversion",
+        "js-sem-object-references",
+        "js-sem-this-binding",
+        "js-sem-promises",
+        "js-sem-json-serialization"
+      ],
+      "questions_to_ask": [
+        "js-dq-refactor-behavior-test"
+      ],
+      "safe_outputs": [
+        "Stepwise plan with tests per risk",
+        "Rollback/human-review triggers"
+      ],
+      "dangerous_outputs": [
+        "Large rewrite that changes abstractions and behavior simultaneously"
+      ],
+      "tests_or_checks": [
+        "Before/after edge tests",
+        "Runtime smoke tests",
+        "Async rejection tests"
+      ],
+      "human_review_triggers": [
+        "Public API change",
+        "Data migration/destructive writes"
+      ],
+      "completion_criteria": [
+        "Each changed semantic has evidence of preserved or intentionally changed behavior"
+      ],
+      "failure_modes": [
+        "No edge-case characterization"
+      ],
+      "related_risk_ids": [
+        "js-risk-implicit-coercion",
+        "js-risk-null-undefined-access",
+        "js-risk-shared-object-mutation",
+        "js-risk-this-binding",
+        "js-risk-unhandled-promise-rejection"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-workflow-minimal-test-plan",
+      "workflow_name": "Create minimal test plan",
+      "goal": "Design a compact test set that targets actual JavaScript risks.",
+      "best_fit_context": "Bug reports, code review findings, or refactor requests.",
+      "preconditions": [
+        "Risk list or code snippet available"
+      ],
+      "inspection_steps": [
+        "Pick one happy path and one edge/failure path per relevant risk",
+        "Include async rejection and ordering when async exists",
+        "Include runtime smoke test when host boundary exists",
+        "Include JSON/date/regex edge cases where data crosses boundaries",
+        "Avoid snapshot-only coverage"
+      ],
+      "source_records_to_consult": [
+        "javascript_diagnostic_questions_v2.json",
+        "javascript_pitfalls_and_failure_modes_v2.json"
+      ],
+      "questions_to_ask": [
+        "js-dq-refactor-behavior-test",
+        "js-dq-promise-rejection-path"
+      ],
+      "safe_outputs": [
+        "Minimal targeted test list with inputs and expected outcomes"
+      ],
+      "dangerous_outputs": [
+        "Huge generic test suite proposal not tied to risk"
+      ],
+      "tests_or_checks": [
+        "Use table of inputs/expected outcomes",
+        "Run in target runtime or mark missing"
+      ],
+      "human_review_triggers": [
+        "No runnable environment",
+        "High-stakes data writes"
+      ],
+      "completion_criteria": [
+        "Every identified high risk has at least one evidence check"
+      ],
+      "failure_modes": [
+        "Tests ignore failure paths"
+      ],
+      "related_risk_ids": [
+        "js-risk-tooling-version-drift",
+        "js-risk-unhandled-promise-rejection"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-workflow-current-docs-needed",
+      "workflow_name": "Decide when current docs must be checked",
+      "goal": "Prevent outdated platform/tooling claims.",
+      "best_fit_context": "Browser/Node/npm/bundler/tool/Apps Script/security/deployment questions.",
+      "preconditions": [
+        "Claim or recommendation might depend on current platform behavior"
+      ],
+      "inspection_steps": [
+        "Ask whether behavior changed after 2020 or after model cutoff",
+        "Identify official docs/source of truth",
+        "List affected record IDs",
+        "Mark output as verification-required until checked",
+        "Avoid speculative modernization"
+      ],
+      "source_records_to_consult": [
+        "javascript_current_verification_flags_v2.json",
+        "js-boundary-tooling-ecosystem",
+        "js-boundary-google-apps-script-extension"
+      ],
+      "questions_to_ask": [
+        "js-dq-apps-script-current-docs",
+        "js-dq-tooling-executed-code"
+      ],
+      "safe_outputs": [
+        "Verification checklist with official-doc targets",
+        "Clear separation of source-derived and current-dependent claims"
+      ],
+      "dangerous_outputs": [
+        "Asserting current browser/Node/Apps Script behavior from memory"
+      ],
+      "tests_or_checks": [
+        "Official docs/release notes checked in downstream work",
+        "Version/platform recorded"
+      ],
+      "human_review_triggers": [
+        "Security-sensitive/deployment behavior",
+        "Apps Script quotas/scopes/triggers"
+      ],
+      "completion_criteria": [
+        "Current-dependent claims are either verified or explicitly flagged"
+      ],
+      "failure_modes": [
+        "Unverified post-2020 behavior stated as fact"
+      ],
+      "related_risk_ids": [
+        "js-risk-tooling-version-drift",
+        "js-risk-apps-script-runtime-confusion"
+      ],
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "source_basis": "Workflow extension synthesized from source-specific JavaScript failure modes and repair prompt.",
+        "book_coverage": "not claimed",
+        "trace_note": "Operational extension or current-verification item; verify against current official documentation before asserting platform behavior."
+      },
+      "derivation": {
+        "classification": "ai_agent_workflow_extension",
+        "authority_order_position": 3,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    }
+  ]
+}

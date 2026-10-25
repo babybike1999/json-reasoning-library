@@ -1,0 +1,266 @@
+{
+  "package_metadata": {
+    "package_name": "JavaScript Language, Runtime, and Code-Quality Reasoning OS V2",
+    "module_name": "classes_prototypes_modules",
+    "repair_type": "focused_v2_repair_not_full_rebuild",
+    "generated_at": "2026-06-21T05:00:11.155979+00:00",
+    "primary_source": {
+      "title": "JavaScript: The Definitive Guide",
+      "edition": "Seventh Edition",
+      "author": "David Flanagan",
+      "publisher": "O'Reilly Media",
+      "release_year": 2020,
+      "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+      "source_sha256": "b511aca2b98ae4eec4966c87d5e6b6c1704cbafe7dd076b924db46cb8d20ae07"
+    },
+    "v1_package_reference": {
+      "source_zip": "Javascript Reasoning.zip",
+      "source_zip_sha256": "60242e2ad2cfcc9bdf79f2fc73b392b7f149339dc95d6234f00db683f368d98d",
+      "not_overwritten": true
+    },
+    "authority_order": [
+      "Original uploaded book source",
+      "Current generated JavaScript Reasoning OS package",
+      "User repair prompt",
+      "Current official documentation only if available",
+      "General engineering reasoning"
+    ],
+    "source_limitation_warning": "Current browser, Node, npm, bundler, tool, framework, and Google Apps Script behavior is not asserted unless explicitly verified. V2 flags such items for current documentation checks.",
+    "purpose": "V2 records for classes, prototypes, subclassing, ES modules, and CommonJS."
+  },
+  "language_semantics_records": [
+    {
+      "id": "js-sem-classes-prototypes",
+      "concept_name": "classes and prototypes",
+      "language_area": "classes_prototypes_modules",
+      "plain_language_meaning": "JavaScript class syntax is modern syntax over prototype-based objects.",
+      "precise_behavior": "class declarations define constructor functions and prototype methods. Instance state is initialized in constructors or fields. Inheritance uses prototype chains and super. Class bodies are strict.",
+      "syntax_or_api_shape": "class C { constructor(x){ this.x=x } method(){} } new C(1)",
+      "why_it_matters": "Class syntax improves readability but does not erase prototype, this, or object-reference semantics.",
+      "common_use": [
+        "Model objects with shared behavior",
+        "Use subclassing where substitutability is clear",
+        "Expose constructor-based APIs"
+      ],
+      "common_misuse": [
+        "Assuming class methods are copied per instance",
+        "Using instance arrow fields for every method without memory/identity reason",
+        "Treating private state, prototype methods, and closures as identical"
+      ],
+      "debugging_symptoms": [
+        "Method missing after destructuring",
+        "Subclass method cannot access super as expected",
+        "Memory growth from per-instance methods"
+      ],
+      "tests_or_checks": [
+        "Inspect prototype versus own methods",
+        "Check new requirement",
+        "Test subclass behavior"
+      ],
+      "safe_refactor_notes": [
+        "Move methods between prototype and instance only after checking this binding and identity",
+        "Avoid subclassing refactors without tests for constructor/super order"
+      ],
+      "related_risk_ids": [
+        "js-risk-prototype-shadowing",
+        "js-risk-this-binding"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 9,
+        "chapter_title": "Classes",
+        "sections": [
+          "9.1 Classes and Prototypes",
+          "9.3 Classes with the class Keyword",
+          "9.5 Subclasses"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-subclassing-super",
+      "concept_name": "subclassing and super",
+      "language_area": "classes_prototypes_modules",
+      "plain_language_meaning": "Subclasses extend behavior while relying on superclass initialization and methods.",
+      "precise_behavior": "extends sets up prototype inheritance. Derived constructors must call super before using this. super.method resolves against the superclass prototype in method context.",
+      "syntax_or_api_shape": "class D extends B { constructor(){ super(); } method(){ return super.method(); } }",
+      "why_it_matters": "Subclass bugs often involve initialization order, method override contracts, and this/prototype expectations.",
+      "common_use": [
+        "Specialize existing class behavior",
+        "Reuse superclass initialization",
+        "Override methods deliberately"
+      ],
+      "common_misuse": [
+        "Using this before super",
+        "Breaking superclass invariants",
+        "Assuming super is a dynamic property read from this"
+      ],
+      "debugging_symptoms": [
+        "ReferenceError in constructor",
+        "Overridden method skips required work",
+        "Instance fails instanceof/behavior expectations"
+      ],
+      "tests_or_checks": [
+        "Test constructor arguments and superclass invariants",
+        "Inspect override calls to super",
+        "Check prototype chain"
+      ],
+      "safe_refactor_notes": [
+        "Prefer composition if subclass contract is unclear",
+        "Do not reorder super and this initialization casually"
+      ],
+      "related_risk_ids": [
+        "js-risk-prototype-shadowing",
+        "js-risk-this-binding"
+      ],
+      "runtime_or_environment": "ECMAScript language core",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 9,
+        "chapter_title": "Classes",
+        "sections": [
+          "9.5 Subclasses"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-es-modules",
+      "concept_name": "ES modules",
+      "language_area": "classes_prototypes_modules",
+      "plain_language_meaning": "ES modules define explicit imports and exports with static structure.",
+      "precise_behavior": "import/export declarations are parsed statically. Module code is strict. Bindings are live where specified by module semantics. Loading behavior depends on host environment and configuration.",
+      "syntax_or_api_shape": "import x from \"m\"; import {y} from \"m\"; export default value; export {name}; <script type=\"module\">",
+      "why_it_matters": "Modules improve boundaries but create loader, file-type, and interop decisions across browser, Node, bundlers, and tests.",
+      "common_use": [
+        "Organize browser or Node code with explicit dependencies",
+        "Expose named/default APIs",
+        "Enable static analysis and bundling"
+      ],
+      "common_misuse": [
+        "Mixing require/module.exports in ES module without interop plan",
+        "Assuming default import shape matches CommonJS export",
+        "Ignoring file/runtime configuration"
+      ],
+      "debugging_symptoms": [
+        "SyntaxError on import",
+        "undefined imported binding",
+        "Works under bundler but not Node/browser directly"
+      ],
+      "tests_or_checks": [
+        "Identify host loader and package config",
+        "Check default versus named exports",
+        "Run minimal import test in target runtime"
+      ],
+      "safe_refactor_notes": [
+        "Treat module conversion as runtime-boundary refactor",
+        "Keep side-effect imports visible"
+      ],
+      "related_risk_ids": [
+        "js-risk-module-system-mismatch",
+        "js-risk-tooling-version-drift"
+      ],
+      "runtime_or_environment": "ECMAScript language core plus host loaders",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 10,
+        "chapter_title": "Modules",
+        "sections": [
+          "10.3 Modules in ES6"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    },
+    {
+      "id": "js-sem-commonjs-modules",
+      "concept_name": "CommonJS modules",
+      "language_area": "classes_prototypes_modules",
+      "plain_language_meaning": "CommonJS is Node’s historical module system built around require and module.exports.",
+      "precise_behavior": "A CommonJS module exports by assigning to exports or module.exports and imports synchronously with require. Interop with ES modules depends on Node/tooling behavior that must be verified for the current runtime.",
+      "syntax_or_api_shape": "const x = require(\"x\"); module.exports = value; exports.name = value",
+      "why_it_matters": "Legacy Node packages and tools often use CommonJS, so review must check module shape and loader configuration.",
+      "common_use": [
+        "Use in CommonJS Node codebases",
+        "Load JSON or built-in modules in legacy style",
+        "Adapter at package boundary"
+      ],
+      "common_misuse": [
+        "Reassigning exports instead of module.exports",
+        "Mixing top-level import/export without config",
+        "Assuming named ES imports work from all CommonJS packages"
+      ],
+      "debugging_symptoms": [
+        "require is not defined",
+        "Imported value nested under default",
+        "Circular dependency exposes partial object"
+      ],
+      "tests_or_checks": [
+        "Inspect package.json and file extension",
+        "Search for module.exports/exports/require/import",
+        "Test import/require both sides if interop"
+      ],
+      "safe_refactor_notes": [
+        "Do not rewrite require to import without runtime/tool tests",
+        "Document interop adapters"
+      ],
+      "related_risk_ids": [
+        "js-risk-module-system-mismatch"
+      ],
+      "runtime_or_environment": "Node host environment and tooling",
+      "source_traceability": {
+        "source_file": "JavaScript _ the definitive guide _ master the world's -- David Flanagan -- 7th Edition, Jun 02, 2020 -- O'Reilly Media, Incorporated.pdf",
+        "book_title": "JavaScript: The Definitive Guide, Seventh Edition",
+        "author": "David Flanagan",
+        "chapter": 10,
+        "chapter_title": "Modules",
+        "sections": [
+          "10.2 Modules in Node"
+        ],
+        "source_basis": "Language behavior record retained and sharpened in V2.",
+        "derivation_classification": "source_direct",
+        "trace_note": "Paraphrased from or aligned with the uploaded book source; no long quotations embedded."
+      },
+      "derivation": {
+        "classification": "source_direct",
+        "authority_order_position": 1,
+        "confidence": "high",
+        "repair_action": "rewritten_v2",
+        "v2_repair_note": "Focused V2 rewrite to make the record specific, source-labeled, and useful for debugging or review."
+      }
+    }
+  ]
+}
